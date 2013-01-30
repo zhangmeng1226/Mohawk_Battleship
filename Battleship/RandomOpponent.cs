@@ -6,6 +6,7 @@
 
     public class RandomOpponent : IBattleshipOpponent
     {
+        // This is a change to demonstrate committing and pushing!
         public string Name { get { return "Random"; } }
         public Version Version { get { return this.version; } }
 
