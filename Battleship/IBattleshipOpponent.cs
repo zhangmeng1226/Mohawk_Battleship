@@ -3,15 +3,17 @@
     using System;
     using System.Collections.ObjectModel;
     using System.Drawing;
+    using System.Diagnostics;
+    using System.Collections.Generic;
 
     public interface IBattleshipOpponent
     {
-        string Name
+        public string Name
         {
             get;
         }
 
-        Version Version
+        public Version Version
         {
             get;
         }

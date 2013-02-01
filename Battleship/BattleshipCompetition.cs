@@ -6,15 +6,24 @@
     using System.Drawing;
     using System.Linq;
 
+    /**
+     * BattleshipCompetition:
+     * 
+     * No docs right now.. look at RunCompetition() for now.
+     * 
+     */
     public class BattleshipCompetition
     {
-        private IBattleshipOpponent op1;
-        private IBattleshipOpponent op2;
+        private static const int OPPONENT_ONE = 0;
+        private static const int OPPONENT_TWO = 1;
+        private static const int TURN_ENDGAME = 2;
+        private BattleshipOpponent[] opponents;
         private TimeSpan timePerGame;
         private int wins;
         private bool playOut;
         private Size boardSize;
         private List<int> shipSizes;
+        private Random rand;
 
         public BattleshipCompetition(IBattleshipOpponent op1, IBattleshipOpponent op2, TimeSpan timePerGame, int wins, bool playOut, Size boardSize, params int[] shipSizes)
         {
@@ -58,249 +67,110 @@
                 throw new ArgumentOutOfRangeException("shipSizes");
             }
 
-            this.op1 = op1;
-            this.op2 = op2;
+            opponents = new BattleshipOpponent[2];
+            opponents[0] = new BattleshipOpponent(op1, boardSize, timePerGame);
+            opponents[1] = new BattleshipOpponent(op2, boardSize, timePerGame);
             this.timePerGame = timePerGame;
             this.wins = wins;
             this.playOut = playOut;
             this.boardSize = boardSize;
             this.shipSizes = new List<int>(shipSizes);
+            rand = new Random();
+        }
+
+        private List<Ship> generateNewShips()
+        {
+            return (from s in this.shipSizes
+                    select new Ship(s)).ToList();
+        }
+
+        private bool GameResultPush(BattleshipOpponent winner, BattleshipOpponent loser)
+        {
+            winner.GameWon();
+            loser.GameLost();
+            return true;
+        }
+
+        private bool newGame()
+        {
+            for (int opCount = OPPONENT_ONE; opCount < TURN_ENDGAME; opCount++)
+                if (opponents[opCount].NewGame())
+                {
+                    GameResultPush(opponents[~opCount], opponents[opCount]);
+                    return true;
+                }
+            return false;
+        }
+
+        private bool shipPlacement()
+        {
+            for (int turn = rand.Next(TURN_ENDGAME); turn < TURN_ENDGAME; turn++)
+            {
+                if (opponents[turn].PlaceShips(generateNewShips()))
+                    return GameResultPush(opponents[~turn], opponents[turn]);
+
+                if (!opponents[turn].ShipsReady())
+                    continue;
+            }
+            return false;
+        }
+
+        private bool gamePlay()
+        {
+            for (int turn = rand.Next(TURN_ENDGAME); turn < TURN_ENDGAME; turn++)
+            {
+                Point shot = opponents[turn].ShootAt(opponents[~turn]);
+
+                if (shot.X == BattleshipOpponent.LOSE_MAGIC_NUMBER && shot.Y == BattleshipOpponent.LOSE_MAGIC_NUMBER)
+                    return GameResultPush(opponents[~turn], opponents[turn]);
+                if (opponents[~turn].OpponentShot(shot))
+                    return GameResultPush(opponents[turn], opponents[~turn]);
+
+                Ship shipHit = (from s in opponents[~turn].ships
+                                where s.IsAt(shot)
+                                select s).SingleOrDefault();
+
+                if (shipHit != null)
+                    opponents[turn].ShotHit(shot, shipHit.IsSunk(opponents[turn].shots));
+                else
+                    opponents[turn].ShotMiss(shot);
+
+                //Are there any ships left from the other opponent?
+                if ((from s in opponents[~turn].ships where !s.IsSunk(opponents[turn].shots) select s).Any())
+                    return GameResultPush(opponents[turn], opponents[~turn]);
+
+                if (turn == OPPONENT_TWO)
+                    turn = OPPONENT_ONE;
+            }
+            return false;
         }
 
         public Dictionary<IBattleshipOpponent, int> RunCompetition()
         {
-            var rand = new Random();
+            int gamePlays = 0;
 
-            var opponents = new Dictionary<int, IBattleshipOpponent>();
-            var scores = new Dictionary<int, int>();
-            var times = new Dictionary<int, Stopwatch>();
-            var ships = new Dictionary<int, List<Ship>>();
-            var shots = new Dictionary<int, List<Point>>();
+            //NOTICE:
+            //   From now on, I will extensively use the "~" operator to denote "The opposing player".
+            //   Also, many loops will simply call single expressions, in this case, I am going to
+            //   leave out the begin and end brackets. (This is how I like to look at concise code,
+            //   bring it up if you do not want this).
 
-            var first = 0;
-            var second = 1;
+            //First send new matchup information to the opponents.
+            for (int opCount = OPPONENT_ONE; opCount < TURN_ENDGAME; opCount++)
+                opponents[opCount].NewMatch(opponents[~opCount].GetInfo());
 
-            opponents[first] = this.op1;
-            opponents[second] = this.op2;
-            scores[first] = 0;
-            scores[second] = 0;
-            times[first] = new Stopwatch();
-            times[second] = new Stopwatch();
-            shots[first] = new List<Point>();
-            shots[second] = new List<Point>();
-
-            if (rand.NextDouble() >= 0.5)
+            //This loop continues until this competition is complete.
+            while (gamePlays++ < wins)
             {
-                var swap = first;
-                first = second;
-                second = swap;
+                if (newGame()) continue;
+                if (shipPlacement()) continue;
+                if (gamePlay()) continue;
             }
 
-            opponents[first].NewMatch(opponents[second].Name + " " + opponents[second].Version.ToString());
-            opponents[second].NewMatch(opponents[first].Name + " " + opponents[first].Version.ToString());
+            opponents[OPPONENT_ONE].MatchOver();
+            opponents[OPPONENT_TWO].MatchOver();
 
-            bool success;
-
-            while (true)
-            {
-                if ((!this.playOut && scores.Where(p => p.Value >= this.wins).Any()) || (this.playOut && scores.Sum(s => s.Value) >= (this.wins * 2 - 1)))
-                {
-                    break;
-                }
-
-                {
-                    var swap = first;
-                    first = second;
-                    second = swap;
-                }
-
-                times[first].Reset();
-                times[second].Reset();
-                shots[first].Clear();
-                shots[second].Clear();
-
-                times[first].Start();
-                opponents[first].NewGame(this.boardSize, this.timePerGame);
-                times[first].Stop();
-                if (times[first].Elapsed > this.timePerGame) { RecordWin(second, first, scores, opponents); continue; }
-
-                times[second].Start();
-                opponents[second].NewGame(this.boardSize, this.timePerGame);
-                times[second].Stop();
-                if (times[second].Elapsed > this.timePerGame) { RecordWin(first, second, scores, opponents); continue; }
-
-                success = false;
-                do
-                {
-                    ships[first] = (from s in this.shipSizes
-                                    select new Ship(s)).ToList();
-
-                    times[first].Start();
-                    opponents[first].PlaceShips(ships[first].AsReadOnly());
-                    times[first].Stop();
-                    if (times[first].Elapsed > this.timePerGame) { break; }
-
-                    bool allPlacedValidly = true;
-                    for (int i = 0; i < ships[first].Count; i++)
-                    {
-                        if (!ships[first][i].IsPlaced || !ships[first][i].IsValid(this.boardSize))
-                        {
-                            allPlacedValidly = false;
-                            break;
-                        }
-                    }
-                    
-                    if (!allPlacedValidly)
-                    {
-                        continue;
-                    }
-
-                    bool noneConflict = true;
-                    for (int i = 0; i < ships[first].Count; i++)
-                    {
-                        for (int j = i + 1; j < ships[first].Count; j++)
-                        {
-                            if (ships[first][i].ConflictsWith(ships[first][j]))
-                            {
-                                noneConflict = false;
-                                break;
-                            }
-                        }
-
-                        if (!noneConflict)
-                        {
-                            break;
-                        }
-                    }
-
-                    if (!noneConflict)
-                    {
-                        continue;
-                    }
-                    else
-                    {
-                        success = true;
-                    }
-                } while (!success);
-                if (times[first].Elapsed > this.timePerGame) { RecordWin(second, first, scores, opponents); continue; }
-
-                success = false;
-                do
-                {
-                    ships[second] = (from s in this.shipSizes
-                                     select new Ship(s)).ToList();
-
-                    times[second].Start();
-                    opponents[second].PlaceShips(ships[second].AsReadOnly());
-                    times[second].Stop();
-                    if (times[second].Elapsed > this.timePerGame) { break; }
-
-                    bool allPlacedValidly = true;
-                    for (int i = 0; i < ships[second].Count; i++)
-                    {
-                        if (!ships[second][i].IsPlaced || !ships[second][i].IsValid(this.boardSize))
-                        {
-                            allPlacedValidly = false;
-                            break;
-                        }
-                    }
-
-                    if (!allPlacedValidly)
-                    {
-                        continue;
-                    }
-
-                    bool noneConflict = true;
-                    for (int i = 0; i < ships[second].Count; i++)
-                    {
-                        for (int j = i + 1; j < ships[second].Count; j++)
-                        {
-                            if (ships[second][i].ConflictsWith(ships[second][j]))
-                            {
-                                noneConflict = false;
-                                break;
-                            }
-                        }
-
-                        if (!noneConflict)
-                        {
-                            break;
-                        }
-                    }
-
-                    if (!noneConflict)
-                    {
-                        continue;
-                    }
-                    else
-                    {
-                        success = true;
-                    }
-                } while (!success);
-                if (times[second].Elapsed > this.timePerGame) { RecordWin(first, second, scores, opponents); continue; }
-
-                var current = first;
-                while (true)
-                {
-                    times[current].Start();
-                    Point shot = opponents[current].GetShot();
-                    times[current].Stop();
-                    if (times[current].Elapsed > this.timePerGame) { RecordWin(1 - current, current, scores, opponents); break; }
-
-                    if (shots[current].Where(s => s.X == shot.X && s.Y == shot.Y).Any())
-                    {
-                        continue;
-                    }
-
-                    shots[current].Add(shot);
-
-                    times[1 - current].Start();
-                    opponents[1 - current].OpponentShot(shot);
-                    times[1 - current].Stop();
-                    if (times[1 - current].Elapsed > this.timePerGame) { RecordWin(current, 1 - current, scores, opponents); break; }
-
-                    var ship = (from s in ships[1 - current]
-                                where s.IsAt(shot)
-                                select s).SingleOrDefault();
-
-                    if (ship != null)
-                    {
-                        var sunk = ship.IsSunk(shots[current]);
-
-                        times[current].Start();
-                        opponents[current].ShotHit(shot, sunk);
-                        times[current].Stop();
-                        if (times[current].Elapsed > this.timePerGame) { RecordWin(1 - current, current, scores, opponents); break; }
-                    }
-                    else
-                    {
-                        times[current].Start();
-                        opponents[current].ShotMiss(shot);
-                        times[current].Stop();
-                        if (times[current].Elapsed > this.timePerGame) { RecordWin(1 - current, current, scores, opponents); break; }
-                    }
-
-                    var unsunk = (from s in ships[1 - current]
-                                  where !s.IsSunk(shots[current])
-                                  select s);
-
-                    if (!unsunk.Any()) { RecordWin(current, 1 - current, scores, opponents); break; }
-
-                    current = 1 - current;
-                }
-            }
-
-            opponents[first].MatchOver();
-            opponents[second].MatchOver();
-
-            return scores.Keys.ToDictionary(s => opponents[s], s => scores[s]);
-        }
-
-        private void RecordWin(int winner, int loser, Dictionary<int, int> scores, Dictionary<int, IBattleshipOpponent> opponents)
-        {
-            scores[winner]++;
-            opponents[winner].GameWon();
-            opponents[loser].GameLost();
+            return opponents.ToDictionary(s => s.iOpponent, s => s.score);
         }
     }
 }
