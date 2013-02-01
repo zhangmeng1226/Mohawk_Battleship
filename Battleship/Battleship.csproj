@@ -54,6 +54,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BattleshipCompetition.cs" />
+    <Compile Include="BattleshipOpponent.cs" />
     <Compile Include="IBattleshipOpponent.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
