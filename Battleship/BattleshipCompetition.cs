@@ -68,8 +68,8 @@
             }
 
             opponents = new BattleshipOpponent[2];
-            opponents[0] = new BattleshipOpponent(op1, boardSize, timePerGame);
-            opponents[1] = new BattleshipOpponent(op2, boardSize, timePerGame);
+            opponents[0] = new BattleshipOpponent(op1, ref boardSize, ref timePerGame);
+            opponents[1] = new BattleshipOpponent(op2, ref boardSize, ref timePerGame);
             this.timePerGame = timePerGame;
             this.wins = wins;
             this.playOut = playOut;
