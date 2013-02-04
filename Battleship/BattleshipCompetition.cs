@@ -18,7 +18,7 @@
         private BattleshipOpponent[] opponents; //Guaranteed to always be a 2-element array.
         private TimeSpan timePerGame; //Max time allowed in each method call.
         private int wins; //Amount of games to play
-        private bool playOut; //True if the match ends when a player reaches wins. False if the match ends at (wins * 2 - 1) games played.
+        private bool playOut; //True if the match ends when a player's score reaches wins. False if the match ends at (wins * 2 - 1) games played.
         private Size boardSize;
         private List<int> shipSizes;
         private Random rand; //The random number generator for this object.
