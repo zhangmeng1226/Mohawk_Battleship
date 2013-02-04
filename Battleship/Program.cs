@@ -21,6 +21,14 @@
             loadedRobots.TryGetValue(name, out result);
             return (IBattleshipOpponent)Activator.CreateInstance(result);
         }
+
+        /**
+         * <summary>Gets a list of all currently loaded robots</summary>
+         */
+        public static List<string> GetRobotNames()
+        {
+            return loadedRobots.Keys.ToList();
+        }
         /**
          * <summary>Loads a .DLL file and saves objects that implement the IBattleshipOpponent interface.</summary>
          * <param name="fName">The absolute pathname to the .DLL file</param>
