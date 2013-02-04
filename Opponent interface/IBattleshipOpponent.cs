@@ -8,12 +8,12 @@
 
     public interface IBattleshipOpponent
     {
-        public string Name
+        string Name
         {
             get;
         }
 
-        public Version Version
+        Version Version
         {
             get;
         }

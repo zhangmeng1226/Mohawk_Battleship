@@ -12,9 +12,9 @@
      */
     public class BattleshipCompetition
     {
-        private static const int OPPONENT_ONE = 0;
-        private static const int OPPONENT_TWO = 1;
-        private static const int TURN_ENDGAME = 2;
+        private const int OPPONENT_ONE = 0;
+        private const int OPPONENT_TWO = 1;
+        private const int TURN_ENDGAME = 2;
         private BattleshipOpponent[] opponents; //Guaranteed to always be a 2-element array.
         private TimeSpan timePerGame; //Max time allowed in each method call.
         private int wins; //Amount of games to play

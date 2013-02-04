@@ -16,7 +16,7 @@ namespace Battleship
      */
     public class BattleshipOpponent
     {
-        public static const int LOSE_MAGIC_NUMBER = -50; //Number used in Point objects to signify a loss (timed out).
+        public const int LOSE_MAGIC_NUMBER = -50; //Number used in Point objects to signify a loss (timed out).
         public int score; //The number of wins in a match
         public IBattleshipOpponent iOpponent; //The class implementing the IBattleshipOpponent interface playing the game.
         public List<Point> shots;
