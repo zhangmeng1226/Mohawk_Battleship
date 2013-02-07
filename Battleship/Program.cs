@@ -1,15 +1,21 @@
 ﻿namespace Battleship
 {
     using System;
-    using System.Drawing;
     using System.Linq;
     using System.Reflection;
     using System.IO;
     using System.Collections.Generic;
 
+    using IrrlichtLime;
+    using IrrlichtLime.Core;
+    using IrrlichtLime.Video;
+    using IrrlichtLime.Scene;
+    using IrrlichtLime.GUI;
+
     class Program
     {
         private static Dictionary<string, Type> loadedRobots = new Dictionary<string, Type>();
+        private static BattleshipConfig config;
 
         /**
          * <summary>Returns the object that is identified by name.</summary>
@@ -64,9 +70,7 @@
             {
                 List<string> files = new List<string>(Directory.GetFiles(Environment.CurrentDirectory+"\\bots", "*.dll"));
                 foreach (string file in files)
-                {
                     LoadRobots(file);
-                }
             }
             catch (System.IO.DirectoryNotFoundException e)
             {
@@ -76,28 +80,16 @@
 
         static void Main(string[] args)
         {
+            config = new BattleshipConfig(Environment.CurrentDirectory+"\\config.ini");
             LoadRobotFolder();
 
-            IBattleshipOpponent op1 = GetRobot("Random");
-            IBattleshipOpponent op2 = GetRobot("Random");
+            IrrlichtDevice dev = config.GetConfiguredDevice();
+            //logic, rendering, updating, whatever, then done..
 
-            BattleshipCompetition bc = new BattleshipCompetition(
-                op1,
-                op2,
-                new TimeSpan(0, 0, 1),  // Time per game
-                51,                     // Wins per match
-                true,                   // Play out?
-                new Size(10, 10),       // Board Size
-                2, 3, 3, 4, 5           // Ship Sizes
-            );
+            dev.Close();
 
-            var scores = bc.RunCompetition();
-
-            foreach (var key in scores.Keys.OrderByDescending(k => scores[k]))
-            {
-                Console.WriteLine("{0} {1}:\t{2}", key.Name, key.Version, scores[key]);
-            }
-            Console.ReadKey(true);
+            config.SaveConfigFile();
+            Console.ReadKey();
         }
     }
 }
