@@ -12,10 +12,9 @@
      */
     public class BattleshipCompetition
     {
-        private const int OPPONENT_ONE = 0;
-        private const int OPPONENT_TWO = 1;
-        private const int TURN_ENDGAME = 2;
-        private BattleshipOpponent[] opponents; //Guaranteed to always be a 2-element array.
+        private BattleshipOpponent[] opponents;  //Guaranteed to always be a 2-element array.
+        private BattleshipOpponent opponent1;
+        private BattleshipOpponent opponent2;
         private TimeSpan timePerGame; //Max time allowed in each method call.
         private int wins; //Amount of games to play
         private bool playOut; //True if the match ends when a player's score reaches wins. False if the match ends at (wins * 2 - 1) games played.
@@ -59,9 +58,12 @@
             if (shipSizes.Sum() >= (boardSize.Width * boardSize.Height))
                 throw new ArgumentOutOfRangeException("shipSizes");
 
+            opponent1 = new BattleshipOpponent(op1, ref boardSize, ref timePerGame);
+            opponent2 = new BattleshipOpponent(op2, ref boardSize, ref timePerGame);
             opponents = new BattleshipOpponent[2];
-            opponents[OPPONENT_ONE] = new BattleshipOpponent(op1, ref boardSize, ref timePerGame);
-            opponents[OPPONENT_TWO] = new BattleshipOpponent(op2, ref boardSize, ref timePerGame);
+            opponents[0] = opponent1;
+            opponents[1] = opponent2;
+
             this.timePerGame = timePerGame;
             this.wins = wins;
             this.playOut = playOut;
@@ -92,14 +94,25 @@
         }
 
         /**
+         * <returns>The opposing BattleshipOpponent relative to 'opponent'</returns>
+         */
+        private BattleshipOpponent Opposite(BattleshipOpponent opponent)
+        {
+            foreach (BattleshipOpponent op in opponents)
+                if (opponent != op)
+                    return op;
+            return null;
+        }
+
+        /**
          * <summary>Notifys each player that a new game is commencing</summary>
          * <returns>True if the game is over, false if the game is still on-going.</returns>
          */
         private bool NewGame()
         {
-            for (int opCount = OPPONENT_ONE; opCount < TURN_ENDGAME; opCount++)
-                if (opponents[opCount].NewGame())
-                    return GameResultPush(opponents[~opCount], opponents[opCount]);
+            foreach (BattleshipOpponent op in opponents)
+                if (op.NewGame())
+                    return GameResultPush(Opposite(op), op);
             return false;
         }
 
@@ -109,14 +122,13 @@
          */
         private bool ShipPlacement()
         {
-            for (int turn = rand.Next(TURN_ENDGAME); turn < TURN_ENDGAME; turn++)
-            {
-                if (opponents[turn].PlaceShips(GenerateNewShips()))
-                    return GameResultPush(opponents[~turn], opponents[turn]);
+            foreach (BattleshipOpponent op in opponents)
+                do
+                {
+                    if (op.PlaceShips(GenerateNewShips()))
+                        return GameResultPush(Opposite(op), op);
 
-                if (!opponents[turn].ShipsReady())
-                    continue;
-            }
+                } while (!op.ShipsReady());
             return false;
         }
 
@@ -124,34 +136,26 @@
          * <summary>The main game logic of battleship.</summary>
          * <returns>True if the game is over (the method never returns false)</returns>
          */
-        private bool GamePlay()
+        private bool GamePlay(BattleshipOpponent turn)
         {
-            for (int turn = rand.Next(TURN_ENDGAME); turn < TURN_ENDGAME; turn++)
-            {
-                Point shot = opponents[turn].ShootAt(opponents[~turn]);
+            Point shot = turn.ShootAt(Opposite(turn));
 
-                if (shot.X == BattleshipOpponent.LOSE_MAGIC_NUMBER && shot.Y == BattleshipOpponent.LOSE_MAGIC_NUMBER)
-                    return GameResultPush(opponents[~turn], opponents[turn]);
-                if (opponents[~turn].OpponentShot(shot))
-                    return GameResultPush(opponents[turn], opponents[~turn]);
+            if (shot.X == BattleshipOpponent.LOSE_MAGIC_NUMBER && shot.Y == BattleshipOpponent.LOSE_MAGIC_NUMBER)
+                return GameResultPush(Opposite(turn), turn);
+            if (Opposite(turn).OpponentShot(shot))
+                return GameResultPush(turn, Opposite(turn));
 
-                Ship shipHit = (from s in opponents[~turn].ships
-                                where s.IsAt(shot)
-                                select s).SingleOrDefault();
+            Ship shipHit = Opposite(turn).GetShipAtPoint(shot);
 
-                if (shipHit != null)
-                    opponents[turn].ShotHit(shot, shipHit.IsSunk(opponents[turn].shots));
-                else
-                    opponents[turn].ShotMiss(shot);
+            if (shipHit != null)
+                turn.ShotHit(shot, shipHit.IsSunk(turn.shots));
+            else
+                turn.ShotMiss(shot);
 
-                //Are there any ships left from the other opponent?
-                if ((from s in opponents[~turn].ships where !s.IsSunk(opponents[turn].shots) select s).Any())
-                    return GameResultPush(opponents[turn], opponents[~turn]);
-
-                if (turn == OPPONENT_TWO)
-                    turn = OPPONENT_ONE;
-            }
-            return true;
+            //Are there any ships left from the other opponent?
+            if (!Opposite(turn).IsAlive(turn.shots))
+                return GameResultPush(turn, Opposite(turn));
+            return false;
         }
 
         /**
@@ -162,26 +166,24 @@
         {
             int gamePlays = 0;
 
-            //NOTICE:
-            //   From now on, I will extensively use the "~" operator to denote "The opposing player".
-            //   Also, many loops will simply call single expressions, in this case, I am going to
-            //   leave out the begin and end brackets. (This is how I like to look at concise code,
-            //   bring it up if you do not want this).
-
             //First send new matchup information to the opponents.
-            for (int opCount = OPPONENT_ONE; opCount < TURN_ENDGAME; opCount++)
-                opponents[opCount].NewMatch(opponents[~opCount].GetInfo());
+            foreach (BattleshipOpponent op in opponents)
+                op.NewMatch(Opposite(op).GetInfo());
+
+
 
             //This loop continues until this competition is complete.
-            while (playOut ? opponents.Where(o => o.score >= wins).Any() : gamePlays++ < (wins * 2 - 1))
+            while (playOut ? opponents.Where(o => o.score <= wins).Any() : gamePlays++ < (wins * 2 - 1))
             {
+                BattleshipOpponent turn = opponents[rand.Next(2)];
                 if (NewGame()) continue;
                 if (ShipPlacement()) continue;
-                if (GamePlay()) continue;
+                while (!GamePlay(turn))
+                    turn = Opposite(turn);
             }
 
-            opponents[OPPONENT_ONE].MatchOver();
-            opponents[OPPONENT_TWO].MatchOver();
+            foreach (BattleshipOpponent op in opponents)
+                op.MatchOver();
 
             return opponents.ToDictionary(s => s.iOpponent, s => s.score);
         }

@@ -5,12 +5,7 @@
     using System.Reflection;
     using System.IO;
     using System.Collections.Generic;
-
-    using IrrlichtLime;
-    using IrrlichtLime.Core;
-    using IrrlichtLime.Video;
-    using IrrlichtLime.Scene;
-    using IrrlichtLime.GUI;
+    using System.Drawing;
 
     class Program
     {
@@ -19,12 +14,15 @@
 
         /**
          * <summary>Returns the object that is identified by name.</summary>
-         * <returns>A Robot loaded externally by a DLL, having the same Name property from IBattleshipOpponent as the parameter.</returns>
+         * <returns>A Robot loaded externally by a DLL, having the same Name property from IBattleshipOpponent as the parameter.
+         * If the class was not found, then this will return null.</returns>
          */
         public static IBattleshipOpponent GetRobot(string name)
         {
             Type result = null;
             loadedRobots.TryGetValue(name, out result);
+            if (result == null)
+                return (IBattleshipOpponent)result;
             return (IBattleshipOpponent)Activator.CreateInstance(result);
         }
 
@@ -57,7 +55,7 @@
             }
             catch (Exception e)
             {
-                Console.Write("Failed to load "+fName+": "+e.StackTrace);
+                Console.Write("Failed to load " + fName + ": " + e.StackTrace);
             }
         }
 
@@ -68,25 +66,69 @@
         {
             try
             {
-                List<string> files = new List<string>(Directory.GetFiles(Environment.CurrentDirectory+"\\bots", "*.dll"));
+                List<string> files = new List<string>(Directory.GetFiles(Environment.CurrentDirectory + "\\..\\bots", "*.dll"));
                 foreach (string file in files)
                     LoadRobots(file);
             }
             catch (System.IO.DirectoryNotFoundException e)
             {
-                Console.WriteLine("The bot directory could not be found.");
+                Console.WriteLine("The bot directory could not be found. " + e.ToString());
             }
         }
 
         static void Main(string[] args)
         {
-            config = new BattleshipConfig(Environment.CurrentDirectory+"\\config.ini");
+            config = new BattleshipConfig(Environment.CurrentDirectory + "\\..\\config.ini");
             LoadRobotFolder();
 
-            IrrlichtDevice dev = config.GetConfiguredDevice();
-            //logic, rendering, updating, whatever, then done..
+            Console.WriteLine("Welcome to the Battleship Competition!\n\n");
 
-            dev.Close();
+            List<string> botNames = GetRobotNames();
+            if (botNames.Count == 0)
+            {
+                Console.WriteLine("There are no bots that can be listed. Program ending.");
+                Console.ReadKey();
+                Environment.Exit(0);
+            }
+
+            Console.WriteLine("Here is a list of bots currently available:\n");
+
+            int count = 1;
+            foreach (string botName in botNames)
+            {
+                Console.WriteLine((count++) + ": " + botName);
+            }
+            Console.WriteLine();
+
+            IBattleshipOpponent[] opponents = new IBattleshipOpponent[2];
+            string[] fsStrings = { "first", "second" };
+            for (int i = 0; i < 2; i++)
+            {
+                Console.Write("Enter the number for the " + fsStrings[i] + " opponent: ");
+                int choice = int.Parse(Console.ReadLine()) - 1;
+                while (choice < 0 || choice >= botNames.Count)
+                {
+                    Console.Write("There doesn't exist a bot for that number. Try again: ");
+                    choice = int.Parse(Console.ReadLine()) - 1;
+                }
+                opponents[i] = GetRobot(botNames.ElementAt(choice));
+            }
+
+            BattleshipCompetition bc = new BattleshipCompetition(
+                opponents[0],
+                opponents[1],
+                new TimeSpan(0, 0, 1),
+                51,
+                true,
+                new Size(10, 10),
+                2, 3, 3, 4, 5);
+
+            Dictionary<IBattleshipOpponent, int> scores = bc.RunCompetition();
+
+            foreach (var key in scores.Keys.OrderByDescending(k => scores[k]))
+                Console.WriteLine(key.Name + " has scored " + scores[key]);
+
+            Console.WriteLine("\n\nEnd of competition! Press a key to exit.");
 
             config.SaveConfigFile();
             Console.ReadKey();

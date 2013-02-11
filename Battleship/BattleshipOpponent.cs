@@ -20,7 +20,7 @@ namespace Battleship
         public int score; //The number of wins in a match
         public IBattleshipOpponent iOpponent; //The class implementing the IBattleshipOpponent interface playing the game.
         public List<Point> shots;
-        public List<Ship> ships;
+        private List<Ship> ships;
         private Stopwatch stopwatch; //Used to time each call to the iOpponent
         private TimeSpan timeAllowed; //Reference to the BattleshipCompetition's defined max time.
         private Size gameSize; //Reference to the BattleshipCompetition's defined game size.
@@ -111,6 +111,22 @@ namespace Battleship
             iOpponent.PlaceShips(ships.AsReadOnly());
             stopwatch.Stop();
             return RanOutOfTime();
+        }
+
+        public Ship GetShipAtPoint(Point p)
+        {
+            foreach (Ship s in ships)
+                if (s.IsAt(p))
+                    return s;
+            return null;
+        }
+
+        public bool IsAlive(List<Point> shots)
+        {
+            foreach (Ship s in ships)
+                if (!s.IsSunk(shots))
+                    return true;
+            return false;
         }
 
         /**

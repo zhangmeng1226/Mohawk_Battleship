@@ -32,9 +32,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Opponent interface">
-      <HintPath>..\Opponent interface\bin\Debug\Opponent interface.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -46,6 +43,12 @@
   <ItemGroup>
     <Compile Include="RandomOpponent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Opponent interface\Opponent interface.csproj">
+      <Project>{51FD717F-5965-4C31-9BDD-051DA693A729}</Project>
+      <Name>Opponent interface</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
