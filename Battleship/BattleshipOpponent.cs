@@ -93,7 +93,7 @@ namespace Battleship
             shots.Clear();
             stopwatch.Start();
 
-            iOpponent.NewGame(gameSize, timeAllowed);
+            iOpponent.NewGame(gameSize, timeAllowed, new Random());
 
             stopwatch.Stop();
             return RanOutOfTime();
