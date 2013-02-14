@@ -10,10 +10,42 @@ namespace Battleship
     public class BattleshipConsole
     {
         private BattleshipConfig config;
+        private const string[] fsStrings = { "first", "second" };
 
         public BattleshipConsole()
         {
             config = new BattleshipConfig(Environment.CurrentDirectory + "\\..\\config.ini");
+        }
+
+        private IBattleshipOpponent[] GetOpponents()
+        {
+            IBattleshipOpponent[] opponents = new IBattleshipOpponent[2];
+
+            for (int i = 0; i < 2; i++)
+            {
+                Console.Write("Enter the number for the " + fsStrings[i] + " opponent: ");
+                int choice = int.Parse(Console.ReadLine()) - 1;
+                while (choice < 0 || choice >= config.BotNames.Count)
+                {
+                    Console.Write("There doesn't exist a bot for that number. Try again: ");
+                    choice = int.Parse(Console.ReadLine()) - 1;
+                }
+                opponents[i] = config.GetRobot(config.BotNames.ElementAt(choice));
+            }
+
+            return opponents;
+        }
+
+        private void ListBots()
+        {
+            Console.WriteLine("Here is a list of bots currently available:\n");
+
+            int count = 1;
+            foreach (string botName in config.BotNames)
+            {
+                Console.WriteLine((count++) + ": " + botName);
+            }
+            Console.WriteLine();
         }
 
         public void Start()
@@ -21,36 +53,16 @@ namespace Battleship
 
             Console.WriteLine("Welcome to the Battleship Competition!\n\n");
 
-            ReadOnlyCollection<string> botNames = config.GetRobotNames();
-            if (botNames.Count == 0)
+            if (config.BotNames.Count == 0)
             {
-                Console.WriteLine("There are no bots that can be listed. Program ending.");
+                Console.WriteLine("There are no bots that can be listed. Program ends after key press...");
                 Console.ReadKey();
                 Environment.Exit(0);
             }
 
-            Console.WriteLine("Here is a list of bots currently available:\n");
+            ListBots();
 
-            int count = 1;
-            foreach (string botName in botNames)
-            {
-                Console.WriteLine((count++) + ": " + botName);
-            }
-            Console.WriteLine();
-
-            IBattleshipOpponent[] opponents = new IBattleshipOpponent[2];
-            string[] fsStrings = { "first", "second" };
-            for (int i = 0; i < 2; i++)
-            {
-                Console.Write("Enter the number for the " + fsStrings[i] + " opponent: ");
-                int choice = int.Parse(Console.ReadLine()) - 1;
-                while (choice < 0 || choice >= botNames.Count)
-                {
-                    Console.Write("There doesn't exist a bot for that number. Try again: ");
-                    choice = int.Parse(Console.ReadLine()) - 1;
-                }
-                opponents[i] = config.GetRobot(botNames.ElementAt(choice));
-            }
+            IBattleshipOpponent[] opponents = GetOpponents();
 
             BattleshipCompetition bc = new BattleshipCompetition(
                 opponents[0],

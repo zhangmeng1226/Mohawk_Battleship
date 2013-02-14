@@ -17,6 +17,14 @@ namespace Battleship
         private Dictionary<string, Type> loadedRobots = new Dictionary<string, Type>();
         private string rootPath;
 
+        public List<string> BotNames
+        {
+            get
+            {
+                return loadedRobots.Keys.ToList();
+            }
+        }
+
         /**
          * <summary>Initializes this BattleshipConfig by loading from a config file, if it exists</summary>
          */
@@ -40,14 +48,6 @@ namespace Battleship
             if (result == null)
                 return null;
             return (IBattleshipOpponent)Activator.CreateInstance(result);
-        }
-
-        /**
-         * <summary>Gets a list of all currently loaded robots</summary>
-         */
-        public ReadOnlyCollection<string> GetRobotNames()
-        {
-            return loadedRobots.Keys.ToList().AsReadOnly();
         }
 
         /**
