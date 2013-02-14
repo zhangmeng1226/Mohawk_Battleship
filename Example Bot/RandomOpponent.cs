@@ -10,12 +10,13 @@
         public string Name { get { return "Random"; } }
         public Version Version { get { return this.version; } }
 
-        Random rand = new Random();
+        Random rand;
         Version version = new Version(1, 1);
         Size gameSize;
 
-        public void NewGame(Size size, TimeSpan timeSpan)
+        public void NewGame(Size size, TimeSpan timeSpan, Random rand)
         {
+            this.rand = rand;
             this.gameSize = size;
         }
 

@@ -10,7 +10,7 @@ namespace Battleship
     public class BattleshipConsole
     {
         private BattleshipConfig config;
-        private const string[] fsStrings = { "first", "second" };
+        private string[] fsStrings = { "first", "second" };
 
         public BattleshipConsole()
         {

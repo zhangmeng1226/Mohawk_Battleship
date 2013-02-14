@@ -61,6 +61,7 @@ namespace Battleship
             {
                 Assembly dllInfo = Assembly.LoadFile(fName);
                 Type[] types = dllInfo.GetTypes();
+
                 foreach (Type robot in types)
                     foreach (Type interfaces in robot.GetInterfaces())
                         if (interfaces.ToString() == "Battleship.IBattleshipOpponent")
