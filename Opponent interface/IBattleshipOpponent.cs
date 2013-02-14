@@ -6,36 +6,42 @@
     using System.Diagnostics;
     using System.Collections.Generic;
 
-    public interface IBattleshipOpponent
+    public abstract class IBattleshipOpponent
     {
-        string Name
+        private Random rand;
+        public abstract string Name
         {
             get;
         }
 
-        Version Version
+        public abstract Version Version
         {
             get;
         }
 
-        void NewMatch(string opponent);
+        protected Random GetRandomGenerator()
+        {
+            return rand;
+        }
 
-        void NewGame(Size size, TimeSpan timeSpan);
+        public abstract void NewMatch(string opponent);
 
-        void PlaceShips(ReadOnlyCollection<Ship> ships);
+        public abstract void NewGame(Size size, TimeSpan timeSpan);
 
-        Point GetShot();
+        public abstract void PlaceShips(ReadOnlyCollection<Ship> ships);
 
-        void OpponentShot(Point shot);
+        public abstract Point GetShot();
 
-        void ShotHit(Point shot, bool sunk);
+        public abstract void OpponentShot(Point shot);
 
-        void ShotMiss(Point shot);
+        public abstract void ShotHit(Point shot, bool sunk);
 
-        void GameWon();
+        public abstract void ShotMiss(Point shot);
 
-        void GameLost();
+        public abstract void GameWon();
 
-        void MatchOver();
+        public abstract void GameLost();
+
+        public abstract void MatchOver();
     }
 }

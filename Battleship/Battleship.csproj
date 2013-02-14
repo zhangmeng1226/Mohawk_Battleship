@@ -57,6 +57,7 @@
   <ItemGroup>
     <Compile Include="BattleshipCompetition.cs" />
     <Compile Include="BattleshipConfig.cs" />
+    <Compile Include="BattleshipConsole.cs" />
     <Compile Include="BattleshipOpponent.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

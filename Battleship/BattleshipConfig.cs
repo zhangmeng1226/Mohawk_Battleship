@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.IO;
+using System.Collections.ObjectModel;
+using System.Reflection;
 
 namespace Battleship
 {
@@ -12,7 +14,8 @@ namespace Battleship
     public class BattleshipConfig
     {
         private Dictionary<string, string> simpleConfig;
-        private string absPath;
+        private Dictionary<string, Type> loadedRobots = new Dictionary<string, Type>();
+        private string rootPath;
 
         /**
          * <summary>Initializes this BattleshipConfig by loading from a config file, if it exists</summary>
@@ -20,8 +23,74 @@ namespace Battleship
         public BattleshipConfig(string pathname)
         {
             simpleConfig = new Dictionary<string, string>();
-            absPath = pathname;
+            rootPath = pathname;
             LoadConfigFile();
+            LoadRobotFolder();
+        }
+
+        /**
+         * <summary>Returns the object that is identified by name.</summary>
+         * <returns>A Robot loaded externally by a DLL, having the same Name property from IBattleshipOpponent as the parameter.
+         * If the class was not found, then this will return null.</returns>
+         */
+        public IBattleshipOpponent GetRobot(string name)
+        {
+            Type result = null;
+            loadedRobots.TryGetValue(name, out result);
+            if (result == null)
+                return null;
+            return (IBattleshipOpponent)Activator.CreateInstance(result);
+        }
+
+        /**
+         * <summary>Gets a list of all currently loaded robots</summary>
+         */
+        public ReadOnlyCollection<string> GetRobotNames()
+        {
+            return loadedRobots.Keys.ToList().AsReadOnly();
+        }
+
+        /**
+         * <summary>Loads a .DLL file and saves objects that implement the IBattleshipOpponent interface.</summary>
+         * <param name="fName">The absolute pathname to the .DLL file</param>
+         * <remarks>It is currently possible to load more than one robot from a single DLL.</remarks>
+         */
+        public void LoadRobots(string fName)
+        {
+            try
+            {
+                Assembly dllInfo = Assembly.LoadFile(fName);
+                Type[] types = dllInfo.GetTypes();
+                foreach (Type robot in types)
+                    foreach (Type interfaces in robot.GetInterfaces())
+                        if (interfaces.ToString() == "Battleship.IBattleshipOpponent")
+                        {
+                            IBattleshipOpponent opp = (IBattleshipOpponent)Activator.CreateInstance(robot);
+                            loadedRobots.Add(opp.Name, robot);
+                            break;
+                        }
+            }
+            catch (Exception e)
+            {
+                Program.PrintDebugMessage("Failed to load " + fName + ": " + e.ToString());
+            }
+        }
+
+        /**
+         * <summary>Opens each .DLL file in the working directory's "bots" folder.</summary>
+         */
+        private void LoadRobotFolder()
+        {
+            try
+            {
+                List<string> files = new List<string>(Directory.GetFiles(Environment.CurrentDirectory + "\\..\\bots", "*.dll"));
+                foreach (string file in files)
+                    LoadRobots(file);
+            }
+            catch (System.IO.DirectoryNotFoundException e)
+            {
+                Program.PrintDebugMessage("The bot directory could not be found. " + e.ToString());
+            }
         }
 
         /**
@@ -30,7 +99,7 @@ namespace Battleship
          * <param name="def">The default value for a given key if the key is not found.</param>
          * <exception cref="Exception">If the value could not be converted</exception>
          */
-        private T ConfigValue<T>(string s, T def)
+        public T ConfigValue<T>(string s, T def)
         {
             string valString;
             try
@@ -50,7 +119,7 @@ namespace Battleship
         {
             try
             {
-                StreamReader reader = new StreamReader(absPath);
+                StreamReader reader = new StreamReader(rootPath);
                 do
                 {
                     string line = reader.ReadLine();
@@ -64,7 +133,7 @@ namespace Battleship
             }
             catch
             {
-                Console.WriteLine("Could not load configuration file for reading.");
+                Program.PrintDebugMessage("Could not load configuration file for reading.");
             }
         }
 
@@ -76,7 +145,7 @@ namespace Battleship
         {
             try
             {
-                StreamWriter writer = new StreamWriter(absPath, false);
+                StreamWriter writer = new StreamWriter(rootPath, false);
                 foreach (KeyValuePair<string, string> entry in simpleConfig)
                     writer.WriteLine(entry.Key + " = " + entry.Value);
                 writer.Flush();
@@ -84,7 +153,7 @@ namespace Battleship
             }
             catch
             {
-                Console.WriteLine("Could not open the configuration file for writing.");
+                Program.PrintDebugMessage("Could not open the configuration file for writing.");
             }
         }
     }
