@@ -17,54 +17,188 @@ namespace Battleship
             config = new BattleshipConfig(Environment.CurrentDirectory + "\\..\\config.ini");
         }
 
-        private IBattleshipOpponent[] GetOpponents()
+        abstract class ConsoleState
         {
-            IBattleshipOpponent[] opponents = new IBattleshipOpponent[2];
+            protected BattleshipConsole main;
+            protected string extraMenu = "";
+            protected string headerEnds = "=====================";
 
-            for (int i = 0; i < 2; i++)
+            public ConsoleState(BattleshipConsole main)
             {
-                Console.Write("Enter the number for the " + fsStrings[i] + " opponent: ");
-                int choice = int.Parse(Console.ReadLine()) - 1;
-                while (choice < 0 || choice >= config.BotNames.Count)
-                {
-                    Console.Write("There doesn't exist a bot for that number. Try again: ");
-                    choice = int.Parse(Console.ReadLine()) - 1;
-                }
-                opponents[i] = config.GetRobot(config.BotNames.ElementAt(choice));
+                this.main = main;
             }
 
-            return opponents;
+            public void WriteChars(char c, int n)
+            {
+                for (int i = 0; i < n; i++)
+                    Console.Write(c);
+            }
+
+            public ConsoleState GetInput(string input)
+            {
+                switch (input)
+                {
+                    case "E": //Exit key
+                        return null;
+                    case "C": //Quit key
+                        return this;
+                }
+                return Response(input);
+            }
+
+            public void WriteCenteredText(string text, string ends)
+            {
+                int maxChars = Console.WindowWidth - ends.Length * 2;
+                int count = 0;
+                while (count < text.Length)
+                {
+                    int printLen = text.Length - count > maxChars ? maxChars : text.Length - count;
+                    int cen = maxChars / 2 - printLen / 2;
+                    //Program.PrintDebugMessage("" + cen);
+
+                    Console.Write(ends);
+                    WriteChars(' ', cen);
+
+                    Console.Write(text.Substring(count, printLen));
+
+                    WriteChars(' ', Console.WindowWidth - (ends.Length * 2 + cen + printLen));
+                    Console.Write(ends);
+                    count += printLen;
+                }
+            }
+
+            public void Display()
+            {
+                Console.Clear();
+                WriteCenteredText("BATTLESHIP COMPETITION FRAMEWORK", headerEnds);
+                StateDisplay();
+                //WriteCenteredText("MENU", headerEnds);
+                WriteCenteredText("[E]xit   [C]onfigure   " + extraMenu, "===");
+                Console.Write("Input : ");
+            }
+
+            protected abstract void StateDisplay();
+            protected abstract ConsoleState Response(string input);
         }
 
-        private void ListBots()
+        class BotChoiceState : ConsoleState
         {
-            Console.WriteLine("Here is a list of bots currently available:\n");
 
-            int count = 1;
-            foreach (string botName in config.BotNames)
+            private int opponentChoiceCount = 0;
+            private IBattleshipOpponent[] opponents = new IBattleshipOpponent[2];
+            private InputError error = InputError.none;
+
+            public BotChoiceState(BattleshipConsole main)
+                : base(main)
             {
-                Console.WriteLine((count++) + ": " + botName);
             }
-            Console.WriteLine();
+
+            private enum InputError
+            {
+                none,
+                noExist,
+                badNumber
+            }
+
+            private void ListBots()
+            {
+                Console.WriteLine("Here is a list of bots currently available:\n");
+
+                int count = 1;
+                foreach (string botName in main.config.BotNames)
+                {
+                    Console.WriteLine((count++) + ": " + botName);
+                }
+                Console.WriteLine();
+            }
+
+            protected override void StateDisplay()
+            {
+                WriteCenteredText("Bot choice menu", headerEnds);
+                Console.WriteLine();
+                if (main.config.BotNames.Count == 0)
+                {
+                    Console.WriteLine("There are no bots that can be listed.");
+                    return;
+                }
+
+                ListBots();
+                Console.WriteLine("\n\n");
+                switch (error)
+                {
+                    case InputError.noExist:
+                        Console.WriteLine("> That selection doesn't exist!");
+                        break;
+                    case InputError.badNumber:
+                        Console.WriteLine("> Invalid input.");
+                        break;
+                }
+                WriteCenteredText("Enter a number for the " + main.fsStrings[opponentChoiceCount] + " opponent", "===");
+            }
+
+            protected override ConsoleState Response(string input)
+            {
+                error = InputError.none;
+                int choice = -1;
+
+                try
+                {
+                    choice = int.Parse(input) - 1;
+                }
+                catch
+                {
+                    error = InputError.badNumber;
+                    return this;
+                }
+
+                if (choice < 0 || choice >= main.config.BotNames.Count)
+                {
+                    error = InputError.noExist;
+                    return this;
+                }
+                opponents[opponentChoiceCount++] = main.config.GetRobot(main.config.BotNames.ElementAt(choice));
+                if (opponentChoiceCount > 1)
+                    return new CompetitionState(main, opponents);
+                return this;
+            }
+        }
+
+        class CompetitionState : ConsoleState
+        {
+            public CompetitionState(BattleshipConsole main, IBattleshipOpponent[] opp) : base(main)
+            {
+
+            }
+
+            protected override void StateDisplay()
+            {
+
+            }
+
+            protected override ConsoleState Response(string input)
+            {
+                return this;
+            }
+
         }
 
         public void Start()
         {
-
+            Console.Title = "BATTLESHIP COMPETITION FRAMEWORK";
             Console.WriteLine("Welcome to the Battleship Competition!\n\n");
 
-            if (config.BotNames.Count == 0)
+            ConsoleState state = new BotChoiceState(this);
+
+            while (true)
             {
-                Console.WriteLine("There are no bots that can be listed. Program ends after key press...");
-                Console.ReadKey();
-                Environment.Exit(0);
+                state.Display();
+                string input = Console.ReadLine();
+                state = state.GetInput(input);
+                if (state == null)
+                    break;
             }
 
-            ListBots();
-
-            IBattleshipOpponent[] opponents = GetOpponents();
-
-            BattleshipCompetition bc = new BattleshipCompetition(
+            /*BattleshipCompetition bc = new BattleshipCompetition(
                 opponents[0],
                 opponents[1],
                 new TimeSpan(0, 0, 1),
@@ -78,10 +212,9 @@ namespace Battleship
             foreach (var key in scores.Keys.OrderByDescending(k => scores[k]))
                 Console.WriteLine(key.Name + " has scored " + scores[key]);
 
-            Console.WriteLine("\n\nEnd of competition! Press a key to exit.");
+            Console.WriteLine("\n\nEnd of competition! Press a key to exit.");*/
 
             config.SaveConfigFile();
-            Console.ReadKey();
         }
     }
 }
