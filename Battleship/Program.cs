@@ -11,6 +11,10 @@
     {
         private Program() {}
 
+        /**
+         * <summary>Used for printing verbose messages while in Debug mode only.</summary>
+         * <param name="message">The message to print to the console</param>
+         */
         public static void PrintDebugMessage(string message)
         {
 #if DEBUG
