@@ -17,13 +17,10 @@ namespace Battleship
     public class BattleshipOpponent
     {
         public const int LOSE_MAGIC_NUMBER = -50; //Number used in Point objects to signify a loss (timed out).
-        public int score; //The number of wins in a match
         public IBattleshipOpponent iOpponent; //The class implementing the IBattleshipOpponent interface playing the game.
-        public List<Point> shots;
-        private List<Ship> ships;
         private Stopwatch stopwatch; //Used to time each call to the iOpponent
-        private TimeSpan timeAllowed; //Reference to the BattleshipCompetition's defined max time.
-        private Size gameSize; //Reference to the BattleshipCompetition's defined game size.
+        private Battlefield field;
+        private Battlefield.OpponentInfo info;
 
         /**
          * <summary>Sets up this BattleshipOpponent</summary>
@@ -32,14 +29,23 @@ namespace Battleship
          * <param name="timeout">A reference to the maximum alloted time in the competition</param>
          * 
          */
-        public BattleshipOpponent(IBattleshipOpponent op, ref Size size, ref TimeSpan timeout)
+        public BattleshipOpponent(IBattleshipOpponent op, Battlefield f)
         {
-            score = 0;
-            stopwatch = new Stopwatch();
-            shots = new List<Point>();
-            timeAllowed = timeout; //Passed in as a reference, not a copy
-            gameSize = size; //Passed in as a reference, not a copy
             iOpponent = op;
+            field = f;
+
+            info = field[iOpponent];
+            if (info == null)
+                throw new NullReferenceException(iOpponent.Name + " bot: Unable to get info.");
+
+            info.score = 0;
+            info.shotsMade = new List<Point>();
+            stopwatch = new Stopwatch();
+        }
+
+        public Battlefield.OpponentInfo GetFieldInfo()
+        {
+            return info;
         }
 
         /**
@@ -49,12 +55,13 @@ namespace Battleship
          */
         public bool ShipsReady()
         {
-            foreach(Ship s1 in ships) {
+            foreach (Ship s1 in info.ships)
+            {
 
-                if (!s1.IsPlaced || !s1.IsValid(gameSize))
+                if (!s1.IsPlaced || !s1.IsValid(field.gameSize))
                     return false;
 
-                foreach (Ship s2 in ships)
+                foreach (Ship s2 in info.ships)
                 {
                     if (s2 == s1) continue;
                     if (s2.ConflictsWith(s1)) return false;
@@ -78,7 +85,7 @@ namespace Battleship
          */
         public bool RanOutOfTime()
         {
-            if (stopwatch.Elapsed > timeAllowed)
+            if (stopwatch.Elapsed > field.timeoutLimit)
                 return true;
             return false;
         }
@@ -90,10 +97,10 @@ namespace Battleship
         public bool NewGame()
         {
             stopwatch.Reset();
-            shots.Clear();
+            info.shotsMade.Clear();
             stopwatch.Start();
 
-            iOpponent.NewGame(gameSize, timeAllowed, new Random());
+            iOpponent.NewGame(field.gameSize, field.timeoutLimit, field.fixedRandom);
 
             stopwatch.Stop();
             return RanOutOfTime();
@@ -106,16 +113,16 @@ namespace Battleship
          */
         public bool PlaceShips(List<Ship> newShips)
         {
-            ships = newShips;
+            info.ships = newShips;
             stopwatch.Start();
-            iOpponent.PlaceShips(ships.AsReadOnly());
+            iOpponent.PlaceShips(info.ships.AsReadOnly());
             stopwatch.Stop();
             return RanOutOfTime();
         }
 
         public Ship GetShipAtPoint(Point p)
         {
-            foreach (Ship s in ships)
+            foreach (Ship s in info.ships)
                 if (s.IsAt(p))
                     return s;
             return null;
@@ -123,7 +130,7 @@ namespace Battleship
 
         public bool IsAlive(List<Point> shots)
         {
-            foreach (Ship s in ships)
+            foreach (Ship s in info.ships)
                 if (!s.IsSunk(shots))
                     return true;
             return false;
@@ -150,10 +157,10 @@ namespace Battleship
             if (RanOutOfTime())
                 return new Point(LOSE_MAGIC_NUMBER, LOSE_MAGIC_NUMBER);
 
-            if (shots.Where(s => s.X == shot.X && s.Y == shot.Y).Any())
+            if (info.shotsMade.Where(s => s.X == shot.X && s.Y == shot.Y).Any())
                 return ShootAt(opponent);
 
-            shots.Add(shot);
+            info.shotsMade.Add(shot);
             return shot;
         }
 
@@ -203,7 +210,7 @@ namespace Battleship
          */
         public void GameWon()
         {
-            score++;
+            info.score++;
             iOpponent.GameWon();
         }
 

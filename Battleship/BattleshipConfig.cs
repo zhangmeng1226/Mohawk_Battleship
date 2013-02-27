@@ -9,7 +9,8 @@ using System.Reflection;
 namespace Battleship
 {
     /**
-     * <summary>BattleshipConfig deals with a single configuration file and parses each key/value pair</summary>
+     * <summary>BattleshipConfig deals with a single configuration file and parses each key/value pair.
+     * Do not use this class to load a single key many times; it is probably slow.</summary>
      */
     public class BattleshipConfig
     {
@@ -98,7 +99,7 @@ namespace Battleship
          * <summary>Gets a value from the configuration</summary>
          * <param name="s">The key to get the value from</param>
          * <param name="def">The default value for a given key if the key is not found.</param>
-         * <exception cref="Exception">If the value could not be converted</exception>
+         * <returns>The value loaded from the configuration, otherwise, the default value.</returns>
          */
         public T ConfigValue<T>(string s, T def)
         {
@@ -111,6 +112,28 @@ namespace Battleship
             catch { }
             simpleConfig[s] = def.ToString();
             return def;
+        }
+
+        /**
+         * <summary>Gets a comma-delimited array (list) from the configuration</summary>
+         * <param name="s">The key to get the value from</param>
+         * <param name="def">The default value for a given key if the key is not found.</param>
+         * <returns>The list loaded from the configuration, otherwise, the default value</returns>
+         */
+        public List<T> ConfigValueArray<T>(string s, string def)
+        {
+            List<T> vals = new List<T>();
+            try
+            {
+                foreach (string val in ConfigValue<string>(s, def).Split(','))
+                    vals.Add((T)Convert.ChangeType(val.Trim(), typeof(T)));
+            }
+            catch
+            {
+                foreach (string val in def.Split(','))
+                    vals.Add((T)Convert.ChangeType(val.Trim(), typeof(T)));
+            }
+            return vals;
         }
 
         /**

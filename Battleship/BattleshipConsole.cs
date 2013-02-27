@@ -98,7 +98,7 @@ namespace Battleship
                 Console.Clear();
                 WriteCenteredText("BATTLESHIP COMPETITION FRAMEWORK", headerEnds);
                 StateDisplay();
-                WriteCenteredText("[E]xit   [C]onfigure   " + extraMenu, "===");
+                WriteCenteredText("[E]xit, [C]onfigure" + (extraMenu == "" ? "" : ", ")+extraMenu, "===");
                 Console.Write("Input : ");
             }
 
@@ -143,9 +143,7 @@ namespace Battleship
 
                 int count = 1;
                 foreach (string botName in main.config.BotNames)
-                {
                     Console.WriteLine((count++) + ": " + botName);
-                }
                 Console.WriteLine();
             }
 
@@ -215,14 +213,7 @@ namespace Battleship
             {
                 WriteCenteredText("Bot competition mode", headerEnds);
                 Console.WriteLine("Running the competition...\n\n");
-                BattleshipCompetition bc = new BattleshipCompetition(
-                 bots[0],
-                 bots[1],
-                 new TimeSpan(0, 0, 1),
-                 51,
-                 true,
-                 new Size(10, 10),
-                 2, 3, 3, 4, 5);
+                BattleshipCompetition bc = new BattleshipCompetition(bots, main.config);
                 scores = bc.RunCompetition();
                 Console.WriteLine("Done! Press any key to view the final results...");
             }
@@ -247,7 +238,7 @@ namespace Battleship
                 : base(main)
             {
                 this.results = results;
-                extraMenu = "[R]ematch   [S]election";
+                extraMenu = "[R]ematch, [S]election";
             }
 
             protected override void StateDisplay()
