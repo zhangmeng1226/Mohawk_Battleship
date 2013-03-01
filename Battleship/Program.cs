@@ -6,6 +6,7 @@
     using System.IO;
     using System.Collections.Generic;
     using System.Drawing;
+    using System.Windows.Forms;
 
     public class Program
     {
@@ -24,11 +25,16 @@
 #endif
         }
 
+        [STAThread]
         static void Main(string[] args)
         {
-            BattleshipConsole consoleMode = new BattleshipConsole();
+            Application.EnableVisualStyles();
+            Battleship2D mode2D = new Battleship2D();
+            Application.Run(mode2D);
 
-            consoleMode.Start();
+            //BattleshipConsole consoleMode = new BattleshipConsole();
+
+            //consoleMode.Start();
         }
     }
 }

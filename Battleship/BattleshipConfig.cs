@@ -17,6 +17,24 @@ namespace Battleship
         private Dictionary<string, string> simpleConfig;
         private Dictionary<string, Type> loadedRobots = new Dictionary<string, Type>();
         private string rootPath;
+        private static BattleshipConfig globalInstance;
+
+        /**
+         * <summary>Gets a common configuration object for use. The default configuration file is loaded at \..\config.ini</summary>
+         */
+        public static BattleshipConfig GetGlobalDefault()
+        {
+            if(globalInstance != null)
+                globalInstance = new BattleshipConfig(Environment.CurrentDirectory + "\\..\\config.ini");
+            return globalInstance;
+        }
+
+        public object GetDataSourceObject()
+        {
+            return (from row in simpleConfig
+                    select
+                        new { Name = row.Key, Value = row.Value }).ToArray();
+        }
 
         public List<string> BotNames
         {
@@ -101,7 +119,7 @@ namespace Battleship
          * <param name="def">The default value for a given key if the key is not found.</param>
          * <returns>The value loaded from the configuration, otherwise, the default value.</returns>
          */
-        public T ConfigValue<T>(string s, T def)
+        public T GetConfigValue<T>(string s, T def)
         {
             string valString;
             try
@@ -115,17 +133,25 @@ namespace Battleship
         }
 
         /**
+         * <summary>Sets a value in the configuration</summary>
+         */
+        public void SetConfigValue<T>(string s, T val)
+        {
+            simpleConfig[s] = val.ToString();
+        }
+
+        /**
          * <summary>Gets a comma-delimited array (list) from the configuration</summary>
          * <param name="s">The key to get the value from</param>
          * <param name="def">The default value for a given key if the key is not found.</param>
          * <returns>The list loaded from the configuration, otherwise, the default value</returns>
          */
-        public List<T> ConfigValueArray<T>(string s, string def)
+        public List<T> GetConfigValueArray<T>(string s, string def)
         {
             List<T> vals = new List<T>();
             try
             {
-                foreach (string val in ConfigValue<string>(s, def).Split(','))
+                foreach (string val in GetConfigValue<string>(s, def).Split(','))
                     vals.Add((T)Convert.ChangeType(val.Trim(), typeof(T)));
             }
             catch

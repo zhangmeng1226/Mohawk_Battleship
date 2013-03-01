@@ -15,22 +15,17 @@
         private BattleshipOpponent[] opponents;  //Guaranteed to always be a 2-element array.
         private BattleshipConfig config;
         private Battlefield fieldInfo;
-        private bool playOut;
-        private int rounds;
         private List<RoundLog> roundList;
         private RoundLog roundLogger;
+
+        private BattleshipOpponent turn;
 
         /**
          * <summary>Constructs a new BattleshipCompetition object using a BattleshipConfig for configuration.</summary>
          */
         public BattleshipCompetition(IBattleshipOpponent[] ops, BattleshipConfig config)
         {
-            this.config = config;
-            init(ops, 
-                new TimeSpan(0, 0, 0, config.ConfigValue<int>("timeout_seconds", 0), config.ConfigValue<int>("timeout_millis", 500)),
-                new Size(config.ConfigValue<int>("field_width", 10), config.ConfigValue<int>("field_height", 10)),
-                config.ConfigValueArray<int>("field_ship_sizes", "2,3,3,4,5"),
-                new Random(config.ConfigValue<int>("field_random_seed", Environment.TickCount)));
+            init(ops, config, config.GetConfigValue<int>("field_random_seed", Environment.TickCount));
         }
 
         /**
@@ -39,60 +34,18 @@
          */
         public BattleshipCompetition(IBattleshipOpponent[] ops, BattleshipConfig config, int seedNum)
         {
-            this.config = config;
-            init(ops,
-                new TimeSpan(0, 0, 0, config.ConfigValue<int>("timeout_seconds", 0), config.ConfigValue<int>("timeout_millis", 500)),
-                new Size(config.ConfigValue<int>("field_width", 10), config.ConfigValue<int>("field_height", 10)),
-                config.ConfigValueArray<int>("field_ship_sizes", "2,3,3,4,5"),
-                new Random(seedNum));
+            init(ops, config, seedNum); 
         }
 
-        /**
-         * <summary>Constructs a new BattleshipCompetition object using the given parameters</summary>
-         * <param name="op1">A class implementing IBattleshipOpponent, playing in this competition</param>
-         * <param name="op2">A class implementing IBattleshipOpponent, playing in this competition</param>
-         * <param name="timePerGame">The maximum allowed time per function call to each class implementing IBattleshipOpponent</param>
-         * <param name="boardSize">The size of the battleship grid.</param>
-         * <param name="shipSizes">An array containing x-amount of ships to be used in each game, and each having a specified length</param>
-         */
-        public BattleshipCompetition(IBattleshipOpponent op1, IBattleshipOpponent op2, TimeSpan timePerGame, Size boardSize, params int[] shipSizes)
+        private void init(IBattleshipOpponent[] ops, BattleshipConfig conf, int seedNum)
         {
-            //Arguments should never be wrong, only maybe when developing.
-#if DEBUG
-            if (op1 == null)
-                throw new ArgumentNullException("op1");
-
-            if (op2 == null)
-                throw new ArgumentNullException("op2");
-
-            if (timePerGame.TotalMilliseconds <= 0)
-                throw new ArgumentOutOfRangeException("timePerGame");
-
-            if (boardSize.Width <= 2 || boardSize.Height <= 2)
-                throw new ArgumentOutOfRangeException("boardSize");
-
-            if (shipSizes == null || shipSizes.Length < 1)
-                throw new ArgumentNullException("shipSizes");
-
-            if (shipSizes.Where(s => s <= 0).Any())
-                throw new ArgumentOutOfRangeException("shipSizes");
-
-            if (shipSizes.Sum() >= (boardSize.Width * boardSize.Height))
-                throw new ArgumentOutOfRangeException("shipSizes");
-#endif
-            init(new IBattleshipOpponent[2]{op1, op2}, timePerGame, boardSize, new List<int>(shipSizes), new Random());
-        }
-
-        private void init(IBattleshipOpponent[] ops, TimeSpan timePerGame, Size boardSize, List<int> ships, Random rand)
-        {
+            config = conf;
             fieldInfo = new Battlefield(ops);
-            fieldInfo.fixedRandom = rand;
-            fieldInfo.gameSize = boardSize;
-            fieldInfo.shipSizes = ships;
-            fieldInfo.timeoutLimit = timePerGame;
+            fieldInfo.fixedRandom = new Random(seedNum);
+            fieldInfo.gameSize = new Size(config.GetConfigValue<int>("field_width", 10), config.GetConfigValue<int>("field_height", 10));
+            fieldInfo.shipSizes = config.GetConfigValueArray<int>("field_ship_sizes", "2,3,3,4,5");
+            fieldInfo.timeoutLimit = new TimeSpan(0, 0, 0, config.GetConfigValue<int>("timeout_seconds", 0), config.GetConfigValue<int>("timeout_millis", 500));
 
-            playOut = config.ConfigValue<bool>("competition_mode_playout", false);
-            rounds = config.ConfigValue<int>("competition_rounds", 110);
             roundList = new List<RoundLog>();
 
             opponents = new BattleshipOpponent[2];
@@ -102,9 +55,19 @@
                 op.NewMatch(Opposite(op).GetInfo());
         }
 
+        public Battlefield GetBattlefield()
+        {
+            return fieldInfo;
+        }
+
         public List<RoundLog> GetRoundList()
         {
             return roundList;
+        }
+
+        public RoundLog GetCurrentRoundLog()
+        {
+            return roundLogger;
         }
 
         /**
@@ -180,7 +143,7 @@
          * <summary>The main game logic of battleship.</summary>
          * <returns>True if the game is over (the method never returns false)</returns>
          */
-        private bool GamePlay(BattleshipOpponent turn)
+        private bool GamePlay()
         {
             Point shot = turn.ShootAt(Opposite(turn));
 
@@ -213,33 +176,60 @@
             return false;
         }
 
-        /**
-         * <summary>Runs the match between two opponents and records the most interesting rounds.</summary>
-         * <returns>A list of the two opponents with their scores attached.</returns>
-         */
-        public Dictionary<IBattleshipOpponent, int> RunCompetition()
+        public bool NewRound()
+        {
+            roundLogger = new RoundLog();
+            roundList.Add(roundLogger);
+
+            turn = opponents[fieldInfo.fixedRandom.Next(2)];
+            roundLogger.PutAction(new RoundLog.RoundActivity(null, turn.iOpponent, RoundLog.RoundAction.RoundBegin));
+
+            return NewGame() || ShipPlacement();
+        }
+
+        public bool RoundTick()
+        {
+            bool res = GamePlay();
+            turn = Opposite(turn);
+
+            return res;
+        }
+
+        public void RunRound()
+        {
+            NewRound();
+            while (!RoundTick()) ;
+        }
+
+        private bool RoundsReached(int rnds)
+        {
+            return opponents[0].GetFieldInfo().score >= rnds || opponents[1].GetFieldInfo().score >= rnds;
+        }
+
+        public Dictionary<IBattleshipOpponent, int> RunRounds(int rnds, bool playOut)
         {
             int gamePlays = 0;
 
             //This loop continues until this competition is complete.
-            while (playOut ? opponents.Where(o => o.GetFieldInfo().score <= rounds).Any() : gamePlays++ < (rounds * 2 - 1))
+            while (playOut ? !RoundsReached(rnds) : gamePlays++ < (rnds * 2 - 1))
             {
-                roundLogger = new RoundLog();
-                roundList.Add(roundLogger);
-
-                BattleshipOpponent turn = opponents[fieldInfo.fixedRandom.Next(2)];
-                roundLogger.PutAction(new RoundLog.RoundActivity(null, turn.iOpponent, RoundLog.RoundAction.RoundBegin));
-
-                if (NewGame()) continue;
-                if (ShipPlacement()) continue;
-                while (!GamePlay(turn))
-                    turn = Opposite(turn);
+                RunRound();
             }
 
             foreach (BattleshipOpponent op in opponents)
                 op.MatchOver();
 
             return opponents.ToDictionary(s => s.iOpponent, s => s.GetFieldInfo().score);
+        }
+
+        /**
+         * <summary>Runs the match between two opponents and records the most interesting rounds.</summary>
+         * <returns>A list of the two opponents with their scores attached.</returns>
+         */
+        public Dictionary<IBattleshipOpponent, int> RunCompetition()
+        {
+            return RunRounds(config.GetConfigValue<int>("competition_rounds", 110),
+                config.GetConfigValue<bool>("competition_mode_playout", false));
         }
     }
 }

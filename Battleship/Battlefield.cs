@@ -21,6 +21,11 @@ namespace Battleship
                 opponents[op] = new OpponentInfo();
         }
 
+        public OpponentInfo[] GetInfo()
+        {
+            return opponents.Values.ToArray();
+        }
+
         public Battlefield(Battlefield copy)
         {
             opponents = new Dictionary<IBattleshipOpponent, OpponentInfo>();
