@@ -9,7 +9,7 @@ using System.Windows.Forms;
 
 namespace Battleship
 {
-    public partial class Battleship2D : Form
+    public partial class Battleship2D : Form, ProgramMode
     {
         BattleshipConfig config;
         private Battlefield2D fieldPanel;
