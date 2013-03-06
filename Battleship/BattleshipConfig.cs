@@ -176,7 +176,6 @@ namespace Battleship
                     string[] tLine = line.Split('=');
                     tLine[0] = tLine[0].Trim();
                     tLine[1] = tLine[1].Trim();
-                    Console.WriteLine("Key: \"" + tLine[0] + "\"   Value: \"" + tLine[1] + "\"");
                     simpleConfig.Add(tLine[0], tLine[1]);
                 } while (reader.Peek() != -1);
                 reader.Close();
