@@ -107,7 +107,11 @@ namespace Battleship
         private void rndTickBtn_Click(object sender, EventArgs e)
         {
             if (competition.RoundTick())
+            {
                 rndTickBtn.Enabled = false;
+                op1ScoreLabel.Text = "" + competition.GetBattlefield().GetInfo()[0].score;
+                op2ScoreLabel.Text = "" + competition.GetBattlefield().GetInfo()[1].score;
+            }
             fieldPanel.Refresh();
         }
     }
