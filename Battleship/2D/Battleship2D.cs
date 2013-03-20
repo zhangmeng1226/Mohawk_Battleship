@@ -35,6 +35,10 @@ namespace Battleship
 
             OptButtonsSet(false);
 
+            SizeF scale = new SizeF(Screen.PrimaryScreen.Bounds.Width / 1920f, Screen.PrimaryScreen.Bounds.Height / 1080f);
+
+            Scale(scale);
+
             roundPlays.Value = config.GetConfigValue<int>("competition_rounds", 110);
         }
 
