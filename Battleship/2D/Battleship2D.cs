@@ -21,6 +21,7 @@ namespace Battleship
             InitializeComponent();
 
             config = new BattleshipConfig(Environment.CurrentDirectory + "\\..\\config.ini");
+            this.FormClosed += OnClose;
 
             fieldPanel = new Battlefield2D(new Size(419, 389));
             fieldPanel.Location = new Point(7, 7);
@@ -113,6 +114,11 @@ namespace Battleship
                 op2ScoreLabel.Text = "" + competition.GetBattlefield().GetInfo()[1].score;
             }
             fieldPanel.Refresh();
+        }
+
+        private void OnClose(object sender, EventArgs e)
+        {
+            config.SaveConfigFile();
         }
     }
 }
