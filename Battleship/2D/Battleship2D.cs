@@ -35,7 +35,7 @@ namespace Battleship
 
             OptButtonsSet(false);
 
-            SizeF scale = new SizeF(Screen.PrimaryScreen.Bounds.Width / 1920f, Screen.PrimaryScreen.Bounds.Height / 1080f);
+            SizeF scale = new SizeF(1920f / Screen.PrimaryScreen.Bounds.Width, 1080f / Screen.PrimaryScreen.Bounds.Height);
 
             Scale(scale);
 
