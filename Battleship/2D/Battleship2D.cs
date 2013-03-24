@@ -15,6 +15,7 @@ namespace Battleship
         private Battlefield2D fieldPanel;
         private IBattleshipOpponent[] bots;
         private BattleshipCompetition competition;
+        private Selector selector;
 
         public Battleship2D()
         {
@@ -63,6 +64,7 @@ namespace Battleship
 
         public bool BotSelect(string first, string second)
         {
+            selector.Close();
             if (first == null || second == null)
                 return false;
             bots = new IBattleshipOpponent[2];
@@ -85,7 +87,7 @@ namespace Battleship
 
         private void selectOpBtn_Click(object sender, EventArgs e)
         {
-            Selector select = new Selector(config, this);
+            selector = new Selector(config, this);
         }
 
         private void resetBtn_Click(object sender, EventArgs e)
