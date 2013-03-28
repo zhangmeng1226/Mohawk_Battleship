@@ -1,0 +1,100 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <LinearGradientBrush x:Key="BlackTopBrush" StartPoint="0.5,0.5" EndPoint="0.5,1.15" SpreadMethod="Reflect">
+        <GradientStop Color="#55000000" Offset="0.6" />
+        <GradientStop Color="#FF000000" Offset="0.8" />
+    </LinearGradientBrush>
+    <Style x:Key="borderTopStyle" TargetType="Border">
+        <Setter Property="Background" Value="{StaticResource BlackTopBrush}" />
+        <Setter Property="BorderThickness" Value="5" />
+        <Setter Property="CornerRadius" Value="5" />
+        <Setter Property="Padding" Value="0" />
+    </Style>
+    <Style x:Key="titleLabel" TargetType="Label">
+        <Setter Property="FontFamily" Value="Consolas" />
+        <Setter Property="FontSize" Value="20" />
+        <Setter Property="FontWeight" Value="Bold" />
+    </Style>
+    <Style x:Key="defaultLabelTitle" TargetType="Label">
+        <Setter Property="FontFamily" Value="Berlin Sans FB" />
+        <Setter Property="FontSize" Value="16" />
+        <Setter Property="FontWeight" Value="Bold" />
+        <Setter Property="Foreground" Value="#FFBBFFFF" />
+        <Setter Property="HorizontalAlignment" Value="Center" />
+    </Style>
+    <Style x:Key="defaultLabel" TargetType="Label">
+        <Setter Property="FontFamily" Value="Berlin Sans FB" />
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="Foreground" Value="#FFBBFFFF" />
+    </Style>
+    <Style x:Key="defaultCheckbox" TargetType="CheckBox">
+        <Setter Property="FontFamily" Value="Berlin Sans FB" />
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="Foreground" Value="#FFBBFFFF" />
+    </Style>
+    <Style x:Key="defaultRadio" TargetType="RadioButton">
+        <Setter Property="FontFamily" Value="Berlin Sans FB" />
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="Foreground" Value="#FFBBFFFF" />
+    </Style>
+    <Style x:Key="defaultButton" TargetType="Button">
+        <Setter Property="FontFamily" Value="Berlins Sans FB" />
+        <Setter Property="Foreground" Value="White" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border x:Name="ButtonBorder"
+                            CornerRadius="5"
+                            BorderThickness="3"
+                            Background="#66555555"
+                            BorderBrush="#FFFFFFFF"
+                            RenderTransformOrigin="0.5,0.5">
+                        <ContentPresenter x:Name="ButtonPresenter"
+                                          VerticalAlignment="Center"
+                                          HorizontalAlignment="Center"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="redButton" TargetType="Button">
+        <Setter Property="FontFamily" Value="Berlins Sans FB" />
+        <Setter Property="Foreground" Value="White" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border x:Name="ButtonBorder"
+                            CornerRadius="5"
+                            BorderThickness="3"
+                            Background="#FFFF2222"
+                            BorderBrush="#FFFFFFFF"
+                            RenderTransformOrigin="0.5,0.5">
+                        <ContentPresenter x:Name="ButtonPresenter"
+                                          VerticalAlignment="Center"
+                                          HorizontalAlignment="Center"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="blueButton" TargetType="Button">
+        <Setter Property="FontFamily" Value="Berlins Sans FB" />
+        <Setter Property="Foreground" Value="White" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border x:Name="ButtonBorder"
+                            CornerRadius="5"
+                            BorderThickness="3"
+                            Background="#FF2222FF"
+                            BorderBrush="#FFFFFFFF"
+                            RenderTransformOrigin="0.5,0.5">
+                        <ContentPresenter x:Name="ButtonPresenter"
+                                          VerticalAlignment="Center"
+                                          HorizontalAlignment="Center"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>
