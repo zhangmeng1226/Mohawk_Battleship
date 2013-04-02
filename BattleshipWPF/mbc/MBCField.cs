@@ -8,12 +8,15 @@ namespace Battleship
 {
     public class Battlefield
     {
-        public Size gameSize;
-        public Random fixedRandom;
-        public List<int> shipSizes;
-        public TimeSpan timeoutLimit;
+        public Size gameSize;           //The size of the battlefield
+        public Random fixedRandom;      //A Random object
+        public List<int> shipSizes;     //A list of all the ships available on the battlefield
+        public TimeSpan timeoutLimit;   //The time limit for this field
         private Dictionary<IBattleshipOpponent, OpponentInfo> opponents;
 
+        /**
+         * <summary>Constructs a Battlefield object initialized with two opponents</summary>
+         */
         public Battlefield(IBattleshipOpponent[] ops)
         {
             opponents = new Dictionary<IBattleshipOpponent, OpponentInfo>();
@@ -21,11 +24,17 @@ namespace Battleship
                 opponents[op] = new OpponentInfo();
         }
 
+        /**
+         * <returns>Opponent information for both opponents</returns>
+         */
         public OpponentInfo[] GetInfo()
         {
             return opponents.Values.ToArray();
         }
 
+        /**
+         * <summary>Copy constructor</summary>
+         */
         public Battlefield(Battlefield copy)
         {
             opponents = new Dictionary<IBattleshipOpponent, OpponentInfo>();
@@ -37,11 +46,18 @@ namespace Battleship
             timeoutLimit = copy.timeoutLimit;
         }
 
+        /**
+         * <returns>The opponent information for the field from the opponent</returns>
+         */
         public OpponentInfo this[IBattleshipOpponent i]
         {
             get { return opponents[i]; }
         }
 
+        /**
+         * <summary>Contains information related to the state of the battlefield for
+         * each opponent</summary>
+         */
         public class OpponentInfo
         {
             public List<Point> shotsMade;

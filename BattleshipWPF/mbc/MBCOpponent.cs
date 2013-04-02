@@ -43,9 +43,20 @@ namespace Battleship
             stopwatch = new Stopwatch();
         }
 
+        /**
+         * <returns>The information related to this opponent on the battlefield</returns>
+         */
         public Battlefield.OpponentInfo GetFieldInfo()
         {
             return info;
+        }
+
+        /**
+         * <returns>The time the last action took for this bot to perform.</returns>
+         */
+        public long GetTimeTaken()
+        {
+            return stopwatch.ElapsedMilliseconds;
         }
 
         /**
@@ -120,6 +131,9 @@ namespace Battleship
             return RanOutOfTime();
         }
 
+        /**
+         * <returns>The ship at point p. Null if there is no ship.</returns>
+         */
         public Ship GetShipAtPoint(Point p)
         {
             foreach (Ship s in info.ships)
@@ -128,6 +142,9 @@ namespace Battleship
             return null;
         }
 
+        /**
+         * <returns>True if the opponent is still in the match, false if the opponent has lost</returns>
+         */
         public bool IsAlive(List<Point> shots)
         {
             foreach (Ship s in info.ships)
@@ -233,7 +250,7 @@ namespace Battleship
         /**
          * <summary>Generates a string containing the name and version of the encapsulated IBattleshipOpponent</summary>
          */
-        public string GetInfo()
+        public override string ToString()
         {
             return iOpponent.Name + " " + iOpponent.Version.ToString();
         }

@@ -9,8 +9,7 @@ using System.Reflection;
 namespace Battleship
 {
     /**
-     * <summary>BattleshipConfig deals with a single configuration file and parses each key/value pair.
-     * Do not use this class to load a single key many times; it is probably slow.</summary>
+     * <summary>BattleshipConfig deals with a single configuration file and parses each key/value pair.</summary>
      */
     public class BattleshipConfig
     {
@@ -29,13 +28,9 @@ namespace Battleship
             return globalInstance;
         }
 
-        public object GetDataSourceObject()
-        {
-            return (from row in simpleConfig
-                    select
-                        new { Name = row.Key, Value = row.Value }).ToArray();
-        }
-
+        /**
+         * <summary>Returns a list of strings representing the name and version of each bot</summary>
+         */
         public List<string> BotNames
         {
             get
@@ -86,7 +81,7 @@ namespace Battleship
                         if (interfaces.ToString() == "Battleship.IBattleshipOpponent")
                         {
                             IBattleshipOpponent opp = (IBattleshipOpponent)Activator.CreateInstance(robot);
-                            loadedRobots.Add(opp.Name, robot);
+                            loadedRobots.Add(opp.Name + " (v"+opp.Version+")", robot);
                             break;
                         }
             }
