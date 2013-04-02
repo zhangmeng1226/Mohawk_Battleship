@@ -59,6 +59,13 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="mbc\accolades\AccoladeProcessor.cs" />
+    <Compile Include="mbc\accolades\Comeback.cs" />
+    <Compile Include="mbc\accolades\Domination.cs" />
+    <Compile Include="mbc\accolades\Fast.cs" />
+    <Compile Include="mbc\accolades\HeadToHead.cs" />
+    <Compile Include="mbc\accolades\Intense.cs" />
+    <Compile Include="mbc\accolades\Slow.cs" />
     <Compile Include="winform\Battlefield2D.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -71,7 +78,7 @@
     <Compile Include="cons\ResultState.cs" />
     <Compile Include="cons\SelectorState.cs" />
     <Compile Include="gl\Battleship3D.cs" />
-    <Compile Include="RoundLog.cs" />
+    <Compile Include="mbc\MBCRoundLog.cs" />
     <Compile Include="wpf\WPFAppMode.cs" />
     <Page Include="wpf\ResourceDictionary.xaml">
       <SubType>Designer</SubType>
@@ -85,10 +92,10 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Battlefield.cs" />
-    <Compile Include="BattleshipCompetition.cs" />
-    <Compile Include="BattleshipConfig.cs" />
-    <Compile Include="BattleshipOpponent.cs" />
+    <Compile Include="mbc\MBCField.cs" />
+    <Compile Include="mbc\MBCCompetition.cs" />
+    <Compile Include="mbc\MBCConfig.cs" />
+    <Compile Include="mbc\MBCOpponent.cs" />
     <Compile Include="wpf\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -136,6 +143,7 @@
   <ItemGroup>
     <Resource Include="media\images\dark-metal-texture.jpg" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

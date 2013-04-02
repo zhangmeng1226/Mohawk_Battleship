@@ -10,7 +10,7 @@ namespace Battleship.mbc.accolades
         int diff = 0;
         IBattleshipOpponent last = null;
 
-        public override RoundLog.RoundAccolade Process(RoundLog.RoundActivity a)
+        public RoundLog.RoundAccolade Process(RoundLog.RoundActivity a)
         {
             if (a.action != RoundLog.RoundAction.ShotAndHit)
                 return RoundLog.RoundAccolade.None;

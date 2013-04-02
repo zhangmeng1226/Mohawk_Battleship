@@ -24,13 +24,13 @@
 
         private BattleshipOpponent turn;            //The current opponent's turn
 
-        private delegate void RndTick();
+        public delegate void RndTick();
         public event RndTick RoundTurnEndEvent;
 
-        private delegate void RndEnd();
+        public delegate void RndEnd();
         public event RndEnd RoundEndEvent;
 
-        private delegate void MatchEnd();
+        public delegate void MatchEnd();
         public event MatchEnd MatchEndEvent;
 
         /**

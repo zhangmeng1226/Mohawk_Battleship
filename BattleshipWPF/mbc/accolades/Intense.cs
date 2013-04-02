@@ -10,7 +10,7 @@ namespace Battleship.mbc.accolades
         Dictionary<IBattleshipOpponent, int> hits = new Dictionary<IBattleshipOpponent,int>();
         int cnt = 0;
 
-        public override RoundLog.RoundAccolade Process(RoundLog.RoundActivity a)
+        public RoundLog.RoundAccolade Process(RoundLog.RoundActivity a)
         {
             if (a.action != RoundLog.RoundAction.ShotAndHit)
                 return RoundLog.RoundAccolade.None;

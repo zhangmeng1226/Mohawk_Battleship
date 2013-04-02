@@ -22,7 +22,8 @@ namespace Battleship
             WriteCenteredText("Bot competition mode", headerEnds);
             Console.WriteLine("Running the competition...\n\n");
             BattleshipCompetition bc = new BattleshipCompetition(bots, main.Config);
-            scores = bc.RunCompetition();
+            bc.RunCompetition();
+            scores = bc.GetScores();
             Console.WriteLine("Done! Press any key to view the final results...");
         }
 

@@ -87,7 +87,7 @@ namespace Battleship
          */
         public class RoundActivity
         {
-            public static const string Reason_Timeout = "Timeout";  //Common string used for timeout messages
+            public static string Reason_Timeout = "Timeout";  //Common string used for timeout messages
             public string activityInfo;                 //A message going with this action
             public IBattleshipOpponent opponent;        //The opponent this action relates to
             public RoundAction action;                  //The action
