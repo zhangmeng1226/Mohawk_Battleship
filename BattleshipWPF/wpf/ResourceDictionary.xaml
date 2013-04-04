@@ -53,6 +53,11 @@
                                           VerticalAlignment="Center"
                                           HorizontalAlignment="Center"/>
                     </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="Button.IsMouseOver" Value="True">
+                            <Setter TargetName="ButtonBorder" Property="Background" Value="#AAFFFF24" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
@@ -73,6 +78,11 @@
                                           VerticalAlignment="Center"
                                           HorizontalAlignment="Center"/>
                     </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="Button.IsMouseOver" Value="True">
+                            <Setter TargetName="ButtonBorder" Property="Background" Value="#AAFFFF24" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
@@ -95,7 +105,7 @@
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="Button.IsMouseOver" Value="True">
-                            <Setter TargetName="ButtonBorder" Property="Background" Value="#FF22FFFF" />  
+                            <Setter TargetName="ButtonBorder" Property="Background" Value="#AAFFFF24" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
