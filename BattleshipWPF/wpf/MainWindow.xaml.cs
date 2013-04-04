@@ -22,32 +22,48 @@ namespace Battleship
         public MainWindow()
         {
             InitializeComponent();
+            redField.fieldLabel.Content = "Red Controller";
+            redField.fieldLabel.Foreground = System.Windows.Media.Brushes.Red;
+            blueField.fieldLabel.Content = "Blue Controller";
+            blueField.fieldLabel.Foreground = System.Windows.Media.Brushes.Blue;
         }
 
-        /**
-         * Not spending any more time on this... WPF is too new to me (Ryan A).
-         * It sort of does what it needs to do; maintain a 1:1 ratio. Glitches up a bit though.
-         */
         private void Grid_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             Size s = new Size(fieldsContainer.ColumnDefinitions[0].ActualWidth, fieldsContainer.RowDefinitions[0].ActualHeight);
-            if (s.Width != s.Height)
+            if (s.Width == s.Height)
+                return;
+            double smaller = s.Width > s.Height ? s.Height : s.Width;
+            redField.Width = smaller;
+            redField.Height = smaller;
+            blueField.Width = smaller;
+            blueField.Height = smaller;
+        }
+
+        private void consBasicCheck_Click(object sender, RoutedEventArgs e)
+        {
+            if (consBasicCheck.IsChecked == true)
+                centerConsole.Visibility = System.Windows.Visibility.Visible;
+            else
+                centerConsole.Visibility = System.Windows.Visibility.Collapsed;
+            UpdateLayout();
+            Grid_SizeChanged(null, null);
+        }
+
+        private void consAdvCheck_Click(object sender, RoutedEventArgs e)
+        {
+            if (consAdvCheck.IsChecked == true)
             {
-                if (s.Width > s.Height)
-                {
-                    redField.Width = s.Height;
-                    blueField.Width = s.Height;
-                    redField.Width = s.Height;
-                    blueField.Width = s.Height;
-                }
-                else
-                {
-                    blueField.Height = s.Width;
-                    blueField.Width = s.Width;
-                    redField.Height = s.Width;
-                    redField.Width = s.Width;
-                }
+                advTabs.Visibility = System.Windows.Visibility.Visible;
+                Height += 180;
             }
+            else
+            {
+                Height -= 180;
+                advTabs.Visibility = System.Windows.Visibility.Collapsed;
+            }
+            UpdateLayout();
+            Grid_SizeChanged(null, null);
         }
     }
 }

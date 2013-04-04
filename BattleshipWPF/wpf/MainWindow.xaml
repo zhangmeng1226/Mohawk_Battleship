@@ -2,9 +2,10 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:battlefield="clr-namespace:Battleship"
-        Title="MainWindow" Height="500" Width="800">
+        Title="MainWindow" Height="550" Width="800">
     <Window.Resources>
         <ResourceDictionary>
+            <BooleanToVisibilityConverter x:Key="btvconvert" />
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="ResourceDictionary.xaml" />
             </ResourceDictionary.MergedDictionaries>
@@ -82,7 +83,7 @@
                         </Grid.ColumnDefinitions>
                         <Label VerticalAlignment="Center" Grid.Column="0" Grid.Row="0" Content="Rounds" Style="{StaticResource defaultLabel}" />
                         <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal">
-                            <TextBox x:Name="txtNum" Height="15" Width="50" Text="0" />
+                            <TextBox x:Name="txtNum" Height="17" Width="50" Text="0" />
                             <Button x:Name="cmdUp" Content="˄" Height="18" Width="20" Style="{StaticResource defaultButton}"/>
                             <Button x:Name="cmdDown"  Content="˅" Height="18" Width="20" Style="{StaticResource defaultButton}"/>
                         </StackPanel>
@@ -97,32 +98,26 @@
                 </StackPanel>
                 <Label Grid.Column="4" Content="Views" Style="{StaticResource defaultLabelTitle}" />
                 <StackPanel Grid.Row="1" Grid.Column="4">
-                    <RadioButton GroupName="view" Margin="5,20,5,0" Content="Battlefield" Style="{StaticResource defaultRadio}" IsChecked="True"/>
-                    <RadioButton GroupName="view" Margin="5,5,5,0" Content="Config Manager" Style="{StaticResource defaultRadio}" />
-                    <RadioButton GroupName="view" Margin="5,5,5,0" Content="Round Activity" Style="{StaticResource defaultRadio}" />
+                    <CheckBox Name="consBasicCheck" Content="Basic Console" Margin="5,20,5,0" Style="{StaticResource defaultCheckbox}" Click="consBasicCheck_Click"/>
+                    <CheckBox Name="consAdvCheck" Content="Advanced Console" Margin="5,20,5,0" Style="{StaticResource defaultCheckbox}" Click="consAdvCheck_Click"/>
                 </StackPanel>
             </Grid>
         </Grid>
-        <TabControl DockPanel.Dock="Bottom" Visibility="Collapsed">
+        <TabControl Name="advTabs" DockPanel.Dock="Bottom" Visibility="Collapsed" Height="180">
             <TabItem Header="Round Actions" />
         </TabControl>
         <Grid SizeChanged="Grid_SizeChanged" Name="fieldsContainer">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="100"/>
-                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="4*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="4*"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition/>
             </Grid.RowDefinitions>
-            <Border BorderBrush="Black" BorderThickness="2" CornerRadius="5" Grid.Column="0">
-                <battlefield:Field x:Name="redField" DockPanel.Dock="Left" />
-            </Border>
-            <Border BorderBrush="Black" BorderThickness="2" CornerRadius="5" Grid.Column="2">
-                <battlefield:Field x:Name="blueField" DockPanel.Dock="Right" />
-            </Border>
-            <Grid Grid.Column="1" Style="{StaticResource centerConsoleStyle}">
-
+            <battlefield:Field x:Name="redField" Grid.Column="0"/>
+            <battlefield:Field x:Name="blueField" DockPanel.Dock="Right" Grid.Column="2"/>
+            <Grid Name="centerConsole" Grid.Column="1" Background="{StaticResource BlackTopBrush}" Width="100" Visibility="Collapsed">
             </Grid>
         </Grid>
     </DockPanel>
