@@ -9,9 +9,9 @@ namespace Battleship
     {
 
 
-        Dictionary<IBattleshipOpponent, int> results;
+        Dictionary<IBattleshipController, int> results;
 
-        public ResultState(BattleshipConsole main, Dictionary<IBattleshipOpponent, int> results)
+        public ResultState(BattleshipConsole main, Dictionary<IBattleshipController, int> results)
             : base(main)
         {
             this.results = results;

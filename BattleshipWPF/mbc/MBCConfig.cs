@@ -55,13 +55,13 @@ namespace Battleship
          * <returns>A Robot loaded externally by a DLL, having the same Name property from IBattleshipOpponent as the parameter.
          * If the class was not found, then this will return null.</returns>
          */
-        public IBattleshipOpponent GetRobot(string name)
+        public IBattleshipController GetRobot(string name)
         {
             Type result = null;
             loadedRobots.TryGetValue(name, out result);
             if (result == null)
                 return null;
-            return (IBattleshipOpponent)Activator.CreateInstance(result);
+            return (IBattleshipController)Activator.CreateInstance(result);
         }
 
         /**
@@ -80,7 +80,7 @@ namespace Battleship
                     foreach (Type interfaces in robot.GetInterfaces())
                         if (interfaces.ToString() == "Battleship.IBattleshipOpponent")
                         {
-                            IBattleshipOpponent opp = (IBattleshipOpponent)Activator.CreateInstance(robot);
+                            IBattleshipController opp = (IBattleshipController)Activator.CreateInstance(robot);
                             loadedRobots.Add(opp.Name + " (v"+opp.Version+")", robot);
                             break;
                         }

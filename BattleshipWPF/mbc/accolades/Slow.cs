@@ -16,12 +16,12 @@ namespace Battleship.mbc.accolades
             diff = 0;
         }
 
-        public RoundLog.RoundAccolade Process(RoundLog.RoundActivity a)
+        public MBCRoundLog.RoundAccolade Process(MBCRoundLog.RoundActivity a)
         {
-            if (a.action != RoundLog.RoundAction.ShotAndHit && a.action != RoundLog.RoundAction.ShotAndMiss)
-                return RoundLog.RoundAccolade.None;
+            if (a.action != MBCRoundLog.RoundAction.ShotAndHit && a.action != MBCRoundLog.RoundAction.ShotAndMiss)
+                return MBCRoundLog.RoundAccolade.None;
 
-            if (a.action == RoundLog.RoundAction.ShotAndHit)
+            if (a.action == MBCRoundLog.RoundAction.ShotAndHit)
             {
                 diff++;
                 if (diff > BattleshipConfig.GetGlobalDefault().GetConfigValue<int>("accolade_slow_diff", 4))
@@ -36,10 +36,10 @@ namespace Battleship.mbc.accolades
             if (cnt > BattleshipConfig.GetGlobalDefault().GetConfigValue<int>("accolade_slow_cnt", 25))
             {
                 ResetCounters();
-                return RoundLog.RoundAccolade.Slow;
+                return MBCRoundLog.RoundAccolade.Slow;
             }
 
-            return RoundLog.RoundAccolade.None;
+            return MBCRoundLog.RoundAccolade.None;
         }
     }
 }

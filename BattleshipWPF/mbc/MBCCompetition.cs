@@ -11,18 +11,18 @@
      * <summary>A BattleshipCompetition object contains game logic for a game of battleship.
      * BattleshipCompetition puts two classes, implementing IBattleshipOpponent, into this game.</summary>
      */
-    public class BattleshipCompetition
+    public class MBCCompetition
     {
-        private BattleshipOpponent[] opponents;     //Guaranteed to always be a 2-element array.
+        private MBCController[] controllers;     //Guaranteed to always be a 2-element array.
         private BattleshipConfig config;            //Configuration used for this competition
-        private Battlefield fieldInfo;              //Contains field information
-        private List<RoundLog> roundList;
-        private RoundLog roundLogger;               //The current RoundLog for the current round
+        private MBCField fieldInfo;              //Contains field information
+        private List<MBCRoundLog> roundList;
+        private MBCRoundLog roundLogger;               //The current RoundLog for the current round
 
         private Thread compThread;                  //The thread used for tasking this competition 
         private bool isRunning = false;             //Should be false whenever rounds should stop running.
 
-        private BattleshipOpponent turn;            //The current opponent's turn
+        private MBCController turn;            //The current opponent's turn
 
         public delegate void RndTick();
         public event RndTick RoundTurnEndEvent;
@@ -36,39 +36,39 @@
         /**
          * <summary>Constructs a new BattleshipCompetition object using a BattleshipConfig for configuration.</summary>
          */
-        public BattleshipCompetition(IBattleshipOpponent[] ops, BattleshipConfig config)
+        public MBCCompetition(IBattleshipController[] ibc, BattleshipConfig config)
         {
-            init(ops, config, config.GetConfigValue<int>("field_random_seed", Environment.TickCount));
+            init(ibc, config, config.GetConfigValue<int>("field_random_seed", Environment.TickCount));
         }
 
         /**
          * <summary>Constructs a new BattleshipCompetition object using a BattleshipConfig for configuration.
          * Also, a seed value can be specified.</summary>
          */
-        public BattleshipCompetition(IBattleshipOpponent[] ops, BattleshipConfig config, int seedNum)
+        public MBCCompetition(IBattleshipController[] ibc, BattleshipConfig config, int seedNum)
         {
-            init(ops, config, seedNum); 
+            init(ibc, config, seedNum); 
         }
 
         /**
          * <summary>Called only by the constructor, does initialization of this class.</summary>
          */
-        private void init(IBattleshipOpponent[] ops, BattleshipConfig conf, int seedNum)
+        private void init(IBattleshipController[] ibc, BattleshipConfig conf, int seedNum)
         {
             config = conf;
-            fieldInfo = new Battlefield(ops);
+            fieldInfo = new MBCField(ibc);
             fieldInfo.fixedRandom = new Random(seedNum);
             fieldInfo.gameSize = new Size(config.GetConfigValue<int>("field_width", 10), config.GetConfigValue<int>("field_height", 10));
             fieldInfo.shipSizes = config.GetConfigValueArray<int>("field_ship_sizes", "2,3,3,4,5");
             fieldInfo.timeoutLimit = new TimeSpan(0, 0, 0, config.GetConfigValue<int>("timeout_seconds", 0), config.GetConfigValue<int>("timeout_millis", 500));
 
-            roundList = new List<RoundLog>();
+            roundList = new List<MBCRoundLog>();
 
-            opponents = new BattleshipOpponent[2];
-            for (int i = 0; i < ops.Count(); i++)
-                opponents[i] = new BattleshipOpponent(ops[i], fieldInfo);
-            foreach (BattleshipOpponent op in opponents)
-                op.NewMatch(Opposite(op).ToString());
+            controllers = new MBCController[2];
+            for (int i = 0; i < ibc.Count(); i++)
+                controllers[i] = new MBCController(ibc[i], fieldInfo);
+            foreach (MBCController op in controllers)
+                op.NewMatch(Opponent(op).ToString());
 
             compThread = new Thread(new ThreadStart(RunCompetition));
         }
@@ -76,7 +76,7 @@
         /**
          * <returns>The battlefield associated with this competition</returns>
          */
-        public Battlefield GetBattlefield()
+        public MBCField GetBattlefield()
         {
             return fieldInfo;
         }
@@ -92,7 +92,7 @@
         /**
          * <returns>The log for the round #idx</returns>
          */
-        public RoundLog GetRoundLogAt(int idx)
+        public MBCRoundLog GetRoundLogAt(int idx)
         {
             lock(roundList) {
                 if (idx < 0 || idx > roundList.Count)
@@ -115,24 +115,24 @@
          * <summary>Used to notify both players whether they won or lost.</summary>
          * <returns>Always returns true</returns>
          */
-        private bool GameResultPush(BattleshipOpponent winner, BattleshipOpponent loser, string reason)
+        private bool GameResultPush(MBCController winner, MBCController loser, string reason)
         {
             winner.GameWon();
             loser.GameLost();
-            roundLogger.PutAction(new RoundLog.RoundActivity(null, winner.iOpponent, RoundLog.RoundAction.Won));
-            roundLogger.PutAction(new RoundLog.RoundActivity(null, loser.iOpponent, RoundLog.RoundAction.Lost));
-            roundLogger.PutAction(new RoundLog.RoundActivity(reason, null, RoundLog.RoundAction.RoundEnd));
+            roundLogger.PutAction(new MBCRoundLog.RoundActivity(null, winner.ibc, MBCRoundLog.RoundAction.Won));
+            roundLogger.PutAction(new MBCRoundLog.RoundActivity(null, loser.ibc, MBCRoundLog.RoundAction.Lost));
+            roundLogger.PutAction(new MBCRoundLog.RoundActivity(reason, null, MBCRoundLog.RoundAction.RoundEnd));
             return true;
         }
 
         /**
-         * <returns>The opposing BattleshipOpponent relative to 'opponent'</returns>
+         * <returns>The opposing BattleshipOpponent relative to 'ibc'</returns>
          */
-        private BattleshipOpponent Opposite(BattleshipOpponent opponent)
+        private MBCController Opponent(MBCController ibc)
         {
-            foreach (BattleshipOpponent op in opponents)
-                if (opponent != op)
-                    return op;
+            foreach (MBCController bc in controllers)
+                if (ibc != bc)
+                    return bc;
             return null;
         }
 
@@ -142,9 +142,9 @@
          */
         private bool NewGame()
         {
-            foreach (BattleshipOpponent op in opponents)
-                if (op.NewGame())
-                    return GameResultPush(Opposite(op), op, RoundLog.RoundActivity.Reason_Timeout);
+            foreach (MBCController bc in controllers)
+                if (bc.NewGame())
+                    return GameResultPush(Opponent(bc), bc, MBCRoundLog.RoundActivity.Reason_Timeout);
             return false;
         }
 
@@ -154,15 +154,15 @@
          */
         private bool ShipPlacement()
         {
-            foreach (BattleshipOpponent op in opponents)
+            foreach (MBCController bc in controllers)
                 do
                 {
-                    if (op.PlaceShips(GenerateNewShips()))
-                        return GameResultPush(Opposite(op), op, RoundLog.RoundActivity.Reason_Timeout);
-                    RoundLog.RoundActivity action = new RoundLog.RoundActivity(op.ShipsReady() ? "Ready" : "Invalid", op.iOpponent, RoundLog.RoundAction.ShipsPlaced);
-                    action.fieldState = new Battlefield(fieldInfo);
+                    if (bc.PlaceShips(GenerateNewShips()))
+                        return GameResultPush(Opponent(bc), bc, MBCRoundLog.RoundActivity.Reason_Timeout);
+                    MBCRoundLog.RoundActivity action = new MBCRoundLog.RoundActivity(bc.ShipsReady() ? "Ready" : "Invalid", bc.ibc, MBCRoundLog.RoundAction.ShipsPlaced);
+                    action.fieldState = new MBCField(fieldInfo);
                     roundLogger.PutAction(action);
-                } while (!op.ShipsReady());
+                } while (!bc.ShipsReady());
             return false;
         }
 
@@ -172,34 +172,34 @@
          */
         private bool GamePlay()
         {
-            Point shot = turn.ShootAt(Opposite(turn));
+            Point shot = turn.ShootAt(Opponent(turn));
 
-            if (shot.X == BattleshipOpponent.LOSE_MAGIC_NUMBER && shot.Y == BattleshipOpponent.LOSE_MAGIC_NUMBER)
-                return GameResultPush(Opposite(turn), turn, RoundLog.RoundActivity.Reason_Timeout);
-            if (Opposite(turn).OpponentShot(shot))
-                return GameResultPush(turn, Opposite(turn), RoundLog.RoundActivity.Reason_Timeout);
+            if (shot.X == MBCController.LOSE_MAGIC_NUMBER && shot.Y == MBCController.LOSE_MAGIC_NUMBER)
+                return GameResultPush(Opponent(turn), turn, MBCRoundLog.RoundActivity.Reason_Timeout);
+            if (Opponent(turn).OpponentShot(shot))
+                return GameResultPush(turn, Opponent(turn), MBCRoundLog.RoundActivity.Reason_Timeout);
 
-            Ship shipHit = Opposite(turn).GetShipAtPoint(shot);
+            Ship shipHit = Opponent(turn).GetShipAtPoint(shot);
 
             if (shipHit != null)
             {
-                roundLogger.PutAction(new RoundLog.RoundActivity(shot.X + "," + shot.Y, turn.iOpponent, RoundLog.RoundAction.ShotAndHit, turn.GetTimeTaken()));
+                roundLogger.PutAction(new MBCRoundLog.RoundActivity(shot.X + "," + shot.Y, turn.ibc, MBCRoundLog.RoundAction.ShotAndHit, turn.GetTimeTaken()));
 
                 bool sunk = shipHit.IsSunk(turn.GetFieldInfo().shotsMade);
 
                 turn.ShotHit(shot, sunk);
                 if (sunk)
-                    roundLogger.PutAction(new RoundLog.RoundActivity(shot.X + "," + shot.Y, turn.iOpponent, RoundLog.RoundAction.ShipDestroyed, turn.GetTimeTaken()));
+                    roundLogger.PutAction(new MBCRoundLog.RoundActivity(shot.X + "," + shot.Y, turn.ibc, MBCRoundLog.RoundAction.ShipDestroyed, turn.GetTimeTaken()));
             }
             else
             {
-                roundLogger.PutAction(new RoundLog.RoundActivity(shot.X + "," + shot.Y, turn.iOpponent, RoundLog.RoundAction.ShotAndMiss, turn.GetTimeTaken()));
+                roundLogger.PutAction(new MBCRoundLog.RoundActivity(shot.X + "," + shot.Y, turn.ibc, MBCRoundLog.RoundAction.ShotAndMiss, turn.GetTimeTaken()));
                 turn.ShotMiss(shot);
             }
 
             //Are there any ships left from the other opponent?
-            if (!Opposite(turn).IsAlive(turn.GetFieldInfo().shotsMade))
-                return GameResultPush(turn, Opposite(turn), null);
+            if (!Opponent(turn).IsAlive(turn.GetFieldInfo().shotsMade))
+                return GameResultPush(turn, Opponent(turn), null);
             return false;
         }
 
@@ -212,14 +212,14 @@
         {
             lock (roundList)
             {
-                if (roundLogger != null && roundLogger.GetAt(roundLogger.GetActivityCount()).action != RoundLog.RoundAction.RoundEnd)
-                    roundLogger.PutAction(new RoundLog.RoundActivity("Round ended before win", null, RoundLog.RoundAction.RoundEnd));
+                if (roundLogger != null && roundLogger.GetAt(roundLogger.GetActivityCount()).action != MBCRoundLog.RoundAction.RoundEnd)
+                    roundLogger.PutAction(new MBCRoundLog.RoundActivity("Round ended before win", null, MBCRoundLog.RoundAction.RoundEnd));
 
-                roundLogger = new RoundLog();
+                roundLogger = new MBCRoundLog();
                 roundList.Add(roundLogger);
 
-                turn = opponents[fieldInfo.fixedRandom.Next(2)];
-                roundLogger.PutAction(new RoundLog.RoundActivity(null, turn.iOpponent, RoundLog.RoundAction.RoundBegin));
+                turn = controllers[fieldInfo.fixedRandom.Next(2)];
+                roundLogger.PutAction(new MBCRoundLog.RoundActivity(null, turn.ibc, MBCRoundLog.RoundAction.RoundBegin));
             }
 
             return NewGame() || ShipPlacement();
@@ -232,7 +232,7 @@
         public bool RoundTurn()
         {
             bool res = GamePlay();
-            turn = Opposite(turn);
+            turn = Opponent(turn);
 
             if (RoundTurnEndEvent != null)
                 RoundTurnEndEvent();
@@ -255,15 +255,15 @@
          */
         private bool RoundsReached(int rnds)
         {
-            return opponents[0].GetFieldInfo().score >= rnds || opponents[1].GetFieldInfo().score >= rnds;
+            return controllers[0].GetFieldInfo().score >= rnds || controllers[1].GetFieldInfo().score >= rnds;
         }
 
         /**
          * <summary>Returns a dictionary linking the scores to the opponents.</summary>
          */
-        public Dictionary<IBattleshipOpponent, int> GetScores()
+        public Dictionary<IBattleshipController, int> GetScores()
         {
-            return opponents.ToDictionary(s => s.iOpponent, s => s.GetFieldInfo().score);
+            return controllers.ToDictionary(s => s.ibc, s => s.GetFieldInfo().score);
         }
 
         /**
@@ -278,8 +278,8 @@
             isRunning = true;
             int gamePlays = 0;
 
-            foreach (BattleshipOpponent op in opponents)
-                op.NewMatch(Opposite(op).ToString());
+            foreach (MBCController bc in controllers)
+                bc.NewMatch(Opponent(bc).ToString());
 
             //This loop continues until this competition is complete.
             while (playOut ? !RoundsReached(rnds) : gamePlays++ < (rnds * 2 - 1) && isRunning)
@@ -289,8 +289,8 @@
                     RoundEndEvent();
             }
 
-            foreach (BattleshipOpponent op in opponents)
-                op.MatchOver();
+            foreach (MBCController bc in controllers)
+                bc.MatchOver();
             if (MatchEndEvent != null)
                 MatchEndEvent();
         }

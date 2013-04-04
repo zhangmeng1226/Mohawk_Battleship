@@ -11,7 +11,7 @@ namespace Battleship
     /**
      * <summary>Keeps a log of a battleship competition round.</summary>
      */
-    public class RoundLog
+    public class MBCRoundLog
     {
         private List<RoundActivity> actions = new List<RoundActivity>();    //A list of RoundActivity's
         private List<RoundAccolade> accolades = new List<RoundAccolade>();   //A list of accolades
@@ -21,7 +21,7 @@ namespace Battleship
         /**
          * <summary>Initializes the action processors</summary>
          */
-        public RoundLog()
+        public MBCRoundLog()
         {
             a_processors.Add(new Comeback());
             a_processors.Add(new Domination());
@@ -89,40 +89,40 @@ namespace Battleship
         {
             public static string Reason_Timeout = "Timeout";  //Common string used for timeout messages
             public string activityInfo;                 //A message going with this action
-            public IBattleshipOpponent opponent;        //The opponent this action relates to
+            public IBattleshipController ibc;        //The opponent this action relates to
             public RoundAction action;                  //The action
             public long timeElapsed;                    //The time it took for this opponent
             public List<RoundAccolade> accoladeTimelined;    //The accolade(s) that was generated from this action
-            public Battlefield fieldState;              //The state of the battlefield at this action.
+            public MBCField fieldState;              //The state of the battlefield at this action.
 
-            public RoundActivity(IBattleshipOpponent op, RoundAction a)
+            public RoundActivity(IBattleshipController bc, RoundAction a)
             {
-                init(null, op, a, 0, null);
+                init(null, bc, a, 0, null);
             }
 
-            public RoundActivity(string info, IBattleshipOpponent op, RoundAction a)
+            public RoundActivity(string info, IBattleshipController bc, RoundAction a)
             {
-                init(info, op, a, 0, null);
+                init(info, bc, a, 0, null);
             }
 
-            public RoundActivity(string info, IBattleshipOpponent op, RoundAction a, long time)
+            public RoundActivity(string info, IBattleshipController bc, RoundAction a, long time)
             {
-                init(info, op, a, time, null);
+                init(info, bc, a, time, null);
             }
 
-            public RoundActivity(string info, IBattleshipOpponent op, RoundAction a, long time, Battlefield state)
+            public RoundActivity(string info, IBattleshipController bc, RoundAction a, long time, MBCField state)
             {
-                init(info, op, a, time, null);
+                init(info, bc, a, time, null);
             }
 
-            private void init(string info, IBattleshipOpponent op, RoundAction a, long time, Battlefield state)
+            private void init(string info, IBattleshipController bc, RoundAction a, long time, MBCField state)
             {
                 accoladeTimelined = new List<RoundAccolade>();
                 activityInfo = info;
-                opponent = op;
+                ibc = bc;
                 action = a;
                 timeElapsed = time;
-                fieldState = new Battlefield(state);
+                fieldState = new MBCField(state);
             }
 
             /**

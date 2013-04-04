@@ -8,25 +8,25 @@ namespace Battleship.mbc.accolades
     public class Domination : AccoladeProcessor
     {
         int diff = 0;
-        IBattleshipOpponent last = null;
+        IBattleshipController last = null;
 
-        public RoundLog.RoundAccolade Process(RoundLog.RoundActivity a)
+        public MBCRoundLog.RoundAccolade Process(MBCRoundLog.RoundActivity a)
         {
-            if (a.action != RoundLog.RoundAction.ShotAndHit)
-                return RoundLog.RoundAccolade.None;
+            if (a.action != MBCRoundLog.RoundAction.ShotAndHit)
+                return MBCRoundLog.RoundAccolade.None;
 
-            if (last != a.opponent)
+            if (last != a.ibc)
             {
                 diff = 0;
-                last = a.opponent;
+                last = a.ibc;
             }
             diff++;
             if (diff > BattleshipConfig.GetGlobalDefault().GetConfigValue<int>("accolade_dom_diff", 9))
             {
                 diff = 0;
-                return RoundLog.RoundAccolade.Domination;
+                return MBCRoundLog.RoundAccolade.Domination;
             }
-            return RoundLog.RoundAccolade.None;
+            return MBCRoundLog.RoundAccolade.None;
         }
     }
 }

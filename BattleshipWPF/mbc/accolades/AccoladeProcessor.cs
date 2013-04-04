@@ -10,6 +10,6 @@ namespace Battleship.mbc.accolades
         /**
          * <summary>Process an activity</summary>
          */
-        RoundLog.RoundAccolade Process(RoundLog.RoundActivity a);
+        MBCRoundLog.RoundAccolade Process(MBCRoundLog.RoundActivity a);
     }
 }

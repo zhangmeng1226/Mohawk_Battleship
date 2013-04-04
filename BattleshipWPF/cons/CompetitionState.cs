@@ -7,21 +7,21 @@ namespace Battleship
 {
     public class CompetitionState : ConsoleState
     {
-        private IBattleshipOpponent[] bots;
-        private Dictionary<IBattleshipOpponent, int> scores;
+        private IBattleshipController[] bots;
+        private Dictionary<IBattleshipController, int> scores;
 
-        public CompetitionState(BattleshipConsole main, IBattleshipOpponent[] opp)
+        public CompetitionState(BattleshipConsole main, IBattleshipController[] ibc)
             : base(main)
         {
             extraMenu = "[S]election";
-            bots = opp;
+            bots = ibc;
         }
 
         protected override void StateDisplay()
         {
             WriteCenteredText("Bot competition mode", headerEnds);
             Console.WriteLine("Running the competition...\n\n");
-            BattleshipCompetition bc = new BattleshipCompetition(bots, main.Config);
+            MBCCompetition bc = new MBCCompetition(bots, main.Config);
             bc.RunCompetition();
             scores = bc.GetScores();
             Console.WriteLine("Done! Press any key to view the final results...");

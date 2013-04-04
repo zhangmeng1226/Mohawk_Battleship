@@ -7,8 +7,8 @@ namespace Battleship
 {
     public class SelectorState : ConsoleState
     {
-        private int opponentChoiceCount = 0; //The current battleship bot the user is selecting.
-        private IBattleshipOpponent[] opponents = new IBattleshipOpponent[2]; //The battleship bots being selected.
+        private int controllerChoiceCount = 0; //The current battleship bot the user is selecting.
+        private IBattleshipController[] controllers = new IBattleshipController[2]; //The battleship bots being selected.
         private InputError error = InputError.none; //The error, based on user input.
         private string[] fsStrings = { "first", "second" };
 
@@ -55,7 +55,7 @@ namespace Battleship
                     Console.WriteLine("> Invalid input.");
                     break;
             }
-            WriteCenteredText("Enter a number for the " + fsStrings[opponentChoiceCount] + " opponent", "===");
+            WriteCenteredText("Enter a number for the " + fsStrings[controllerChoiceCount] + " opponent", "===");
         }
 
         protected override ConsoleState Response(string input)
@@ -78,9 +78,9 @@ namespace Battleship
                 error = InputError.noExist;
                 return this;
             }
-            opponents[opponentChoiceCount++] = main.Config.GetRobot(main.Config.BotNames.ElementAt(choice));
-            if (opponentChoiceCount > 1)
-                return new CompetitionState(main, opponents);
+            controllers[controllerChoiceCount++] = main.Config.GetRobot(main.Config.BotNames.ElementAt(choice));
+            if (controllerChoiceCount > 1)
+                return new CompetitionState(main, controllers);
             return this;
         }
     }

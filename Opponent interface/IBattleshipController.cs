@@ -6,7 +6,7 @@
     using System.Diagnostics;
     using System.Collections.Generic;
 
-    public interface IBattleshipOpponent
+    public interface IBattleshipController
     {
         string Name
         {

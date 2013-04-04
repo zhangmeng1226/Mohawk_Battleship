@@ -6,40 +6,40 @@ using System.Drawing;
 
 namespace Battleship
 {
-    public class Battlefield
+    public class MBCField
     {
         public Size gameSize;           //The size of the battlefield
         public Random fixedRandom;      //A Random object
         public List<int> shipSizes;     //A list of all the ships available on the battlefield
         public TimeSpan timeoutLimit;   //The time limit for this field
-        private Dictionary<IBattleshipOpponent, OpponentInfo> opponents;
+        private Dictionary<IBattleshipController, ControllerInfo> controllers;
 
         /**
          * <summary>Constructs a Battlefield object initialized with two opponents</summary>
          */
-        public Battlefield(IBattleshipOpponent[] ops)
+        public MBCField(IBattleshipController[] ibc)
         {
-            opponents = new Dictionary<IBattleshipOpponent, OpponentInfo>();
-            foreach (IBattleshipOpponent op in ops)
-                opponents[op] = new OpponentInfo();
+            controllers = new Dictionary<IBattleshipController, ControllerInfo>();
+            foreach (IBattleshipController op in ibc)
+                controllers[op] = new ControllerInfo();
         }
 
         /**
          * <returns>Opponent information for both opponents</returns>
          */
-        public OpponentInfo[] GetInfo()
+        public ControllerInfo[] GetInfo()
         {
-            return opponents.Values.ToArray();
+            return controllers.Values.ToArray();
         }
 
         /**
          * <summary>Copy constructor</summary>
          */
-        public Battlefield(Battlefield copy)
+        public MBCField(MBCField copy)
         {
-            opponents = new Dictionary<IBattleshipOpponent, OpponentInfo>();
-            foreach (KeyValuePair<IBattleshipOpponent, OpponentInfo> op in copy.opponents)
-                opponents.Add(op.Key, op.Value);
+            controllers = new Dictionary<IBattleshipController, ControllerInfo>();
+            foreach (KeyValuePair<IBattleshipController, ControllerInfo> op in copy.controllers)
+                controllers.Add(op.Key, op.Value);
             gameSize = copy.gameSize;
             fixedRandom = copy.fixedRandom;
             shipSizes = copy.shipSizes;
@@ -49,16 +49,16 @@ namespace Battleship
         /**
          * <returns>The opponent information for the field from the opponent</returns>
          */
-        public OpponentInfo this[IBattleshipOpponent i]
+        public ControllerInfo this[IBattleshipController i]
         {
-            get { return opponents[i]; }
+            get { return controllers[i]; }
         }
 
         /**
          * <summary>Contains information related to the state of the battlefield for
          * each opponent</summary>
          */
-        public class OpponentInfo
+        public class ControllerInfo
         {
             public List<Point> shotsMade;
             public List<Ship> ships;

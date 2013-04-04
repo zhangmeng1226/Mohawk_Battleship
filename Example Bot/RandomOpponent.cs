@@ -4,7 +4,7 @@
     using System.Collections.ObjectModel;
     using System.Drawing;
 
-    public class RandomOpponent : IBattleshipOpponent
+    public class RandomBot : IBattleshipController
     {
         // This is a change to demonstrate committing and pushing!
         public string Name { get { return "Random"; } }

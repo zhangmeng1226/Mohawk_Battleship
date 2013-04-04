@@ -14,38 +14,49 @@ namespace Battleship
      * to aid in game logic.</summary>
      * 
      */
-    public class BattleshipOpponent
+    public class MBCController
     {
         public const int LOSE_MAGIC_NUMBER = -50; //Number used in Point objects to signify a loss (timed out).
-        public IBattleshipOpponent iOpponent; //The class implementing the IBattleshipOpponent interface playing the game.
+        public IBattleshipController ibc; //The class implementing the IBattleshipOpponent interface playing the game.
         private Stopwatch stopwatch; //Used to time each call to the iOpponent
-        private Battlefield field;
-        private Battlefield.OpponentInfo info;
+        private MBCField field;
+        private MBCField.ControllerInfo info;
 
         /**
          * <summary>Sets up this BattleshipOpponent</summary>
-         * <param name="op">The object that implements the IBattleshipOpponent interface to play the game.</param>
+         * <param name="ic">The object that implements the IBattleshipOpponent interface to play the game.</param>
          * <param name="size">A reference to the board size in the competition</param>
          * <param name="timeout">A reference to the maximum alloted time in the competition</param>
          * 
          */
-        public BattleshipOpponent(IBattleshipOpponent op, Battlefield f)
+        public MBCController(IBattleshipController ic, MBCField f)
         {
-            iOpponent = op;
+            ibc = ic;
             field = f;
 
-            info = field[iOpponent];
+            info = field[ibc];
             if (info == null)
-                throw new NullReferenceException(iOpponent.Name + " bot: Unable to get info.");
+                throw new NullReferenceException(ibc.Name + " bot: Unable to get info.");
 
             info.score = 0;
             info.shotsMade = new List<Point>();
             stopwatch = new Stopwatch();
         }
 
-        public Battlefield.OpponentInfo GetFieldInfo()
+        /**
+         * <returns>The information related to this opponent on the battlefield</returns>
+         */
+        public MBCField.ControllerInfo GetFieldInfo()
         {
             return info;
+        }
+
+        /**
+         * <returns>The time the last action took for this bot to perform.</returns>
+         */
+        public long GetTimeTaken()
+        {
+            return stopwatch.ElapsedMilliseconds;
         }
 
         /**
@@ -76,7 +87,7 @@ namespace Battleship
          */
         public void NewMatch(string opponent)
         {
-            iOpponent.NewMatch(opponent);
+            ibc.NewMatch(opponent);
         }
 
         /**
@@ -100,7 +111,7 @@ namespace Battleship
             info.shotsMade.Clear();
             stopwatch.Start();
 
-            iOpponent.NewGame(field.gameSize, field.timeoutLimit, field.fixedRandom);
+            ibc.NewGame(field.gameSize, field.timeoutLimit, field.fixedRandom);
 
             stopwatch.Stop();
             return RanOutOfTime();
@@ -115,11 +126,14 @@ namespace Battleship
         {
             info.ships = newShips;
             stopwatch.Start();
-            iOpponent.PlaceShips(info.ships.AsReadOnly());
+            ibc.PlaceShips(info.ships.AsReadOnly());
             stopwatch.Stop();
             return RanOutOfTime();
         }
 
+        /**
+         * <returns>The ship at point p. Null if there is no ship.</returns>
+         */
         public Ship GetShipAtPoint(Point p)
         {
             foreach (Ship s in info.ships)
@@ -128,6 +142,9 @@ namespace Battleship
             return null;
         }
 
+        /**
+         * <returns>True if the opponent is still in the match, false if the opponent has lost</returns>
+         */
         public bool IsAlive(List<Point> shots)
         {
             foreach (Ship s in info.ships)
@@ -143,10 +160,10 @@ namespace Battleship
          * <returns>The point the player has shot at. If the player ran out of time,
          * a point at (LOSE_MAGIC_NUMBER, LOSE_MAGIC_NUMBER) will be returned instead.</returns>
          */
-        public Point ShootAt(BattleshipOpponent opponent)
+        public Point ShootAt(MBCController opponent)
         {
             stopwatch.Start();
-            Point shot = iOpponent.GetShot();
+            Point shot = ibc.GetShot();
             stopwatch.Stop();
 
             if (shot.X < 0)
@@ -173,7 +190,7 @@ namespace Battleship
         public bool OpponentShot(Point shot)
         {
             stopwatch.Start();
-            iOpponent.OpponentShot(shot);
+            ibc.OpponentShot(shot);
             stopwatch.Stop();
             return RanOutOfTime();
         }
@@ -187,7 +204,7 @@ namespace Battleship
         public bool ShotHit(Point shot, bool sunk)
         {
             stopwatch.Start();
-            iOpponent.ShotHit(shot, sunk);
+            ibc.ShotHit(shot, sunk);
             stopwatch.Stop();
             return RanOutOfTime();
         }
@@ -200,7 +217,7 @@ namespace Battleship
         public bool ShotMiss(Point shot)
         {
             stopwatch.Start();
-            iOpponent.ShotMiss(shot);
+            ibc.ShotMiss(shot);
             stopwatch.Stop();
             return RanOutOfTime();
         }
@@ -211,7 +228,7 @@ namespace Battleship
         public void GameWon()
         {
             info.score++;
-            iOpponent.GameWon();
+            ibc.GameWon();
         }
 
         /**
@@ -219,7 +236,7 @@ namespace Battleship
          */
         public void GameLost()
         {
-            iOpponent.GameLost();
+            ibc.GameLost();
         }
 
         /**
@@ -227,15 +244,15 @@ namespace Battleship
          */
         public void MatchOver()
         {
-            iOpponent.MatchOver();
+            ibc.MatchOver();
         }
 
         /**
          * <summary>Generates a string containing the name and version of the encapsulated IBattleshipOpponent</summary>
          */
-        public string GetInfo()
+        public override string ToString()
         {
-            return iOpponent.Name + " " + iOpponent.Version.ToString();
+            return ibc.Name + " " + ibc.Version.ToString();
         }
 
     }

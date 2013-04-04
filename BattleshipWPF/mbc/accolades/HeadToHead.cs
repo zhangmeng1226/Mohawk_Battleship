@@ -10,7 +10,7 @@ namespace Battleship.mbc.accolades
 
         int cnt = 0;
         int diff = 0;
-        IBattleshipOpponent op = null;
+        IBattleshipController op = null;
 
         private void ResetCounters()
         {
@@ -18,12 +18,12 @@ namespace Battleship.mbc.accolades
             diff = 0;
         }
 
-        public RoundLog.RoundAccolade Process(RoundLog.RoundActivity a)
+        public MBCRoundLog.RoundAccolade Process(MBCRoundLog.RoundActivity a)
         {
-            if (a.action != RoundLog.RoundAction.ShotAndHit)
-                return RoundLog.RoundAccolade.None;
+            if (a.action != MBCRoundLog.RoundAction.ShotAndHit)
+                return MBCRoundLog.RoundAccolade.None;
 
-            if (op == a.opponent)
+            if (op == a.ibc)
             {
                 diff++;
                 if (diff > BattleshipConfig.GetGlobalDefault().GetConfigValue<int>("accolade_h2h_diff", 4))
@@ -31,7 +31,7 @@ namespace Battleship.mbc.accolades
             }
             else
             {
-                op = a.opponent;
+                op = a.ibc;
                 diff = 0;
                 cnt++;
             }
@@ -39,10 +39,10 @@ namespace Battleship.mbc.accolades
             if (cnt > BattleshipConfig.GetGlobalDefault().GetConfigValue<int>("accolade_h2h_count", 8))
             {
                 ResetCounters();
-                return RoundLog.RoundAccolade.HeadToHead;
+                return MBCRoundLog.RoundAccolade.HeadToHead;
             }
 
-            return RoundLog.RoundAccolade.None;
+            return MBCRoundLog.RoundAccolade.None;
         }
     }
 }
