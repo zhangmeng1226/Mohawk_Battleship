@@ -103,9 +103,12 @@
                 </StackPanel>
             </Grid>
         </Grid>
-        <TabControl Name="advTabs" DockPanel.Dock="Bottom" Visibility="Collapsed" Height="180">
-            <TabItem Header="Round Actions" />
-        </TabControl>
+        <Border Name="advTabs" DockPanel.Dock="Bottom" Visibility="Collapsed" Height="180" Background="Black">
+            <TabControl>
+                <TabItem Header="Statistics" />
+                <TabItem Header="Configuration" />
+            </TabControl>
+        </Border>
         <Grid SizeChanged="Grid_SizeChanged" Name="fieldsContainer">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="4*"/>
@@ -117,8 +120,10 @@
             </Grid.RowDefinitions>
             <battlefield:Field x:Name="redField" Grid.Column="0"/>
             <battlefield:Field x:Name="blueField" DockPanel.Dock="Right" Grid.Column="2"/>
-            <Grid Name="centerConsole" Grid.Column="1" Background="{StaticResource BlackTopBrush}" Width="100" Visibility="Collapsed">
-            </Grid>
+            <Border Name="centerConsoleBorder" BorderBrush="{StaticResource borderConsoleBrush}" BorderThickness="2" Grid.Column="1" Visibility="Collapsed" CornerRadius="10">
+                <Grid Name="centerConsole" Background="{StaticResource BlackTopBrush}" Width="100" >
+                </Grid>
+            </Border>
         </Grid>
     </DockPanel>
 </Window>

@@ -26,27 +26,8 @@ namespace Battleship
             InitializeComponent();
         }
 
-        private void CreateAxis()
-        {
-            axis = new Polyline();
-            axis.Stroke = System.Windows.Media.Brushes.Black;
-            axis.StrokeThickness = 4;
-            axis.FillRule = FillRule.EvenOdd;
-            PointCollection axisLines = new PointCollection();
-            axisLines.Add(new Point(0, 0));
-            axisLines.Add(new Point(0, fieldGrid.ActualHeight));
-            axisLines.Add(new Point(fieldGrid.ActualWidth, fieldGrid.ActualHeight));
-            axis.Points = axisLines;
-            Grid.SetColumn(axis, 1);
-            Grid.SetRow(axis, 0);
-            fieldGrid.Children.Add(axis);
-        }
-
         private void FieldLoaded(object sender, RoutedEventArgs e)
         {
-            Program.PrintDebugMessage("Width: " + ActualWidth);
-            Program.PrintDebugMessage("Height: " + ActualHeight);
-            CreateAxis();
             for (int i = 0; i < 10; i++)
             {
                 fieldGrid.RowDefinitions.Add(new RowDefinition());

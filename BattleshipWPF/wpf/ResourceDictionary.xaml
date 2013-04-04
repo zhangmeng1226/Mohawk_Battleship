@@ -4,6 +4,65 @@
         <GradientStop Color="#55000000" Offset="0.6" />
         <GradientStop Color="#FF000000" Offset="0.8" />
     </LinearGradientBrush>
+    <LinearGradientBrush x:Key="borderConsoleBrush" SpreadMethod="Reflect" StartPoint="0.5,0.5" EndPoint="0.5,1.0">
+        <GradientStop Color="#CC00EE00" Offset="0.52" />
+        <GradientStop Color="#CC004400" Offset="1.0" />
+    </LinearGradientBrush>
+    <Style TargetType="TabItem">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="TabItem">
+                    <Grid>
+                        <Border
+                            Name="Border"
+                            Background="Black"
+                            BorderBrush="DarkGray"
+                            BorderThickness="1"
+                            CornerRadius="10,10,0,0">
+                            <ContentPresenter TextBlock.FontFamily="Berlin Sans FB" TextBlock.Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center" ContentSource="Header" Margin="4,4,4,4">
+                            </ContentPresenter>
+                        </Border>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter TargetName="Border" Property="Background" Value="#FF888888" />
+                            <Setter TargetName="Border" Property="CornerRadius" Value="10,10,0,0" />
+                        </Trigger>
+                        <Trigger Property="IsSelected" Value="False">
+                            <Setter TargetName="Border" Property="Background" Value="Black" />
+                            <Setter TargetName="Border" Property="CornerRadius" Value="0,0,0,0" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style TargetType="TabControl">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="TabControl">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <TabPanel
+                            Grid.Row="0"
+                            Panel.ZIndex="1"
+                            Margin="0,0,4,-1"
+                            IsItemsHost="True"
+                            Background="Transparent"/>
+                        <Border
+                            Grid.Row="1"
+                            Background="DarkGray"
+                            BorderThickness="4"
+                            BorderBrush="Black">
+                        </Border>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
     <Style x:Key="borderTopStyle" TargetType="Border">
         <Setter Property="Background" Value="{StaticResource BlackTopBrush}" />
         <Setter Property="BorderThickness" Value="5" />

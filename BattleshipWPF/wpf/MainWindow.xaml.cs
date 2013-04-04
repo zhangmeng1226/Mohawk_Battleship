@@ -22,9 +22,9 @@ namespace Battleship
         public MainWindow()
         {
             InitializeComponent();
-            redField.fieldLabel.Content = "Red Controller";
+            redField.fieldLabel.Content = "Red";
             redField.fieldLabel.Foreground = System.Windows.Media.Brushes.Red;
-            blueField.fieldLabel.Content = "Blue Controller";
+            blueField.fieldLabel.Content = "Blue";
             blueField.fieldLabel.Foreground = System.Windows.Media.Brushes.Blue;
         }
 
@@ -43,9 +43,9 @@ namespace Battleship
         private void consBasicCheck_Click(object sender, RoutedEventArgs e)
         {
             if (consBasicCheck.IsChecked == true)
-                centerConsole.Visibility = System.Windows.Visibility.Visible;
+                centerConsoleBorder.Visibility = System.Windows.Visibility.Visible;
             else
-                centerConsole.Visibility = System.Windows.Visibility.Collapsed;
+                centerConsoleBorder.Visibility = System.Windows.Visibility.Collapsed;
             UpdateLayout();
             Grid_SizeChanged(null, null);
         }

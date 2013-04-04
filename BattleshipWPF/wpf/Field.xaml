@@ -25,7 +25,12 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
-            <Label Name="fieldLabel" Style="{StaticResource defaultLabelTitle}" Content="ControllerLabel" />
+            <Label Name="fieldLabel" Style="{StaticResource defaultLabelTitle}" Content="ControllerLabel">
+                <Label.Effect>
+                    <DropShadowEffect BlurRadius="10" ShadowDepth="0" Opacity="1" 
+                      Color="White"/>
+                </Label.Effect>
+            </Label>
             <Grid Grid.Row="1" Name="battlegrid" Margin="5">
                 <Grid.RowDefinitions>
                     <RowDefinition />
