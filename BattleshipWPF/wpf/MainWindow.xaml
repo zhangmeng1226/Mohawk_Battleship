@@ -13,8 +13,8 @@
     <Window.Background>
         <ImageBrush ImageSource="/BattleshipWPF;component/media/images/dark-metal-texture.jpg" Stretch="UniformToFill" />
     </Window.Background>
-    <StackPanel>
-        <Grid Height="120" Margin="0">
+    <DockPanel LastChildFill="True">
+        <Grid Height="120" Margin="0" DockPanel.Dock="Top">
             <Grid.Background>
                 <ImageBrush ImageSource="/BattleshipWPF;component/media/images/Mainbar.png" Stretch="UniformToFill" TileMode="None" AlignmentX="Left"/>
             </Grid.Background>
@@ -46,7 +46,7 @@
                 <Border Grid.Row="1" Grid.Column="2" Style="{StaticResource borderTopStyle}" Margin="0" Padding="0" />
                 <Border Grid.Row="0" Grid.Column="3" Style="{StaticResource borderTopStyle}" Margin="0" Padding="0" />
                 <Border Grid.Row="1" Grid.Column="3" Style="{StaticResource borderTopStyle}" Margin="0" Padding="0" />
-                <Label Grid.Row="0" Grid.Column="0" Content="Opponents" Style="{StaticResource defaultLabelTitle}"/>
+                <Label Grid.Row="0" Grid.Column="0" Content="Controllers" Style="{StaticResource defaultLabelTitle}"/>
                 <Grid Grid.Row="1">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
@@ -103,24 +103,27 @@
                 </StackPanel>
             </Grid>
         </Grid>
-        <Grid>
+        <TabControl DockPanel.Dock="Bottom" Visibility="Collapsed">
+            <TabItem Header="Round Actions" />
+        </TabControl>
+        <Grid SizeChanged="Grid_SizeChanged" Name="fieldsContainer">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="*" />
+                <RowDefinition/>
             </Grid.RowDefinitions>
-            <!--
-            <WindowsFormsHost Height="345" Grid.Row="0" Grid.Column="0" Name="battlefield1">
-                <battlefield:Battlefield2D/>
-            </WindowsFormsHost>
-            <WindowsFormsHost Grid.Row="0" Grid.Column="1" Name="battlefield2">
-                <battlefield:Battlefield2D />
-            </WindowsFormsHost>-->
+            <Border BorderBrush="Black" BorderThickness="2" CornerRadius="5" Grid.Column="0">
+                <battlefield:Field x:Name="redField" DockPanel.Dock="Left" />
+            </Border>
+            <Border BorderBrush="Black" BorderThickness="2" CornerRadius="5" Grid.Column="2">
+                <battlefield:Field x:Name="blueField" DockPanel.Dock="Right" />
+            </Border>
+            <Grid Grid.Column="1" Style="{StaticResource centerConsoleStyle}">
+
+            </Grid>
         </Grid>
-        <!--<TabControl>
-            <TabItem Header="Round Actions" />
-        </TabControl>-->
-    </StackPanel>
+    </DockPanel>
 </Window>

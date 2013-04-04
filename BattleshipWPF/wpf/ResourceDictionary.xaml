@@ -10,6 +10,9 @@
         <Setter Property="CornerRadius" Value="5" />
         <Setter Property="Padding" Value="0" />
     </Style>
+    <Style x:Key="centerConsoleStyle" TargetType="Grid">
+        <Setter Property="Background" Value="{StaticResource BlackTopBrush}" />
+    </Style>
     <Style x:Key="titleLabel" TargetType="Label">
         <Setter Property="FontFamily" Value="Consolas" />
         <Setter Property="FontSize" Value="20" />

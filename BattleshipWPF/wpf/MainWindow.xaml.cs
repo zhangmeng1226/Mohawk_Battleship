@@ -23,5 +23,31 @@ namespace Battleship
         {
             InitializeComponent();
         }
+
+        /**
+         * Not spending any more time on this... WPF is too new to me (Ryan A).
+         * It sort of does what it needs to do; maintain a 1:1 ratio. Glitches up a bit though.
+         */
+        private void Grid_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            Size s = new Size(fieldsContainer.ColumnDefinitions[0].ActualWidth, fieldsContainer.RowDefinitions[0].ActualHeight);
+            if (s.Width != s.Height)
+            {
+                if (s.Width > s.Height)
+                {
+                    redField.Width = s.Height;
+                    blueField.Width = s.Height;
+                    redField.Width = s.Height;
+                    blueField.Width = s.Height;
+                }
+                else
+                {
+                    blueField.Height = s.Width;
+                    blueField.Width = s.Width;
+                    redField.Height = s.Width;
+                    redField.Width = s.Width;
+                }
+            }
+        }
     }
 }

@@ -5,7 +5,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>eae12a44-7736-48f0-9ec0-1f0e875fc403</ProjectGuid>
+    <ProjectGuid>{C76994C6-EFC6-487E-A3E4-4B58E8DDA005}</ProjectGuid>
     <OutputType>library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>WPFField</RootNamespace>
@@ -48,7 +48,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="CustomControl1.cs">
+    <Compile Include="WPFField.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>

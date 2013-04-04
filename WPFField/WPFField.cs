@@ -52,11 +52,16 @@ namespace WPFField
             DefaultStyleKeyProperty.OverrideMetadata(typeof(WPFField), new FrameworkPropertyMetadata(typeof(WPFField)));
         }
 
+        Border MainBorder;
+        ContentControl Body;
+
         public override void OnApplyTemplate()
         {
             base.OnApplyTemplate();
             if (Template == null) return;
+
             Border b = Template.FindName("Main", this) as Border;
+            Body = Template.FindName("body", this) as ContentControl;
 
         }
     }
