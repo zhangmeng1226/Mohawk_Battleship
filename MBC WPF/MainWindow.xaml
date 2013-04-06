@@ -189,8 +189,8 @@
             <Grid.RowDefinitions>
                 <RowDefinition/>
             </Grid.RowDefinitions>
-            <battlefield:FieldControl x:Name="redField" Grid.Column="0"/>
-            <battlefield:FieldControl x:Name="blueField" DockPanel.Dock="Right" Grid.Column="2"/>
+            <battlefield:FieldControl x:Name="redField" Grid.Column="0" battlefield:FieldControl.ControllerColor="Red"/>
+            <battlefield:FieldControl x:Name="blueField" DockPanel.Dock="Right" Grid.Column="2" battlefield:FieldControl.ControllerColor="Blue"/>
             <Border Name="centerConsoleBorder" BorderBrush="{StaticResource borderConsoleBrush}" BorderThickness="2" Grid.Column="1" Visibility="Collapsed" CornerRadius="10">
                 <Grid Name="centerConsole" Background="{StaticResource BlackTopBrush}" Width="100" >
                 </Grid>

@@ -2,6 +2,7 @@ var searchData=
 [
   ['saveconfigfile',['SaveConfigFile',['../class_m_b_c_1_1_core_1_1_configuration.html#a04f21c72d510c6486acfc8c27fdc34ce',1,'MBC::Core::Configuration']]],
   ['selectorstate',['SelectorState',['../class_m_b_c_1_1_terminal_1_1_selector_state.html',1,'MBC::Terminal']]],
+  ['setbattlefield',['SetBattlefield',['../class_m_b_c_1_1_w_p_f_1_1_field_control.html#a2f7f336f27ae6c9517c54fcb142120b1',1,'MBC::WPF::FieldControl']]],
   ['setconfigvalue_3c_20t_20_3e',['SetConfigValue&lt; T &gt;',['../class_m_b_c_1_1_core_1_1_configuration.html#a5b828ab347552eaf301846d209a10027',1,'MBC::Core::Configuration']]],
   ['setpropertyvalue',['SetPropertyValue',['../class_xaml_generated_namespace_1_1_generated_internal_type_helper.html#ade0f04c0f7b18dd5b170e071d5534d38',1,'XamlGeneratedNamespace::GeneratedInternalTypeHelper']]],
   ['ship',['Ship',['../class_m_b_c_1_1_core_1_1_ship.html',1,'MBC::Core']]],

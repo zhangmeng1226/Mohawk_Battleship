@@ -33,6 +33,20 @@ namespace MBC.Core
         }
 
         /**
+         * <summary>Gets the first occurrence of IBattleshipController that is not equal to c. If used properly, this
+         * is the opposing controller to the one specified.</summary>
+         */
+        public IBattleshipController GetOpponent(IBattleshipController c)
+        {
+            foreach (IBattleshipController res in controllers.Keys)
+            {
+                if (res != c)
+                    return res;
+            }
+            return null;
+        }
+
+        /**
          * <summary>Copy constructor</summary>
          */
         public Field(Field copy)
@@ -51,7 +65,11 @@ namespace MBC.Core
          */
         public ControllerInfo this[IBattleshipController i]
         {
-            get { return controllers[i]; }
+            get {
+                ControllerInfo info = null;
+                controllers.TryGetValue(i, out info);
+                return info;
+            }
         }
 
         /**

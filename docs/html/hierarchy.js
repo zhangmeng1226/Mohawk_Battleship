@@ -27,7 +27,8 @@ var hierarchy =
       [ "MBC.Bots.RandomBot", "class_m_b_c_1_1_bots_1_1_random_bot.html", null ]
     ] ],
     [ "IComponentConnector", null, [
-      [ "MBC.WPF.Field", "class_m_b_c_1_1_w_p_f_1_1_field.html", null ],
+      [ "MBC.WPF.FieldControl", "class_m_b_c_1_1_w_p_f_1_1_field_control.html", null ],
+      [ "MBC.WPF.FieldControl", "class_m_b_c_1_1_w_p_f_1_1_field_control.html", null ],
       [ "MBC.WPF.MainWindow", "class_m_b_c_1_1_w_p_f_1_1_main_window.html", null ]
     ] ],
     [ "InternalTypeHelper", null, [
@@ -45,8 +46,9 @@ var hierarchy =
     [ "MBC.Core.RoundLog", "class_m_b_c_1_1_core_1_1_round_log.html", null ],
     [ "MBC.Core.Ship", "class_m_b_c_1_1_core_1_1_ship.html", null ],
     [ "UserControl", null, [
-      [ "MBC.WPF.Field", "class_m_b_c_1_1_w_p_f_1_1_field.html", null ],
-      [ "MBC.WPF.Field", "class_m_b_c_1_1_w_p_f_1_1_field.html", null ]
+      [ "MBC.WPF.FieldControl", "class_m_b_c_1_1_w_p_f_1_1_field_control.html", null ],
+      [ "MBC.WPF.FieldControl", "class_m_b_c_1_1_w_p_f_1_1_field_control.html", null ],
+      [ "MBC.WPF.FieldControl", "class_m_b_c_1_1_w_p_f_1_1_field_control.html", null ]
     ] ],
     [ "Window", null, [
       [ "MBC.WPF.MainWindow", "class_m_b_c_1_1_w_p_f_1_1_main_window.html", null ],

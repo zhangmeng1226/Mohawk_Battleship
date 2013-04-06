@@ -74,10 +74,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Field.xaml.cs">
-      <DependentUpon>Field.xaml</DependentUpon>
+    <Compile Include="FieldControl.xaml.cs">
+      <DependentUpon>FieldControl.xaml</DependentUpon>
     </Compile>
-    <Page Include="Field.xaml">
+    <Page Include="FieldControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
