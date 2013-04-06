@@ -15,98 +15,68 @@ namespace MBC.Core
     public class Configuration
     {
         private Dictionary<string, string> simpleConfig;
-        private Dictionary<string, Type> loadedRobots = new Dictionary<string, Type>();
-        private string rootPath;
+        private string configName;
+
+        private static string configsPath;
         private static Configuration globalInstance;
+        private static Configuration defaultInstance;
 
-        /**
-         * <summary>Gets a common configuration object for use. The default configuration file is loaded at \..\config.ini</summary>
-         */
-        public static Configuration GetGlobalDefault()
+        static Configuration()
         {
-            if (globalInstance != null)
-                globalInstance = new Configuration(Util.WorkingDirectory() + "config.ini");
-            return globalInstance;
+            configsPath = Util.WorkingDirectory() + "configs\\";
+            defaultInstance = new Configuration("default");
+            globalInstance = new Configuration("config");
         }
 
         /**
-         * <summary>Returns a list of strings representing the name and version of each bot</summary>
+         * <summary>Gets a common configuration object for use.</summary>
          */
-        public List<string> BotNames
+        public static Configuration Global
         {
-            get
+            get { return globalInstance; }
+        }
+
+        /**
+         * <summary>Gets the default configuration. Used to set the default values for the 
+         */
+        public static Configuration Default
+        {
+            get { return defaultInstance; }
+        }
+
+        /**
+         * <returns>The names of existing configuration files</returns>
+         */
+        public static List<string> GetAvailableConfigs()
+        {
+            string[] absFiles = Directory.GetFiles(Util.WorkingDirectory() + "configs", "*.ini");
+            List<string> res = new List<string>();
+            foreach (string f in absFiles)
             {
-                return loadedRobots.Keys.ToList();
+                string[] spl = f.Split('\\');
+                res.Add(spl[spl.Length].Split('.')[0]);
             }
+            return res;
         }
 
         /**
-         * <summary>Initializes this BattleshipConfig by loading from a config file, if it exists</summary>
+         * <summary>Initializes this BattleshipConfig by loading from a config file. If it does not
+         * exist, then it loads the default values.</summary>
          */
-        public Configuration(string pathname)
+        public Configuration(string name)
         {
             simpleConfig = new Dictionary<string, string>();
-            rootPath = pathname;
-            LoadConfigFile();
-            LoadRobotFolder();
+            configName = name;
+            if(name != "default")
+                LoadConfigFile();
         }
 
         /**
-         * <summary>Returns the object that is identified by name.</summary>
-         * <returns>A Robot loaded externally by a DLL, having the same Name property from IBattleshipOpponent as the parameter.
-         * If the class was not found, then this will return null.</returns>
+         * <summary>Renames this configuration file for file input or output</summary>
          */
-        public IBattleshipController GetRobot(string name)
+        public void Rename(string newName)
         {
-            Type result = null;
-            loadedRobots.TryGetValue(name, out result);
-            if (result == null)
-                return null;
-            return (IBattleshipController)Activator.CreateInstance(result);
-        }
-
-        /**
-         * <summary>Loads a .DLL file and saves objects that implement the IBattleshipOpponent interface.</summary>
-         * <param name="fName">The absolute pathname to the .DLL file</param>
-         * <remarks>It is currently possible to load more than one robot from a single DLL.</remarks>
-         */
-        public void LoadRobots(string fName)
-        {
-            try
-            {
-                Assembly dllInfo = Assembly.LoadFile(fName);
-                Type[] types = dllInfo.GetTypes();
-
-                foreach (Type robot in types)
-                    foreach (Type interfaces in robot.GetInterfaces())
-                        if (interfaces.ToString() == "Battleship.IBattleshipOpponent")
-                        {
-                            IBattleshipController opp = (IBattleshipController)Activator.CreateInstance(robot);
-                            loadedRobots.Add(Util.ControllerToString(opp), robot);
-                            break;
-                        }
-            }
-            catch (Exception e)
-            {
-                Util.PrintDebugMessage("Failed to load " + fName + ": " + e.ToString());
-            }
-        }
-
-        /**
-         * <summary>Opens each .DLL file in the working directory's "bots" folder.</summary>
-         */
-        private void LoadRobotFolder()
-        {
-            try
-            {
-                List<string> files = new List<string>(Directory.GetFiles(Util.WorkingDirectory()+"bots", "*.dll"));
-                foreach (string file in files)
-                    LoadRobots(file);
-            }
-            catch (System.IO.DirectoryNotFoundException e)
-            {
-                Util.PrintDebugMessage("The bot directory could not be found. " + e.ToString());
-            }
+            configName = newName;
         }
 
         /**
@@ -115,17 +85,18 @@ namespace MBC.Core
          * <param name="def">The default value for a given key if the key is not found.</param>
          * <returns>The value loaded from the configuration, otherwise, the default value.</returns>
          */
-        public T GetConfigValue<T>(string s, T def)
+        public T GetConfigValue<T>(string s)
         {
-            string valString;
             try
             {
-                if (simpleConfig.TryGetValue(s, out valString))
-                    return (T)Convert.ChangeType(valString, typeof(T));
+                return (T)Convert.ChangeType(simpleConfig[s], typeof(T));
             }
-            catch { }
-            simpleConfig[s] = def.ToString();
-            return def;
+            catch(KeyNotFoundException e)
+            {
+                if (configName == "default")
+                    throw e;
+                return defaultInstance.GetConfigValue<T>(s);
+            }
         }
 
         /**
@@ -142,17 +113,18 @@ namespace MBC.Core
          * <param name="def">The default value for a given key if the key is not found.</param>
          * <returns>The list loaded from the configuration, otherwise, the default value</returns>
          */
-        public List<T> GetConfigValueArray<T>(string s, string def)
+        public List<T> GetConfigValueArray<T>(string s)
         {
             List<T> vals = new List<T>();
             try
             {
-                foreach (string val in GetConfigValue<string>(s, def).Split(','))
+                foreach (string val in GetConfigValue<string>(s).Split(','))
                     vals.Add((T)Convert.ChangeType(val.Trim(), typeof(T)));
             }
             catch
             {
-                foreach (string val in def.Split(','))
+                vals.Clear();
+                foreach (string val in defaultInstance.GetConfigValue<string>(s).Split(','))
                     vals.Add((T)Convert.ChangeType(val.Trim(), typeof(T)));
             }
             return vals;
@@ -165,7 +137,7 @@ namespace MBC.Core
         {
             try
             {
-                StreamReader reader = new StreamReader(rootPath);
+                StreamReader reader = new StreamReader(configsPath + configName + ".ini");
                 do
                 {
                     string line = reader.ReadLine();
@@ -178,7 +150,7 @@ namespace MBC.Core
             }
             catch
             {
-                Util.PrintDebugMessage("Could not load configuration file for reading.");
+                Util.PrintDebugMessage("Could not load the configuration file " + configName + "for reading. Loading defaults.");
             }
         }
 
@@ -190,7 +162,7 @@ namespace MBC.Core
         {
             try
             {
-                StreamWriter writer = new StreamWriter(rootPath, false);
+                StreamWriter writer = new StreamWriter(configsPath + configName + ".ini", false);
                 foreach (KeyValuePair<string, string> entry in simpleConfig)
                     writer.WriteLine(entry.Key + " = " + entry.Value);
                 writer.Flush();

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using MBC.Core;
+using MBC.Core.util;
 
 namespace MBC.Terminal
 {
@@ -30,7 +31,7 @@ namespace MBC.Terminal
             Console.WriteLine("Here is a list of bots currently available:\n");
 
             int count = 1;
-            foreach (string botName in main.Config.BotNames)
+            foreach (string botName in ControllerFactory.Names)
                 Console.WriteLine((count++) + ": " + botName);
             Console.WriteLine();
         }
@@ -39,7 +40,7 @@ namespace MBC.Terminal
         {
             WriteCenteredText("Bot choice menu", headerEnds);
             Console.WriteLine();
-            if (main.Config.BotNames.Count == 0)
+            if (ControllerFactory.Names.Count == 0)
             {
                 Console.WriteLine("There are no bots that can be listed.");
                 return;
@@ -74,12 +75,12 @@ namespace MBC.Terminal
                 return this;
             }
 
-            if (choice < 0 || choice >= main.Config.BotNames.Count)
+            if (choice < 0 || choice >= ControllerFactory.Names.Count)
             {
                 error = InputError.noExist;
                 return this;
             }
-            controllers[controllerChoiceCount++] = main.Config.GetRobot(main.Config.BotNames.ElementAt(choice));
+            controllers[controllerChoiceCount++] = ControllerFactory.CreateController(ControllerFactory.Names.ElementAt(choice));
             if (controllerChoiceCount > 1)
                 return new CompetitionState(main, controllers);
             return this;

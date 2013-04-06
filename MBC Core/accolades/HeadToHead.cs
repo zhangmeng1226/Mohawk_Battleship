@@ -7,7 +7,10 @@ namespace MBC.Core.mbc.accolades
 {
     public class HeadToHead : AccoladeProcessor
     {
-
+        static HeadToHead()
+        {
+            Configuration.Default.SetConfigValue<int>("accolade_h2h_diff", 4);
+        }
         int cnt = 0;
         int diff = 0;
         IBattleshipController op = null;
@@ -26,7 +29,7 @@ namespace MBC.Core.mbc.accolades
             if (op == a.ibc)
             {
                 diff++;
-                if (diff > Configuration.GetGlobalDefault().GetConfigValue<int>("accolade_h2h_diff", 4))
+                if (diff > Configuration.Global.GetConfigValue<int>("accolade_h2h_diff"))
                     ResetCounters();
             }
             else
@@ -36,7 +39,7 @@ namespace MBC.Core.mbc.accolades
                 cnt++;
             }
 
-            if (cnt > Configuration.GetGlobalDefault().GetConfigValue<int>("accolade_h2h_count", 8))
+            if (cnt > Configuration.Global.GetConfigValue<int>("accolade_h2h_count"))
             {
                 ResetCounters();
                 return RoundLog.RoundAccolade.HeadToHead;

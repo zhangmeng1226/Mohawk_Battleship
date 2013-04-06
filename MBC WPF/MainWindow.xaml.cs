@@ -29,7 +29,7 @@ namespace MBC.WPF
         public MainWindow()
         {
             InitializeComponent();
-            config = Configuration.GetGlobalDefault();
+            config = Configuration.Global;
         }
 
         private void AddRoundActivity(RoundLog.RoundActivity action)
@@ -41,7 +41,7 @@ namespace MBC.WPF
             entry.Message = action.activityInfo;
             entry.Time = action.timeElapsed+"ms";
 
-            long timeout = config.GetConfigValue<long>("timeout_millis", 500);
+            long timeout = config.GetConfigValue<long>("mbc_timeout");
             int diff = (int)(timeout - action.timeElapsed);
             diff = diff < 0 ? 255 : (int)((1 - (diff / timeout)) * 255);
             entry.Color = Color.FromArgb(255, 255, (byte)diff, (byte)diff);
@@ -177,6 +177,36 @@ namespace MBC.WPF
         }
 
         private void btnRndsDown_Click(object sender, RoutedEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void BtnAddConfigEntry_Click(object sender, RoutedEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void BtnRemConfigEntry_Click(object sender, RoutedEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void BtnEntryDefault_Click(object sender, RoutedEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void BtnResetConfig_Click(object sender, RoutedEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void BtnSaveConfig_Click(object sender, RoutedEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void BtnLoadConfig_Click(object sender, RoutedEventArgs e)
         {
             throw new NotImplementedException();
         }

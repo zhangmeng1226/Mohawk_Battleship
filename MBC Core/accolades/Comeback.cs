@@ -7,6 +7,10 @@ namespace MBC.Core.mbc.accolades
 {
     public class Comeback : AccoladeProcessor
     {
+        static Comeback()
+        {
+            Configuration.Default.SetConfigValue<int>("accolade_comeback_diff", 8);
+        }
         int diff = 0;
         int backDiff = 0;
         IBattleshipController last = null;
@@ -25,7 +29,7 @@ namespace MBC.Core.mbc.accolades
 
             if (last != a.ibc)
             {
-                if (diff > Configuration.GetGlobalDefault().GetConfigValue<int>("accolade_comeback_diff", 8))
+                if (diff > Configuration.Global.GetConfigValue<int>("accolade_comeback_diff"))
                     backDiff++;
                 else
                     StartNewCount(a.ibc);

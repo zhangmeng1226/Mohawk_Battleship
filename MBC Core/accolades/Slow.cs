@@ -7,6 +7,11 @@ namespace MBC.Core.mbc.accolades
 {
     public class Slow : AccoladeProcessor
     {
+        static Slow()
+        {
+            Configuration.Default.SetConfigValue<int>("accolade_slow_diff", 4);
+            Configuration.Default.SetConfigValue<int>("accolade_slow_cnt", 25);
+        }
         int cnt = 0;
         int diff = 0;
 
@@ -24,7 +29,7 @@ namespace MBC.Core.mbc.accolades
             if (a.action == RoundLog.RoundAction.ShotAndHit)
             {
                 diff++;
-                if (diff > Configuration.GetGlobalDefault().GetConfigValue<int>("accolade_slow_diff", 4))
+                if (diff > Configuration.Global.GetConfigValue<int>("accolade_slow_diff"))
                     ResetCounters();
             }
             else
@@ -33,7 +38,7 @@ namespace MBC.Core.mbc.accolades
                 diff = 0;
             }
 
-            if (cnt > Configuration.GetGlobalDefault().GetConfigValue<int>("accolade_slow_cnt", 25))
+            if (cnt > Configuration.Global.GetConfigValue<int>("accolade_slow_cnt"))
             {
                 ResetCounters();
                 return RoundLog.RoundAccolade.Slow;

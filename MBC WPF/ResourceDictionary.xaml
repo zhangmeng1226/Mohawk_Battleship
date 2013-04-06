@@ -103,7 +103,9 @@
                             Background="DarkGray"
                             BorderThickness="4"
                             BorderBrush="Black">
-                            <ContentPresenter ContentSource="SelectedContent" />
+                            <Border Background="{StaticResource BlackTopBrush}">
+                                <ContentPresenter ContentSource="SelectedContent" />
+                            </Border>
                         </Border>
                     </Grid>
                 </ControlTemplate>

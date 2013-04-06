@@ -11,6 +11,10 @@ namespace MBC.Core.util
      */
     public class Logger
     {
+        static Logger()
+        {
+            Configuration.Default.SetConfigValue<string>("logger_default_message_level", "info");
+        }
         private List<StreamWriter> oStreams;
         private Log log;
         private Configuration config;
@@ -19,7 +23,7 @@ namespace MBC.Core.util
         public Logger(string n) 
         {
             name = n;
-            config = Configuration.GetGlobalDefault();
+            config = Configuration.Global;
         }
 
         /**
@@ -81,7 +85,7 @@ namespace MBC.Core.util
                     Log(message.Substring(2, message.Length - 1).Trim(), LogMessage.Level.Fatal);
                     break;
                 default:
-                    switch (config.GetConfigValue<string>("logger_default_message_level", "info"))
+                    switch (config.GetConfigValue<string>("logger_default_message_level"))
                     {
                         case "verbose":
                             Log(message, LogMessage.Level.Verbose);

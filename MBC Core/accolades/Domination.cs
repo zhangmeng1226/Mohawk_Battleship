@@ -7,6 +7,10 @@ namespace MBC.Core.mbc.accolades
 {
     public class Domination : AccoladeProcessor
     {
+        static Domination()
+        {
+            Configuration.Default.SetConfigValue<int>("accolade_dom_diff", 9);
+        }
         int diff = 0;
         IBattleshipController last = null;
 
@@ -21,7 +25,7 @@ namespace MBC.Core.mbc.accolades
                 last = a.ibc;
             }
             diff++;
-            if (diff > Configuration.GetGlobalDefault().GetConfigValue<int>("accolade_dom_diff", 9))
+            if (diff > Configuration.Global.GetConfigValue<int>("accolade_dom_diff"))
             {
                 diff = 0;
                 return RoundLog.RoundAccolade.Domination;
