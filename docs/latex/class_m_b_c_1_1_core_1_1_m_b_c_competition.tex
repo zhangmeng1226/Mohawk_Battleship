@@ -1,0 +1,168 @@
+\hypertarget{class_m_b_c_1_1_core_1_1_m_b_c_competition}{\section{M\-B\-C.\-Core.\-M\-B\-C\-Competition Class Reference}
+\label{class_m_b_c_1_1_core_1_1_m_b_c_competition}\index{M\-B\-C.\-Core.\-M\-B\-C\-Competition@{M\-B\-C.\-Core.\-M\-B\-C\-Competition}}
+}
+
+
+A Battleship\-Competition object contains game logic for a game of battleship. Battleship\-Competition puts two classes, implementing I\-Battleship\-Opponent, into this game. 
+
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{class_m_b_c_1_1_core_1_1_m_b_c_competition_a9f3ddebeeb4484563a9217cd863da0c3}{delegate void {\bfseries Rnd\-Tick} ()}\label{class_m_b_c_1_1_core_1_1_m_b_c_competition_a9f3ddebeeb4484563a9217cd863da0c3}
+
+\item 
+\hypertarget{class_m_b_c_1_1_core_1_1_m_b_c_competition_a62071d08bfe3b8d66481d4999f78524d}{delegate void {\bfseries Rnd\-End} ()}\label{class_m_b_c_1_1_core_1_1_m_b_c_competition_a62071d08bfe3b8d66481d4999f78524d}
+
+\item 
+\hypertarget{class_m_b_c_1_1_core_1_1_m_b_c_competition_ad28a85f6882fc2a43dd0e77b22490545}{delegate void {\bfseries Match\-End} ()}\label{class_m_b_c_1_1_core_1_1_m_b_c_competition_ad28a85f6882fc2a43dd0e77b22490545}
+
+\item 
+\hypertarget{class_m_b_c_1_1_core_1_1_m_b_c_competition_a87cf7a27dfc155cbdcf3971e257f93fe}{\hyperlink{class_m_b_c_1_1_core_1_1_m_b_c_competition_a87cf7a27dfc155cbdcf3971e257f93fe}{M\-B\-C\-Competition} (\hyperlink{interface_m_b_c_1_1_core_1_1_i_battleship_controller}{I\-Battleship\-Controller}\mbox{[}$\,$\mbox{]} ibc, \hyperlink{class_m_b_c_1_1_core_1_1_battleship_config}{Battleship\-Config} config)}\label{class_m_b_c_1_1_core_1_1_m_b_c_competition_a87cf7a27dfc155cbdcf3971e257f93fe}
+
+\begin{DoxyCompactList}\small\item\em Constructs a new Battleship\-Competition object using a \hyperlink{class_m_b_c_1_1_core_1_1_battleship_config}{Battleship\-Config} for configuration.\end{DoxyCompactList}\item 
+\hypertarget{class_m_b_c_1_1_core_1_1_m_b_c_competition_a681b10462642ffbfb6fa62d43f409343}{\hyperlink{class_m_b_c_1_1_core_1_1_m_b_c_competition_a681b10462642ffbfb6fa62d43f409343}{M\-B\-C\-Competition} (\hyperlink{interface_m_b_c_1_1_core_1_1_i_battleship_controller}{I\-Battleship\-Controller}\mbox{[}$\,$\mbox{]} ibc, \hyperlink{class_m_b_c_1_1_core_1_1_battleship_config}{Battleship\-Config} config, int seed\-Num)}\label{class_m_b_c_1_1_core_1_1_m_b_c_competition_a681b10462642ffbfb6fa62d43f409343}
+
+\begin{DoxyCompactList}\small\item\em Constructs a new Battleship\-Competition object using a \hyperlink{class_m_b_c_1_1_core_1_1_battleship_config}{Battleship\-Config} for configuration. Also, a seed value can be specified.\end{DoxyCompactList}\item 
+\hyperlink{class_m_b_c_1_1_core_1_1_m_b_c_field}{M\-B\-C\-Field} \hyperlink{class_m_b_c_1_1_core_1_1_m_b_c_competition_a97578e55ceff3692ccf823b9f1ea1829}{Get\-Battlefield} ()
+\item 
+int \hyperlink{class_m_b_c_1_1_core_1_1_m_b_c_competition_aa2e2f3676037c53228955718329c3882}{Get\-Round\-Count} ()
+\item 
+\hyperlink{class_m_b_c_1_1_core_1_1_m_b_c_round_log}{M\-B\-C\-Round\-Log} \hyperlink{class_m_b_c_1_1_core_1_1_m_b_c_competition_a36d7ec45451ec65b2a68c44162f7c0d7}{Get\-Round\-Log\-At} (int idx)
+\item 
+bool \hyperlink{class_m_b_c_1_1_core_1_1_m_b_c_competition_ac7a7ba124d588f24917f7cfcf38b6cfe}{New\-Round} ()
+\begin{DoxyCompactList}\small\item\em Part of manual round control. Clears the previous round if it exists and starts a new round\end{DoxyCompactList}\item 
+bool \hyperlink{class_m_b_c_1_1_core_1_1_m_b_c_competition_af5c32fff03c9ea5ad80d3cd4e1238f74}{Round\-Turn} ()
+\begin{DoxyCompactList}\small\item\em Part of manual round control. Runs a turn\end{DoxyCompactList}\item 
+\hypertarget{class_m_b_c_1_1_core_1_1_m_b_c_competition_a04554bd84bd4ec967de1f3119054ec2b}{void \hyperlink{class_m_b_c_1_1_core_1_1_m_b_c_competition_a04554bd84bd4ec967de1f3119054ec2b}{Run\-Round} ()}\label{class_m_b_c_1_1_core_1_1_m_b_c_competition_a04554bd84bd4ec967de1f3119054ec2b}
+
+\begin{DoxyCompactList}\small\item\em Runs an entire round until an opponent wins\end{DoxyCompactList}\item 
+\hypertarget{class_m_b_c_1_1_core_1_1_m_b_c_competition_ae16e71f3406d372252d0cb1e157a82b1}{Dictionary\\*
+$<$ \hyperlink{interface_m_b_c_1_1_core_1_1_i_battleship_controller}{I\-Battleship\-Controller}, int $>$ \hyperlink{class_m_b_c_1_1_core_1_1_m_b_c_competition_ae16e71f3406d372252d0cb1e157a82b1}{Get\-Scores} ()}\label{class_m_b_c_1_1_core_1_1_m_b_c_competition_ae16e71f3406d372252d0cb1e157a82b1}
+
+\begin{DoxyCompactList}\small\item\em Returns a dictionary linking the scores to the opponents.\end{DoxyCompactList}\item 
+void \hyperlink{class_m_b_c_1_1_core_1_1_m_b_c_competition_a3bf90dac7166f3f134c0638269c2ec90}{Run\-Rounds} (int rnds, bool play\-Out)
+\begin{DoxyCompactList}\small\item\em Runs a specified amount of rounds between two opponents.\end{DoxyCompactList}\item 
+\hypertarget{class_m_b_c_1_1_core_1_1_m_b_c_competition_ab291b677bc79c3a39895f854b4cf1bfa}{void \hyperlink{class_m_b_c_1_1_core_1_1_m_b_c_competition_ab291b677bc79c3a39895f854b4cf1bfa}{Run\-Competition} ()}\label{class_m_b_c_1_1_core_1_1_m_b_c_competition_ab291b677bc79c3a39895f854b4cf1bfa}
+
+\begin{DoxyCompactList}\small\item\em Runs the match between two opponents. Bases the amount of rounds to play and how to play them in the configuration.\end{DoxyCompactList}\item 
+\hypertarget{class_m_b_c_1_1_core_1_1_m_b_c_competition_a10d60b48f5ce23b73b63d16f143465f0}{void \hyperlink{class_m_b_c_1_1_core_1_1_m_b_c_competition_a10d60b48f5ce23b73b63d16f143465f0}{Run\-Competition\-Thread} ()}\label{class_m_b_c_1_1_core_1_1_m_b_c_competition_a10d60b48f5ce23b73b63d16f143465f0}
+
+\begin{DoxyCompactList}\small\item\em Runs the match between two opponents in a separate thread using the configuration.\end{DoxyCompactList}\item 
+\hypertarget{class_m_b_c_1_1_core_1_1_m_b_c_competition_a337e8fde200606ebe7ecd3e08157a673}{void \hyperlink{class_m_b_c_1_1_core_1_1_m_b_c_competition_a337e8fde200606ebe7ecd3e08157a673}{Stop\-Competition\-Thread} ()}\label{class_m_b_c_1_1_core_1_1_m_b_c_competition_a337e8fde200606ebe7ecd3e08157a673}
+
+\begin{DoxyCompactList}\small\item\em Stops rounds from being played anymore.\end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Events}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{class_m_b_c_1_1_core_1_1_m_b_c_competition_a4fc75383b64ce6c902819be1810b26cc}{Rnd\-Tick {\bfseries Round\-Turn\-End\-Event}}\label{class_m_b_c_1_1_core_1_1_m_b_c_competition_a4fc75383b64ce6c902819be1810b26cc}
+
+\item 
+\hypertarget{class_m_b_c_1_1_core_1_1_m_b_c_competition_aab380626b0bb9e3560724a2909a0d01c}{Rnd\-End {\bfseries Round\-End\-Event}}\label{class_m_b_c_1_1_core_1_1_m_b_c_competition_aab380626b0bb9e3560724a2909a0d01c}
+
+\item 
+\hypertarget{class_m_b_c_1_1_core_1_1_m_b_c_competition_abb820e161d496b090e7add0ef1cb6378}{Match\-End {\bfseries Match\-End\-Event}}\label{class_m_b_c_1_1_core_1_1_m_b_c_competition_abb820e161d496b090e7add0ef1cb6378}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+A Battleship\-Competition object contains game logic for a game of battleship. Battleship\-Competition puts two classes, implementing I\-Battleship\-Opponent, into this game.
+
+\subsection{Member Function Documentation}
+\hypertarget{class_m_b_c_1_1_core_1_1_m_b_c_competition_a97578e55ceff3692ccf823b9f1ea1829}{\index{M\-B\-C\-::\-Core\-::\-M\-B\-C\-Competition@{M\-B\-C\-::\-Core\-::\-M\-B\-C\-Competition}!Get\-Battlefield@{Get\-Battlefield}}
+\index{Get\-Battlefield@{Get\-Battlefield}!MBC::Core::MBCCompetition@{M\-B\-C\-::\-Core\-::\-M\-B\-C\-Competition}}
+\subsubsection[{Get\-Battlefield}]{\setlength{\rightskip}{0pt plus 5cm}{\bf M\-B\-C\-Field} M\-B\-C.\-Core.\-M\-B\-C\-Competition.\-Get\-Battlefield (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_m_b_c_1_1_core_1_1_m_b_c_competition_a97578e55ceff3692ccf823b9f1ea1829}
+\begin{DoxyReturn}{Returns}
+The battlefield associated with this competition
+\end{DoxyReturn}
+\hypertarget{class_m_b_c_1_1_core_1_1_m_b_c_competition_aa2e2f3676037c53228955718329c3882}{\index{M\-B\-C\-::\-Core\-::\-M\-B\-C\-Competition@{M\-B\-C\-::\-Core\-::\-M\-B\-C\-Competition}!Get\-Round\-Count@{Get\-Round\-Count}}
+\index{Get\-Round\-Count@{Get\-Round\-Count}!MBC::Core::MBCCompetition@{M\-B\-C\-::\-Core\-::\-M\-B\-C\-Competition}}
+\subsubsection[{Get\-Round\-Count}]{\setlength{\rightskip}{0pt plus 5cm}int M\-B\-C.\-Core.\-M\-B\-C\-Competition.\-Get\-Round\-Count (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_m_b_c_1_1_core_1_1_m_b_c_competition_aa2e2f3676037c53228955718329c3882}
+\begin{DoxyReturn}{Returns}
+The number of rounds played, complete or incomplete
+\end{DoxyReturn}
+\hypertarget{class_m_b_c_1_1_core_1_1_m_b_c_competition_a36d7ec45451ec65b2a68c44162f7c0d7}{\index{M\-B\-C\-::\-Core\-::\-M\-B\-C\-Competition@{M\-B\-C\-::\-Core\-::\-M\-B\-C\-Competition}!Get\-Round\-Log\-At@{Get\-Round\-Log\-At}}
+\index{Get\-Round\-Log\-At@{Get\-Round\-Log\-At}!MBC::Core::MBCCompetition@{M\-B\-C\-::\-Core\-::\-M\-B\-C\-Competition}}
+\subsubsection[{Get\-Round\-Log\-At}]{\setlength{\rightskip}{0pt plus 5cm}{\bf M\-B\-C\-Round\-Log} M\-B\-C.\-Core.\-M\-B\-C\-Competition.\-Get\-Round\-Log\-At (
+\begin{DoxyParamCaption}
+\item[{int}]{idx}
+\end{DoxyParamCaption}
+)}}\label{class_m_b_c_1_1_core_1_1_m_b_c_competition_a36d7ec45451ec65b2a68c44162f7c0d7}
+\begin{DoxyReturn}{Returns}
+The log for the round \#idx
+\end{DoxyReturn}
+\hypertarget{class_m_b_c_1_1_core_1_1_m_b_c_competition_ac7a7ba124d588f24917f7cfcf38b6cfe}{\index{M\-B\-C\-::\-Core\-::\-M\-B\-C\-Competition@{M\-B\-C\-::\-Core\-::\-M\-B\-C\-Competition}!New\-Round@{New\-Round}}
+\index{New\-Round@{New\-Round}!MBC::Core::MBCCompetition@{M\-B\-C\-::\-Core\-::\-M\-B\-C\-Competition}}
+\subsubsection[{New\-Round}]{\setlength{\rightskip}{0pt plus 5cm}bool M\-B\-C.\-Core.\-M\-B\-C\-Competition.\-New\-Round (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_m_b_c_1_1_core_1_1_m_b_c_competition_ac7a7ba124d588f24917f7cfcf38b6cfe}
+
+
+Part of manual round control. Clears the previous round if it exists and starts a new round
+
+\begin{DoxyReturn}{Returns}
+True if the round is ongoing, false if it has been won
+\end{DoxyReturn}
+\hypertarget{class_m_b_c_1_1_core_1_1_m_b_c_competition_af5c32fff03c9ea5ad80d3cd4e1238f74}{\index{M\-B\-C\-::\-Core\-::\-M\-B\-C\-Competition@{M\-B\-C\-::\-Core\-::\-M\-B\-C\-Competition}!Round\-Turn@{Round\-Turn}}
+\index{Round\-Turn@{Round\-Turn}!MBC::Core::MBCCompetition@{M\-B\-C\-::\-Core\-::\-M\-B\-C\-Competition}}
+\subsubsection[{Round\-Turn}]{\setlength{\rightskip}{0pt plus 5cm}bool M\-B\-C.\-Core.\-M\-B\-C\-Competition.\-Round\-Turn (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_m_b_c_1_1_core_1_1_m_b_c_competition_af5c32fff03c9ea5ad80d3cd4e1238f74}
+
+
+Part of manual round control. Runs a turn
+
+\begin{DoxyReturn}{Returns}
+True if the round is still ongoing, false if the round has been won
+\end{DoxyReturn}
+\hypertarget{class_m_b_c_1_1_core_1_1_m_b_c_competition_a3bf90dac7166f3f134c0638269c2ec90}{\index{M\-B\-C\-::\-Core\-::\-M\-B\-C\-Competition@{M\-B\-C\-::\-Core\-::\-M\-B\-C\-Competition}!Run\-Rounds@{Run\-Rounds}}
+\index{Run\-Rounds@{Run\-Rounds}!MBC::Core::MBCCompetition@{M\-B\-C\-::\-Core\-::\-M\-B\-C\-Competition}}
+\subsubsection[{Run\-Rounds}]{\setlength{\rightskip}{0pt plus 5cm}void M\-B\-C.\-Core.\-M\-B\-C\-Competition.\-Run\-Rounds (
+\begin{DoxyParamCaption}
+\item[{int}]{rnds, }
+\item[{bool}]{play\-Out}
+\end{DoxyParamCaption}
+)}}\label{class_m_b_c_1_1_core_1_1_m_b_c_competition_a3bf90dac7166f3f134c0638269c2ec90}
+
+
+Runs a specified amount of rounds between two opponents.
+
+\begin{DoxyReturn}{Returns}
+A list of the two opponents with their scores attached.
+\end{DoxyReturn}
+
+\begin{DoxyParams}{Parameters}
+{\em play\-Out} & If the amount of rounds specified is to be played out (ie. total score between the two opponents) or not (ie. first score to rounds)\\
+\hline
+{\em rnds} & The amount of rounds to play.\\
+\hline
+\end{DoxyParams}
+
+
+Here is the call graph for this function\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_m_b_c_1_1_core_1_1_m_b_c_competition_a3bf90dac7166f3f134c0638269c2ec90_cgraph}
+\end{center}
+\end{figure}
+
+
+
+
+The documentation for this class was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+M\-B\-C Core/M\-B\-C\-Competition.\-cs\end{DoxyCompactItemize}

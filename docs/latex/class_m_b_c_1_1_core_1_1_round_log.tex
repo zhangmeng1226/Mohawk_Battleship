@@ -1,0 +1,99 @@
+\hypertarget{class_m_b_c_1_1_core_1_1_round_log}{\section{M\-B\-C.\-Core.\-Round\-Log Class Reference}
+\label{class_m_b_c_1_1_core_1_1_round_log}\index{M\-B\-C.\-Core.\-Round\-Log@{M\-B\-C.\-Core.\-Round\-Log}}
+}
+
+
+Keeps a log of a battleship competition round. 
+
+
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{class_m_b_c_1_1_core_1_1_round_log_1_1_round_activity}{Round\-Activity}
+\begin{DoxyCompactList}\small\item\em Defines a round action record\end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+enum {\bfseries Round\-Action} \{ \\*
+{\bfseries Shot\-And\-Miss}, 
+{\bfseries Shot\-And\-Hit}, 
+{\bfseries Ship\-Destroyed}, 
+{\bfseries Round\-Begin}, 
+\\*
+{\bfseries Round\-End}, 
+{\bfseries Ships\-Placed}, 
+{\bfseries Won}, 
+{\bfseries Lost}
+ \}
+\item 
+enum {\bfseries Round\-Accolade} \{ \\*
+{\bfseries Head\-To\-Head}, 
+{\bfseries Domination}, 
+{\bfseries Comeback}, 
+{\bfseries Fast}, 
+\\*
+{\bfseries Slow}, 
+{\bfseries Intense}, 
+{\bfseries Stupid}, 
+{\bfseries None}
+ \}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{class_m_b_c_1_1_core_1_1_round_log_a50d3d5c41078aa520500ca86dd5694ab}{\hyperlink{class_m_b_c_1_1_core_1_1_round_log_a50d3d5c41078aa520500ca86dd5694ab}{Round\-Log} ()}\label{class_m_b_c_1_1_core_1_1_round_log_a50d3d5c41078aa520500ca86dd5694ab}
+
+\begin{DoxyCompactList}\small\item\em Initializes the action processors\end{DoxyCompactList}\item 
+\hypertarget{class_m_b_c_1_1_core_1_1_round_log_ad5114bea3e605c3587033cc4b9db6aa7}{void \hyperlink{class_m_b_c_1_1_core_1_1_round_log_ad5114bea3e605c3587033cc4b9db6aa7}{Reset\-Iterator} ()}\label{class_m_b_c_1_1_core_1_1_round_log_ad5114bea3e605c3587033cc4b9db6aa7}
+
+\begin{DoxyCompactList}\small\item\em Starts counting the actions from zero again\end{DoxyCompactList}\item 
+\hyperlink{class_m_b_c_1_1_core_1_1_round_log_1_1_round_activity}{Round\-Activity} \hyperlink{class_m_b_c_1_1_core_1_1_round_log_a14deb5b327e8c77d3535e342701711d9}{Get\-At} (int idx)
+\item 
+int \hyperlink{class_m_b_c_1_1_core_1_1_round_log_a389bd537cf73c73998e0a789961d7536}{Get\-Activity\-Count} ()
+\item 
+\hyperlink{class_m_b_c_1_1_core_1_1_round_log_1_1_round_activity}{Round\-Activity} \hyperlink{class_m_b_c_1_1_core_1_1_round_log_a02c4c7d407ff609478505d28ff20f884}{Get\-Next} ()
+\item 
+\hypertarget{class_m_b_c_1_1_core_1_1_round_log_a0bb405409acf2b889d714bbff68abc94}{void \hyperlink{class_m_b_c_1_1_core_1_1_round_log_a0bb405409acf2b889d714bbff68abc94}{Put\-Action} (\hyperlink{class_m_b_c_1_1_core_1_1_round_log_1_1_round_activity}{Round\-Activity} action)}\label{class_m_b_c_1_1_core_1_1_round_log_a0bb405409acf2b889d714bbff68abc94}
+
+\begin{DoxyCompactList}\small\item\em Adds a constructed action to the list of activities recorded. Once the round end action has been appended, do not use this function anymore.\end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Keeps a log of a battleship competition round.
+
+\subsection{Member Function Documentation}
+\hypertarget{class_m_b_c_1_1_core_1_1_round_log_a389bd537cf73c73998e0a789961d7536}{\index{M\-B\-C\-::\-Core\-::\-Round\-Log@{M\-B\-C\-::\-Core\-::\-Round\-Log}!Get\-Activity\-Count@{Get\-Activity\-Count}}
+\index{Get\-Activity\-Count@{Get\-Activity\-Count}!MBC::Core::RoundLog@{M\-B\-C\-::\-Core\-::\-Round\-Log}}
+\subsubsection[{Get\-Activity\-Count}]{\setlength{\rightskip}{0pt plus 5cm}int M\-B\-C.\-Core.\-Round\-Log.\-Get\-Activity\-Count (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_m_b_c_1_1_core_1_1_round_log_a389bd537cf73c73998e0a789961d7536}
+\begin{DoxyReturn}{Returns}
+The number of actions recorded in this round
+\end{DoxyReturn}
+\hypertarget{class_m_b_c_1_1_core_1_1_round_log_a14deb5b327e8c77d3535e342701711d9}{\index{M\-B\-C\-::\-Core\-::\-Round\-Log@{M\-B\-C\-::\-Core\-::\-Round\-Log}!Get\-At@{Get\-At}}
+\index{Get\-At@{Get\-At}!MBC::Core::RoundLog@{M\-B\-C\-::\-Core\-::\-Round\-Log}}
+\subsubsection[{Get\-At}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Round\-Activity} M\-B\-C.\-Core.\-Round\-Log.\-Get\-At (
+\begin{DoxyParamCaption}
+\item[{int}]{idx}
+\end{DoxyParamCaption}
+)}}\label{class_m_b_c_1_1_core_1_1_round_log_a14deb5b327e8c77d3535e342701711d9}
+\begin{DoxyReturn}{Returns}
+The activity at the specified action idx
+\end{DoxyReturn}
+\hypertarget{class_m_b_c_1_1_core_1_1_round_log_a02c4c7d407ff609478505d28ff20f884}{\index{M\-B\-C\-::\-Core\-::\-Round\-Log@{M\-B\-C\-::\-Core\-::\-Round\-Log}!Get\-Next@{Get\-Next}}
+\index{Get\-Next@{Get\-Next}!MBC::Core::RoundLog@{M\-B\-C\-::\-Core\-::\-Round\-Log}}
+\subsubsection[{Get\-Next}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Round\-Activity} M\-B\-C.\-Core.\-Round\-Log.\-Get\-Next (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_m_b_c_1_1_core_1_1_round_log_a02c4c7d407ff609478505d28ff20f884}
+\begin{DoxyReturn}{Returns}
+The next action record to read$<$/return$>$ 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+M\-B\-C Core/Round\-Log.\-cs\end{DoxyCompactItemize}

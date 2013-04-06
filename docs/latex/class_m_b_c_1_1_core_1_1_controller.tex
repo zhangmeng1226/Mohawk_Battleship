@@ -1,0 +1,301 @@
+\hypertarget{class_m_b_c_1_1_core_1_1_controller}{\section{M\-B\-C.\-Core.\-Controller Class Reference}
+\label{class_m_b_c_1_1_core_1_1_controller}\index{M\-B\-C.\-Core.\-Controller@{M\-B\-C.\-Core.\-Controller}}
+}
+
+
+A Battleship\-Opponent is an object that contains various data pertaining to an I\-Battleship\-Opponent class. Battleship\-Opponent contains various methods to aid in game logic. 
+
+
+
+
+Collaboration diagram for M\-B\-C.\-Core.\-Controller\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=232pt]{class_m_b_c_1_1_core_1_1_controller__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_m_b_c_1_1_core_1_1_controller_ada907b30a847119b01f0d52fa6b05633}{Controller} (\hyperlink{interface_m_b_c_1_1_core_1_1_i_battleship_controller}{I\-Battleship\-Controller} ic, \hyperlink{class_m_b_c_1_1_core_1_1_field}{Field} f)
+\begin{DoxyCompactList}\small\item\em Sets up this Battleship\-Opponent\end{DoxyCompactList}\item 
+\hyperlink{class_m_b_c_1_1_core_1_1_field_1_1_controller_info}{Field.\-Controller\-Info} \hyperlink{class_m_b_c_1_1_core_1_1_controller_af6f8a1a759c38557608ab0faebf49424}{Get\-Field\-Info} ()
+\item 
+long \hyperlink{class_m_b_c_1_1_core_1_1_controller_afdec43bffe7e30eb0e419c1db641a7f3}{Get\-Time\-Taken} ()
+\item 
+bool \hyperlink{class_m_b_c_1_1_core_1_1_controller_af4f0b5d25e8b772e7d333d06548d1f4b}{Ships\-Ready} ()
+\begin{DoxyCompactList}\small\item\em Checks whether all of the ships have been placed in valid locations\end{DoxyCompactList}\item 
+void \hyperlink{class_m_b_c_1_1_core_1_1_controller_a880c9ad7cd60528cad4f36da11bfd9bf}{New\-Match} (string opponent)
+\begin{DoxyCompactList}\small\item\em Notifys the player that they are matched up with a new opponent.\end{DoxyCompactList}\item 
+bool \hyperlink{class_m_b_c_1_1_core_1_1_controller_a6c4fc9aca31480cdfcbb3d4b1d0fd9e2}{Ran\-Out\-Of\-Time} ()
+\begin{DoxyCompactList}\small\item\em Determines if the stopwatch time passed the maximum time allowed.\end{DoxyCompactList}\item 
+bool \hyperlink{class_m_b_c_1_1_core_1_1_controller_ae87c31349a7fde4034942a1b505d372d}{New\-Game} ()
+\begin{DoxyCompactList}\small\item\em Resets certain data for a new game and notifys the player of the new game being commenced\end{DoxyCompactList}\item 
+bool \hyperlink{class_m_b_c_1_1_core_1_1_controller_a5d27318689d6b9e09d6726a433e2b95b}{Place\-Ships} (List$<$ \hyperlink{class_m_b_c_1_1_core_1_1_ship}{Ship} $>$ new\-Ships)
+\begin{DoxyCompactList}\small\item\em Notifys the player to make ship placements.\end{DoxyCompactList}\item 
+\hyperlink{class_m_b_c_1_1_core_1_1_ship}{Ship} \hyperlink{class_m_b_c_1_1_core_1_1_controller_a21e92036de8a74a82b2d5bc341977359}{Get\-Ship\-At\-Point} (Point p)
+\item 
+bool \hyperlink{class_m_b_c_1_1_core_1_1_controller_a9e6f3efa65c34223a9753b1c155ef945}{Is\-Alive} (List$<$ Point $>$ shots)
+\item 
+Point \hyperlink{class_m_b_c_1_1_core_1_1_controller_aee5fa47ba84df60578a2777bd2a77f95}{Shoot\-At} (\hyperlink{class_m_b_c_1_1_core_1_1_controller}{Controller} opponent)
+\begin{DoxyCompactList}\small\item\em Asks for the player's shot. Shoot\-At will repeatedly request the shot until it hasn't made the same shot twice.\end{DoxyCompactList}\item 
+bool \hyperlink{class_m_b_c_1_1_core_1_1_controller_a5a722dfa61f662d4c6ed9cf1c0f2debc}{Opponent\-Shot} (Point shot)
+\begin{DoxyCompactList}\small\item\em Notifys the player that a shot has been made by the other opponent at a certain Point\end{DoxyCompactList}\item 
+bool \hyperlink{class_m_b_c_1_1_core_1_1_controller_aa102974b8aeaed8b05a9a9c51793b9d8}{Shot\-Hit} (Point shot, bool sunk)
+\begin{DoxyCompactList}\small\item\em Notifys the player that their shot hit a ship at the specified point\end{DoxyCompactList}\item 
+bool \hyperlink{class_m_b_c_1_1_core_1_1_controller_a5b6b33ce7d17c2002fe30f89eb22b644}{Shot\-Miss} (Point shot)
+\begin{DoxyCompactList}\small\item\em Notifys the player that their shot missed at the specified point\end{DoxyCompactList}\item 
+\hypertarget{class_m_b_c_1_1_core_1_1_controller_a48997aafea2900e29f042c71a2131522}{void \hyperlink{class_m_b_c_1_1_core_1_1_controller_a48997aafea2900e29f042c71a2131522}{Game\-Won} ()}\label{class_m_b_c_1_1_core_1_1_controller_a48997aafea2900e29f042c71a2131522}
+
+\begin{DoxyCompactList}\small\item\em Notifys the player that a game has been won, and increments this player's score.\end{DoxyCompactList}\item 
+\hypertarget{class_m_b_c_1_1_core_1_1_controller_afe80359151442aaa5c45dc517bd3e8b2}{void \hyperlink{class_m_b_c_1_1_core_1_1_controller_afe80359151442aaa5c45dc517bd3e8b2}{Game\-Lost} ()}\label{class_m_b_c_1_1_core_1_1_controller_afe80359151442aaa5c45dc517bd3e8b2}
+
+\begin{DoxyCompactList}\small\item\em Notifys the player that a game has been lost\end{DoxyCompactList}\item 
+\hypertarget{class_m_b_c_1_1_core_1_1_controller_a1beaca8b029cff045923c06b24114653}{void \hyperlink{class_m_b_c_1_1_core_1_1_controller_a1beaca8b029cff045923c06b24114653}{Match\-Over} ()}\label{class_m_b_c_1_1_core_1_1_controller_a1beaca8b029cff045923c06b24114653}
+
+\begin{DoxyCompactList}\small\item\em Notifys the player that a matchup is over\end{DoxyCompactList}\item 
+\hypertarget{class_m_b_c_1_1_core_1_1_controller_a75fb8c7721eafa5a0d041d15218fcef6}{override string \hyperlink{class_m_b_c_1_1_core_1_1_controller_a75fb8c7721eafa5a0d041d15218fcef6}{To\-String} ()}\label{class_m_b_c_1_1_core_1_1_controller_a75fb8c7721eafa5a0d041d15218fcef6}
+
+\begin{DoxyCompactList}\small\item\em Generates a string containing the name and version of the encapsulated I\-Battleship\-Opponent\end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{class_m_b_c_1_1_core_1_1_controller_a65073a7fa3a6f434a7c6b24c3d8ab59a}{const int {\bfseries L\-O\-S\-E\-\_\-\-M\-A\-G\-I\-C\-\_\-\-N\-U\-M\-B\-E\-R} = -\/50}\label{class_m_b_c_1_1_core_1_1_controller_a65073a7fa3a6f434a7c6b24c3d8ab59a}
+
+\item 
+\hypertarget{class_m_b_c_1_1_core_1_1_controller_ab56cab183d1d2e91940839b3556a7cf3}{\hyperlink{interface_m_b_c_1_1_core_1_1_i_battleship_controller}{I\-Battleship\-Controller} {\bfseries ibc}}\label{class_m_b_c_1_1_core_1_1_controller_ab56cab183d1d2e91940839b3556a7cf3}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+A Battleship\-Opponent is an object that contains various data pertaining to an I\-Battleship\-Opponent class. Battleship\-Opponent contains various methods to aid in game logic.
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_m_b_c_1_1_core_1_1_controller_ada907b30a847119b01f0d52fa6b05633}{\index{M\-B\-C\-::\-Core\-::\-Controller@{M\-B\-C\-::\-Core\-::\-Controller}!Controller@{Controller}}
+\index{Controller@{Controller}!MBC::Core::Controller@{M\-B\-C\-::\-Core\-::\-Controller}}
+\subsubsection[{Controller}]{\setlength{\rightskip}{0pt plus 5cm}M\-B\-C.\-Core.\-Controller.\-Controller (
+\begin{DoxyParamCaption}
+\item[{{\bf I\-Battleship\-Controller}}]{ic, }
+\item[{{\bf Field}}]{f}
+\end{DoxyParamCaption}
+)}}\label{class_m_b_c_1_1_core_1_1_controller_ada907b30a847119b01f0d52fa6b05633}
+
+
+Sets up this Battleship\-Opponent
+
+
+\begin{DoxyParams}{Parameters}
+{\em ic} & The object that implements the I\-Battleship\-Opponent interface to play the game.\\
+\hline
+{\em size} & A reference to the board size in the competition\\
+\hline
+{\em timeout} & A reference to the maximum alloted time in the competition\\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_m_b_c_1_1_core_1_1_controller_af6f8a1a759c38557608ab0faebf49424}{\index{M\-B\-C\-::\-Core\-::\-Controller@{M\-B\-C\-::\-Core\-::\-Controller}!Get\-Field\-Info@{Get\-Field\-Info}}
+\index{Get\-Field\-Info@{Get\-Field\-Info}!MBC::Core::Controller@{M\-B\-C\-::\-Core\-::\-Controller}}
+\subsubsection[{Get\-Field\-Info}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Field.\-Controller\-Info} M\-B\-C.\-Core.\-Controller.\-Get\-Field\-Info (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_m_b_c_1_1_core_1_1_controller_af6f8a1a759c38557608ab0faebf49424}
+\begin{DoxyReturn}{Returns}
+The information related to this opponent on the battlefield
+\end{DoxyReturn}
+\hypertarget{class_m_b_c_1_1_core_1_1_controller_a21e92036de8a74a82b2d5bc341977359}{\index{M\-B\-C\-::\-Core\-::\-Controller@{M\-B\-C\-::\-Core\-::\-Controller}!Get\-Ship\-At\-Point@{Get\-Ship\-At\-Point}}
+\index{Get\-Ship\-At\-Point@{Get\-Ship\-At\-Point}!MBC::Core::Controller@{M\-B\-C\-::\-Core\-::\-Controller}}
+\subsubsection[{Get\-Ship\-At\-Point}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Ship} M\-B\-C.\-Core.\-Controller.\-Get\-Ship\-At\-Point (
+\begin{DoxyParamCaption}
+\item[{Point}]{p}
+\end{DoxyParamCaption}
+)}}\label{class_m_b_c_1_1_core_1_1_controller_a21e92036de8a74a82b2d5bc341977359}
+\begin{DoxyReturn}{Returns}
+The ship at point p. Null if there is no ship.
+\end{DoxyReturn}
+\hypertarget{class_m_b_c_1_1_core_1_1_controller_afdec43bffe7e30eb0e419c1db641a7f3}{\index{M\-B\-C\-::\-Core\-::\-Controller@{M\-B\-C\-::\-Core\-::\-Controller}!Get\-Time\-Taken@{Get\-Time\-Taken}}
+\index{Get\-Time\-Taken@{Get\-Time\-Taken}!MBC::Core::Controller@{M\-B\-C\-::\-Core\-::\-Controller}}
+\subsubsection[{Get\-Time\-Taken}]{\setlength{\rightskip}{0pt plus 5cm}long M\-B\-C.\-Core.\-Controller.\-Get\-Time\-Taken (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_m_b_c_1_1_core_1_1_controller_afdec43bffe7e30eb0e419c1db641a7f3}
+\begin{DoxyReturn}{Returns}
+The time the last action took for this bot to perform.
+\end{DoxyReturn}
+\hypertarget{class_m_b_c_1_1_core_1_1_controller_a9e6f3efa65c34223a9753b1c155ef945}{\index{M\-B\-C\-::\-Core\-::\-Controller@{M\-B\-C\-::\-Core\-::\-Controller}!Is\-Alive@{Is\-Alive}}
+\index{Is\-Alive@{Is\-Alive}!MBC::Core::Controller@{M\-B\-C\-::\-Core\-::\-Controller}}
+\subsubsection[{Is\-Alive}]{\setlength{\rightskip}{0pt plus 5cm}bool M\-B\-C.\-Core.\-Controller.\-Is\-Alive (
+\begin{DoxyParamCaption}
+\item[{List$<$ Point $>$}]{shots}
+\end{DoxyParamCaption}
+)}}\label{class_m_b_c_1_1_core_1_1_controller_a9e6f3efa65c34223a9753b1c155ef945}
+\begin{DoxyReturn}{Returns}
+True if the opponent is still in the match, false if the opponent has lost
+\end{DoxyReturn}
+\hypertarget{class_m_b_c_1_1_core_1_1_controller_ae87c31349a7fde4034942a1b505d372d}{\index{M\-B\-C\-::\-Core\-::\-Controller@{M\-B\-C\-::\-Core\-::\-Controller}!New\-Game@{New\-Game}}
+\index{New\-Game@{New\-Game}!MBC::Core::Controller@{M\-B\-C\-::\-Core\-::\-Controller}}
+\subsubsection[{New\-Game}]{\setlength{\rightskip}{0pt plus 5cm}bool M\-B\-C.\-Core.\-Controller.\-New\-Game (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_m_b_c_1_1_core_1_1_controller_ae87c31349a7fde4034942a1b505d372d}
+
+
+Resets certain data for a new game and notifys the player of the new game being commenced
+
+\begin{DoxyReturn}{Returns}
+True if the player ran out of time. False if they didn't
+\end{DoxyReturn}
+\hypertarget{class_m_b_c_1_1_core_1_1_controller_a880c9ad7cd60528cad4f36da11bfd9bf}{\index{M\-B\-C\-::\-Core\-::\-Controller@{M\-B\-C\-::\-Core\-::\-Controller}!New\-Match@{New\-Match}}
+\index{New\-Match@{New\-Match}!MBC::Core::Controller@{M\-B\-C\-::\-Core\-::\-Controller}}
+\subsubsection[{New\-Match}]{\setlength{\rightskip}{0pt plus 5cm}void M\-B\-C.\-Core.\-Controller.\-New\-Match (
+\begin{DoxyParamCaption}
+\item[{string}]{opponent}
+\end{DoxyParamCaption}
+)}}\label{class_m_b_c_1_1_core_1_1_controller_a880c9ad7cd60528cad4f36da11bfd9bf}
+
+
+Notifys the player that they are matched up with a new opponent.
+
+
+\begin{DoxyParams}{Parameters}
+{\em opponent} & The name of the opponent as a string\\
+\hline
+\end{DoxyParams}
+\hypertarget{class_m_b_c_1_1_core_1_1_controller_a5a722dfa61f662d4c6ed9cf1c0f2debc}{\index{M\-B\-C\-::\-Core\-::\-Controller@{M\-B\-C\-::\-Core\-::\-Controller}!Opponent\-Shot@{Opponent\-Shot}}
+\index{Opponent\-Shot@{Opponent\-Shot}!MBC::Core::Controller@{M\-B\-C\-::\-Core\-::\-Controller}}
+\subsubsection[{Opponent\-Shot}]{\setlength{\rightskip}{0pt plus 5cm}bool M\-B\-C.\-Core.\-Controller.\-Opponent\-Shot (
+\begin{DoxyParamCaption}
+\item[{Point}]{shot}
+\end{DoxyParamCaption}
+)}}\label{class_m_b_c_1_1_core_1_1_controller_a5a722dfa61f662d4c6ed9cf1c0f2debc}
+
+
+Notifys the player that a shot has been made by the other opponent at a certain Point
+
+
+\begin{DoxyParams}{Parameters}
+{\em shot} & The point where the other opponent shot\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True if the player ran out of time. False if they didn't
+\end{DoxyReturn}
+\hypertarget{class_m_b_c_1_1_core_1_1_controller_a5d27318689d6b9e09d6726a433e2b95b}{\index{M\-B\-C\-::\-Core\-::\-Controller@{M\-B\-C\-::\-Core\-::\-Controller}!Place\-Ships@{Place\-Ships}}
+\index{Place\-Ships@{Place\-Ships}!MBC::Core::Controller@{M\-B\-C\-::\-Core\-::\-Controller}}
+\subsubsection[{Place\-Ships}]{\setlength{\rightskip}{0pt plus 5cm}bool M\-B\-C.\-Core.\-Controller.\-Place\-Ships (
+\begin{DoxyParamCaption}
+\item[{List$<$ {\bf Ship} $>$}]{new\-Ships}
+\end{DoxyParamCaption}
+)}}\label{class_m_b_c_1_1_core_1_1_controller_a5d27318689d6b9e09d6726a433e2b95b}
+
+
+Notifys the player to make ship placements.
+
+
+\begin{DoxyParams}{Parameters}
+{\em new\-Ships} & A list of ships to place\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True if the player ran out of time. False if they didn't
+\end{DoxyReturn}
+\hypertarget{class_m_b_c_1_1_core_1_1_controller_a6c4fc9aca31480cdfcbb3d4b1d0fd9e2}{\index{M\-B\-C\-::\-Core\-::\-Controller@{M\-B\-C\-::\-Core\-::\-Controller}!Ran\-Out\-Of\-Time@{Ran\-Out\-Of\-Time}}
+\index{Ran\-Out\-Of\-Time@{Ran\-Out\-Of\-Time}!MBC::Core::Controller@{M\-B\-C\-::\-Core\-::\-Controller}}
+\subsubsection[{Ran\-Out\-Of\-Time}]{\setlength{\rightskip}{0pt plus 5cm}bool M\-B\-C.\-Core.\-Controller.\-Ran\-Out\-Of\-Time (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_m_b_c_1_1_core_1_1_controller_a6c4fc9aca31480cdfcbb3d4b1d0fd9e2}
+
+
+Determines if the stopwatch time passed the maximum time allowed.
+
+\begin{DoxyReturn}{Returns}
+True if the player ran out of time. False if they didn't
+\end{DoxyReturn}
+\hypertarget{class_m_b_c_1_1_core_1_1_controller_af4f0b5d25e8b772e7d333d06548d1f4b}{\index{M\-B\-C\-::\-Core\-::\-Controller@{M\-B\-C\-::\-Core\-::\-Controller}!Ships\-Ready@{Ships\-Ready}}
+\index{Ships\-Ready@{Ships\-Ready}!MBC::Core::Controller@{M\-B\-C\-::\-Core\-::\-Controller}}
+\subsubsection[{Ships\-Ready}]{\setlength{\rightskip}{0pt plus 5cm}bool M\-B\-C.\-Core.\-Controller.\-Ships\-Ready (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_m_b_c_1_1_core_1_1_controller_af4f0b5d25e8b772e7d333d06548d1f4b}
+
+
+Checks whether all of the ships have been placed in valid locations
+
+\begin{DoxyReturn}{Returns}
+True if all ships are placed, not conflicting each other, and in valid locations. False if otherwise
+\end{DoxyReturn}
+\hypertarget{class_m_b_c_1_1_core_1_1_controller_aee5fa47ba84df60578a2777bd2a77f95}{\index{M\-B\-C\-::\-Core\-::\-Controller@{M\-B\-C\-::\-Core\-::\-Controller}!Shoot\-At@{Shoot\-At}}
+\index{Shoot\-At@{Shoot\-At}!MBC::Core::Controller@{M\-B\-C\-::\-Core\-::\-Controller}}
+\subsubsection[{Shoot\-At}]{\setlength{\rightskip}{0pt plus 5cm}Point M\-B\-C.\-Core.\-Controller.\-Shoot\-At (
+\begin{DoxyParamCaption}
+\item[{{\bf Controller}}]{opponent}
+\end{DoxyParamCaption}
+)}}\label{class_m_b_c_1_1_core_1_1_controller_aee5fa47ba84df60578a2777bd2a77f95}
+
+
+Asks for the player's shot. Shoot\-At will repeatedly request the shot until it hasn't made the same shot twice.
+
+
+\begin{DoxyParams}{Parameters}
+{\em opponent} & The Battleship\-Opponent to \char`\"{}shoot at\char`\"{}\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The point the player has shot at. If the player ran out of time, a point at (L\-O\-S\-E\-\_\-\-M\-A\-G\-I\-C\-\_\-\-N\-U\-M\-B\-E\-R, L\-O\-S\-E\-\_\-\-M\-A\-G\-I\-C\-\_\-\-N\-U\-M\-B\-E\-R) will be returned instead.
+\end{DoxyReturn}
+\hypertarget{class_m_b_c_1_1_core_1_1_controller_aa102974b8aeaed8b05a9a9c51793b9d8}{\index{M\-B\-C\-::\-Core\-::\-Controller@{M\-B\-C\-::\-Core\-::\-Controller}!Shot\-Hit@{Shot\-Hit}}
+\index{Shot\-Hit@{Shot\-Hit}!MBC::Core::Controller@{M\-B\-C\-::\-Core\-::\-Controller}}
+\subsubsection[{Shot\-Hit}]{\setlength{\rightskip}{0pt plus 5cm}bool M\-B\-C.\-Core.\-Controller.\-Shot\-Hit (
+\begin{DoxyParamCaption}
+\item[{Point}]{shot, }
+\item[{bool}]{sunk}
+\end{DoxyParamCaption}
+)}}\label{class_m_b_c_1_1_core_1_1_controller_aa102974b8aeaed8b05a9a9c51793b9d8}
+
+
+Notifys the player that their shot hit a ship at the specified point
+
+
+\begin{DoxyParams}{Parameters}
+{\em shot} & The point at which the players shot hit a ship\\
+\hline
+{\em sunk} & If the shot sunk a ship\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True if the player ran out of time. False if they didn't
+\end{DoxyReturn}
+\hypertarget{class_m_b_c_1_1_core_1_1_controller_a5b6b33ce7d17c2002fe30f89eb22b644}{\index{M\-B\-C\-::\-Core\-::\-Controller@{M\-B\-C\-::\-Core\-::\-Controller}!Shot\-Miss@{Shot\-Miss}}
+\index{Shot\-Miss@{Shot\-Miss}!MBC::Core::Controller@{M\-B\-C\-::\-Core\-::\-Controller}}
+\subsubsection[{Shot\-Miss}]{\setlength{\rightskip}{0pt plus 5cm}bool M\-B\-C.\-Core.\-Controller.\-Shot\-Miss (
+\begin{DoxyParamCaption}
+\item[{Point}]{shot}
+\end{DoxyParamCaption}
+)}}\label{class_m_b_c_1_1_core_1_1_controller_a5b6b33ce7d17c2002fe30f89eb22b644}
+
+
+Notifys the player that their shot missed at the specified point
+
+
+\begin{DoxyParams}{Parameters}
+{\em shot} & The point the player shot at but missed\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True if the player ran out of time. False if they didn't
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+M\-B\-C Core/Controller.\-cs\end{DoxyCompactItemize}

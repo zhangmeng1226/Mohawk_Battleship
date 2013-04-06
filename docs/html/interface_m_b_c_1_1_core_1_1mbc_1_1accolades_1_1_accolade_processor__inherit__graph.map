@@ -1,0 +1,8 @@
+<map id="MBC.Core.mbc.accolades.AccoladeProcessor" name="MBC.Core.mbc.accolades.AccoladeProcessor">
+<area shape="rect" id="node2" href="$class_m_b_c_1_1_core_1_1mbc_1_1accolades_1_1_comeback.html" title="MBC.Core.mbc.accolades.Comeback" alt="" coords="287,5,527,32"/>
+<area shape="rect" id="node3" href="$class_m_b_c_1_1_core_1_1mbc_1_1accolades_1_1_domination.html" title="MBC.Core.mbc.accolades.Domination" alt="" coords="285,56,528,83"/>
+<area shape="rect" id="node4" href="$class_m_b_c_1_1_core_1_1mbc_1_1accolades_1_1_fast.html" title="MBC.Core.mbc.accolades.Fast" alt="" coords="305,107,509,133"/>
+<area shape="rect" id="node5" href="$class_m_b_c_1_1_core_1_1mbc_1_1accolades_1_1_head_to_head.html" title="MBC.Core.mbc.accolades.Head\lToHead" alt="" coords="303,158,511,199"/>
+<area shape="rect" id="node6" href="$class_m_b_c_1_1_core_1_1mbc_1_1accolades_1_1_intense.html" title="MBC.Core.mbc.accolades.Intense" alt="" coords="297,224,517,251"/>
+<area shape="rect" id="node7" href="$class_m_b_c_1_1_core_1_1mbc_1_1accolades_1_1_slow.html" title="MBC.Core.mbc.accolades.Slow" alt="" coords="303,275,510,301"/>
+</map>

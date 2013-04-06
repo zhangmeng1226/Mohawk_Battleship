@@ -1,0 +1,142 @@
+\hypertarget{class_m_b_c_1_1_core_1_1_configuration}{\section{M\-B\-C.\-Core.\-Configuration Class Reference}
+\label{class_m_b_c_1_1_core_1_1_configuration}\index{M\-B\-C.\-Core.\-Configuration@{M\-B\-C.\-Core.\-Configuration}}
+}
+
+
+Battleship\-Config deals with a single configuration file and parses each key/value pair. 
+
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{class_m_b_c_1_1_core_1_1_configuration_aa23a1361918822852458878233671d96}{\hyperlink{class_m_b_c_1_1_core_1_1_configuration_aa23a1361918822852458878233671d96}{Configuration} (string pathname)}\label{class_m_b_c_1_1_core_1_1_configuration_aa23a1361918822852458878233671d96}
+
+\begin{DoxyCompactList}\small\item\em Initializes this Battleship\-Config by loading from a config file, if it exists\end{DoxyCompactList}\item 
+\hyperlink{interface_m_b_c_1_1_core_1_1_i_battleship_controller}{I\-Battleship\-Controller} \hyperlink{class_m_b_c_1_1_core_1_1_configuration_a82cce6b1d5e8a2d11f98ca930f6c76ad}{Get\-Robot} (string name)
+\begin{DoxyCompactList}\small\item\em Returns the object that is identified by name.\end{DoxyCompactList}\item 
+void \hyperlink{class_m_b_c_1_1_core_1_1_configuration_a1b9e29410c2026341fcf7157ff927781}{Load\-Robots} (string f\-Name)
+\begin{DoxyCompactList}\small\item\em Loads a .D\-L\-L file and saves objects that implement the I\-Battleship\-Opponent interface.\end{DoxyCompactList}\item 
+T \hyperlink{class_m_b_c_1_1_core_1_1_configuration_a1069037ddfad1eb59edbd38d10c838c4}{Get\-Config\-Value$<$ T $>$} (string s, T def)
+\begin{DoxyCompactList}\small\item\em Gets a value from the configuration\end{DoxyCompactList}\item 
+\hypertarget{class_m_b_c_1_1_core_1_1_configuration_a5b828ab347552eaf301846d209a10027}{void \hyperlink{class_m_b_c_1_1_core_1_1_configuration_a5b828ab347552eaf301846d209a10027}{Set\-Config\-Value$<$ T $>$} (string s, T val)}\label{class_m_b_c_1_1_core_1_1_configuration_a5b828ab347552eaf301846d209a10027}
+
+\begin{DoxyCompactList}\small\item\em Sets a value in the configuration\end{DoxyCompactList}\item 
+List$<$ T $>$ \hyperlink{class_m_b_c_1_1_core_1_1_configuration_a48e56bdacaf0660a45febbe6a402bd83}{Get\-Config\-Value\-Array$<$ T $>$} (string s, string def)
+\begin{DoxyCompactList}\small\item\em Gets a comma-\/delimited array (list) from the configuration\end{DoxyCompactList}\item 
+void \hyperlink{class_m_b_c_1_1_core_1_1_configuration_a04f21c72d510c6486acfc8c27fdc34ce}{Save\-Config\-File} ()
+\begin{DoxyCompactList}\small\item\em Saves the current configuration to a file.\end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{class_m_b_c_1_1_core_1_1_configuration_a46c9b791926a885880df21e74c5a7196}{static \hyperlink{class_m_b_c_1_1_core_1_1_configuration}{Configuration} \hyperlink{class_m_b_c_1_1_core_1_1_configuration_a46c9b791926a885880df21e74c5a7196}{Get\-Global\-Default} ()}\label{class_m_b_c_1_1_core_1_1_configuration_a46c9b791926a885880df21e74c5a7196}
+
+\begin{DoxyCompactList}\small\item\em Gets a common configuration object for use. The default configuration file is loaded at ...ini\end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Properties}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{class_m_b_c_1_1_core_1_1_configuration_ad5261894e43fb858f47873df2d6c847b}{List$<$ string $>$ \hyperlink{class_m_b_c_1_1_core_1_1_configuration_ad5261894e43fb858f47873df2d6c847b}{Bot\-Names}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}}\label{class_m_b_c_1_1_core_1_1_configuration_ad5261894e43fb858f47873df2d6c847b}
+
+\begin{DoxyCompactList}\small\item\em Returns a list of strings representing the name and version of each bot\end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Battleship\-Config deals with a single configuration file and parses each key/value pair.
+
+\subsection{Member Function Documentation}
+\hypertarget{class_m_b_c_1_1_core_1_1_configuration_a1069037ddfad1eb59edbd38d10c838c4}{\index{M\-B\-C\-::\-Core\-::\-Configuration@{M\-B\-C\-::\-Core\-::\-Configuration}!Get\-Config\-Value$<$ T $>$@{Get\-Config\-Value$<$ T $>$}}
+\index{Get\-Config\-Value$<$ T $>$@{Get\-Config\-Value$<$ T $>$}!MBC::Core::Configuration@{M\-B\-C\-::\-Core\-::\-Configuration}}
+\subsubsection[{Get\-Config\-Value$<$ T $>$}]{\setlength{\rightskip}{0pt plus 5cm}T M\-B\-C.\-Core.\-Configuration.\-Get\-Config\-Value$<$ T $>$ (
+\begin{DoxyParamCaption}
+\item[{string}]{s, }
+\item[{T}]{def}
+\end{DoxyParamCaption}
+)}}\label{class_m_b_c_1_1_core_1_1_configuration_a1069037ddfad1eb59edbd38d10c838c4}
+
+
+Gets a value from the configuration
+
+
+\begin{DoxyParams}{Parameters}
+{\em s} & The key to get the value from\\
+\hline
+{\em def} & The default value for a given key if the key is not found.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The value loaded from the configuration, otherwise, the default value.
+\end{DoxyReturn}
+\hypertarget{class_m_b_c_1_1_core_1_1_configuration_a48e56bdacaf0660a45febbe6a402bd83}{\index{M\-B\-C\-::\-Core\-::\-Configuration@{M\-B\-C\-::\-Core\-::\-Configuration}!Get\-Config\-Value\-Array$<$ T $>$@{Get\-Config\-Value\-Array$<$ T $>$}}
+\index{Get\-Config\-Value\-Array$<$ T $>$@{Get\-Config\-Value\-Array$<$ T $>$}!MBC::Core::Configuration@{M\-B\-C\-::\-Core\-::\-Configuration}}
+\subsubsection[{Get\-Config\-Value\-Array$<$ T $>$}]{\setlength{\rightskip}{0pt plus 5cm}List$<$T$>$ M\-B\-C.\-Core.\-Configuration.\-Get\-Config\-Value\-Array$<$ T $>$ (
+\begin{DoxyParamCaption}
+\item[{string}]{s, }
+\item[{string}]{def}
+\end{DoxyParamCaption}
+)}}\label{class_m_b_c_1_1_core_1_1_configuration_a48e56bdacaf0660a45febbe6a402bd83}
+
+
+Gets a comma-\/delimited array (list) from the configuration
+
+
+\begin{DoxyParams}{Parameters}
+{\em s} & The key to get the value from\\
+\hline
+{\em def} & The default value for a given key if the key is not found.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The list loaded from the configuration, otherwise, the default value
+\end{DoxyReturn}
+\hypertarget{class_m_b_c_1_1_core_1_1_configuration_a82cce6b1d5e8a2d11f98ca930f6c76ad}{\index{M\-B\-C\-::\-Core\-::\-Configuration@{M\-B\-C\-::\-Core\-::\-Configuration}!Get\-Robot@{Get\-Robot}}
+\index{Get\-Robot@{Get\-Robot}!MBC::Core::Configuration@{M\-B\-C\-::\-Core\-::\-Configuration}}
+\subsubsection[{Get\-Robot}]{\setlength{\rightskip}{0pt plus 5cm}{\bf I\-Battleship\-Controller} M\-B\-C.\-Core.\-Configuration.\-Get\-Robot (
+\begin{DoxyParamCaption}
+\item[{string}]{name}
+\end{DoxyParamCaption}
+)}}\label{class_m_b_c_1_1_core_1_1_configuration_a82cce6b1d5e8a2d11f98ca930f6c76ad}
+
+
+Returns the object that is identified by name.
+
+\begin{DoxyReturn}{Returns}
+A Robot loaded externally by a D\-L\-L, having the same Name property from I\-Battleship\-Opponent as the parameter. If the class was not found, then this will return null.
+\end{DoxyReturn}
+\hypertarget{class_m_b_c_1_1_core_1_1_configuration_a1b9e29410c2026341fcf7157ff927781}{\index{M\-B\-C\-::\-Core\-::\-Configuration@{M\-B\-C\-::\-Core\-::\-Configuration}!Load\-Robots@{Load\-Robots}}
+\index{Load\-Robots@{Load\-Robots}!MBC::Core::Configuration@{M\-B\-C\-::\-Core\-::\-Configuration}}
+\subsubsection[{Load\-Robots}]{\setlength{\rightskip}{0pt plus 5cm}void M\-B\-C.\-Core.\-Configuration.\-Load\-Robots (
+\begin{DoxyParamCaption}
+\item[{string}]{f\-Name}
+\end{DoxyParamCaption}
+)}}\label{class_m_b_c_1_1_core_1_1_configuration_a1b9e29410c2026341fcf7157ff927781}
+
+
+Loads a .D\-L\-L file and saves objects that implement the I\-Battleship\-Opponent interface.
+
+
+\begin{DoxyParams}{Parameters}
+{\em f\-Name} & The absolute pathname to the .D\-L\-L file\\
+\hline
+\end{DoxyParams}
+
+
+It is currently possible to load more than one robot from a single D\-L\-L.\hypertarget{class_m_b_c_1_1_core_1_1_configuration_a04f21c72d510c6486acfc8c27fdc34ce}{\index{M\-B\-C\-::\-Core\-::\-Configuration@{M\-B\-C\-::\-Core\-::\-Configuration}!Save\-Config\-File@{Save\-Config\-File}}
+\index{Save\-Config\-File@{Save\-Config\-File}!MBC::Core::Configuration@{M\-B\-C\-::\-Core\-::\-Configuration}}
+\subsubsection[{Save\-Config\-File}]{\setlength{\rightskip}{0pt plus 5cm}void M\-B\-C.\-Core.\-Configuration.\-Save\-Config\-File (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_m_b_c_1_1_core_1_1_configuration_a04f21c72d510c6486acfc8c27fdc34ce}
+
+
+Saves the current configuration to a file.
+
+
+\begin{DoxyExceptions}{Exceptions}
+{\em I\-O\-Exception} & The file could not be written to.\\
+\hline
+\end{DoxyExceptions}
+
+
+The documentation for this class was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+M\-B\-C Core/util/Configuration.\-cs\end{DoxyCompactItemize}

@@ -1,0 +1,149 @@
+\hypertarget{class_m_b_c_1_1_core_1_1_console_state}{\section{M\-B\-C.\-Core.\-Console\-State Class Reference}
+\label{class_m_b_c_1_1_core_1_1_console_state}\index{M\-B\-C.\-Core.\-Console\-State@{M\-B\-C.\-Core.\-Console\-State}}
+}
+
+
+The base class for console states 
+
+
+
+
+Inheritance diagram for M\-B\-C.\-Core.\-Console\-State\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_m_b_c_1_1_core_1_1_console_state__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for M\-B\-C.\-Core.\-Console\-State\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=222pt]{class_m_b_c_1_1_core_1_1_console_state__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{class_m_b_c_1_1_core_1_1_console_state_a03d5c60c181f6723e388bb5990a3fafa}{{\bfseries Console\-State} (\hyperlink{class_m_b_c_1_1_core_1_1_battleship_console}{Battleship\-Console} main)}\label{class_m_b_c_1_1_core_1_1_console_state_a03d5c60c181f6723e388bb5990a3fafa}
+
+\item 
+\hyperlink{class_m_b_c_1_1_core_1_1_console_state}{Console\-State} \hyperlink{class_m_b_c_1_1_core_1_1_console_state_a43dc3809efa433327aa48c3a4eed9fdf}{Get\-Input} (string input)
+\begin{DoxyCompactList}\small\item\em Called in the loop, used for input interactivity.\end{DoxyCompactList}\item 
+void \hyperlink{class_m_b_c_1_1_core_1_1_console_state_a4057bc6a3d91ce0f14f0b4f42061a2a8}{Write\-Centered\-Text} (string text, string ends)
+\begin{DoxyCompactList}\small\item\em Prints the specified text, with the specified ends, centered, to the console.\end{DoxyCompactList}\item 
+\hypertarget{class_m_b_c_1_1_core_1_1_console_state_a4626aa3f1417537ef9a65877bdf70ac2}{void \hyperlink{class_m_b_c_1_1_core_1_1_console_state_a4626aa3f1417537ef9a65877bdf70ac2}{Display} ()}\label{class_m_b_c_1_1_core_1_1_console_state_a4626aa3f1417537ef9a65877bdf70ac2}
+
+\begin{DoxyCompactList}\small\item\em Called in the loop, this provides a standard way for user interactivity and display.\end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{class_m_b_c_1_1_core_1_1_console_state_abe71049af896c2aea468aafea4f120a2}{Write\-Chars} (char c, int n)
+\begin{DoxyCompactList}\small\item\em Writes a specific character for a number of times.\end{DoxyCompactList}\item 
+\hypertarget{class_m_b_c_1_1_core_1_1_console_state_adc79ff45463d9368fc65bd0db0ce5973}{abstract void \hyperlink{class_m_b_c_1_1_core_1_1_console_state_adc79ff45463d9368fc65bd0db0ce5973}{State\-Display} ()}\label{class_m_b_c_1_1_core_1_1_console_state_adc79ff45463d9368fc65bd0db0ce5973}
+
+\begin{DoxyCompactList}\small\item\em Overridden to provide specific printing related to the subclass.\end{DoxyCompactList}\item 
+abstract \hyperlink{class_m_b_c_1_1_core_1_1_console_state}{Console\-State} \hyperlink{class_m_b_c_1_1_core_1_1_console_state_aaaa5118a38bedd856e55fa26601a5f3d}{Response} (string input)
+\begin{DoxyCompactList}\small\item\em Called when input is not handled by the base class.\end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{class_m_b_c_1_1_core_1_1_console_state_a257c4e4243d3fdc37760474a7a7f40da}{\hyperlink{class_m_b_c_1_1_core_1_1_battleship_console}{Battleship\-Console} {\bfseries main}}\label{class_m_b_c_1_1_core_1_1_console_state_a257c4e4243d3fdc37760474a7a7f40da}
+
+\item 
+\hypertarget{class_m_b_c_1_1_core_1_1_console_state_a19d15cb73fa82f3e3ac4c0312f967c26}{string {\bfseries extra\-Menu} = \char`\"{}\char`\"{}}\label{class_m_b_c_1_1_core_1_1_console_state_a19d15cb73fa82f3e3ac4c0312f967c26}
+
+\item 
+\hypertarget{class_m_b_c_1_1_core_1_1_console_state_a153a4fde843c026d9e56cc6ad9dc04b9}{const string {\bfseries header\-Ends} = \char`\"{}=====================\char`\"{}}\label{class_m_b_c_1_1_core_1_1_console_state_a153a4fde843c026d9e56cc6ad9dc04b9}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+The base class for console states
+
+\subsection{Member Function Documentation}
+\hypertarget{class_m_b_c_1_1_core_1_1_console_state_a43dc3809efa433327aa48c3a4eed9fdf}{\index{M\-B\-C\-::\-Core\-::\-Console\-State@{M\-B\-C\-::\-Core\-::\-Console\-State}!Get\-Input@{Get\-Input}}
+\index{Get\-Input@{Get\-Input}!MBC::Core::ConsoleState@{M\-B\-C\-::\-Core\-::\-Console\-State}}
+\subsubsection[{Get\-Input}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Console\-State} M\-B\-C.\-Core.\-Console\-State.\-Get\-Input (
+\begin{DoxyParamCaption}
+\item[{string}]{input}
+\end{DoxyParamCaption}
+)}}\label{class_m_b_c_1_1_core_1_1_console_state_a43dc3809efa433327aa48c3a4eed9fdf}
+
+
+Called in the loop, used for input interactivity.
+
+
+\begin{DoxyParams}{Parameters}
+{\em input} & The string entered by the user into the console\\
+\hline
+\end{DoxyParams}
+\hypertarget{class_m_b_c_1_1_core_1_1_console_state_aaaa5118a38bedd856e55fa26601a5f3d}{\index{M\-B\-C\-::\-Core\-::\-Console\-State@{M\-B\-C\-::\-Core\-::\-Console\-State}!Response@{Response}}
+\index{Response@{Response}!MBC::Core::ConsoleState@{M\-B\-C\-::\-Core\-::\-Console\-State}}
+\subsubsection[{Response}]{\setlength{\rightskip}{0pt plus 5cm}abstract {\bf Console\-State} M\-B\-C.\-Core.\-Console\-State.\-Response (
+\begin{DoxyParamCaption}
+\item[{string}]{input}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [pure virtual]}}}\label{class_m_b_c_1_1_core_1_1_console_state_aaaa5118a38bedd856e55fa26601a5f3d}
+
+
+Called when input is not handled by the base class.
+
+
+\begin{DoxyParams}{Parameters}
+{\em input} & The string entered by the user\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The implementing class, null, or a new \hyperlink{class_m_b_c_1_1_core_1_1_console_state}{Console\-State} object. null will end the program.
+\end{DoxyReturn}
+
+
+Implemented in \hyperlink{class_m_b_c_1_1_core_1_1_selector_state_a5010831a2fe37679042b023a6cd03900}{M\-B\-C.\-Core.\-Selector\-State}, \hyperlink{class_m_b_c_1_1_core_1_1_competition_state_a053b69f4d127ea8beab873137503ed36}{M\-B\-C.\-Core.\-Competition\-State}, and \hyperlink{class_m_b_c_1_1_core_1_1_result_state_a7777d212543d72c982273a61303119df}{M\-B\-C.\-Core.\-Result\-State}.
+
+\hypertarget{class_m_b_c_1_1_core_1_1_console_state_a4057bc6a3d91ce0f14f0b4f42061a2a8}{\index{M\-B\-C\-::\-Core\-::\-Console\-State@{M\-B\-C\-::\-Core\-::\-Console\-State}!Write\-Centered\-Text@{Write\-Centered\-Text}}
+\index{Write\-Centered\-Text@{Write\-Centered\-Text}!MBC::Core::ConsoleState@{M\-B\-C\-::\-Core\-::\-Console\-State}}
+\subsubsection[{Write\-Centered\-Text}]{\setlength{\rightskip}{0pt plus 5cm}void M\-B\-C.\-Core.\-Console\-State.\-Write\-Centered\-Text (
+\begin{DoxyParamCaption}
+\item[{string}]{text, }
+\item[{string}]{ends}
+\end{DoxyParamCaption}
+)}}\label{class_m_b_c_1_1_core_1_1_console_state_a4057bc6a3d91ce0f14f0b4f42061a2a8}
+
+
+Prints the specified text, with the specified ends, centered, to the console.
+
+
+\begin{DoxyParams}{Parameters}
+{\em text} & The text to print centered.\\
+\hline
+{\em ends} & The ends used for styling.\\
+\hline
+\end{DoxyParams}
+\hypertarget{class_m_b_c_1_1_core_1_1_console_state_abe71049af896c2aea468aafea4f120a2}{\index{M\-B\-C\-::\-Core\-::\-Console\-State@{M\-B\-C\-::\-Core\-::\-Console\-State}!Write\-Chars@{Write\-Chars}}
+\index{Write\-Chars@{Write\-Chars}!MBC::Core::ConsoleState@{M\-B\-C\-::\-Core\-::\-Console\-State}}
+\subsubsection[{Write\-Chars}]{\setlength{\rightskip}{0pt plus 5cm}void M\-B\-C.\-Core.\-Console\-State.\-Write\-Chars (
+\begin{DoxyParamCaption}
+\item[{char}]{c, }
+\item[{int}]{n}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [protected]}}}\label{class_m_b_c_1_1_core_1_1_console_state_abe71049af896c2aea468aafea4f120a2}
+
+
+Writes a specific character for a number of times.
+
+
+\begin{DoxyParams}{Parameters}
+{\em c} & The character to print to the console.\\
+\hline
+{\em n} & The number of times to print the character\\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+M\-B\-C Console/Console\-State.\-cs\end{DoxyCompactItemize}

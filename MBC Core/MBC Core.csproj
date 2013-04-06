@@ -1,0 +1,77 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{A00F2D39-4BC0-4DB9-A17A-2A1A9812BD20}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>MBC.Core</RootNamespace>
+    <AssemblyName>MBCCore</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="accolades\AccoladeProcessor.cs" />
+    <Compile Include="accolades\Comeback.cs" />
+    <Compile Include="accolades\Domination.cs" />
+    <Compile Include="accolades\Fast.cs" />
+    <Compile Include="accolades\HeadToHead.cs" />
+    <Compile Include="accolades\Intense.cs" />
+    <Compile Include="accolades\Slow.cs" />
+    <Compile Include="MBCCompetition.cs" />
+    <Compile Include="MBCConfig.cs" />
+    <Compile Include="MBCController.cs" />
+    <Compile Include="MBCField.cs" />
+    <Compile Include="MBCRoundLog.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="util\Log.cs" />
+    <Compile Include="util\LogMessage.cs" />
+    <Compile Include="util\Util.cs" />
+    <Compile Include="util\Logger.cs" />
+    <Compile Include="util\LoggerManager.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MBC Controller Interface\MBC Controller Interface.csproj">
+      <Project>{51FD717F-5965-4C31-9BDD-051DA693A729}</Project>
+      <Name>MBC Controller Interface</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

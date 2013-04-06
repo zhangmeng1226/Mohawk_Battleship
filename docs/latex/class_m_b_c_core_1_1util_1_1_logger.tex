@@ -1,0 +1,51 @@
+\hypertarget{class_m_b_c_core_1_1util_1_1_logger}{\section{M\-B\-C\-Core.\-util.\-Logger Class Reference}
+\label{class_m_b_c_core_1_1util_1_1_logger}\index{M\-B\-C\-Core.\-util.\-Logger@{M\-B\-C\-Core.\-util.\-Logger}}
+}
+
+
+Used for logging. Thread safe 
+
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{class_m_b_c_core_1_1util_1_1_logger_af266c3aa3098332f0cc6445de23a5821}{{\bfseries Logger} (string n)}\label{class_m_b_c_core_1_1util_1_1_logger_af266c3aa3098332f0cc6445de23a5821}
+
+\item 
+\hypertarget{class_m_b_c_core_1_1util_1_1_logger_a973c7abc12053a00ccf84b543b12c9cd}{void \hyperlink{class_m_b_c_core_1_1util_1_1_logger_a973c7abc12053a00ccf84b543b12c9cd}{Add\-Output\-Stream} (Stream\-Writer s\-Out)}\label{class_m_b_c_core_1_1util_1_1_logger_a973c7abc12053a00ccf84b543b12c9cd}
+
+\begin{DoxyCompactList}\small\item\em Attach a stream to this log, such as a file stream or a network stream.\end{DoxyCompactList}\item 
+void \hyperlink{class_m_b_c_core_1_1util_1_1_logger_ad79aa6e76e7350f1f04331fe6747d11d}{Log} (string message)
+\begin{DoxyCompactList}\small\item\em Prefix-\/enabled logging method. Use the prefixes beginning with an exclaimation mark (!) to specify a log message level. The message can be entered directly after the two characters.\par
+ This is only a simple logging method.\par
+ \end{DoxyCompactList}\item 
+\hypertarget{class_m_b_c_core_1_1util_1_1_logger_ae17e4cc05b1a9425b8517355188148cd}{void \hyperlink{class_m_b_c_core_1_1util_1_1_logger_ae17e4cc05b1a9425b8517355188148cd}{Log} (string message, Log\-Message.\-Level lvl)}\label{class_m_b_c_core_1_1util_1_1_logger_ae17e4cc05b1a9425b8517355188148cd}
+
+\begin{DoxyCompactList}\small\item\em \hyperlink{class_m_b_c_core_1_1util_1_1_log}{Log} a message with the specified level. This will also immediately output to the attached streams within the same thread.\end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Used for logging. Thread safe
+
+\subsection{Member Function Documentation}
+\hypertarget{class_m_b_c_core_1_1util_1_1_logger_ad79aa6e76e7350f1f04331fe6747d11d}{\index{M\-B\-C\-Core\-::util\-::\-Logger@{M\-B\-C\-Core\-::util\-::\-Logger}!Log@{Log}}
+\index{Log@{Log}!MBCCore::util::Logger@{M\-B\-C\-Core\-::util\-::\-Logger}}
+\subsubsection[{Log}]{\setlength{\rightskip}{0pt plus 5cm}void M\-B\-C\-Core.\-util.\-Logger.\-Log (
+\begin{DoxyParamCaption}
+\item[{string}]{message}
+\end{DoxyParamCaption}
+)}}\label{class_m_b_c_core_1_1util_1_1_logger_ad79aa6e76e7350f1f04331fe6747d11d}
+
+
+Prefix-\/enabled logging method. Use the prefixes beginning with an exclaimation mark (!) to specify a log message level. The message can be entered directly after the two characters.\par
+ This is only a simple logging method.\par
+ 
+
+
+\begin{DoxyItemize}
+\item 
+\end{DoxyItemize}prefixes\-: !v -\/ Verbose !i -\/ Info !d -\/ Debug !w -\/ Warning !e -\/ Error !c -\/ Critical !f -\/ Fatal 
+
+The documentation for this class was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+M\-B\-C Core/util/Logger.\-cs\end{DoxyCompactItemize}
