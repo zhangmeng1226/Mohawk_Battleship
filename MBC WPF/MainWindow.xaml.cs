@@ -11,6 +11,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Collections.ObjectModel;
+using MBC.Core;
+using System.ComponentModel;
 
 namespace MBC.WPF
 {
@@ -19,6 +22,10 @@ namespace MBC.WPF
     /// </summary>
     public partial class MainWindow : Window
     {
+        ObservableCollection<RoundActivityEntry> roundActLogEntries = new ObservableCollection<RoundActivityEntry>();
+        ObservableCollection<RoundEntry> roundLogEntries = new ObservableCollection<RoundEntry>();
+        Configuration config;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -26,6 +33,58 @@ namespace MBC.WPF
             redField.fieldLabel.Foreground = System.Windows.Media.Brushes.Red;
             blueField.fieldLabel.Content = "Blue";
             blueField.fieldLabel.Foreground = System.Windows.Media.Brushes.Blue;
+            config = Configuration.GetGlobalDefault();
+        }
+
+        private void AddRoundActivity(RoundLog.RoundActivity action)
+        {
+            RoundActivityEntry entry = new RoundActivityEntry();
+            entry.Number = roundActLogEntries.Count().ToString();
+            entry.Action = RoundLog.GetActionStr(action.action);
+            entry.ControllerName = action.ibc != null ? Util.ControllerToString(action.ibc) : "Null";
+            entry.Message = action.activityInfo;
+            entry.Time = action.timeElapsed+"ms";
+
+            long timeout = config.GetConfigValue<long>("timeout_millis", 500);
+            int diff = (int)(timeout - action.timeElapsed);
+            diff = diff < 0 ? 255 : (int)((1 - (diff / timeout)) * 255);
+            entry.Color = Color.FromArgb(255, 255, (byte)diff, (byte)diff);
+
+            entry.Accolades = new Grid();
+            int colNum = 0;
+            foreach (RoundLog.RoundAccolade acc in action.accoladeTimelined)
+            {
+                ColumnDefinition col = new ColumnDefinition();
+                col.Width = new GridLength(1, GridUnitType.Auto);
+                entry.Accolades.ColumnDefinitions.Add(col);
+
+                Image img = (Image)FindResource("Acc" + RoundLog.GetAccoladeStr(acc) + "Img");
+
+                ToolTip tip = new ToolTip();
+                tip.Content = RoundLog.GetAccoladeStr(acc);
+
+                img.ToolTip = tip;
+                Grid.SetColumn(img, colNum++);
+
+                entry.Accolades.Children.Add(img);
+            }
+        }
+
+        public class RoundActivityEntry
+        {
+            public string Number;
+            public string Action;
+            public string ControllerName;
+            public string Message;
+            public string Time;
+            public Grid Accolades;
+            public Color Color;
+        }
+
+        public class RoundEntry
+        {
+            public string Number;
+            public string Victor;
         }
 
         private void Grid_SizeChanged(object sender, SizeChangedEventArgs e)
@@ -92,6 +151,36 @@ namespace MBC.WPF
         }
 
         private void btnRedSelect_Click(object sender, RoutedEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void BtnBenchmarkLoad_Click(object sender, RoutedEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void BtnBenchmarkSave_Click(object sender, RoutedEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void BtnRoundLoad_Click(object sender, RoutedEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void BtnRoundSave_Click(object sender, RoutedEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void btnRndsUp_Click(object sender, RoutedEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void btnRndsDown_Click(object sender, RoutedEventArgs e)
         {
             throw new NotImplementedException();
         }

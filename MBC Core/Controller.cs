@@ -252,7 +252,7 @@ namespace MBC.Core
          */
         public override string ToString()
         {
-            return ibc.Name + " " + ibc.Version.ToString();
+            return Util.ControllerToString(ibc);
         }
 
     }

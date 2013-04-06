@@ -8,7 +8,6 @@ var class_m_b_c_1_1_core_1_1_round_log =
       [ "Fast", "class_m_b_c_1_1_core_1_1_round_log.html#a4060830ca7135aa755ec5b6d24aa30e6ae16b5b7f26f54214445cbe38d72c2828", null ],
       [ "Slow", "class_m_b_c_1_1_core_1_1_round_log.html#a4060830ca7135aa755ec5b6d24aa30e6aefa5397985b8609a5dbeb430a4bcadd3", null ],
       [ "Intense", "class_m_b_c_1_1_core_1_1_round_log.html#a4060830ca7135aa755ec5b6d24aa30e6a40399988dc3f678053ddb5a046de6219", null ],
-      [ "Stupid", "class_m_b_c_1_1_core_1_1_round_log.html#a4060830ca7135aa755ec5b6d24aa30e6afa7ac1027c833fb858dfff282c7443f0", null ],
       [ "None", "class_m_b_c_1_1_core_1_1_round_log.html#a4060830ca7135aa755ec5b6d24aa30e6a6adf97f83acf6453d4a6a4b1070f3754", null ]
     ] ],
     [ "RoundAction", "class_m_b_c_1_1_core_1_1_round_log.html#af3f9f76d90fb391108dd1eaeaeae27e4", [

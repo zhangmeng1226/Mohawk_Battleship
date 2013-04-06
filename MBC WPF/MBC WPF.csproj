@@ -136,9 +136,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="media\images\background.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="media\images\Mainbar.png" />
   </ItemGroup>
   <ItemGroup>
@@ -166,7 +163,16 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="media\images\accolades\domination.png" />
+    <Resource Include="media\images\accolades\fast.png" />
+    <Resource Include="media\images\accolades\headtohead.png" />
+    <Resource Include="media\images\accolades\intense.png" />
+    <Resource Include="media\images\accolades\slow.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="media\images\accolades\comeback.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

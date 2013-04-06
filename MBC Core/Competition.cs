@@ -60,7 +60,7 @@
             fieldInfo.fixedRandom = new Random(seedNum);
             fieldInfo.gameSize = new Size(config.GetConfigValue<int>("field_width", 10), config.GetConfigValue<int>("field_height", 10));
             fieldInfo.shipSizes = config.GetConfigValueArray<int>("field_ship_sizes", "2,3,3,4,5");
-            fieldInfo.timeoutLimit = new TimeSpan(0, 0, 0, config.GetConfigValue<int>("timeout_seconds", 0), config.GetConfigValue<int>("timeout_millis", 500));
+            fieldInfo.timeoutLimit = new TimeSpan(0, 0, 0, 0, config.GetConfigValue<int>("timeout_millis", 500));
 
             roundList = new List<RoundLog>();
 

@@ -54,5 +54,13 @@ namespace MBC.Core
         {
             return Assembly.GetExecutingAssembly().Location+"\\..\\";
         }
+
+        /**
+         * <returns>A string that contains the name and version of the specified controller</returns>
+         */
+        public static string ControllerToString(IBattleshipController c)
+        {
+            return c.Name + " (v" + c.Version + ")";
+        }
     }
 }

@@ -82,11 +82,22 @@
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
                         <Label VerticalAlignment="Center" Grid.Column="0" Grid.Row="0" Content="Rounds" Style="{StaticResource defaultLabel}" />
-                        <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal">
-                            <TextBox x:Name="txtNumOfRounds" Height="17" Width="50" Text="0" />
-                            <Button x:Name="btnRndsUp" Content="˄" Height="18" Width="20" Style="{StaticResource defaultButton}"/>
-                            <Button x:Name="btnRndsDown"  Content="˅" Height="18" Width="20" Style="{StaticResource defaultButton}"/>
-                        </StackPanel>
+                        <Grid Grid.Row="0" Grid.Column="1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="3*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+                            <TextBox x:Name="txtNumOfRounds" Width="50" Text="0" Grid.Row="0" Grid.Column="0"
+                                     Grid.RowSpan="2" VerticalContentAlignment="Center"/>
+                            <Button x:Name="btnRndsUp" Content="˄" Height="11" Width="20" Style="{StaticResource numericButton}"
+                                    Grid.Row="0" Grid.Column="1" Click="btnRndsUp_Click" />
+                            <Button x:Name="btnRndsDown"  Content="˅" Height="11" Width="20" Style="{StaticResource numericButton}"
+                                    Grid.Row="1" Grid.Column="1" Click="btnRndsDown_Click" />
+                        </Grid>
                     </Grid>
                     <CheckBox Content="Play out rounds" Style="{StaticResource defaultCheckbox}" Margin="5"/>
                     <Button Name="btnRndBegin" Content="Begin" Style="{StaticResource defaultButton}" Click="btnRndBegin_Click" />
@@ -106,7 +117,61 @@
         <Border Name="advTabs" DockPanel.Dock="Bottom" Visibility="Collapsed" Height="180" Background="Black">
             <TabControl>
                 <TabItem Header="Round Log">
-
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <ListView Grid.Column="0" ItemsSource="{Binding roundActLogEntries}">
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn Width="20" Header="#" 
+                                                    DisplayMemberBinding="{Binding Number}"/>
+                                    <GridViewColumn Width="80" Header="Action" 
+                                                    DisplayMemberBinding="{Binding Action}"/>
+                                    <GridViewColumn Width="80" Header="Controller" 
+                                                    DisplayMemberBinding="{Binding ControllerName}"/>
+                                    <GridViewColumn Width="150" Header="Message" 
+                                                    DisplayMemberBinding="{Binding Message}"/>
+                                    <GridViewColumn Width="60" Header="Time" 
+                                                    DisplayMemberBinding="{Binding Time}"/>
+                                    <GridViewColumn Width="Auto" Header="Accolades">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <ContentControl Content="{Binding Accolades}" />
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+                        <Grid Grid.Column="1" Background="{StaticResource BlackTopBrush}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+                            <Label Content="Round Log" Grid.ColumnSpan="3" Grid.Column="0" Grid.Row="0"
+                                   Style="{StaticResource defaultLabelTitle}"/>
+                            <StackPanel Grid.Column="0" Grid.Row="1">
+                                <Button Name="BtnBenchmarkLoad" Margin="5" Style="{StaticResource defaultButton}" Content="Load Benchmark..." Click="BtnBenchmarkLoad_Click" />
+                                <Button Name="BtnBenchmarkSave" Margin="5" Style="{StaticResource defaultButton}" Content="Save Benchmark..." Click="BtnBenchmarkSave_Click" />
+                                <Button Name="BtnRoundLoad" Margin="5" Style="{StaticResource defaultButton}" Content="Load Round..." Click="BtnRoundLoad_Click" />
+                                <Button Name="BtnRoundSave" Margin="5" Style="{StaticResource defaultButton}" Content="Save Round..." Click="BtnRoundSave_Click" />
+                            </StackPanel>
+                            <ListView Grid.Column="1" Grid.Row="1" ItemsSource="{Binding roundLogEntries}">
+                                <ListView.View>
+                                    <GridView>
+                                        <GridViewColumn Header="#" Width="30" DisplayMemberBinding="{Binding Number}"/>
+                                        <GridViewColumn Header="Victor" Width="90" DisplayMemberBinding="{Binding Victor}"/>
+                                    </GridView>
+                                </ListView.View>
+                            </ListView>
+                        </Grid>
+                    </Grid>
                 </TabItem>
                 <TabItem Header="Statistics">
                     <Label Content="Hello" />

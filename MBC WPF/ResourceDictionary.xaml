@@ -1,5 +1,8 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <!--
+        Linear Gradient Brushes
+    -->
     <LinearGradientBrush x:Key="BlackTopBrush" StartPoint="0.5,0.5" EndPoint="0.5,1.15" SpreadMethod="Reflect">
         <GradientStop Color="#55000000" Offset="0.6" />
         <GradientStop Color="#FF000000" Offset="0.8" />
@@ -8,6 +11,24 @@
         <GradientStop Color="#CC00EE00" Offset="0.52" />
         <GradientStop Color="#CC004400" Offset="1.0" />
     </LinearGradientBrush>
+    
+    <!--
+        Images
+    -->
+    <Image x:Key="AccComebackImg" Source="/MBC WPF;component/media/images/accolades/comeback.png" />
+    <Image x:Key="AccDominationImg" Source="/MBC WPF;component/media/images/accolades/domination.png" />
+    <Image x:Key="AccFastImg" Source="/MBC WPF;component/media/images/accolades/fast.png" />
+    <Image x:Key="AccHead-To-HeadImg" Source="/MBC WPF;component/media/images/accolades/headtohead.png" />
+    <Image x:Key="AccIntenseImg" Source="/MBC WPF;component/media/images/accolades/intense.png" />
+    <Image x:Key="AccSlowImg" Source="/MBC WPF;component/media/images/accolades/slow.png" />
+    
+    <!--
+        ***Control customizations***
+    -->
+    
+    <!--
+        Tabs
+    -->
     <Style TargetType="TabItem">
         <Setter Property="Template">
             <Setter.Value>
@@ -37,6 +58,7 @@
             </Setter.Value>
         </Setter>
     </Style>
+    
     <Style TargetType="TabControl">
         <Setter Property="Template">
             <Setter.Value>
@@ -64,12 +86,20 @@
             </Setter.Value>
         </Setter>
     </Style>
+    
+    <!--
+        Border Container Customization
+    -->
     <Style x:Key="borderTopStyle" TargetType="Border">
         <Setter Property="Background" Value="{StaticResource BlackTopBrush}" />
         <Setter Property="BorderThickness" Value="5" />
         <Setter Property="CornerRadius" Value="5" />
         <Setter Property="Padding" Value="0" />
     </Style>
+    
+    <!--
+        Label customizations
+    -->
     <Style x:Key="titleLabel" TargetType="Label">
         <Setter Property="FontFamily" Value="Consolas" />
         <Setter Property="FontSize" Value="20" />
@@ -87,16 +117,28 @@
         <Setter Property="FontSize" Value="12" />
         <Setter Property="Foreground" Value="#FFBBFFFF" />
     </Style>
+    
+    <!--
+        Checkbox Customizations
+    -->
     <Style x:Key="defaultCheckbox" TargetType="CheckBox">
         <Setter Property="FontFamily" Value="Berlin Sans FB" />
         <Setter Property="FontSize" Value="12" />
         <Setter Property="Foreground" Value="#FFBBFFFF" />
     </Style>
+    
+    <!--
+        RadioButton Customizations
+    -->
     <Style x:Key="defaultRadio" TargetType="RadioButton">
         <Setter Property="FontFamily" Value="Berlin Sans FB" />
         <Setter Property="FontSize" Value="12" />
         <Setter Property="Foreground" Value="#FFBBFFFF" />
     </Style>
+    
+    <!--
+        Button Customizations
+    -->
     <Style x:Key="defaultButton" TargetType="Button">
         <Setter Property="FontFamily" Value="Berlins Sans FB" />
         <Setter Property="Foreground" Value="White" />
@@ -106,7 +148,7 @@
                     <Border x:Name="ButtonBorder"
                             CornerRadius="5"
                             BorderThickness="3"
-                            Background="#66555555"
+                            Background="#FF111111"
                             BorderBrush="#FFFFFFFF"
                             RenderTransformOrigin="0.5,0.5">
                         <ContentPresenter x:Name="ButtonPresenter"
@@ -122,6 +164,35 @@
             </Setter.Value>
         </Setter>
     </Style>
+
+    <Style x:Key="numericButton" TargetType="Button">
+        <Setter Property="FontFamily" Value="Berlins Sans FB" />
+        <Setter Property="Foreground" Value="White" />
+        <Setter Property="FontWeight" Value="Bold" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border x:Name="ButtonBorder"
+                            CornerRadius="2"
+                            BorderThickness="1"
+                            Background="#FF111111"
+                            BorderBrush="#FFFFFFFF"
+                            RenderTransformOrigin="0.5,0.5">
+                        <ContentPresenter x:Name="ButtonPresenter"
+                                          VerticalAlignment="Top"
+                                          HorizontalAlignment="Center"
+                                          Margin="0,0,0,0"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="Button.IsMouseOver" Value="True">
+                            <Setter TargetName="ButtonBorder" Property="Background" Value="#AAFFFF24" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
     <Style x:Key="redButton" TargetType="Button">
         <Setter Property="FontFamily" Value="Berlins Sans FB" />
         <Setter Property="Foreground" Value="White" />
@@ -147,6 +218,7 @@
             </Setter.Value>
         </Setter>
     </Style>
+    
     <Style x:Key="blueButton" TargetType="Button">
         <Setter Property="FontFamily" Value="Berlins Sans FB" />
         <Setter Property="Foreground" Value="White" />

@@ -4,6 +4,7 @@ var searchData=
   ['bots',['Bots',['../namespace_m_b_c_1_1_bots.html',1,'MBC']]],
   ['core',['Core',['../namespace_m_b_c_1_1_core.html',1,'MBC']]],
   ['gl',['GL',['../namespace_m_b_c_1_1_g_l.html',1,'MBC']]],
+  ['main',['Main',['../class_m_b_c_1_1_w_p_f_1_1_app.html#aebd6635a604298686e81e5d3977fa37a',1,'MBC::WPF::App']]],
   ['mainwindow',['MainWindow',['../class_m_b_c_1_1_w_p_f_1_1_main_window.html',1,'MBC::WPF']]],
   ['matchover',['MatchOver',['../class_m_b_c_1_1_core_1_1_controller.html#a1beaca8b029cff045923c06b24114653',1,'MBC::Core::Controller']]],
   ['mbc',['MBC',['../namespace_m_b_c.html',1,'']]],

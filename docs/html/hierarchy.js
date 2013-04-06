@@ -9,6 +9,7 @@ var hierarchy =
       [ "MBC.Core.mbc.accolades.Slow", "class_m_b_c_1_1_core_1_1mbc_1_1accolades_1_1_slow.html", null ]
     ] ],
     [ "Application", null, [
+      [ "MBC.WPF.App", "class_m_b_c_1_1_w_p_f_1_1_app.html", null ],
       [ "MBC.WPF.App", "class_m_b_c_1_1_w_p_f_1_1_app.html", null ]
     ] ],
     [ "MBC.Terminal.BattleshipConsole", "class_m_b_c_1_1_terminal_1_1_battleship_console.html", null ],
@@ -25,6 +26,13 @@ var hierarchy =
     [ "MBC.Core.IBattleshipController", "interface_m_b_c_1_1_core_1_1_i_battleship_controller.html", [
       [ "MBC.Bots.RandomBot", "class_m_b_c_1_1_bots_1_1_random_bot.html", null ]
     ] ],
+    [ "IComponentConnector", null, [
+      [ "MBC.WPF.Field", "class_m_b_c_1_1_w_p_f_1_1_field.html", null ],
+      [ "MBC.WPF.MainWindow", "class_m_b_c_1_1_w_p_f_1_1_main_window.html", null ]
+    ] ],
+    [ "InternalTypeHelper", null, [
+      [ "XamlGeneratedNamespace.GeneratedInternalTypeHelper", "class_xaml_generated_namespace_1_1_generated_internal_type_helper.html", null ]
+    ] ],
     [ "MBC.Core.util.Log", "class_m_b_c_1_1_core_1_1util_1_1_log.html", null ],
     [ "MBC.Core.util.Logger", "class_m_b_c_1_1_core_1_1util_1_1_logger.html", null ],
     [ "MBC.Core.util.LoggerManager", "class_m_b_c_1_1_core_1_1util_1_1_logger_manager.html", null ],
@@ -32,12 +40,16 @@ var hierarchy =
     [ "MBC.GL.Program", "class_m_b_c_1_1_g_l_1_1_program.html", null ],
     [ "MBC.Terminal.Program", "class_m_b_c_1_1_terminal_1_1_program.html", null ],
     [ "MBC.Core.RoundLog.RoundActivity", "class_m_b_c_1_1_core_1_1_round_log_1_1_round_activity.html", null ],
+    [ "MBC.WPF.MainWindow.RoundActivityEntry", "class_m_b_c_1_1_w_p_f_1_1_main_window_1_1_round_activity_entry.html", null ],
+    [ "MBC.WPF.MainWindow.RoundEntry", "class_m_b_c_1_1_w_p_f_1_1_main_window_1_1_round_entry.html", null ],
     [ "MBC.Core.RoundLog", "class_m_b_c_1_1_core_1_1_round_log.html", null ],
     [ "MBC.Core.Ship", "class_m_b_c_1_1_core_1_1_ship.html", null ],
     [ "UserControl", null, [
+      [ "MBC.WPF.Field", "class_m_b_c_1_1_w_p_f_1_1_field.html", null ],
       [ "MBC.WPF.Field", "class_m_b_c_1_1_w_p_f_1_1_field.html", null ]
     ] ],
     [ "Window", null, [
+      [ "MBC.WPF.MainWindow", "class_m_b_c_1_1_w_p_f_1_1_main_window.html", null ],
       [ "MBC.WPF.MainWindow", "class_m_b_c_1_1_w_p_f_1_1_main_window.html", null ]
     ] ]
 ];

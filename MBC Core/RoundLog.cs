@@ -13,6 +13,39 @@ namespace MBC.Core
      */
     public class RoundLog
     {
+        private static Dictionary<RoundAccolade, string> accoladeStrPair = new Dictionary<RoundAccolade, string>();
+        private static Dictionary<RoundAction, string> actionStrPair = new Dictionary<RoundAction, string>();
+
+        static RoundLog()
+        {
+            accoladeStrPair.Add(RoundAccolade.Comeback, "Comeback");
+            accoladeStrPair.Add(RoundAccolade.Domination, "Domination");
+            accoladeStrPair.Add(RoundAccolade.Fast, "Fast");
+            accoladeStrPair.Add(RoundAccolade.HeadToHead, "Head-To-Head");
+            accoladeStrPair.Add(RoundAccolade.Intense, "Intense");
+            accoladeStrPair.Add(RoundAccolade.Slow, "Slow");
+            accoladeStrPair.Add(RoundAccolade.None, "");
+
+            actionStrPair.Add(RoundAction.Lost, "Lost");
+            actionStrPair.Add(RoundAction.RoundBegin, "Round Start");
+            actionStrPair.Add(RoundAction.RoundEnd, "Round Finish");
+            actionStrPair.Add(RoundAction.ShipDestroyed, "Ship Destroyed");
+            actionStrPair.Add(RoundAction.ShipsPlaced, "Ships Placed");
+            actionStrPair.Add(RoundAction.ShotAndHit, "Shot Hit");
+            actionStrPair.Add(RoundAction.ShotAndMiss, "Shot Miss");
+            actionStrPair.Add(RoundAction.Won, "Won");
+        }
+
+        public static string GetAccoladeStr(RoundAccolade acc)
+        {
+            return accoladeStrPair[acc];
+        }
+
+        public static string GetActionStr(RoundAction act)
+        {
+            return actionStrPair[act];
+        }
+
         private List<RoundActivity> actions = new List<RoundActivity>();    //A list of RoundActivity's
         private List<RoundAccolade> accolades = new List<RoundAccolade>();   //A list of accolades
         private int readCount = 0;
@@ -154,7 +187,6 @@ namespace MBC.Core
             Fast,
             Slow,
             Intense,
-            Stupid,
             None
         }
     }

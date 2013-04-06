@@ -82,7 +82,7 @@ namespace MBC.Core
                         if (interfaces.ToString() == "Battleship.IBattleshipOpponent")
                         {
                             IBattleshipController opp = (IBattleshipController)Activator.CreateInstance(robot);
-                            loadedRobots.Add(opp.Name + " (v" + opp.Version + ")", robot);
+                            loadedRobots.Add(Util.ControllerToString(opp), robot);
                             break;
                         }
             }
