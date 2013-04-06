@@ -22,9 +22,33 @@
     <Image x:Key="AccIntenseImg" Source="/MBC WPF;component/media/images/accolades/intense.png" />
     <Image x:Key="AccSlowImg" Source="/MBC WPF;component/media/images/accolades/slow.png" />
     
+    
     <!--
         ***Control customizations***
     -->
+    
+    <!-- 
+        Lines
+    -->
+    <Style x:Key="fieldGridLineStyle" TargetType="Line">
+        <Setter Property="Stroke" Value="#AA000000" />
+        <Setter Property="Stretch" Value="Fill" />
+        <Setter Property="Grid.ZIndex" Value="0" />
+    </Style>
+    
+    <Style x:Key="fieldGridLineHorizontal" TargetType="Line" BasedOn="{StaticResource fieldGridLineStyle}">
+        <Setter Property="X2" Value="1" />
+        <Setter Property="VerticalAlignment" Value="Bottom" />
+        <Setter Property="Grid.ColumnSpan" Value="{Binding Path=ColumnDefinitions.Count, 
+            RelativeSource={RelativeSource AncestorType=Grid}}"/>
+    </Style>
+    
+    <Style x:Key="fieldGridLineVertical" TargetType="Line" BasedOn="{StaticResource fieldGridLineStyle}">
+        <Setter Property="X2" Value="1" />
+        <Setter Property="VerticalAlignment" Value="Bottom" />
+        <Setter Property="Grid.ColumnSpan" Value="{Binding Path=ColumnDefinitions.Count, 
+            RelativeSource={RelativeSource AncestorType=Grid}}"/>
+    </Style>
     
     <!--
         Tabs

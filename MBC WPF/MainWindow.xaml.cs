@@ -29,9 +29,7 @@ namespace MBC.WPF
         public MainWindow()
         {
             InitializeComponent();
-            redField.fieldLabel.Content = "Red";
             redField.fieldLabel.Foreground = System.Windows.Media.Brushes.Red;
-            blueField.fieldLabel.Content = "Blue";
             blueField.fieldLabel.Foreground = System.Windows.Media.Brushes.Blue;
             config = Configuration.GetGlobalDefault();
         }
