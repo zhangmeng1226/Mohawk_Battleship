@@ -169,8 +169,8 @@ namespace MBC.WPF
         }
 
         /**
-         * <summary>Modifies the internal grid to represent the given Field. Performance is an issue
-         * only when significant changes between Fields is apparent.</summary>
+         * <summary>Modifies the internal grid to represent the given Field. This may be
+         * a CPU intensive process, so do not use this too often.</summary>
          * <param name="f">The field to monitor</param>
          * <param name="ibc">The controller to monitor in the field</param>
          */
@@ -190,6 +190,7 @@ namespace MBC.WPF
             if (!f.shipSizes.SequenceEqual(battlefield.shipSizes))
                 CreateShips();
             LayShips();
+            LayShots();
         }
 
         private void FieldLoaded(object sender, RoutedEventArgs e)
