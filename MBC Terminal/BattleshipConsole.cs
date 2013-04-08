@@ -175,7 +175,6 @@ namespace MBC.Terminal
 
             runningMods = new List<TerminalModule>();
             runningMods.Add(new TerminalInputDisplay());
-            runningMods.Add(new MainMenu());
             AddModule(new MainMenu());
 
             string line = "";
