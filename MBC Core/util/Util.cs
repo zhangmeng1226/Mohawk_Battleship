@@ -52,7 +52,7 @@ namespace MBC.Core
          */
         public static string WorkingDirectory()
         {
-            return Assembly.GetExecutingAssembly().Location+"\\..\\";
+            return Assembly.GetExecutingAssembly().Location + "\\..\\";
         }
 
         /**
@@ -61,6 +61,45 @@ namespace MBC.Core
         public static string ControllerToString(IBattleshipController c)
         {
             return c.Name + " (v" + c.Version + ")";
+        }
+
+        /**
+         * <summary>Swaps two elements in a list</summary>
+         */
+        public static void ListSwap<T>(IList<T> lst, int a, int b)
+        {
+            T tmp = lst[a];
+            lst[a] = lst[b];
+            lst[b] = tmp;
+        }
+
+        private static ConsoleColor consForeground;
+        private static ConsoleColor consBackground;
+
+        /**
+         * <summary>Stores the current state of the console colors.</summary>
+         */
+        public static void StoreConsoleColors()
+        {
+            consForeground = Console.ForegroundColor;
+            consBackground = Console.BackgroundColor;
+        }
+
+        /**
+         * <summary>Restores the stored state of console colors</summary>
+         */
+        public static void RestoreConsoleColors()
+        {
+            Console.ForegroundColor = consForeground;
+            Console.BackgroundColor = consBackground;
+        }
+
+        /**
+         * <summary>Uses the global configuration to parse the console color value.</summary>
+         */
+        public static T EnumKey<T>(string key)
+        {
+            return (T)Enum.Parse(typeof(T), Configuration.Global.GetValue<string>(key));
         }
     }
 }

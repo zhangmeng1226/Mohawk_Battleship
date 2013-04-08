@@ -41,13 +41,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="accolades\AccoladeProcessor.cs" />
-    <Compile Include="accolades\Comeback.cs" />
-    <Compile Include="accolades\Domination.cs" />
-    <Compile Include="accolades\Fast.cs" />
-    <Compile Include="accolades\HeadToHead.cs" />
-    <Compile Include="accolades\Intense.cs" />
-    <Compile Include="accolades\Slow.cs" />
+    <Compile Include="accolade\AccoladeProcessor.cs" />
+    <Compile Include="accolade\Comeback.cs" />
+    <Compile Include="accolade\Domination.cs" />
+    <Compile Include="accolade\Fast.cs" />
+    <Compile Include="accolade\HeadToHead.cs" />
+    <Compile Include="accolade\Intense.cs" />
+    <Compile Include="accolade\Slow.cs" />
     <Compile Include="Competition.cs" />
     <Compile Include="Controller.cs" />
     <Compile Include="Field.cs" />
@@ -55,11 +55,11 @@
     <Compile Include="RoundLog.cs" />
     <Compile Include="util\Configuration.cs" />
     <Compile Include="util\ControllerFactory.cs" />
-    <Compile Include="util\Log.cs" />
-    <Compile Include="util\LogMessage.cs" />
+    <Compile Include="util\logging\Log.cs" />
+    <Compile Include="util\logging\LogMessage.cs" />
     <Compile Include="util\Util.cs" />
-    <Compile Include="util\Logger.cs" />
-    <Compile Include="util\LoggerManager.cs" />
+    <Compile Include="util\logging\Logger.cs" />
+    <Compile Include="util\logging\LoggerManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MBC Controller Interface\MBC Controller Interface.csproj">

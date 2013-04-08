@@ -83,12 +83,12 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow4" class="tabs3">
     <ul class="tablist">
       <li><a href="#index_a"><span>a</span></a></li>
-      <li><a href="#index_b"><span>b</span></a></li>
       <li><a href="#index_c"><span>c</span></a></li>
       <li><a href="#index_d"><span>d</span></a></li>
       <li><a href="#index_f"><span>f</span></a></li>
       <li><a href="#index_g"><span>g</span></a></li>
       <li><a href="#index_i"><span>i</span></a></li>
+      <li><a href="#index_k"><span>k</span></a></li>
       <li><a href="#index_l"><span>l</span></a></li>
       <li><a href="#index_m"><span>m</span></a></li>
       <li><a href="#index_n"><span>n</span></a></li>
@@ -142,12 +142,14 @@ $(document).ready(function(){initNavTree('functions_func.html','');});
 <li>AddOutputStream()
 : <a class="el" href="class_m_b_c_1_1_core_1_1util_1_1_logger.html#a21316aef85df8eb5decf285c50badfdc">MBC.Core.util.Logger</a>
 </li>
-</ul>
-
-
-<h3><a class="anchor" id="index_b"></a>- b -</h3><ul>
-<li>BattleshipConsole()
-: <a class="el" href="class_m_b_c_1_1_terminal_1_1_battleship_console.html#a1d9cdd7811c6ad93d69b64977d1670f4">MBC.Terminal.BattleshipConsole</a>
+<li>Align()
+: <a class="el" href="class_m_b_c_1_1_terminal_1_1_terminal_module.html#a04ae520b8cbd2837f74b4bf699cc2b45">MBC.Terminal.TerminalModule</a>
+</li>
+<li>AlignToCoord()
+: <a class="el" href="class_m_b_c_1_1_terminal_1_1_terminal_module.html#a00ddaad41f6394f22f0b09c98e47482f">MBC.Terminal.TerminalModule</a>
+</li>
+<li>AlignToLine()
+: <a class="el" href="class_m_b_c_1_1_terminal_1_1_terminal_module.html#a11c6171e27a303575a6dd27e97dc95ab">MBC.Terminal.TerminalModule</a>
 </li>
 </ul>
 
@@ -157,10 +159,13 @@ $(document).ready(function(){initNavTree('functions_func.html','');});
 : <a class="el" href="class_m_b_c_1_1_core_1_1_competition.html#ae9b5b6e7d2eedcce2956e93cafbca8ff">MBC.Core.Competition</a>
 </li>
 <li>Configuration()
-: <a class="el" href="class_m_b_c_1_1_core_1_1_configuration.html#aa23a1361918822852458878233671d96">MBC.Core.Configuration</a>
+: <a class="el" href="class_m_b_c_1_1_core_1_1_configuration.html#aa0551a9f6fc9d76aa2300da55f6ea135">MBC.Core.Configuration</a>
 </li>
 <li>Controller()
 : <a class="el" href="class_m_b_c_1_1_core_1_1_controller.html#ada907b30a847119b01f0d52fa6b05633">MBC.Core.Controller</a>
+</li>
+<li>CreateController()
+: <a class="el" href="class_m_b_c_1_1_core_1_1util_1_1_controller_factory.html#ac10a922348ccb9df851b084948943f3d">MBC.Core.util.ControllerFactory</a>
 </li>
 <li>CreateDelegate()
 : <a class="el" href="class_xaml_generated_namespace_1_1_generated_internal_type_helper.html#a8ec4c37e82d9f4e867e9655f4eac3a78">XamlGeneratedNamespace.GeneratedInternalTypeHelper</a>
@@ -173,7 +178,9 @@ $(document).ready(function(){initNavTree('functions_func.html','');});
 
 <h3><a class="anchor" id="index_d"></a>- d -</h3><ul>
 <li>Display()
-: <a class="el" href="class_m_b_c_1_1_terminal_1_1_console_state.html#ad76828bd874ddb99b7c2ca29a4291f7a">MBC.Terminal.ConsoleState</a>
+: <a class="el" href="class_m_b_c_1_1_terminal_1_1_main_menu.html#a62e006450c3040234631da90cf7dda92">MBC.Terminal.MainMenu</a>
+, <a class="el" href="class_m_b_c_1_1_terminal_1_1_terminal_module.html#ac801220b5575bab3c43b41431e87f560">MBC.Terminal.TerminalModule</a>
+, <a class="el" href="class_m_b_c_1_1_terminal_1_1_terminal_input_display.html#ad53f148aeaa7faa46910c4f6062cd496">MBC.Terminal.TerminalInputDisplay</a>
 </li>
 </ul>
 
@@ -198,29 +205,26 @@ $(document).ready(function(){initNavTree('functions_func.html','');});
 <li>GetAt()
 : <a class="el" href="class_m_b_c_1_1_core_1_1_round_log.html#a14deb5b327e8c77d3535e342701711d9">MBC.Core.RoundLog</a>
 </li>
+<li>GetAvailableConfigs()
+: <a class="el" href="class_m_b_c_1_1_core_1_1_configuration.html#a6b5833220d539c7b7e48863659bd1cde">MBC.Core.Configuration</a>
+</li>
 <li>GetBattlefield()
 : <a class="el" href="class_m_b_c_1_1_core_1_1_competition.html#a5e8a6b945128e37bdd87751d906edaf2">MBC.Core.Competition</a>
 </li>
-<li>GetConfigValue&lt; T &gt;()
-: <a class="el" href="class_m_b_c_1_1_core_1_1_configuration.html#a1069037ddfad1eb59edbd38d10c838c4">MBC.Core.Configuration</a>
-</li>
 <li>GetConfigValueArray&lt; T &gt;()
-: <a class="el" href="class_m_b_c_1_1_core_1_1_configuration.html#a48e56bdacaf0660a45febbe6a402bd83">MBC.Core.Configuration</a>
+: <a class="el" href="class_m_b_c_1_1_core_1_1_configuration.html#a99b689b17905c31fa760cc92ceb2fa89">MBC.Core.Configuration</a>
 </li>
 <li>GetFieldInfo()
 : <a class="el" href="class_m_b_c_1_1_core_1_1_controller.html#af6f8a1a759c38557608ab0faebf49424">MBC.Core.Controller</a>
 </li>
-<li>GetGlobalDefault()
-: <a class="el" href="class_m_b_c_1_1_core_1_1_configuration.html#a46c9b791926a885880df21e74c5a7196">MBC.Core.Configuration</a>
-</li>
 <li>GetInfo()
 : <a class="el" href="class_m_b_c_1_1_core_1_1_field.html#aaf565a96cdff422ffed99cccb64b400a">MBC.Core.Field</a>
 </li>
-<li>GetInput()
-: <a class="el" href="class_m_b_c_1_1_terminal_1_1_console_state.html#a3ecdb3a79aec98954b866c125101904e">MBC.Terminal.ConsoleState</a>
-</li>
 <li>GetLogger()
 : <a class="el" href="class_m_b_c_1_1_core_1_1util_1_1_logger_manager.html#a8ec18cb07826e003bf2eb94ca672840f">MBC.Core.util.LoggerManager</a>
+</li>
+<li>GetNameLevel()
+: <a class="el" href="class_m_b_c_1_1_core_1_1util_1_1_log_message.html#a5826ddb8de3dbc2c294d5ea98756c911">MBC.Core.util.LogMessage</a>
 </li>
 <li>GetNext()
 : <a class="el" href="class_m_b_c_1_1_core_1_1_round_log.html#a02c4c7d407ff609478505d28ff20f884">MBC.Core.RoundLog</a>
@@ -228,11 +232,11 @@ $(document).ready(function(){initNavTree('functions_func.html','');});
 <li>GetOpponent()
 : <a class="el" href="class_m_b_c_1_1_core_1_1_field.html#ae135717a6b4f17d3af926751f687b374">MBC.Core.Field</a>
 </li>
+<li>GetPrefixLevel()
+: <a class="el" href="class_m_b_c_1_1_core_1_1util_1_1_log_message.html#a118fce73f3b41f40305c7e7efc687620">MBC.Core.util.LogMessage</a>
+</li>
 <li>GetPropertyValue()
 : <a class="el" href="class_xaml_generated_namespace_1_1_generated_internal_type_helper.html#afdc9fe15b56607d02082908d934480c6">XamlGeneratedNamespace.GeneratedInternalTypeHelper</a>
-</li>
-<li>GetRobot()
-: <a class="el" href="class_m_b_c_1_1_core_1_1_configuration.html#a82cce6b1d5e8a2d11f98ca930f6c76ad">MBC.Core.Configuration</a>
 </li>
 <li>GetRoundCount()
 : <a class="el" href="class_m_b_c_1_1_core_1_1_competition.html#a23d9364eaac330e2d3e02f28b76e3f14">MBC.Core.Competition</a>
@@ -249,6 +253,9 @@ $(document).ready(function(){initNavTree('functions_func.html','');});
 <li>GetTimeTaken()
 : <a class="el" href="class_m_b_c_1_1_core_1_1_controller.html#afdec43bffe7e30eb0e419c1db641a7f3">MBC.Core.Controller</a>
 </li>
+<li>GetValue&lt; T &gt;()
+: <a class="el" href="class_m_b_c_1_1_core_1_1_configuration.html#addce147239dffada4ca7bb0c8a0b7522">MBC.Core.Configuration</a>
+</li>
 </ul>
 
 
@@ -259,15 +266,25 @@ $(document).ready(function(){initNavTree('functions_func.html','');});
 , <a class="el" href="class_m_b_c_1_1_w_p_f_1_1_main_window.html#af7a6d8874e20196c3db0d7987d97819f">MBC.WPF.MainWindow</a>
 , <a class="el" href="class_m_b_c_1_1_w_p_f_1_1_field_control.html#ad69b8fbbb09f421a3a639c41f1e909d4">MBC.WPF.FieldControl</a>
 </li>
+<li>InputEntered()
+: <a class="el" href="class_m_b_c_1_1_terminal_1_1_terminal_module.html#a86dab1e67db49bacc8be531682df444b">MBC.Terminal.TerminalModule</a>
+</li>
 <li>IsAlive()
 : <a class="el" href="class_m_b_c_1_1_core_1_1_controller.html#a9e6f3efa65c34223a9753b1c155ef945">MBC.Core.Controller</a>
 </li>
 </ul>
 
 
+<h3><a class="anchor" id="index_k"></a>- k -</h3><ul>
+<li>KeyPressed()
+: <a class="el" href="class_m_b_c_1_1_terminal_1_1_terminal_module.html#ac0bc9a1f54471d08c4f8bae3c9bdcb1d">MBC.Terminal.TerminalModule</a>
+</li>
+</ul>
+
+
 <h3><a class="anchor" id="index_l"></a>- l -</h3><ul>
-<li>LoadRobots()
-: <a class="el" href="class_m_b_c_1_1_core_1_1_configuration.html#a1b9e29410c2026341fcf7157ff927781">MBC.Core.Configuration</a>
+<li>LoadControllers()
+: <a class="el" href="class_m_b_c_1_1_core_1_1util_1_1_controller_factory.html#a8550517417616d362cbd96d7cf72f960">MBC.Core.util.ControllerFactory</a>
 </li>
 <li>Log()
 : <a class="el" href="class_m_b_c_1_1_core_1_1util_1_1_logger.html#ae4b2c81601b3af0189ca50c834268826">MBC.Core.util.Logger</a>
@@ -290,6 +307,9 @@ $(document).ready(function(){initNavTree('functions_func.html','');});
 <li>NewGame()
 : <a class="el" href="class_m_b_c_1_1_core_1_1_controller.html#ae87c31349a7fde4034942a1b505d372d">MBC.Core.Controller</a>
 </li>
+<li>NewLine()
+: <a class="el" href="class_m_b_c_1_1_terminal_1_1_terminal_module.html#a835f19d34030f1f351a0bc95ee388d78">MBC.Terminal.TerminalModule</a>
+</li>
 <li>NewMatch()
 : <a class="el" href="class_m_b_c_1_1_core_1_1_controller.html#a880c9ad7cd60528cad4f36da11bfd9bf">MBC.Core.Controller</a>
 </li>
@@ -311,13 +331,13 @@ $(document).ready(function(){initNavTree('functions_func.html','');});
 : <a class="el" href="class_m_b_c_1_1_core_1_1_controller.html#a5d27318689d6b9e09d6726a433e2b95b">MBC.Core.Controller</a>
 </li>
 <li>Process()
-: <a class="el" href="interface_m_b_c_1_1_core_1_1mbc_1_1accolades_1_1_accolade_processor.html#a5c86ce623606ca27cf87ba69a753b598">MBC.Core.mbc.accolades.AccoladeProcessor</a>
-, <a class="el" href="class_m_b_c_1_1_core_1_1mbc_1_1accolades_1_1_domination.html#a807e3fc62f6f57ba91670cc36ba9bab7">MBC.Core.mbc.accolades.Domination</a>
-, <a class="el" href="class_m_b_c_1_1_core_1_1mbc_1_1accolades_1_1_intense.html#ad0177a4a8e91e17b2a08804eff068f0b">MBC.Core.mbc.accolades.Intense</a>
-, <a class="el" href="class_m_b_c_1_1_core_1_1mbc_1_1accolades_1_1_head_to_head.html#abd8eabe255b8b53e059d4ac2a3f85598">MBC.Core.mbc.accolades.HeadToHead</a>
-, <a class="el" href="class_m_b_c_1_1_core_1_1mbc_1_1accolades_1_1_fast.html#a83a0e38fc5d4ddcf5f6c57e7c3baa989">MBC.Core.mbc.accolades.Fast</a>
-, <a class="el" href="class_m_b_c_1_1_core_1_1mbc_1_1accolades_1_1_slow.html#ae6faa3fda393b31a1dde5e0be7f40a43">MBC.Core.mbc.accolades.Slow</a>
-, <a class="el" href="class_m_b_c_1_1_core_1_1mbc_1_1accolades_1_1_comeback.html#aa0df9875de35d9a73af4cde1f46c3c3b">MBC.Core.mbc.accolades.Comeback</a>
+: <a class="el" href="interface_m_b_c_1_1_core_1_1mbc_1_1accolade_1_1_accolade_processor.html#a05f404f33d6ea3c54b6910094b992bac">MBC.Core.mbc.accolade.AccoladeProcessor</a>
+, <a class="el" href="class_m_b_c_1_1_core_1_1mbc_1_1accolade_1_1_domination.html#a040a6f1da35856d780a747414a0cd632">MBC.Core.mbc.accolade.Domination</a>
+, <a class="el" href="class_m_b_c_1_1_core_1_1mbc_1_1accolade_1_1_intense.html#ae3a4c37d563f8c4e1399e75ffdb10866">MBC.Core.mbc.accolade.Intense</a>
+, <a class="el" href="class_m_b_c_1_1_core_1_1mbc_1_1accolade_1_1_head_to_head.html#afd0bb6e5b731cdd4a638a0b91445193f">MBC.Core.mbc.accolade.HeadToHead</a>
+, <a class="el" href="class_m_b_c_1_1_core_1_1mbc_1_1accolade_1_1_fast.html#a889ec0b12577dc5ca345d281f00fbba2">MBC.Core.mbc.accolade.Fast</a>
+, <a class="el" href="class_m_b_c_1_1_core_1_1mbc_1_1accolade_1_1_slow.html#a5849f255e32663d6f88d804bffc7b1fb">MBC.Core.mbc.accolade.Slow</a>
+, <a class="el" href="class_m_b_c_1_1_core_1_1mbc_1_1accolade_1_1_comeback.html#a805182b1fd3ffde85c1e2cb5c56bc25a">MBC.Core.mbc.accolade.Comeback</a>
 </li>
 <li>PutAction()
 : <a class="el" href="class_m_b_c_1_1_core_1_1_round_log.html#a0bb405409acf2b889d714bbff68abc94">MBC.Core.RoundLog</a>
@@ -329,14 +349,14 @@ $(document).ready(function(){initNavTree('functions_func.html','');});
 <li>RanOutOfTime()
 : <a class="el" href="class_m_b_c_1_1_core_1_1_controller.html#a6c4fc9aca31480cdfcbb3d4b1d0fd9e2">MBC.Core.Controller</a>
 </li>
+<li>RefreshDisplay()
+: <a class="el" href="class_m_b_c_1_1_terminal_1_1_terminal_module.html#aafba6c46d47f11112a4aa5e58dc4b610">MBC.Terminal.TerminalModule</a>
+</li>
+<li>Rename()
+: <a class="el" href="class_m_b_c_1_1_core_1_1_configuration.html#a7fd9b75ad6dcea3175cd25e4afe9f59e">MBC.Core.Configuration</a>
+</li>
 <li>ResetIterator()
 : <a class="el" href="class_m_b_c_1_1_core_1_1_round_log.html#ad5114bea3e605c3587033cc4b9db6aa7">MBC.Core.RoundLog</a>
-</li>
-<li>Response()
-: <a class="el" href="class_m_b_c_1_1_terminal_1_1_console_state.html#a93d6eee582913a59d10348cdc8ef4248">MBC.Terminal.ConsoleState</a>
-, <a class="el" href="class_m_b_c_1_1_terminal_1_1_result_state.html#a530fa6f7b36a58d0ffa09fab3048508a">MBC.Terminal.ResultState</a>
-, <a class="el" href="class_m_b_c_1_1_terminal_1_1_competition_state.html#a85808b20e9ecb90e400eb6dcbb5929fd">MBC.Terminal.CompetitionState</a>
-, <a class="el" href="class_m_b_c_1_1_terminal_1_1_selector_state.html#ad5790cf53b3c3da6269fe2faf9a0e871">MBC.Terminal.SelectorState</a>
 </li>
 <li>RoundLog()
 : <a class="el" href="class_m_b_c_1_1_core_1_1_round_log.html#a50d3d5c41078aa520500ca86dd5694ab">MBC.Core.RoundLog</a>
@@ -366,11 +386,11 @@ $(document).ready(function(){initNavTree('functions_func.html','');});
 <li>SetBattlefield()
 : <a class="el" href="class_m_b_c_1_1_w_p_f_1_1_field_control.html#a2f7f336f27ae6c9517c54fcb142120b1">MBC.WPF.FieldControl</a>
 </li>
-<li>SetConfigValue&lt; T &gt;()
-: <a class="el" href="class_m_b_c_1_1_core_1_1_configuration.html#a5b828ab347552eaf301846d209a10027">MBC.Core.Configuration</a>
-</li>
 <li>SetPropertyValue()
 : <a class="el" href="class_xaml_generated_namespace_1_1_generated_internal_type_helper.html#ade0f04c0f7b18dd5b170e071d5534d38">XamlGeneratedNamespace.GeneratedInternalTypeHelper</a>
+</li>
+<li>SetValue&lt; T &gt;()
+: <a class="el" href="class_m_b_c_1_1_core_1_1_configuration.html#a4f161db0d533cac5ddbf558fa2aaea3b">MBC.Core.Configuration</a>
 </li>
 <li>ShipsReady()
 : <a class="el" href="class_m_b_c_1_1_core_1_1_controller.html#af4f0b5d25e8b772e7d333d06548d1f4b">MBC.Core.Controller</a>
@@ -383,12 +403,6 @@ $(document).ready(function(){initNavTree('functions_func.html','');});
 </li>
 <li>ShotMiss()
 : <a class="el" href="class_m_b_c_1_1_core_1_1_controller.html#a5b6b33ce7d17c2002fe30f89eb22b644">MBC.Core.Controller</a>
-</li>
-<li>StateDisplay()
-: <a class="el" href="class_m_b_c_1_1_terminal_1_1_competition_state.html#a910a4059941eca78c26368f33fc7ba40">MBC.Terminal.CompetitionState</a>
-, <a class="el" href="class_m_b_c_1_1_terminal_1_1_result_state.html#aa3b4aff3c8ecbc6ef612dd9b3bcf1fff">MBC.Terminal.ResultState</a>
-, <a class="el" href="class_m_b_c_1_1_terminal_1_1_console_state.html#acd7345ff099de65c8930ff4a77fc0fa9">MBC.Terminal.ConsoleState</a>
-, <a class="el" href="class_m_b_c_1_1_terminal_1_1_selector_state.html#a01fc2be754805e51c0f3b92d90dbe967">MBC.Terminal.SelectorState</a>
 </li>
 <li>StopCompetitionThread()
 : <a class="el" href="class_m_b_c_1_1_core_1_1_competition.html#a45faa0917180f6a7b3520e5fedc35d9e">MBC.Core.Competition</a>
@@ -405,10 +419,16 @@ $(document).ready(function(){initNavTree('functions_func.html','');});
 
 <h3><a class="anchor" id="index_w"></a>- w -</h3><ul>
 <li>WriteCenteredText()
-: <a class="el" href="class_m_b_c_1_1_terminal_1_1_console_state.html#a91b990b98bcf47af6a134dd8353477bf">MBC.Terminal.ConsoleState</a>
+: <a class="el" href="class_m_b_c_1_1_terminal_1_1_terminal_module.html#a88379c426262f0f211bf6ef83caf5242">MBC.Terminal.TerminalModule</a>
+</li>
+<li>WriteCharRepeat()
+: <a class="el" href="class_m_b_c_1_1_terminal_1_1_terminal_module.html#a3d3fbe97a0b7fd5e8017ce14452cc87b">MBC.Terminal.TerminalModule</a>
 </li>
 <li>WriteChars()
-: <a class="el" href="class_m_b_c_1_1_terminal_1_1_console_state.html#a8979ac7d7e895a6eff290b39166acee8">MBC.Terminal.ConsoleState</a>
+: <a class="el" href="class_m_b_c_1_1_terminal_1_1_terminal_module.html#aee7bf9ed38e59a4b1c763fd439d3b69d">MBC.Terminal.TerminalModule</a>
+</li>
+<li>WriteText()
+: <a class="el" href="class_m_b_c_1_1_terminal_1_1_terminal_module.html#ab0471d26486daccea54e08d45f6064be">MBC.Terminal.TerminalModule</a>
 </li>
 </ul>
 </div><!-- contents -->
@@ -416,7 +436,7 @@ $(document).ready(function(){initNavTree('functions_func.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Sat Apr 6 2013 15:29:40 for Mohawk Battleship by
+    <li class="footer">Generated on Mon Apr 8 2013 04:16:39 for Mohawk Battleship by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.3.1 </li>
   </ul>

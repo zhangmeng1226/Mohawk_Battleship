@@ -1,0 +1,56 @@
+\hypertarget{class_m_b_c_1_1_core_1_1util_1_1_controller_factory}{\section{M\-B\-C.\-Core.\-util.\-Controller\-Factory Class Reference}
+\label{class_m_b_c_1_1_core_1_1util_1_1_controller_factory}\index{M\-B\-C.\-Core.\-util.\-Controller\-Factory@{M\-B\-C.\-Core.\-util.\-Controller\-Factory}}
+}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static \hyperlink{interface_m_b_c_1_1_core_1_1_i_battleship_controller}{I\-Battleship\-Controller} \hyperlink{class_m_b_c_1_1_core_1_1util_1_1_controller_factory_ac10a922348ccb9df851b084948943f3d}{Create\-Controller} (string name)
+\begin{DoxyCompactList}\small\item\em Returns the object that is identified by name.\end{DoxyCompactList}\item 
+static void \hyperlink{class_m_b_c_1_1_core_1_1util_1_1_controller_factory_a8550517417616d362cbd96d7cf72f960}{Load\-Controllers} (string f\-Name)
+\begin{DoxyCompactList}\small\item\em Loads a .D\-L\-L file and saves objects that implement the I\-Battleship\-Opponent interface.\end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Properties}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{class_m_b_c_1_1_core_1_1util_1_1_controller_factory_a7120a568455917999b3f7428161a491e}{static List$<$ string $>$ \hyperlink{class_m_b_c_1_1_core_1_1util_1_1_controller_factory_a7120a568455917999b3f7428161a491e}{Names}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}}\label{class_m_b_c_1_1_core_1_1util_1_1_controller_factory_a7120a568455917999b3f7428161a491e}
+
+\begin{DoxyCompactList}\small\item\em Returns a list of strings representing the name and version of each controller\end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_m_b_c_1_1_core_1_1util_1_1_controller_factory_ac10a922348ccb9df851b084948943f3d}{\index{M\-B\-C\-::\-Core\-::util\-::\-Controller\-Factory@{M\-B\-C\-::\-Core\-::util\-::\-Controller\-Factory}!Create\-Controller@{Create\-Controller}}
+\index{Create\-Controller@{Create\-Controller}!MBC::Core::util::ControllerFactory@{M\-B\-C\-::\-Core\-::util\-::\-Controller\-Factory}}
+\subsubsection[{Create\-Controller}]{\setlength{\rightskip}{0pt plus 5cm}static {\bf I\-Battleship\-Controller} M\-B\-C.\-Core.\-util.\-Controller\-Factory.\-Create\-Controller (
+\begin{DoxyParamCaption}
+\item[{string}]{name}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}}\label{class_m_b_c_1_1_core_1_1util_1_1_controller_factory_ac10a922348ccb9df851b084948943f3d}
+
+
+Returns the object that is identified by name.
+
+\begin{DoxyReturn}{Returns}
+A \hyperlink{class_m_b_c_1_1_core_1_1_controller}{Controller} loaded externally by a D\-L\-L, having the same Name property from I\-Battleship\-Opponent as the parameter. If the class was not found, then this will return null.
+\end{DoxyReturn}
+\hypertarget{class_m_b_c_1_1_core_1_1util_1_1_controller_factory_a8550517417616d362cbd96d7cf72f960}{\index{M\-B\-C\-::\-Core\-::util\-::\-Controller\-Factory@{M\-B\-C\-::\-Core\-::util\-::\-Controller\-Factory}!Load\-Controllers@{Load\-Controllers}}
+\index{Load\-Controllers@{Load\-Controllers}!MBC::Core::util::ControllerFactory@{M\-B\-C\-::\-Core\-::util\-::\-Controller\-Factory}}
+\subsubsection[{Load\-Controllers}]{\setlength{\rightskip}{0pt plus 5cm}static void M\-B\-C.\-Core.\-util.\-Controller\-Factory.\-Load\-Controllers (
+\begin{DoxyParamCaption}
+\item[{string}]{f\-Name}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}}\label{class_m_b_c_1_1_core_1_1util_1_1_controller_factory_a8550517417616d362cbd96d7cf72f960}
+
+
+Loads a .D\-L\-L file and saves objects that implement the I\-Battleship\-Opponent interface.
+
+
+\begin{DoxyParams}{Parameters}
+{\em f\-Name} & The absolute pathname to the .D\-L\-L file\\
+\hline
+\end{DoxyParams}
+
+
+It is currently possible to load more than one controller from a single D\-L\-L.
+
+The documentation for this class was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+M\-B\-C Core/util/Controller\-Factory.\-cs\end{DoxyCompactItemize}

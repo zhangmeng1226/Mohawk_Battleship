@@ -85,7 +85,7 @@ namespace MBC.Core
          * <param name="def">The default value for a given key if the key is not found.</param>
          * <returns>The value loaded from the configuration, otherwise, the default value.</returns>
          */
-        public T GetConfigValue<T>(string s)
+        public T GetValue<T>(string s)
         {
             try
             {
@@ -95,14 +95,14 @@ namespace MBC.Core
             {
                 if (configName == "default")
                     throw e;
-                return defaultInstance.GetConfigValue<T>(s);
+                return defaultInstance.GetValue<T>(s);
             }
         }
 
         /**
          * <summary>Sets a value in the configuration</summary>
          */
-        public void SetConfigValue<T>(string s, T val)
+        public void SetValue<T>(string s, T val)
         {
             simpleConfig[s] = val.ToString();
         }
@@ -118,13 +118,13 @@ namespace MBC.Core
             List<T> vals = new List<T>();
             try
             {
-                foreach (string val in GetConfigValue<string>(s).Split(','))
+                foreach (string val in GetValue<string>(s).Split(','))
                     vals.Add((T)Convert.ChangeType(val.Trim(), typeof(T)));
             }
             catch
             {
                 vals.Clear();
-                foreach (string val in defaultInstance.GetConfigValue<string>(s).Split(','))
+                foreach (string val in defaultInstance.GetValue<string>(s).Split(','))
                     vals.Add((T)Convert.ChangeType(val.Trim(), typeof(T)));
             }
             return vals;

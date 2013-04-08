@@ -41,7 +41,7 @@ namespace MBC.WPF
             entry.Message = action.activityInfo;
             entry.Time = action.timeElapsed+"ms";
 
-            long timeout = config.GetConfigValue<long>("mbc_timeout");
+            long timeout = config.GetValue<long>("mbc_timeout");
             int diff = (int)(timeout - action.timeElapsed);
             diff = diff < 0 ? 255 : (int)((1 - (diff / timeout)) * 255);
             entry.Color = Color.FromArgb(255, 255, (byte)diff, (byte)diff);

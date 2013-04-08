@@ -1,3 +1,5 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node2" href="$class_m_b_c_1_1_w_p_f_1_1_app.html" title="Interaction logic for App.xaml " alt="" coords="141,5,253,32"/>
+<area shape="rect" id="node1" href="$class_m_b_c_1_1_terminal_1_1_terminal_module.html" title="The base class for a ConsoleModule." alt="" coords="6,35,205,61"/>
+<area shape="rect" id="node2" href="$class_m_b_c_1_1_terminal_1_1_main_menu.html" title="MBC.Terminal.MainMenu" alt="" coords="263,5,431,32"/>
+<area shape="rect" id="node3" href="$class_m_b_c_1_1_terminal_1_1_terminal_input_display.html" title="MBC.Terminal.TerminalInput\lDisplay" alt="" coords="254,57,439,98"/>
 </map>

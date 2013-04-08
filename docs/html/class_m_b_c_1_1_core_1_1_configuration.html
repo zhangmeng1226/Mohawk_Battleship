@@ -118,84 +118,72 @@ $(document).ready(function(){initNavTree('class_m_b_c_1_1_core_1_1_configuration
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:aa23a1361918822852458878233671d96"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa23a1361918822852458878233671d96"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_b_c_1_1_core_1_1_configuration.html#aa23a1361918822852458878233671d96">Configuration</a> (string pathname)</td></tr>
-<tr class="memdesc:aa23a1361918822852458878233671d96"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes this BattleshipConfig by loading from a config file, if it exists<br/></td></tr>
-<tr class="separator:aa23a1361918822852458878233671d96"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a82cce6b1d5e8a2d11f98ca930f6c76ad"><td class="memItemLeft" align="right" valign="top"><a class="el" href="interface_m_b_c_1_1_core_1_1_i_battleship_controller.html">IBattleshipController</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_b_c_1_1_core_1_1_configuration.html#a82cce6b1d5e8a2d11f98ca930f6c76ad">GetRobot</a> (string name)</td></tr>
-<tr class="memdesc:a82cce6b1d5e8a2d11f98ca930f6c76ad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the object that is identified by name. <a href="#a82cce6b1d5e8a2d11f98ca930f6c76ad">More...</a><br/></td></tr>
-<tr class="separator:a82cce6b1d5e8a2d11f98ca930f6c76ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1b9e29410c2026341fcf7157ff927781"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_b_c_1_1_core_1_1_configuration.html#a1b9e29410c2026341fcf7157ff927781">LoadRobots</a> (string fName)</td></tr>
-<tr class="memdesc:a1b9e29410c2026341fcf7157ff927781"><td class="mdescLeft">&#160;</td><td class="mdescRight">Loads a .DLL file and saves objects that implement the IBattleshipOpponent interface. <a href="#a1b9e29410c2026341fcf7157ff927781">More...</a><br/></td></tr>
-<tr class="separator:a1b9e29410c2026341fcf7157ff927781"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1069037ddfad1eb59edbd38d10c838c4"><td class="memItemLeft" align="right" valign="top">T&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_b_c_1_1_core_1_1_configuration.html#a1069037ddfad1eb59edbd38d10c838c4">GetConfigValue&lt; T &gt;</a> (string s, T def)</td></tr>
-<tr class="memdesc:a1069037ddfad1eb59edbd38d10c838c4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets a value from the configuration <a href="#a1069037ddfad1eb59edbd38d10c838c4">More...</a><br/></td></tr>
-<tr class="separator:a1069037ddfad1eb59edbd38d10c838c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5b828ab347552eaf301846d209a10027"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5b828ab347552eaf301846d209a10027"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_b_c_1_1_core_1_1_configuration.html#a5b828ab347552eaf301846d209a10027">SetConfigValue&lt; T &gt;</a> (string s, T val)</td></tr>
-<tr class="memdesc:a5b828ab347552eaf301846d209a10027"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets a value in the configuration<br/></td></tr>
-<tr class="separator:a5b828ab347552eaf301846d209a10027"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a48e56bdacaf0660a45febbe6a402bd83"><td class="memItemLeft" align="right" valign="top">List&lt; T &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_b_c_1_1_core_1_1_configuration.html#a48e56bdacaf0660a45febbe6a402bd83">GetConfigValueArray&lt; T &gt;</a> (string s, string def)</td></tr>
-<tr class="memdesc:a48e56bdacaf0660a45febbe6a402bd83"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets a comma-delimited array (list) from the configuration <a href="#a48e56bdacaf0660a45febbe6a402bd83">More...</a><br/></td></tr>
-<tr class="separator:a48e56bdacaf0660a45febbe6a402bd83"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa0551a9f6fc9d76aa2300da55f6ea135"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa0551a9f6fc9d76aa2300da55f6ea135"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_b_c_1_1_core_1_1_configuration.html#aa0551a9f6fc9d76aa2300da55f6ea135">Configuration</a> (string name)</td></tr>
+<tr class="memdesc:aa0551a9f6fc9d76aa2300da55f6ea135"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes this BattleshipConfig by loading from a config file. If it does not exist, then it loads the default values.<br/></td></tr>
+<tr class="separator:aa0551a9f6fc9d76aa2300da55f6ea135"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7fd9b75ad6dcea3175cd25e4afe9f59e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7fd9b75ad6dcea3175cd25e4afe9f59e"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_b_c_1_1_core_1_1_configuration.html#a7fd9b75ad6dcea3175cd25e4afe9f59e">Rename</a> (string newName)</td></tr>
+<tr class="memdesc:a7fd9b75ad6dcea3175cd25e4afe9f59e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Renames this configuration file for file input or output<br/></td></tr>
+<tr class="separator:a7fd9b75ad6dcea3175cd25e4afe9f59e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:addce147239dffada4ca7bb0c8a0b7522"><td class="memItemLeft" align="right" valign="top">T&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_b_c_1_1_core_1_1_configuration.html#addce147239dffada4ca7bb0c8a0b7522">GetValue&lt; T &gt;</a> (string s)</td></tr>
+<tr class="memdesc:addce147239dffada4ca7bb0c8a0b7522"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets a value from the configuration <a href="#addce147239dffada4ca7bb0c8a0b7522">More...</a><br/></td></tr>
+<tr class="separator:addce147239dffada4ca7bb0c8a0b7522"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4f161db0d533cac5ddbf558fa2aaea3b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4f161db0d533cac5ddbf558fa2aaea3b"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_b_c_1_1_core_1_1_configuration.html#a4f161db0d533cac5ddbf558fa2aaea3b">SetValue&lt; T &gt;</a> (string s, T val)</td></tr>
+<tr class="memdesc:a4f161db0d533cac5ddbf558fa2aaea3b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets a value in the configuration<br/></td></tr>
+<tr class="separator:a4f161db0d533cac5ddbf558fa2aaea3b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a99b689b17905c31fa760cc92ceb2fa89"><td class="memItemLeft" align="right" valign="top">List&lt; T &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_b_c_1_1_core_1_1_configuration.html#a99b689b17905c31fa760cc92ceb2fa89">GetConfigValueArray&lt; T &gt;</a> (string s)</td></tr>
+<tr class="memdesc:a99b689b17905c31fa760cc92ceb2fa89"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets a comma-delimited array (list) from the configuration <a href="#a99b689b17905c31fa760cc92ceb2fa89">More...</a><br/></td></tr>
+<tr class="separator:a99b689b17905c31fa760cc92ceb2fa89"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a04f21c72d510c6486acfc8c27fdc34ce"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_b_c_1_1_core_1_1_configuration.html#a04f21c72d510c6486acfc8c27fdc34ce">SaveConfigFile</a> ()</td></tr>
 <tr class="memdesc:a04f21c72d510c6486acfc8c27fdc34ce"><td class="mdescLeft">&#160;</td><td class="mdescRight">Saves the current configuration to a file. <a href="#a04f21c72d510c6486acfc8c27fdc34ce">More...</a><br/></td></tr>
 <tr class="separator:a04f21c72d510c6486acfc8c27fdc34ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a46c9b791926a885880df21e74c5a7196"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a46c9b791926a885880df21e74c5a7196"></a>
-static <a class="el" href="class_m_b_c_1_1_core_1_1_configuration.html">Configuration</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_b_c_1_1_core_1_1_configuration.html#a46c9b791926a885880df21e74c5a7196">GetGlobalDefault</a> ()</td></tr>
-<tr class="memdesc:a46c9b791926a885880df21e74c5a7196"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets a common configuration object for use. The default configuration file is loaded at ...ini<br/></td></tr>
-<tr class="separator:a46c9b791926a885880df21e74c5a7196"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6b5833220d539c7b7e48863659bd1cde"><td class="memItemLeft" align="right" valign="top">static List&lt; string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_b_c_1_1_core_1_1_configuration.html#a6b5833220d539c7b7e48863659bd1cde">GetAvailableConfigs</a> ()</td></tr>
+<tr class="separator:a6b5833220d539c7b7e48863659bd1cde"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
 Properties</h2></td></tr>
-<tr class="memitem:ad5261894e43fb858f47873df2d6c847b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad5261894e43fb858f47873df2d6c847b"></a>
-List&lt; string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_b_c_1_1_core_1_1_configuration.html#ad5261894e43fb858f47873df2d6c847b">BotNames</a><code> [get]</code></td></tr>
-<tr class="memdesc:ad5261894e43fb858f47873df2d6c847b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a list of strings representing the name and version of each bot<br/></td></tr>
-<tr class="separator:ad5261894e43fb858f47873df2d6c847b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4f09a03f95c3beaa3ae10c3ae7aa7624"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4f09a03f95c3beaa3ae10c3ae7aa7624"></a>
+static <a class="el" href="class_m_b_c_1_1_core_1_1_configuration.html">Configuration</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_b_c_1_1_core_1_1_configuration.html#a4f09a03f95c3beaa3ae10c3ae7aa7624">Global</a><code> [get]</code></td></tr>
+<tr class="memdesc:a4f09a03f95c3beaa3ae10c3ae7aa7624"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets a common configuration object for use.<br/></td></tr>
+<tr class="separator:a4f09a03f95c3beaa3ae10c3ae7aa7624"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5db184730b6c51c2ae617d0fc1976c13"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5db184730b6c51c2ae617d0fc1976c13"></a>
+static <a class="el" href="class_m_b_c_1_1_core_1_1_configuration.html">Configuration</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_m_b_c_1_1_core_1_1_configuration.html#a5db184730b6c51c2ae617d0fc1976c13">Default</a><code> [get]</code></td></tr>
+<tr class="memdesc:a5db184730b6c51c2ae617d0fc1976c13"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the default configuration. Used to set the default values for the <br/></td></tr>
+<tr class="separator:a5db184730b6c51c2ae617d0fc1976c13"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>BattleshipConfig deals with a single configuration file and parses each key/value pair.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="a1069037ddfad1eb59edbd38d10c838c4"></a>
+<a class="anchor" id="a6b5833220d539c7b7e48863659bd1cde"></a>
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">T MBC.Core.Configuration.GetConfigValue&lt; T &gt; </td>
+          <td class="memname">static List&lt;string&gt; MBC.Core.Configuration.GetAvailableConfigs </td>
           <td>(</td>
-          <td class="paramtype">string&#160;</td>
-          <td class="paramname"><em>s</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramname"></td><td>)</td>
           <td></td>
-          <td class="paramtype">T&#160;</td>
-          <td class="paramname"><em>def</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
-
-<p>Gets a value from the configuration</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">s</td><td>The key to get the value from</td></tr>
-    <tr><td class="paramname">def</td><td>The default value for a given key if the key is not found.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>The value loaded from the configuration, otherwise, the default value.</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The names of existing configuration files</dd></dl>
 
 </div>
 </div>
-<a class="anchor" id="a48e56bdacaf0660a45febbe6a402bd83"></a>
+<a class="anchor" id="a99b689b17905c31fa760cc92ceb2fa89"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -203,18 +191,8 @@ List&lt; string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class
           <td class="memname">List&lt;T&gt; MBC.Core.Configuration.GetConfigValueArray&lt; T &gt; </td>
           <td>(</td>
           <td class="paramtype">string&#160;</td>
-          <td class="paramname"><em>s</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramname"><em>s</em></td><td>)</td>
           <td></td>
-          <td class="paramtype">string&#160;</td>
-          <td class="paramname"><em>def</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -231,47 +209,29 @@ List&lt; string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class
 
 </div>
 </div>
-<a class="anchor" id="a82cce6b1d5e8a2d11f98ca930f6c76ad"></a>
+<a class="anchor" id="addce147239dffada4ca7bb0c8a0b7522"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="interface_m_b_c_1_1_core_1_1_i_battleship_controller.html">IBattleshipController</a> MBC.Core.Configuration.GetRobot </td>
+          <td class="memname">T MBC.Core.Configuration.GetValue&lt; T &gt; </td>
           <td>(</td>
           <td class="paramtype">string&#160;</td>
-          <td class="paramname"><em>name</em></td><td>)</td>
+          <td class="paramname"><em>s</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Returns the object that is identified by name.</p>
-<dl class="section return"><dt>Returns</dt><dd>A Robot loaded externally by a DLL, having the same Name property from IBattleshipOpponent as the parameter. If the class was not found, then this will return null.</dd></dl>
-
-</div>
-</div>
-<a class="anchor" id="a1b9e29410c2026341fcf7157ff927781"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void MBC.Core.Configuration.LoadRobots </td>
-          <td>(</td>
-          <td class="paramtype">string&#160;</td>
-          <td class="paramname"><em>fName</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Loads a .DLL file and saves objects that implement the IBattleshipOpponent interface.</p>
+<p>Gets a value from the configuration</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">fName</td><td>The absolute pathname to the .DLL file</td></tr>
+    <tr><td class="paramname">s</td><td>The key to get the value from</td></tr>
+    <tr><td class="paramname">def</td><td>The default value for a given key if the key is not found.</td></tr>
   </table>
   </dd>
 </dl>
-<p>It is currently possible to load more than one robot from a single DLL.</p>
+<dl class="section return"><dt>Returns</dt><dd>The value loaded from the configuration, otherwise, the default value.</dd></dl>
 
 </div>
 </div>
@@ -307,7 +267,7 @@ List&lt; string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespace_m_b_c.html">MBC</a></li><li class="navelem"><a class="el" href="namespace_m_b_c_1_1_core.html">Core</a></li><li class="navelem"><a class="el" href="class_m_b_c_1_1_core_1_1_configuration.html">Configuration</a></li>
-    <li class="footer">Generated on Sat Apr 6 2013 15:29:39 for Mohawk Battleship by
+    <li class="footer">Generated on Mon Apr 8 2013 04:16:38 for Mohawk Battleship by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.3.1 </li>
   </ul>

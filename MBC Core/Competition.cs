@@ -15,13 +15,13 @@
     {
         static Competition()
         {
-            Configuration.Default.SetConfigValue<int>("mbc_random_seed", Environment.TickCount);
-            Configuration.Default.SetConfigValue<int>("mbc_field_width", 10);
-            Configuration.Default.SetConfigValue<int>("mbc_field_height", 10);
-            Configuration.Default.SetConfigValue<string>("mbc_field_ship_sizes", "2,3,3,4,5");
-            Configuration.Default.SetConfigValue<int>("mbc_timeout", 500);
-            Configuration.Default.SetConfigValue<int>("mbc_rounds", 110);
-            Configuration.Default.SetConfigValue<bool>("mbc_playout", false);
+            Configuration.Default.SetValue<int>("mbc_random_seed", Environment.TickCount);
+            Configuration.Default.SetValue<int>("mbc_field_width", 10);
+            Configuration.Default.SetValue<int>("mbc_field_height", 10);
+            Configuration.Default.SetValue<string>("mbc_field_ship_sizes", "2,3,3,4,5");
+            Configuration.Default.SetValue<int>("mbc_timeout", 500);
+            Configuration.Default.SetValue<int>("mbc_rounds", 110);
+            Configuration.Default.SetValue<bool>("mbc_playout", false);
         }
         private Controller[] controllers;     //Guaranteed to always be a 2-element array.
         private Configuration config;            //Configuration used for this competition
@@ -48,7 +48,7 @@
          */
         public Competition(IBattleshipController[] ibc, Configuration config)
         {
-            init(ibc, config, config.GetConfigValue<int>("mbc_random_seed"));
+            init(ibc, config, config.GetValue<int>("mbc_random_seed"));
         }
 
         /**
@@ -68,9 +68,9 @@
             config = conf;
             fieldInfo = new Field(ibc);
             fieldInfo.fixedRandom = new Random(seedNum);
-            fieldInfo.gameSize = new Size(config.GetConfigValue<int>("field_width"), config.GetConfigValue<int>("field_height"));
+            fieldInfo.gameSize = new Size(config.GetValue<int>("field_width"), config.GetValue<int>("field_height"));
             fieldInfo.shipSizes = config.GetConfigValueArray<int>("field_ship_sizes");
-            fieldInfo.timeoutLimit = new TimeSpan(0, 0, 0, 0, config.GetConfigValue<int>("timeout_millis"));
+            fieldInfo.timeoutLimit = new TimeSpan(0, 0, 0, 0, config.GetValue<int>("timeout_millis"));
 
             roundList = new List<RoundLog>();
 
@@ -311,8 +311,8 @@
          */
         public void RunCompetition()
         {
-            RunRounds(config.GetConfigValue<int>("competition_rounds"),
-                config.GetConfigValue<bool>("competition_mode_playout"));
+            RunRounds(config.GetValue<int>("competition_rounds"),
+                config.GetValue<bool>("competition_mode_playout"));
         }
 
         /**

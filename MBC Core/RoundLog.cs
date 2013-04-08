@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Linq.Expressions;
 using System.Diagnostics;
-using MBC.Core.mbc.accolades;
+using MBC.Core.mbc.accolade;
 
 namespace MBC.Core
 {

@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['accolades',['accolades',['../namespace_m_b_c_1_1_core_1_1mbc_1_1accolades.html',1,'MBC::Core::mbc']]],
+  ['accolade',['accolade',['../namespace_m_b_c_1_1_core_1_1mbc_1_1accolade.html',1,'MBC::Core::mbc']]],
   ['bots',['Bots',['../namespace_m_b_c_1_1_bots.html',1,'MBC']]],
   ['core',['Core',['../namespace_m_b_c_1_1_core.html',1,'MBC']]],
   ['gl',['GL',['../namespace_m_b_c_1_1_g_l.html',1,'MBC']]],
