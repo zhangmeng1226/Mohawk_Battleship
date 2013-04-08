@@ -23,26 +23,20 @@ namespace MBC.Terminal
             KeyPressEvent += new KeyPress(TerminalInputDisplay_KeyPressEvent);
         }
 
-        private void WriteInputLine()
-        {
-            AlignToCoord(9, 0);
-            WriteCharRepeat(' ', Width - 10);
-            AlignToCoord(10, 0);
-            WriteText(inputStr);
-        }
-
         void TerminalInputDisplay_KeyPressEvent(ConsoleKeyInfo key)
         {
             switch (key.Key)
             {
                 case ConsoleKey.Enter:
                     inputStr = "";
-                    WriteInputLine();
+                    AlignToCoord(9, 0);
+                    WriteCharRepeat(' ', Width - 10);
+                    AlignToCoord(10, 0);
                     break;
                 case ConsoleKey.Backspace:
                     if (inputStr.Length > 0)
                     {
-                        AlignToCoord(10 + inputStr.Length-1, 0);
+                        AlignToCoord(10 + inputStr.Length - 1, 0);
                         WriteText(" ");
                         AlignToCoord(10 + inputStr.Length - 1, 0);
                         inputStr = inputStr.Substring(0, inputStr.Length - 1);
