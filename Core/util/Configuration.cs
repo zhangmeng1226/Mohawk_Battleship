@@ -26,6 +26,8 @@ namespace MBC.Core
             configsPath = Util.WorkingDirectory() + "configs\\";
             defaultInstance = new Configuration("default");
             globalInstance = new Configuration("config");
+            if (!Directory.Exists(configsPath))
+                Directory.CreateDirectory(configsPath);
         }
 
         /**
@@ -135,6 +137,7 @@ namespace MBC.Core
          */
         private void LoadConfigFile()
         {
+            int eLine = 0;
             try
             {
                 StreamReader reader = new StreamReader(configsPath + configName + ".ini");
@@ -145,12 +148,17 @@ namespace MBC.Core
                     tLine[0] = tLine[0].Trim();
                     tLine[1] = tLine[1].Trim();
                     simpleConfig.Add(tLine[0], tLine[1]);
+                    eLine++;
                 } while (reader.Peek() != -1);
                 reader.Close();
             }
+            catch (IOException)
+            {
+                Util.PrintDebugMessage("Could not load the configuration file " + configName + ". Default values will be used.");
+            }
             catch
             {
-                Util.PrintDebugMessage("Could not load the configuration file " + configName + "for reading. Loading defaults.");
+                Util.PrintDebugMessage("There was an error while parsing the configuration file on line "+eLine);
             }
         }
 
