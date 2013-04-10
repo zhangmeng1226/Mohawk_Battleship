@@ -2,7 +2,6 @@
 
 /TODO.txt
 
-/MBC WPF/obj
 /bots
 /bin
 
@@ -12,3 +11,4 @@
 /Controllers/obj
 /App3D/obj
 /AppWPF/obj
+/configs
