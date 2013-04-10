@@ -51,7 +51,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>MBC.WPF.App</StartupObject>
+    <StartupObject>MBC.App.WPF.App</StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />

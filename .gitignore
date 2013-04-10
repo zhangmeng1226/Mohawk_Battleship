@@ -4,6 +4,7 @@
 
 /bots
 /bin
+/configs
 
 /AppTerminal/obj
 /Core/obj
@@ -11,4 +12,3 @@
 /Controllers/obj
 /App3D/obj
 /AppWPF/obj
-/configs

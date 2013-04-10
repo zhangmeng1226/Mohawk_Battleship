@@ -62,7 +62,7 @@ namespace MBC.App.WPF
                 Grid.SetZIndex(l, 0);
                 l.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
                 l.VerticalAlignment = System.Windows.VerticalAlignment.Top;
-                l.Stroke = new SolidColorBrush(Colors.Black);
+                l.Stroke = new SolidColorBrush(Colors.DarkGray);
                 l.StrokeThickness = 1;
                 l.StrokeDashArray = new DoubleCollection();
                 l.StrokeDashArray.Add(3);
@@ -81,7 +81,7 @@ namespace MBC.App.WPF
                 Grid.SetZIndex(l, 0);
                 l.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
                 l.VerticalAlignment = System.Windows.VerticalAlignment.Top;
-                l.Stroke = new SolidColorBrush(Colors.Black);
+                l.Stroke = new SolidColorBrush(Colors.DarkGray);
                 l.StrokeThickness = 1;
                 l.StrokeDashArray = new DoubleCollection();
                 l.StrokeDashArray.Add(3);
