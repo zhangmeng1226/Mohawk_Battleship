@@ -17,7 +17,7 @@ namespace MBC.Core
         private Dictionary<string, string> simpleConfig;
         private string configName;
 
-        private static string configsPath;
+        public static string configsPath;
         private static Configuration globalInstance;
         private static Configuration defaultInstance;
 

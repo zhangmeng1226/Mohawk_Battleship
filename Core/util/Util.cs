@@ -52,7 +52,11 @@ namespace MBC.Core
          */
         public static string WorkingDirectory()
         {
-            return Assembly.GetExecutingAssembly().Location + "\\..\\";
+            string result = "";
+            string[] locParts = Assembly.GetExecutingAssembly().Location.Split('\\');
+            for (int i = 0; i < locParts.Length - 1; i++)
+                result += locParts[i]+"\\";
+            return result + "..\\";
         }
 
         /**
