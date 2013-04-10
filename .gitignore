@@ -6,8 +6,8 @@
 /bots
 /bin
 
-/MBC Terminal/obj
-/MBC Core/obj
-/MBC Controller Interface/obj
-/MBC Bots/obj
-/MBC 3D/obj
+/AppTerminal/obj
+/Core/obj
+/Controller Plugin/obj
+/Controllers/obj
+/App3D/obj

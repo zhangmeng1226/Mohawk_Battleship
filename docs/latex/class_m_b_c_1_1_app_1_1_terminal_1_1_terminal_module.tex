@@ -1,0 +1,163 @@
+\hypertarget{class_m_b_c_1_1_app_1_1_terminal_1_1_terminal_module}{\section{M\-B\-C.\-App.\-Terminal.\-Terminal\-Module Class Reference}
+\label{class_m_b_c_1_1_app_1_1_terminal_1_1_terminal_module}\index{M\-B\-C.\-App.\-Terminal.\-Terminal\-Module@{M\-B\-C.\-App.\-Terminal.\-Terminal\-Module}}
+}
+
+
+The base class for a Console\-Module. 
+
+
+
+
+Inheritance diagram for M\-B\-C.\-App.\-Terminal.\-Terminal\-Module\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_m_b_c_1_1_app_1_1_terminal_1_1_terminal_module__inherit__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{class_m_b_c_1_1_app_1_1_terminal_1_1_terminal_module_a1c38612e63ac6dee0a8508dff99685e2}{delegate void {\bfseries Key\-Press} (Console\-Key\-Info key)}\label{class_m_b_c_1_1_app_1_1_terminal_1_1_terminal_module_a1c38612e63ac6dee0a8508dff99685e2}
+
+\item 
+\hypertarget{class_m_b_c_1_1_app_1_1_terminal_1_1_terminal_module_a2663bd41ea43a72eab6074bf7dae96d8}{delegate void {\bfseries Input} (string input)}\label{class_m_b_c_1_1_app_1_1_terminal_1_1_terminal_module_a2663bd41ea43a72eab6074bf7dae96d8}
+
+\item 
+bool \hyperlink{class_m_b_c_1_1_app_1_1_terminal_1_1_terminal_module_a439526c49a5812e6e0a9c37915bd1fe7}{Align\-To\-Coord} (int x, int y)
+\begin{DoxyCompactList}\small\item\em Aligns the cursor to the specified coords for this buffer\end{DoxyCompactList}\item 
+bool \hyperlink{class_m_b_c_1_1_app_1_1_terminal_1_1_terminal_module_af516101ca4ddb24c427cb027a8fee5f2}{Align\-To\-Line} (int line)
+\begin{DoxyCompactList}\small\item\em Aligns the cursor to the specified line for this buffer\end{DoxyCompactList}\item 
+\hypertarget{class_m_b_c_1_1_app_1_1_terminal_1_1_terminal_module_a7ed4b33386492ec3a52f3efc93b5bb35}{void \hyperlink{class_m_b_c_1_1_app_1_1_terminal_1_1_terminal_module_a7ed4b33386492ec3a52f3efc93b5bb35}{Align} ()}\label{class_m_b_c_1_1_app_1_1_terminal_1_1_terminal_module_a7ed4b33386492ec3a52f3efc93b5bb35}
+
+\begin{DoxyCompactList}\small\item\em Aligns the cursor to the last position used.\end{DoxyCompactList}\item 
+\hypertarget{class_m_b_c_1_1_app_1_1_terminal_1_1_terminal_module_a171493f7965171c51b0b94da98468571}{void \hyperlink{class_m_b_c_1_1_app_1_1_terminal_1_1_terminal_module_a171493f7965171c51b0b94da98468571}{New\-Line} (int n=1)}\label{class_m_b_c_1_1_app_1_1_terminal_1_1_terminal_module_a171493f7965171c51b0b94da98468571}
+
+\begin{DoxyCompactList}\small\item\em Moves the cursor down a line. Optionally provide a number to move down that many lines.\end{DoxyCompactList}\item 
+\hypertarget{class_m_b_c_1_1_app_1_1_terminal_1_1_terminal_module_a035316d3e8c803a7f0f5c2ffe332fab3}{void \hyperlink{class_m_b_c_1_1_app_1_1_terminal_1_1_terminal_module_a035316d3e8c803a7f0f5c2ffe332fab3}{Write\-Chars} (char\mbox{[}$\,$\mbox{]} c)}\label{class_m_b_c_1_1_app_1_1_terminal_1_1_terminal_module_a035316d3e8c803a7f0f5c2ffe332fab3}
+
+\begin{DoxyCompactList}\small\item\em Writes characters to the terminal. Wraps text around if the buffer is too small.\end{DoxyCompactList}\item 
+\hypertarget{class_m_b_c_1_1_app_1_1_terminal_1_1_terminal_module_ad729a2c88e4d5b2df8a3ca381132327d}{void \hyperlink{class_m_b_c_1_1_app_1_1_terminal_1_1_terminal_module_ad729a2c88e4d5b2df8a3ca381132327d}{Key\-Pressed} (Console\-Key\-Info key)}\label{class_m_b_c_1_1_app_1_1_terminal_1_1_terminal_module_ad729a2c88e4d5b2df8a3ca381132327d}
+
+\begin{DoxyCompactList}\small\item\em Called when a key is pressed in the console.\end{DoxyCompactList}\item 
+\hypertarget{class_m_b_c_1_1_app_1_1_terminal_1_1_terminal_module_a75f7358913aa9fc925e7e91a45b3d4ce}{void \hyperlink{class_m_b_c_1_1_app_1_1_terminal_1_1_terminal_module_a75f7358913aa9fc925e7e91a45b3d4ce}{Input\-Entered} (string input)}\label{class_m_b_c_1_1_app_1_1_terminal_1_1_terminal_module_a75f7358913aa9fc925e7e91a45b3d4ce}
+
+\begin{DoxyCompactList}\small\item\em Called when a string has been entered in the console.\end{DoxyCompactList}\item 
+void \hyperlink{class_m_b_c_1_1_app_1_1_terminal_1_1_terminal_module_a274184a9bc3b3c171db5dd530a3e19fc}{Write\-Char\-Repeat} (char c, int n)
+\begin{DoxyCompactList}\small\item\em Writes a specific character for a number of times.\end{DoxyCompactList}\item 
+void \hyperlink{class_m_b_c_1_1_app_1_1_terminal_1_1_terminal_module_a7ea2da056ffca96e99d3aeb357e1ef79}{Write\-Centered\-Text} (string text)
+\begin{DoxyCompactList}\small\item\em Prints the specified text centered to the console.\end{DoxyCompactList}\item 
+\hypertarget{class_m_b_c_1_1_app_1_1_terminal_1_1_terminal_module_a7b87bd371c50dc319dff8f131ad6b46a}{void \hyperlink{class_m_b_c_1_1_app_1_1_terminal_1_1_terminal_module_a7b87bd371c50dc319dff8f131ad6b46a}{Write\-Text} (string txt, params object\mbox{[}$\,$\mbox{]} rst)}\label{class_m_b_c_1_1_app_1_1_terminal_1_1_terminal_module_a7b87bd371c50dc319dff8f131ad6b46a}
+
+\begin{DoxyCompactList}\small\item\em Writes text to the console.\end{DoxyCompactList}\item 
+\hypertarget{class_m_b_c_1_1_app_1_1_terminal_1_1_terminal_module_aa829e4d4814df58eaa73d5b1be901132}{void \hyperlink{class_m_b_c_1_1_app_1_1_terminal_1_1_terminal_module_aa829e4d4814df58eaa73d5b1be901132}{Refresh\-Display} (int x, int y, int w, int h)}\label{class_m_b_c_1_1_app_1_1_terminal_1_1_terminal_module_aa829e4d4814df58eaa73d5b1be901132}
+
+\begin{DoxyCompactList}\small\item\em Refreshes the display of this module while updating the bounds of the writing area.\end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{class_m_b_c_1_1_app_1_1_terminal_1_1_terminal_module_a6194db09001eabda74aa66a3a507b0a4}{abstract void \hyperlink{class_m_b_c_1_1_app_1_1_terminal_1_1_terminal_module_a6194db09001eabda74aa66a3a507b0a4}{Display} ()}\label{class_m_b_c_1_1_app_1_1_terminal_1_1_terminal_module_a6194db09001eabda74aa66a3a507b0a4}
+
+\begin{DoxyCompactList}\small\item\em Refresh the display of this module.\end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Properties}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{class_m_b_c_1_1_app_1_1_terminal_1_1_terminal_module_aafdb96da8e28428f7fa6e2748b634bde}{int \hyperlink{class_m_b_c_1_1_app_1_1_terminal_1_1_terminal_module_aafdb96da8e28428f7fa6e2748b634bde}{Width}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}}\label{class_m_b_c_1_1_app_1_1_terminal_1_1_terminal_module_aafdb96da8e28428f7fa6e2748b634bde}
+
+\begin{DoxyCompactList}\small\item\em Gets the width of characters this Console\-Module can write\end{DoxyCompactList}\item 
+\hypertarget{class_m_b_c_1_1_app_1_1_terminal_1_1_terminal_module_ab8f92d9028ad8f9da6152fdeca575f72}{int \hyperlink{class_m_b_c_1_1_app_1_1_terminal_1_1_terminal_module_ab8f92d9028ad8f9da6152fdeca575f72}{Height}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}}\label{class_m_b_c_1_1_app_1_1_terminal_1_1_terminal_module_ab8f92d9028ad8f9da6152fdeca575f72}
+
+\begin{DoxyCompactList}\small\item\em Gets the height of characters this Console\-Module can write\end{DoxyCompactList}\item 
+\hypertarget{class_m_b_c_1_1_app_1_1_terminal_1_1_terminal_module_aeeb64c929c4a318b7e1ab8311bb984b6}{int {\bfseries Write\-X}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}}\label{class_m_b_c_1_1_app_1_1_terminal_1_1_terminal_module_aeeb64c929c4a318b7e1ab8311bb984b6}
+
+\item 
+\hypertarget{class_m_b_c_1_1_app_1_1_terminal_1_1_terminal_module_af3e76bf26865ca890180bb4cc7c16682}{int {\bfseries Write\-Y}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}}\label{class_m_b_c_1_1_app_1_1_terminal_1_1_terminal_module_af3e76bf26865ca890180bb4cc7c16682}
+
+\end{DoxyCompactItemize}
+\subsection*{Events}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{class_m_b_c_1_1_app_1_1_terminal_1_1_terminal_module_aae184272524f5d2386f081b5b9f2cd52}{Key\-Press {\bfseries Key\-Press\-Event}}\label{class_m_b_c_1_1_app_1_1_terminal_1_1_terminal_module_aae184272524f5d2386f081b5b9f2cd52}
+
+\item 
+\hypertarget{class_m_b_c_1_1_app_1_1_terminal_1_1_terminal_module_ad5cf7a0dc96ef135e4b10f2958a082e5}{Input {\bfseries Input\-Event}}\label{class_m_b_c_1_1_app_1_1_terminal_1_1_terminal_module_ad5cf7a0dc96ef135e4b10f2958a082e5}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+The base class for a Console\-Module.
+
+\subsection{Member Function Documentation}
+\hypertarget{class_m_b_c_1_1_app_1_1_terminal_1_1_terminal_module_a439526c49a5812e6e0a9c37915bd1fe7}{\index{M\-B\-C\-::\-App\-::\-Terminal\-::\-Terminal\-Module@{M\-B\-C\-::\-App\-::\-Terminal\-::\-Terminal\-Module}!Align\-To\-Coord@{Align\-To\-Coord}}
+\index{Align\-To\-Coord@{Align\-To\-Coord}!MBC::App::Terminal::TerminalModule@{M\-B\-C\-::\-App\-::\-Terminal\-::\-Terminal\-Module}}
+\subsubsection[{Align\-To\-Coord}]{\setlength{\rightskip}{0pt plus 5cm}bool M\-B\-C.\-App.\-Terminal.\-Terminal\-Module.\-Align\-To\-Coord (
+\begin{DoxyParamCaption}
+\item[{int}]{x, }
+\item[{int}]{y}
+\end{DoxyParamCaption}
+)}}\label{class_m_b_c_1_1_app_1_1_terminal_1_1_terminal_module_a439526c49a5812e6e0a9c37915bd1fe7}
+
+
+Aligns the cursor to the specified coords for this buffer
+
+\begin{DoxyReturn}{Returns}
+True if the cursor position is out of bounds
+\end{DoxyReturn}
+\hypertarget{class_m_b_c_1_1_app_1_1_terminal_1_1_terminal_module_af516101ca4ddb24c427cb027a8fee5f2}{\index{M\-B\-C\-::\-App\-::\-Terminal\-::\-Terminal\-Module@{M\-B\-C\-::\-App\-::\-Terminal\-::\-Terminal\-Module}!Align\-To\-Line@{Align\-To\-Line}}
+\index{Align\-To\-Line@{Align\-To\-Line}!MBC::App::Terminal::TerminalModule@{M\-B\-C\-::\-App\-::\-Terminal\-::\-Terminal\-Module}}
+\subsubsection[{Align\-To\-Line}]{\setlength{\rightskip}{0pt plus 5cm}bool M\-B\-C.\-App.\-Terminal.\-Terminal\-Module.\-Align\-To\-Line (
+\begin{DoxyParamCaption}
+\item[{int}]{line}
+\end{DoxyParamCaption}
+)}}\label{class_m_b_c_1_1_app_1_1_terminal_1_1_terminal_module_af516101ca4ddb24c427cb027a8fee5f2}
+
+
+Aligns the cursor to the specified line for this buffer
+
+\begin{DoxyReturn}{Returns}
+True if the cursor position is out of bounds
+\end{DoxyReturn}
+\hypertarget{class_m_b_c_1_1_app_1_1_terminal_1_1_terminal_module_a7ea2da056ffca96e99d3aeb357e1ef79}{\index{M\-B\-C\-::\-App\-::\-Terminal\-::\-Terminal\-Module@{M\-B\-C\-::\-App\-::\-Terminal\-::\-Terminal\-Module}!Write\-Centered\-Text@{Write\-Centered\-Text}}
+\index{Write\-Centered\-Text@{Write\-Centered\-Text}!MBC::App::Terminal::TerminalModule@{M\-B\-C\-::\-App\-::\-Terminal\-::\-Terminal\-Module}}
+\subsubsection[{Write\-Centered\-Text}]{\setlength{\rightskip}{0pt plus 5cm}void M\-B\-C.\-App.\-Terminal.\-Terminal\-Module.\-Write\-Centered\-Text (
+\begin{DoxyParamCaption}
+\item[{string}]{text}
+\end{DoxyParamCaption}
+)}}\label{class_m_b_c_1_1_app_1_1_terminal_1_1_terminal_module_a7ea2da056ffca96e99d3aeb357e1ef79}
+
+
+Prints the specified text centered to the console.
+
+
+\begin{DoxyParams}{Parameters}
+{\em text} & The text to print centered.\\
+\hline
+{\em ends} & The ends used for styling.\\
+\hline
+\end{DoxyParams}
+\hypertarget{class_m_b_c_1_1_app_1_1_terminal_1_1_terminal_module_a274184a9bc3b3c171db5dd530a3e19fc}{\index{M\-B\-C\-::\-App\-::\-Terminal\-::\-Terminal\-Module@{M\-B\-C\-::\-App\-::\-Terminal\-::\-Terminal\-Module}!Write\-Char\-Repeat@{Write\-Char\-Repeat}}
+\index{Write\-Char\-Repeat@{Write\-Char\-Repeat}!MBC::App::Terminal::TerminalModule@{M\-B\-C\-::\-App\-::\-Terminal\-::\-Terminal\-Module}}
+\subsubsection[{Write\-Char\-Repeat}]{\setlength{\rightskip}{0pt plus 5cm}void M\-B\-C.\-App.\-Terminal.\-Terminal\-Module.\-Write\-Char\-Repeat (
+\begin{DoxyParamCaption}
+\item[{char}]{c, }
+\item[{int}]{n}
+\end{DoxyParamCaption}
+)}}\label{class_m_b_c_1_1_app_1_1_terminal_1_1_terminal_module_a274184a9bc3b3c171db5dd530a3e19fc}
+
+
+Writes a specific character for a number of times.
+
+
+\begin{DoxyParams}{Parameters}
+{\em c} & The character to print to the console.\\
+\hline
+{\em n} & The number of times to print the character\\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+App\-Terminal/Terminal\-Module.\-cs\end{DoxyCompactItemize}

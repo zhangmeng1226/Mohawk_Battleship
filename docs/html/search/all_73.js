@@ -1,7 +1,7 @@
 var searchData=
 [
   ['saveconfigfile',['SaveConfigFile',['../class_m_b_c_1_1_core_1_1_configuration.html#a04f21c72d510c6486acfc8c27fdc34ce',1,'MBC::Core::Configuration']]],
-  ['setbattlefield',['SetBattlefield',['../class_m_b_c_1_1_w_p_f_1_1_field_control.html#a2f7f336f27ae6c9517c54fcb142120b1',1,'MBC::WPF::FieldControl']]],
+  ['setbattlefield',['SetBattlefield',['../class_m_b_c_1_1_app_1_1_w_p_f_1_1_field_control.html#a443ed9690cf8a37c9b535f41974ed8b2',1,'MBC::App::WPF::FieldControl']]],
   ['setpropertyvalue',['SetPropertyValue',['../class_xaml_generated_namespace_1_1_generated_internal_type_helper.html#ade0f04c0f7b18dd5b170e071d5534d38',1,'XamlGeneratedNamespace::GeneratedInternalTypeHelper']]],
   ['setvalue_3c_20t_20_3e',['SetValue&lt; T &gt;',['../class_m_b_c_1_1_core_1_1_configuration.html#a4f161db0d533cac5ddbf558fa2aaea3b',1,'MBC::Core::Configuration']]],
   ['ship',['Ship',['../class_m_b_c_1_1_core_1_1_ship.html',1,'MBC::Core']]],

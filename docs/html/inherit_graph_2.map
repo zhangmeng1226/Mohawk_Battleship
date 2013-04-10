@@ -1,3 +1,5 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$class_m_b_c_1_1_core_1_1_controller.html" title="A BattleshipOpponent is an object that contains various data pertaining to an IBattleshipOpponent cla..." alt="" coords="5,5,147,32"/>
+<area shape="rect" id="node1" href="$class_m_b_c_1_1_app_1_1_terminal_1_1_terminal_module.html" title="The base class for a ConsoleModule." alt="" coords="5,27,189,69"/>
+<area shape="rect" id="node2" href="$class_m_b_c_1_1_app_1_1_terminal_1_1_main_menu.html" title="MBC.App.Terminal.MainMenu" alt="" coords="237,5,432,32"/>
+<area shape="rect" id="node3" href="$class_m_b_c_1_1_app_1_1_terminal_1_1_terminal_input_display.html" title="MBC.App.Terminal.Terminal\lInputDisplay" alt="" coords="243,57,427,98"/>
 </map>

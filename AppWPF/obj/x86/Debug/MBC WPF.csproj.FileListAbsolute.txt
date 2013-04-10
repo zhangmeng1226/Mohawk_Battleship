@@ -1,0 +1,18 @@
+D:\battleship\s1\Mohawk_Battleship\bin\MBC WPF.exe.config
+D:\battleship\s1\Mohawk_Battleship\bin\MBC WPF.exe
+D:\battleship\s1\Mohawk_Battleship\bin\MBC WPF.pdb
+D:\battleship\s1\Mohawk_Battleship\MBC WPF\obj\x86\Debug\MBC WPF.csprojResolveAssemblyReference.cache
+D:\battleship\s1\Mohawk_Battleship\MBC WPF\obj\x86\Debug\FieldControl.baml
+D:\battleship\s1\Mohawk_Battleship\MBC WPF\obj\x86\Debug\ResourceDictionary.baml
+D:\battleship\s1\Mohawk_Battleship\MBC WPF\obj\x86\Debug\FieldControl.g.cs
+D:\battleship\s1\Mohawk_Battleship\MBC WPF\obj\x86\Debug\MainWindow.g.cs
+D:\battleship\s1\Mohawk_Battleship\MBC WPF\obj\x86\Debug\App.g.cs
+D:\battleship\s1\Mohawk_Battleship\MBC WPF\obj\x86\Debug\GeneratedInternalTypeHelper.g.cs
+D:\battleship\s1\Mohawk_Battleship\MBC WPF\obj\x86\Debug\MBC WPF_MarkupCompile.cache
+D:\battleship\s1\Mohawk_Battleship\MBC WPF\obj\x86\Debug\MBC WPF_MarkupCompile.lref
+D:\battleship\s1\Mohawk_Battleship\MBC WPF\obj\x86\Debug\MainWindow.baml
+D:\battleship\s1\Mohawk_Battleship\MBC WPF\obj\x86\Debug\MBC WPF.g.resources
+D:\battleship\s1\Mohawk_Battleship\MBC WPF\obj\x86\Debug\MBC.WPF.Properties.Resources.resources
+D:\battleship\s1\Mohawk_Battleship\MBC WPF\obj\x86\Debug\MBC WPF.csproj.GenerateResource.Cache
+D:\battleship\s1\Mohawk_Battleship\MBC WPF\obj\x86\Debug\MBC WPF.exe
+D:\battleship\s1\Mohawk_Battleship\MBC WPF\obj\x86\Debug\MBC WPF.pdb
