@@ -2,7 +2,6 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:battlefield="clr-namespace:MBC.App.WPF"
-        xmlns:d3="http://research.microsoft.com/DynamicDataDisplay/1.0"
         Title="MainWindow" Height="550" Width="800">
     <Window.Resources>
         <ResourceDictionary>
@@ -110,8 +109,8 @@
                 </StackPanel>
                 <Label Grid.Column="4" Content="Views" Style="{StaticResource defaultLabelTitle}" />
                 <StackPanel Grid.Row="1" Grid.Column="4">
-                    <CheckBox Name="consBasicCheck" Content="Basic Console" Margin="5,20,5,0" Style="{StaticResource defaultCheckbox}" Click="consBasicCheck_Click"/>
-                    <CheckBox Name="consAdvCheck" Content="Advanced Console" Margin="5,20,5,0" Style="{StaticResource defaultCheckbox}" Click="consAdvCheck_Click"/>
+                    <CheckBox Name="consBasicCheck" Content="Match Queue" Margin="5,20,5,0" Style="{StaticResource defaultCheckbox}" Click="consBasicCheck_Click"/>
+                    <CheckBox Name="consAdvCheck" Content="Advanced" Margin="5,20,5,0" Style="{StaticResource defaultCheckbox}" Click="consAdvCheck_Click"/>
                 </StackPanel>
             </Grid>
         </Grid>
@@ -125,7 +124,7 @@
                         </Grid.ColumnDefinitions>
                         <ListView Grid.Column="0" ItemsSource="{Binding roundActLogEntries}">
                             <ListView.View>
-                                <GridView>
+                                <GridView ColumnHeaderTemplate="{StaticResource defaultGridViewHeader}">
                                     <GridViewColumn Width="20" Header="#" 
                                                     DisplayMemberBinding="{Binding Number}"/>
                                     <GridViewColumn Width="80" Header="Action" 
@@ -165,7 +164,7 @@
                             </StackPanel>
                             <ListView Grid.Column="1" Grid.Row="1" ItemsSource="{Binding roundLogEntries}">
                                 <ListView.View>
-                                    <GridView>
+                                    <GridView ColumnHeaderTemplate="{StaticResource defaultGridViewHeader}">
                                         <GridViewColumn Header="#" Width="30" DisplayMemberBinding="{Binding Number}"/>
                                         <GridViewColumn Header="Victor" Width="90" DisplayMemberBinding="{Binding Victor}"/>
                                     </GridView>
@@ -195,7 +194,7 @@
                         </StackPanel>
                         <ListView Width="250">
                             <ListView.View>
-                                <GridView>
+                                <GridView ColumnHeaderTemplate="{StaticResource defaultGridViewHeader}">
                                     <GridViewColumn Header="Key" Width="120"/>
                                     <GridViewColumn Header="Value" Width="130"/>
                                 </GridView>
@@ -213,7 +212,7 @@
                         </ListView>
                     </StackPanel>
                 </TabItem>
-                <TabItem Header="Bot Terminal" />
+                <TabItem Header="Bot Terminal" HorizontalAlignment="Left" Width="75" />
                 <TabItem Header="Logs" />
             </TabControl>
         </Border>
@@ -229,7 +228,15 @@
             <battlefield:FieldControl x:Name="redField" Grid.Column="0" battlefield:FieldControl.ControllerColor="Red"/>
             <battlefield:FieldControl x:Name="blueField" DockPanel.Dock="Right" Grid.Column="2" battlefield:FieldControl.ControllerColor="Blue"/>
             <Border Name="centerConsoleBorder" BorderBrush="{StaticResource borderConsoleBrush}" BorderThickness="2" Grid.Column="1" Visibility="Visible" CornerRadius="10">
-                <Grid Name="centerConsole" Background="{StaticResource BlackTopBrush}" Width="150" >
+                <Grid Name="centerConsole" Background="{StaticResource BlackTopBrush}" Width="175" >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
                 </Grid>
             </Border>
         </Grid>

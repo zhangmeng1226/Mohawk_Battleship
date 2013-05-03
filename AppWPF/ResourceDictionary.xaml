@@ -1,5 +1,5 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero">
     <!--
         Linear Gradient Brushes
     -->
@@ -11,7 +11,7 @@
         <GradientStop Color="#CC00EE00" Offset="0.52" />
         <GradientStop Color="#CC004400" Offset="1.0" />
     </LinearGradientBrush>
-    
+
     <!--
         Images
     -->
@@ -21,51 +21,48 @@
     <Image x:Key="AccHead-To-HeadImg" Source="/MBC WPF;component/media/images/accolades/headtohead.png" />
     <Image x:Key="AccIntenseImg" Source="/MBC WPF;component/media/images/accolades/intense.png" />
     <Image x:Key="AccSlowImg" Source="/MBC WPF;component/media/images/accolades/slow.png" />
-    
-    
+
+
     <!--
         ***Control customizations***
     -->
-    
+
     <!-- 
         Lines
     -->
-    <Style x:Key="fieldGridLineStyle" TargetType="Line">
+    <Style x:Key="fieldGridLineStyle" TargetType="{x:Type Line}">
         <Setter Property="Stroke" Value="#AA000000" />
         <Setter Property="Stretch" Value="Fill" />
-        <Setter Property="Grid.ZIndex" Value="0" />
+        <Setter Property="Panel.ZIndex" Value="0" />
     </Style>
-    
-    <Style x:Key="fieldGridLineHorizontal" TargetType="Line" BasedOn="{StaticResource fieldGridLineStyle}">
+
+    <Style x:Key="fieldGridLineHorizontal" TargetType="{x:Type Line}" BasedOn="{StaticResource fieldGridLineStyle}">
         <Setter Property="X2" Value="1" />
         <Setter Property="VerticalAlignment" Value="Bottom" />
-        <Setter Property="Grid.ColumnSpan" Value="{Binding Path=ColumnDefinitions.Count, 
-            RelativeSource={RelativeSource AncestorType=Grid}}"/>
+        <Setter Property="Grid.ColumnSpan" Value="{Binding ColumnDefinitions.Count, RelativeSource={RelativeSource AncestorType={x:Type Grid}}}"/>
     </Style>
-    
-    <Style x:Key="fieldGridLineVertical" TargetType="Line" BasedOn="{StaticResource fieldGridLineStyle}">
+
+    <Style x:Key="fieldGridLineVertical" TargetType="{x:Type Line}" BasedOn="{StaticResource fieldGridLineStyle}">
         <Setter Property="X2" Value="1" />
         <Setter Property="VerticalAlignment" Value="Bottom" />
-        <Setter Property="Grid.ColumnSpan" Value="{Binding Path=ColumnDefinitions.Count, 
-            RelativeSource={RelativeSource AncestorType=Grid}}"/>
+        <Setter Property="Grid.ColumnSpan" Value="{Binding ColumnDefinitions.Count, RelativeSource={RelativeSource AncestorType={x:Type Grid}}}"/>
     </Style>
-    
+
     <!--
         Tabs
     -->
-    <Style TargetType="TabItem">
+    <Style TargetType="{x:Type TabItem}">
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="TabItem">
+                <ControlTemplate TargetType="{x:Type TabItem}">
                     <Grid>
                         <Border
-                            Name="Border"
+                            x:Name="Border"
                             Background="Black"
                             BorderBrush="DarkGray"
                             BorderThickness="1"
                             CornerRadius="10,10,0,0">
-                            <ContentPresenter TextBlock.FontFamily="Berlin Sans FB" TextBlock.Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center" ContentSource="Header" Margin="4,4,4,4">
-                            </ContentPresenter>
+                            <ContentPresenter TextBlock.FontFamily="Berlin Sans FB" TextBlock.Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center" ContentSource="Header" Margin="4,4,4,4"/>
                         </Border>
                     </Grid>
                     <ControlTemplate.Triggers>
@@ -82,11 +79,11 @@
             </Setter.Value>
         </Setter>
     </Style>
-    
-    <Style TargetType="TabControl">
+
+    <Style TargetType="{x:Type TabControl}">
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="TabControl">
+                <ControlTemplate TargetType="{x:Type TabControl}">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
@@ -112,60 +109,60 @@
             </Setter.Value>
         </Setter>
     </Style>
-    
+
     <!--
         Border Container Customization
     -->
-    <Style x:Key="borderTopStyle" TargetType="Border">
+    <Style x:Key="borderTopStyle" TargetType="{x:Type Border}">
         <Setter Property="Background" Value="{StaticResource BlackTopBrush}" />
         <Setter Property="BorderThickness" Value="5" />
         <Setter Property="CornerRadius" Value="5" />
         <Setter Property="Padding" Value="0" />
     </Style>
-    
+
     <!--
         Label customizations
     -->
-    <Style x:Key="titleLabel" TargetType="Label">
+    <Style x:Key="titleLabel" TargetType="{x:Type Label}">
         <Setter Property="FontFamily" Value="Consolas" />
         <Setter Property="FontSize" Value="20" />
         <Setter Property="FontWeight" Value="Bold" />
     </Style>
-    <Style x:Key="defaultLabelTitle" TargetType="Label">
+    <Style x:Key="defaultLabelTitle" TargetType="{x:Type Label}">
         <Setter Property="FontFamily" Value="Berlin Sans FB" />
         <Setter Property="FontSize" Value="16" />
         <Setter Property="FontWeight" Value="Bold" />
         <Setter Property="Foreground" Value="#FFBBFFFF" />
         <Setter Property="HorizontalAlignment" Value="Center" />
     </Style>
-    <Style x:Key="defaultLabel" TargetType="Label">
+    <Style x:Key="defaultLabel" TargetType="{x:Type Label}">
         <Setter Property="FontFamily" Value="Berlin Sans FB" />
         <Setter Property="FontSize" Value="12" />
         <Setter Property="Foreground" Value="#FFBBFFFF" />
     </Style>
-    
+
     <!--
         Checkbox Customizations
     -->
-    <Style x:Key="defaultCheckbox" TargetType="CheckBox">
+    <Style x:Key="defaultCheckbox" TargetType="{x:Type CheckBox}">
         <Setter Property="FontFamily" Value="Berlin Sans FB" />
         <Setter Property="FontSize" Value="12" />
         <Setter Property="Foreground" Value="#FFBBFFFF" />
     </Style>
-    
+
     <!--
         RadioButton Customizations
     -->
-    <Style x:Key="defaultRadio" TargetType="RadioButton">
+    <Style x:Key="defaultRadio" TargetType="{x:Type RadioButton}">
         <Setter Property="FontFamily" Value="Berlin Sans FB" />
         <Setter Property="FontSize" Value="12" />
         <Setter Property="Foreground" Value="#FFBBFFFF" />
     </Style>
-    
+
     <!--
         Button Customizations
     -->
-    <Style x:Key="defaultButton" TargetType="Button">
+    <Style x:Key="defaultButton" TargetType="{x:Type Button}">
         <Setter Property="FontFamily" Value="Berlins Sans FB" />
         <Setter Property="Foreground" Value="White" />
         <Setter Property="Template">
@@ -182,7 +179,7 @@
                                           HorizontalAlignment="Center"/>
                     </Border>
                     <ControlTemplate.Triggers>
-                        <Trigger Property="Button.IsMouseOver" Value="True">
+                        <Trigger Property="IsMouseOver" Value="True">
                             <Setter TargetName="ButtonBorder" Property="Background" Value="#AAFFFF24" />
                         </Trigger>
                     </ControlTemplate.Triggers>
@@ -191,7 +188,7 @@
         </Setter>
     </Style>
 
-    <Style x:Key="numericButton" TargetType="Button">
+    <Style x:Key="numericButton" TargetType="{x:Type Button}">
         <Setter Property="FontFamily" Value="Berlins Sans FB" />
         <Setter Property="Foreground" Value="White" />
         <Setter Property="FontWeight" Value="Bold" />
@@ -210,7 +207,7 @@
                                           Margin="0,0,0,0"/>
                     </Border>
                     <ControlTemplate.Triggers>
-                        <Trigger Property="Button.IsMouseOver" Value="True">
+                        <Trigger Property="IsMouseOver" Value="True">
                             <Setter TargetName="ButtonBorder" Property="Background" Value="#AAFFFF24" />
                         </Trigger>
                     </ControlTemplate.Triggers>
@@ -218,8 +215,8 @@
             </Setter.Value>
         </Setter>
     </Style>
-    
-    <Style x:Key="redButton" TargetType="Button">
+
+    <Style x:Key="redButton" TargetType="{x:Type Button}">
         <Setter Property="FontFamily" Value="Berlins Sans FB" />
         <Setter Property="Foreground" Value="White" />
         <Setter Property="Template">
@@ -236,7 +233,7 @@
                                           HorizontalAlignment="Center"/>
                     </Border>
                     <ControlTemplate.Triggers>
-                        <Trigger Property="Button.IsMouseOver" Value="True">
+                        <Trigger Property="IsMouseOver" Value="True">
                             <Setter TargetName="ButtonBorder" Property="Background" Value="#AAFFFF24" />
                         </Trigger>
                     </ControlTemplate.Triggers>
@@ -244,8 +241,8 @@
             </Setter.Value>
         </Setter>
     </Style>
-    
-    <Style x:Key="blueButton" TargetType="Button">
+
+    <Style x:Key="blueButton" TargetType="{x:Type Button}">
         <Setter Property="FontFamily" Value="Berlins Sans FB" />
         <Setter Property="Foreground" Value="White" />
         <Setter Property="Template">
@@ -262,7 +259,7 @@
                                           HorizontalAlignment="Center"/>
                     </Border>
                     <ControlTemplate.Triggers>
-                        <Trigger Property="Button.IsMouseOver" Value="True">
+                        <Trigger Property="IsMouseOver" Value="True">
                             <Setter TargetName="ButtonBorder" Property="Background" Value="#AAFFFF24" />
                         </Trigger>
                     </ControlTemplate.Triggers>
@@ -270,4 +267,79 @@
             </Setter.Value>
         </Setter>
     </Style>
+    <SolidColorBrush x:Key="ListBorder" Color="#828790"/>
+    <Style x:Key="{x:Static GridView.GridViewScrollViewerStyleKey}" TargetType="{x:Type ScrollViewer}">
+        <Setter Property="Focusable" Value="false"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ScrollViewer}">
+                    <Grid Background="{TemplateBinding Background}" SnapsToDevicePixels="true">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <DockPanel Margin="{TemplateBinding Padding}">
+                            <ScrollViewer DockPanel.Dock="Top" Focusable="false" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden">
+                                <GridViewHeaderRowPresenter AllowsColumnReorder="{Binding TemplatedParent.View.AllowsColumnReorder, RelativeSource={RelativeSource TemplatedParent}}" ColumnHeaderContainerStyle="{Binding TemplatedParent.View.ColumnHeaderContainerStyle, RelativeSource={RelativeSource TemplatedParent}}" ColumnHeaderToolTip="{Binding TemplatedParent.View.ColumnHeaderToolTip, RelativeSource={RelativeSource TemplatedParent}}" ColumnHeaderStringFormat="{Binding TemplatedParent.View.ColumnHeaderStringFormat, RelativeSource={RelativeSource TemplatedParent}}" ColumnHeaderContextMenu="{Binding TemplatedParent.View.ColumnHeaderContextMenu, RelativeSource={RelativeSource TemplatedParent}}" ColumnHeaderTemplate="{Binding TemplatedParent.View.ColumnHeaderTemplate, RelativeSource={RelativeSource TemplatedParent}}" Columns="{Binding TemplatedParent.View.Columns, RelativeSource={RelativeSource TemplatedParent}}" ColumnHeaderTemplateSelector="{Binding TemplatedParent.View.ColumnHeaderTemplateSelector, RelativeSource={RelativeSource TemplatedParent}}" Margin="2,0,2,0" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                            </ScrollViewer>
+                            <ScrollContentPresenter x:Name="PART_ScrollContentPresenter" CanContentScroll="{TemplateBinding CanContentScroll}" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" KeyboardNavigation.DirectionalNavigation="Local" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                        </DockPanel>
+                        <ScrollBar x:Name="PART_HorizontalScrollBar" Cursor="Arrow" Maximum="{TemplateBinding ScrollableWidth}" Minimum="0.0" Orientation="Horizontal" Grid.Row="1" Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}" Value="{Binding HorizontalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" ViewportSize="{TemplateBinding ViewportWidth}"/>
+                        <ScrollBar x:Name="PART_VerticalScrollBar" Cursor="Arrow" Grid.Column="1" Maximum="{TemplateBinding ScrollableHeight}" Minimum="0.0" Orientation="Vertical" Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}" Value="{Binding VerticalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" ViewportSize="{TemplateBinding ViewportHeight}"/>
+                        <DockPanel Background="{Binding Background, ElementName=PART_VerticalScrollBar}" Grid.Column="1" LastChildFill="false" Grid.Row="1">
+                            <Rectangle DockPanel.Dock="Left" Fill="White" Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}" Width="1"/>
+                            <Rectangle DockPanel.Dock="Top" Fill="White" Height="1" Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}"/>
+                        </DockPanel>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style TargetType="{x:Type ListView}">
+        <!--<Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"/>-->
+        <Setter Property="Background" Value="#AA000000"/>
+        <Setter Property="BorderBrush" Value="{StaticResource ListBorder}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Foreground" Value="#FF042271"/>
+        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
+        <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
+        <Setter Property="ScrollViewer.CanContentScroll" Value="true"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ListView}">
+                    <Themes:ListBoxChrome x:Name="Bd" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" RenderMouseOver="{TemplateBinding IsMouseOver}" RenderFocused="{TemplateBinding IsKeyboardFocusWithin}" SnapsToDevicePixels="true">
+                        <ScrollViewer Padding="{TemplateBinding Padding}" Style="{DynamicResource {x:Static GridView.GridViewScrollViewerStyleKey}}">
+                            <ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                        </ScrollViewer>
+                    </Themes:ListBoxChrome>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsGrouping" Value="true">
+                            <Setter Property="ScrollViewer.CanContentScroll" Value="false"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="false">
+                            <Setter Property="Background" TargetName="Bd" Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <DataTemplate x:Key="defaultGridViewHeader">
+        <StackPanel Orientation="Horizontal" Margin="-5,-5,-5,-5" Width="100000" Height="35">
+            <StackPanel.Background>
+                <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
+                    <GradientStop Color="#FFAAAAAA" Offset="1"/>
+                    <GradientStop Color="#FFFFFFFF" Offset="0.5"/>
+                    <GradientStop Color="#AAAAAAAA" Offset="0.5"/>
+                </LinearGradientBrush>
+            </StackPanel.Background>
+            <TextBlock Margin="10,10,10,10" Text="{Binding}" 
+		VerticalAlignment="Center"  Foreground="Black"/>
+        </StackPanel>
+    </DataTemplate>
 </ResourceDictionary>

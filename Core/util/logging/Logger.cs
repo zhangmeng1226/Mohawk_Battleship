@@ -19,22 +19,29 @@ namespace MBC.Core.util
         private List<StreamWriter> oStreams;
         private Log logReader;
         private MemoryStream mainStream; //No pun intended
+        private FileStream fileStream;
 
         public Logger(string n)
         {
+            oStreams = new List<StreamWriter>();
             mainStream = new MemoryStream();
             StreamWriter mainWriter = new StreamWriter(mainStream);
-            FileStream file = new FileStream(Util.WorkingDirectory() + Configuration.Global.GetValue<string>("logger_directory"), FileMode.OpenOrCreate);
+            fileStream = new FileStream(Util.WorkingDirectory() + Configuration.Global.GetValue<string>("logger_directory"), FileMode.OpenOrCreate);
 
             logReader = new Log(new StreamReader(mainStream));
 
-            AddOutputStream(new StreamWriter(file)); //Add the file stream
+            AddOutputStream(new StreamWriter(fileStream)); //Add the file stream
             AddOutputStream(mainWriter);
 
             //Reading stored contents from file to memory
-            StreamReader read = new StreamReader(file);
+            StreamReader read = new StreamReader(fileStream);
             while (!read.EndOfStream)
                 mainWriter.WriteLine(read.ReadLine());
+        }
+
+        ~Logger()
+        {
+            fileStream.Close();
         }
 
         /**
