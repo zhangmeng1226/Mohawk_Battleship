@@ -9,12 +9,15 @@ namespace MBC.Core.util
 {
     /**
      * <summary>The Log class is used to monitor a stream or a file for log changes, and provides events
-     * for log monitoring.</summary>
+     * for log monitoring. (CLIENT)</summary>
      */
     public class Log
     {
         private StreamReader iStream;
-        private FileSystemWatcher fileWatcher;
+        private Thread readThread;
+
+        public delegate void LogMessageReceived(LogMessage msg);
+        public event LogMessageReceived LogMessageReceivedEvent;
 
         /**
          * <summary>This Log class constructor requires a stream to read from. Then, the constructor
@@ -23,37 +26,26 @@ namespace MBC.Core.util
         public Log(StreamReader readFrom)
         {
             iStream = readFrom;
-            ThreadPool.QueueUserWorkItem(ThreadLoop, 0);
+            readThread = new Thread(new ThreadStart(ThreadLoop));
+            readThread.Start();
         }
 
-        public Log(string name)
+        ~Log()
         {
-            CreateFileWatcher(name);
+            readThread.Abort();
+            iStream.Close();
         }
 
-        public Log()
+        private void ThreadLoop()
         {
-            CreateFileWatcher("default");
-        }
-
-        private void CreateFileWatcher(string name)
-        {
-            fileWatcher = new FileSystemWatcher();
-            fileWatcher.Path = Util.WorkingDirectory() + "logs\\";
-            fileWatcher.Filter = name + ".txt";
-            fileWatcher.NotifyFilter = NotifyFilters.LastWrite | NotifyFilters.LastAccess;
-            fileWatcher.Changed += FileChangeEvent;
-            fileWatcher.EnableRaisingEvents = true;
-        }
-
-        private void FileChangeEvent(object source, FileSystemEventArgs e)
-        {
-
-        }
-
-        private void ThreadLoop(Object tn)
-        {
-
+            while (true)
+                try
+                {
+                    string[] line = iStream.ReadLine().Split('\t');
+                    if (LogMessageReceivedEvent != null)
+                        LogMessageReceivedEvent(new LogMessage(line[2], LogMessage.GetNameLevel(line[1]), DateTime.Parse(line[0])));
+                }
+                catch (Exception) { Util.PrintDebugMessage("Log parsing error occurred."); }
         }
     }
 }

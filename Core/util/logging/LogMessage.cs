@@ -10,6 +10,19 @@ namespace MBC.Core.util
      */
     public class LogMessage
     {
+
+        private DateTime date;
+        private string message;
+        private Level level;
+
+        public LogMessage(string msg, Level lvl, DateTime time)
+        {
+            message = msg;
+            level = lvl;
+            date = time;
+        }
+
+        /*============================STATIC DEFINITIONS======================*/
         private static Dictionary<string, string> prefixLevels;
 
         static LogMessage()
@@ -30,20 +43,16 @@ namespace MBC.Core.util
          */
         public static LogMessage.Level GetPrefixLevel(string pre)
         {
-            return (LogMessage.Level) Enum.Parse(typeof(Level), prefixLevels[pre]);
+            return (LogMessage.Level)Enum.Parse(typeof(Level), prefixLevels[pre]);
         }
 
         /**
-         * <summary>Translates a name string into the corresponding LogMessage Level. The string
-         * specified will be made into lowercase.</summary>
+         * <summary>Translates a name string into the corresponding LogMessage Level.</summary>
          */
         public static LogMessage.Level GetNameLevel(string name)
         {
-            return (LogMessage.Level) Enum.Parse(typeof(Level), name);
+            return (LogMessage.Level)Enum.Parse(typeof(Level), name, true);
         }
-
-        private string message;
-        private Level level;
 
         public enum Level
         {

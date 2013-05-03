@@ -5,9 +5,11 @@ using System.Text;
 
 namespace MBC.Core.util
 {
+    /**
+     * <summary>Static class used for automatic log management and object redundancy prevention.</summary>
+     */
     public class LoggerManager
     {
-
         private LoggerManager() { }
 
         private static Dictionary<string, Logger> logStore = new Dictionary<string,Logger>();
@@ -22,6 +24,14 @@ namespace MBC.Core.util
                 if (res == null)
                     res = new Logger(name);
                 return res;
+        }
+
+        /**
+         * <summary>Gets a log for log viewing.</summary>
+         */
+        public static Log GetLog(string name)
+        {
+            return GetLogger(name).GetLog();
         }
     }
 }

@@ -7,21 +7,34 @@ using System.IO;
 namespace MBC.Core.util
 {
     /**
-     * <summary>Used for logging.</summary>
+     * <summary>Used for logging. (SERVER)</summary>
      */
     public class Logger
     {
         static Logger()
         {
             Configuration.Default.SetValue<string>("logger_def_message_level", "Info");
+            Configuration.Default.SetValue<string>("logger_directory", "logs");
         }
         private List<StreamWriter> oStreams;
-        private Log log;
-        private string name;
+        private Log logReader;
+        private MemoryStream mainStream; //No pun intended
 
-        public Logger(string n) 
+        public Logger(string n)
         {
-            name = n;
+            mainStream = new MemoryStream();
+            StreamWriter mainWriter = new StreamWriter(mainStream);
+            FileStream file = new FileStream(Util.WorkingDirectory() + Configuration.Global.GetValue<string>("logger_directory"), FileMode.OpenOrCreate);
+
+            logReader = new Log(new StreamReader(mainStream));
+
+            AddOutputStream(new StreamWriter(file)); //Add the file stream
+            AddOutputStream(mainWriter);
+
+            //Reading stored contents from file to memory
+            StreamReader read = new StreamReader(file);
+            while (!read.EndOfStream)
+                mainWriter.WriteLine(read.ReadLine());
         }
 
         /**
@@ -32,14 +45,21 @@ namespace MBC.Core.util
             oStreams.Add(sOut);
         }
 
+        /**
+         * <summary>Writes to all streams. The message is formatted as follows:
+         * [DATE]\t[[MESSAGELEVEL]]\t[MESSAGE][LINE_TERMINATION]
+         * </summary>
+         */
         private void BroadcastStreams(string str, LogMessage.Level lvl)
         {
-            foreach(StreamWriter sw in oStreams) 
+            string date = DateTime.Now.ToString();
+            string level = Enum.GetName(typeof(LogMessage.Level), lvl);
+            foreach (StreamWriter sw in oStreams)
             {
                 lock (sw)
                 {
-                    sw.Write(str);
-                    sw.Write((int)lvl);
+                    sw.WriteLine("%s\t[%s]\t%s", date, level, str);
+                    sw.Flush();
                 }
             }
         }
@@ -67,6 +87,11 @@ namespace MBC.Core.util
             {
                 Log(message.Trim(), LogMessage.GetNameLevel(Configuration.Global.GetValue<string>("logger_def_message_level")));
             }
+        }
+
+        public Log GetLog()
+        {
+            return logReader;
         }
 
         /**
