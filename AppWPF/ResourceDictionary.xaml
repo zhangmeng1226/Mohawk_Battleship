@@ -15,12 +15,12 @@
     <!--
         Images
     -->
-    <Image x:Key="AccComebackImg" Source="/MBC WPF;component/media/images/accolades/comeback.png" />
-    <Image x:Key="AccDominationImg" Source="/MBC WPF;component/media/images/accolades/domination.png" />
-    <Image x:Key="AccFastImg" Source="/MBC WPF;component/media/images/accolades/fast.png" />
-    <Image x:Key="AccHead-To-HeadImg" Source="/MBC WPF;component/media/images/accolades/headtohead.png" />
-    <Image x:Key="AccIntenseImg" Source="/MBC WPF;component/media/images/accolades/intense.png" />
-    <Image x:Key="AccSlowImg" Source="/MBC WPF;component/media/images/accolades/slow.png" />
+    <Image x:Key="AccComebackImg" Source="/mbcwpf;component/media/images/accolades/comeback.png" />
+    <Image x:Key="AccDominationImg" Source="/mbcwpf;component/media/images/accolades/domination.png" />
+    <Image x:Key="AccFastImg" Source="/mbcwpf;component/media/images/accolades/fast.png" />
+    <Image x:Key="AccHead-To-HeadImg" Source="/mbcwpf;component/media/images/accolades/headtohead.png" />
+    <Image x:Key="AccIntenseImg" Source="/mbcwpf;component/media/images/accolades/intense.png" />
+    <Image x:Key="AccSlowImg" Source="/mbcwpf;component/media/images/accolades/slow.png" />
 
 
     <!--
