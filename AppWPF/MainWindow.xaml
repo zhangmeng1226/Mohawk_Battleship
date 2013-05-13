@@ -99,7 +99,7 @@
                                     Grid.Row="1" Grid.Column="1" Click="btnRndsDown_Click" />
                         </Grid>
                     </Grid>
-                    <CheckBox Content="Play out rounds" Style="{StaticResource defaultCheckbox}" Margin="5"/>
+                    <CheckBox Name="chkPlayOut" Content="Play out rounds" Style="{StaticResource defaultCheckbox}" Margin="5"/>
                     <Button Name="btnRndBegin" Content="Begin" Style="{StaticResource defaultButton}" Click="btnRndBegin_Click" />
                 </StackPanel>
                 <Label Grid.Column="2" Content="Round Control" Style="{StaticResource defaultLabelTitle}" />
@@ -160,9 +160,8 @@
                                 <Button Name="BtnBenchmarkLoad" Margin="5" Style="{StaticResource defaultButton}" Content="Load Benchmark..." Click="BtnBenchmarkLoad_Click" />
                                 <Button Name="BtnBenchmarkSave" Margin="5" Style="{StaticResource defaultButton}" Content="Save Benchmark..." Click="BtnBenchmarkSave_Click" />
                                 <Button Name="BtnRoundLoad" Margin="5" Style="{StaticResource defaultButton}" Content="Load Round..." Click="BtnRoundLoad_Click" />
-                                <Button Name="BtnRoundSave" Margin="5" Style="{StaticResource defaultButton}" Content="Save Round..." Click="BtnRoundSave_Click" />
                             </StackPanel>
-                            <ListView Grid.Column="1" Grid.Row="1" ItemsSource="{Binding roundLogEntries}">
+                            <ListView Name="lstRoundLog" Grid.Column="1" Grid.Row="1" ItemsSource="{Binding roundLogEntries}">
                                 <ListView.View>
                                     <GridView ColumnHeaderTemplate="{StaticResource defaultGridViewHeader}">
                                         <GridViewColumn Header="#" Width="30" DisplayMemberBinding="{Binding Number}"/>
@@ -192,7 +191,7 @@
                             <Button Name="BtnRemConfigEntry" Margin="5" Style="{StaticResource defaultButton}" Content="Remove entry" Click="BtnRemConfigEntry_Click" />
                             <Button Name="BtnEntryDefault" Margin="5" Style="{StaticResource defaultButton}" Content="Set entry to default" Click="BtnEntryDefault_Click" />
                         </StackPanel>
-                        <ListView Width="250">
+                        <ListView Name="lstConfigValues" Width="250">
                             <ListView.View>
                                 <GridView ColumnHeaderTemplate="{StaticResource defaultGridViewHeader}">
                                     <GridViewColumn Header="Key" Width="120"/>
@@ -207,7 +206,7 @@
                         </StackPanel>
                         
                         <!-- Saved or preset configurations are to be listed in this ListView -->
-                        <ListView Width="150">
+                        <ListView Name="lstConfigurations" Width="150">
                             
                         </ListView>
                     </StackPanel>
