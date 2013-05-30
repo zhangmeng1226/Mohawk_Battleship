@@ -6,6 +6,11 @@ using MBC.Core;
 
 namespace MBC.App.Terminal
 {
+
+    /**
+     * <summary>This MainMenu class is the first object to be displayed on the console when the application
+     * is started.</summary>
+     */
     public class MainMenu : TerminalModule
     {
         Menu menu;

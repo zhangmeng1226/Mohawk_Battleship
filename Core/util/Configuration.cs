@@ -10,7 +10,31 @@ using MBC.Core;
 namespace MBC.Core
 {
     /**
-     * <summary>BattleshipConfig deals with a single configuration file and parses each key/value pair.</summary>
+     * <summary>BattleshipConfig deals with a single configuration file and parses each key/value pair.
+     * 
+     * Use the static variable Configuration.Global to access a configuration that represents the entirety
+     * of the application. This global configuration is loaded through the file named "config.ini" in the config
+     * directory of the root of the project directory.
+     * 
+     * Use the static variable Configuration. Default to access a configuration that represents all default
+     * values of the application. This should be utilized before using the default Configuration.
+     * The default values should not be changed after startup. Avoid using static constructors to set default
+     * values as the values may not be set before using the default object, which results in errors.
+     * 
+     * Usage of the Configuration class is simple. Use two/three methods to get and set configuration values:
+     *      SetValue<type>(string key, type val) - Sets the key value with the given value.
+     *      GetValue<type>(string key) - Returns the value at the given key string.
+     *      GetConfigValueArray<type>(string key) - Returns a list of the given type from the given key.
+     *                                              Use when setting comma-separated values.
+     * 
+     * A list of Configurations stored into files can be known by using the GetAvailableConfigs() class member.
+     * 
+     * When constructing a new Configuration object, the Configuration will be loaded with either default values,
+     * or values that have been stored in the correspondingly named file.
+     * 
+     * Note that configuration files are not automatically saved. Invoke the method SaveConfigFile() to
+     * accomplish this.
+     * </summary>
      */
     public class Configuration
     {
@@ -39,7 +63,7 @@ namespace MBC.Core
         }
 
         /**
-         * <summary>Gets the default configuration. Used to set the default values for the 
+         * <summary>Gets the default configuration.</summary>
          */
         public static Configuration Default
         {
@@ -83,50 +107,50 @@ namespace MBC.Core
 
         /**
          * <summary>Gets a value from the configuration</summary>
-         * <param name="s">The key to get the value from</param>
+         * <param name="key">The key to get the value from</param>
          * <param name="def">The default value for a given key if the key is not found.</param>
          * <returns>The value loaded from the configuration, otherwise, the default value.</returns>
          */
-        public T GetValue<T>(string s)
+        public T GetValue<T>(string key)
         {
             try
             {
-                return (T)Convert.ChangeType(simpleConfig[s], typeof(T));
+                return (T)Convert.ChangeType(simpleConfig[key], typeof(T));
             }
             catch(KeyNotFoundException e)
             {
                 if (configName == "default")
                     throw e;
-                return defaultInstance.GetValue<T>(s);
+                return defaultInstance.GetValue<T>(key);
             }
         }
 
         /**
          * <summary>Sets a value in the configuration</summary>
          */
-        public void SetValue<T>(string s, T val)
+        public void SetValue<T>(string key, T val)
         {
-            simpleConfig[s] = val.ToString();
+            simpleConfig[key] = val.ToString();
         }
 
         /**
          * <summary>Gets a comma-delimited array (list) from the configuration</summary>
-         * <param name="s">The key to get the value from</param>
+         * <param name="key">The key to get the value from</param>
          * <param name="def">The default value for a given key if the key is not found.</param>
          * <returns>The list loaded from the configuration, otherwise, the default value</returns>
          */
-        public List<T> GetConfigValueArray<T>(string s)
+        public List<T> GetConfigValueArray<T>(string key)
         {
             List<T> vals = new List<T>();
             try
             {
-                foreach (string val in GetValue<string>(s).Split(','))
+                foreach (string val in GetValue<string>(key).Split(','))
                     vals.Add((T)Convert.ChangeType(val.Trim(), typeof(T)));
             }
             catch
             {
                 vals.Clear();
-                foreach (string val in defaultInstance.GetValue<string>(s).Split(','))
+                foreach (string val in defaultInstance.GetValue<string>(key).Split(','))
                     vals.Add((T)Convert.ChangeType(val.Trim(), typeof(T)));
             }
             return vals;

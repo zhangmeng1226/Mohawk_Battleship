@@ -7,12 +7,16 @@ namespace MBC.Core.mbc.accolade
 {
     public class Domination : AccoladeProcessor
     {
-        static Domination()
+        /**
+         * <summary>Sets default configuration values for keys that relate to this class.
+         * Should be called before using the global Configuration.Default object.</summary>
+         */
+        public static void SetConfigDefaults()
         {
             Configuration.Default.SetValue<int>("accolade_dom_diff", 9);
         }
         int diff = 0;
-        IBattleshipController last = null;
+        int last = Controller.NONE;
 
         public RoundLog.RoundAccolade Process(RoundLog.RoundActivity a)
         {

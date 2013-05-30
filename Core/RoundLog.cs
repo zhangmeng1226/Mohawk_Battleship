@@ -13,42 +13,25 @@ namespace MBC.Core
      */
     public class RoundLog
     {
-        private static Dictionary<RoundAccolade, string> accoladeStrPair = new Dictionary<RoundAccolade, string>();
-        private static Dictionary<RoundAction, string> actionStrPair = new Dictionary<RoundAction, string>();
 
-        static RoundLog()
-        {
-            accoladeStrPair.Add(RoundAccolade.Comeback, "Comeback");
-            accoladeStrPair.Add(RoundAccolade.Domination, "Domination");
-            accoladeStrPair.Add(RoundAccolade.Fast, "Fast");
-            accoladeStrPair.Add(RoundAccolade.HeadToHead, "Head-To-Head");
-            accoladeStrPair.Add(RoundAccolade.Intense, "Intense");
-            accoladeStrPair.Add(RoundAccolade.Slow, "Slow");
-            accoladeStrPair.Add(RoundAccolade.None, "");
-
-            actionStrPair.Add(RoundAction.Lost, "Lost");
-            actionStrPair.Add(RoundAction.RoundBegin, "Round Start");
-            actionStrPair.Add(RoundAction.RoundEnd, "Round Finish");
-            actionStrPair.Add(RoundAction.ShipDestroyed, "Ship Destroyed");
-            actionStrPair.Add(RoundAction.ShipsPlaced, "Ships Placed");
-            actionStrPair.Add(RoundAction.ShotAndHit, "Shot Hit");
-            actionStrPair.Add(RoundAction.ShotAndMiss, "Shot Miss");
-            actionStrPair.Add(RoundAction.Won, "Won");
-        }
-
+        /**
+         * <summary>Gets the string representation of the given RoundAccolade enum.</summary>
+         */
         public static string GetAccoladeStr(RoundAccolade acc)
         {
-            return accoladeStrPair[acc];
+            return Enum.GetName(typeof(RoundAccolade), acc);
         }
 
+        /**
+         * <summary>Gets the string representation of the given RoundAction enum.</summary>
+         */
         public static string GetActionStr(RoundAction act)
         {
-            return actionStrPair[act];
+            return Enum.GetName(typeof(RoundAction), act);
         }
 
         private List<RoundActivity> actions = new List<RoundActivity>();    //A list of RoundActivity's
-        private List<RoundAccolade> accolades = new List<RoundAccolade>();   //A list of accolades
-        private int readCount = 0;
+        private List<RoundAccolade> accolades = new List<RoundAccolade>();   //A list of RoundAccolades accumulated.
         private List<AccoladeProcessor> a_processors = new List<AccoladeProcessor>();
 
         /**
@@ -65,14 +48,6 @@ namespace MBC.Core
         }
 
         /**
-         * <summary>Starts counting the actions from zero again</summary>
-         */
-        public void ResetIterator()
-        {
-            readCount = 0;
-        }
-
-        /**
          * <returns>The activity at the specified action idx</returns>
          */
         public RoundActivity GetAt(int idx)
@@ -86,16 +61,6 @@ namespace MBC.Core
         public int GetActivityCount()
         {
             return actions.Count;
-        }
-
-        /**
-         * <returns>The next action record to read</return>
-         */
-        public RoundActivity GetNext()
-        {
-            if (readCount >= actions.Count)
-                return null;
-            return actions.ElementAt(readCount++);
         }
 
         /**
@@ -121,34 +86,34 @@ namespace MBC.Core
         public class RoundActivity
         {
             public static string Reason_Timeout = "Timeout";  //Common string used for timeout messages
-            public string activityInfo;                 //A message going with this action
-            public IBattleshipController ibc;        //The opponent this action relates to
+            public string activityInfo;                 //A message attached with this activity.
+            public int ibc;        //The controller this action relates to (by Field idx)
             public RoundAction action;                  //The action
-            public long timeElapsed;                    //The time it took for this opponent
+            public long timeElapsed;                    //The time it took for this controller.
             public List<RoundAccolade> accoladeTimelined;    //The accolade(s) that was generated from this action
             public Field fieldState;              //The state of the battlefield at this action.
 
-            public RoundActivity(IBattleshipController bc, RoundAction a)
+            public RoundActivity(int bc, RoundAction a)
             {
                 init(null, bc, a, 0, null);
             }
 
-            public RoundActivity(string info, IBattleshipController bc, RoundAction a)
+            public RoundActivity(string info, int bc, RoundAction a)
             {
                 init(info, bc, a, 0, null);
             }
 
-            public RoundActivity(string info, IBattleshipController bc, RoundAction a, long time)
+            public RoundActivity(string info, int bc, RoundAction a, long time)
             {
                 init(info, bc, a, time, null);
             }
 
-            public RoundActivity(string info, IBattleshipController bc, RoundAction a, long time, Field state)
+            public RoundActivity(string info, int bc, RoundAction a, long time, Field state)
             {
                 init(info, bc, a, time, null);
             }
 
-            private void init(string info, IBattleshipController bc, RoundAction a, long time, Field state)
+            private void init(string info, int bc, RoundAction a, long time, Field state)
             {
                 accoladeTimelined = new List<RoundAccolade>();
                 activityInfo = info;

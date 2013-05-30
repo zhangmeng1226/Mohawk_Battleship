@@ -7,15 +7,19 @@ namespace MBC.Core.mbc.accolade
 {
     public class Comeback : AccoladeProcessor
     {
-        static Comeback()
+        /**
+         * <summary>Sets default configuration values for keys that relate to this class.
+         * Should be called before using the global Configuration.Default object.</summary>
+         */
+        public static void SetConfigDefaults()
         {
             Configuration.Default.SetValue<int>("accolade_comeback_diff", 8);
         }
         int diff = 0;
         int backDiff = 0;
-        IBattleshipController last = null;
+        int last = Controller.NONE;
 
-        private void StartNewCount(IBattleshipController op)
+        private void StartNewCount(int op)
         {
             diff = 0;
             backDiff = 0;

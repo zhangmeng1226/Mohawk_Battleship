@@ -11,7 +11,11 @@ namespace MBC.Core.util
      */
     public class Logger
     {
-        static Logger()
+        /**
+         * <summary>Sets default configuration values for keys that relate to this class.
+         * Should be called before using the global Configuration.Default object.</summary>
+         */
+        public static void SetConfigDefaults()
         {
             Configuration.Default.SetValue<string>("logger_def_message_level", "Info");
             Configuration.Default.SetValue<string>("logger_directory", "logs");

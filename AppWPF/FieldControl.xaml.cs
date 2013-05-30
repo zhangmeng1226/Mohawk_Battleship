@@ -15,9 +15,16 @@ using MBC.Core;
 
 namespace MBC.App.WPF
 {
-    /// <summary>
-    /// Interaction logic for Field.xaml
-    /// </summary>
+    /**
+     * <summary>
+     * The FieldControl class is a WPF control that graphically displays the state of a Field object.
+     * The FieldControl must be given the IBattleshipController index that is being displayed on this Field.
+     * Usage of this class is simple by utilizing three class members:
+     *      SetController(int) -  Sets the controller index in a Field.
+     *      SetField(Field) - Sets the Field to display.
+     *      UpdateFieldDisplay() - Updates the FieldControl to display the Field's current state.
+     * </summary>
+     */
     public partial class FieldControl : UserControl
     {
         public static DependencyProperty ControllerColorProperty;
@@ -27,7 +34,7 @@ namespace MBC.App.WPF
             ControllerColorProperty = DependencyProperty.Register("ControllerColor", typeof(Color), typeof(FieldControl));
         }
 
-        IBattleshipController controller;
+        int controller;
         Field battlefield;
         Dictionary<int, List<Rectangle>> ships;
         List<Ellipse> opponentShots;
@@ -39,6 +46,9 @@ namespace MBC.App.WPF
             ships = new Dictionary<int, List<Rectangle>>();
         }
 
+        /**
+         * <summary>Gets or sets the colour representation of this FieldControl.</summary>
+         */
         public Color ControllerColor
         {
             get { return (Color)GetValue(ControllerColorProperty); }
@@ -148,7 +158,7 @@ namespace MBC.App.WPF
             foreach (Ellipse e in opponentShots)
                 fieldGrid.Children.Remove(e);
             opponentShots.Clear();
-            foreach (System.Drawing.Point p in battlefield[battlefield.GetOpponent(controller)].shotsMade)
+            foreach (System.Drawing.Point p in battlefield[1 - controller].shotsMade)
             {
                 Ellipse circle = new Ellipse
                 {
@@ -169,26 +179,35 @@ namespace MBC.App.WPF
         }
 
         /**
-         * <summary>Modifies the internal grid to represent the given Field. This may be
-         * a CPU intensive process, so do not use this too often.</summary>
-         * <param name="f">The field to monitor</param>
-         * <param name="ibc">The controller to monitor in the field</param>
+         * <summary>Sets the controller that this FieldControl displays through the internally presented Field.</summary>
+         * <param name="ibc">The index of the battleship controller in the Field to switch to. Refer to the
+         * constants available in the Controller class.</param>
          */
-        public void SetBattlefield(Field f, IBattleshipController ibc)
+        public void SetController(int ibc)
         {
-            if (f[ibc] == null)
-                throw new InvalidOperationException("Cannot set the FieldControl to contain a field with a non-existing controller.");
-            if (controller != ibc)
-            {
-                controller = ibc;
-                fieldLabel.Content = Util.ControllerToString(ibc);
-            }
-            if (battlefield == null)
-                battlefield = new Field(f);
-            if (f.gameSize.Width != battlefield.gameSize.Width || f.gameSize.Height != battlefield.gameSize.Height)
-                MakeGrid(f.gameSize.Width, f.gameSize.Height);
-            if (!f.shipSizes.SequenceEqual(battlefield.shipSizes))
-                CreateShips();
+            controller = ibc;
+        }
+
+        /**
+         * <summary>Makes this FieldControl update its display to reflect the 
+         * current state of the internal Field.</summary>
+         */
+        public void UpdateFieldDisplay()
+        {
+            LayShips();
+            LayShots();
+        }
+
+        /**
+         * <summary>Sets the Field this FieldControl will present.</summary>
+         * <param name="field">The Field object to display.</param>
+         */
+        public void SetField(Field field)
+        {
+            battlefield = field;
+            fieldLabel.Content = Util.ControllerToString(field, controller);
+            MakeGrid(field.gameSize.Width, field.gameSize.Height);
+            CreateShips();
             LayShips();
             LayShots();
         }

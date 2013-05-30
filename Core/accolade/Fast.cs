@@ -7,7 +7,11 @@ namespace MBC.Core.mbc.accolade
 {
     public class Fast : AccoladeProcessor
     {
-        static Fast()
+        /**
+         * <summary>Sets default configuration values for keys that relate to this class.
+         * Should be called before using the global Configuration.Default object.</summary>
+         */
+        public static void SetConfigDefaults()
         {
             Configuration def = Configuration.Default;
             def.SetValue<int>("accolade_fast_absent", 4);

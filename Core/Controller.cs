@@ -9,38 +9,53 @@ using System.Collections.ObjectModel;
 namespace MBC.Core
 {
     /**
-     * <summary>A BattleshipOpponent is an object that contains various data pertaining to
-     * an IBattleshipOpponent class. BattleshipOpponent contains various methods
-     * to aid in game logic.</summary>
+     * <summary>The Controller class wraps around an IBattleshipController object and provides
+     * various utilities that are used by a Competition object.
      * 
+     * This class is almost exclusively used by the Competition class.
+     * 
+     * There are three constants available that should be used when determining the side the Controller
+     * is on: NONE, RED, BLUE. Use NONE as an indicator for no controller.
+     * </summary>
      */
     public class Controller
     {
         public const int LOSE_MAGIC_NUMBER = -50; //Number used in Point objects to signify a loss (timed out).
+        public const int NONE = -1; //Integer representing no controller.
+        public const int RED = 0; //Integer representing the first controller.
+        public const int BLUE = 1; //Integer representing the second controller.
         public IBattleshipController ibc; //The class implementing the IBattleshipOpponent interface playing the game.
+        private int fieldIdx;
         private Stopwatch stopwatch; //Used to time each call to the iOpponent
         private Field field;
         private Field.ControllerInfo info;
 
         /**
-         * <summary>Sets up this BattleshipOpponent</summary>
-         * <param name="ic">The object that implements the IBattleshipOpponent interface to play the game.</param>
-         * <param name="size">A reference to the board size in the competition</param>
-         * <param name="timeout">A reference to the maximum alloted time in the competition</param>
-         * 
+         * <summary>Sets up this Controller</summary>
+         * <param name="ic">The object that implements the IBattleshipController interface to play the game.</param>
+         * <param name="f">The Field object this Controller will make changes to.</param>
+         * <param name="idx">The index number in the ControllerInfo array in the Field that this Controller represents.</param>
          */
-        public Controller(IBattleshipController ic, Field f)
+        public Controller(IBattleshipController ic, Field f, int idx)
         {
             ibc = ic;
             field = f;
 
-            info = field[ibc];
-            if (info == null)
-                throw new NullReferenceException(ibc.Name + " bot: Unable to get info.");
+            info = f[idx];
+
+            fieldIdx = idx;
 
             info.score = 0;
             info.shotsMade = new List<Point>();
             stopwatch = new Stopwatch();
+        }
+
+        /**
+         * <summary>Gets the ControllerInfo index this object represents in the Field.</summary>
+         */
+        public int FieldIDX
+        {
+            get { return fieldIdx; }
         }
 
         /**

@@ -7,13 +7,17 @@ namespace MBC.Core.mbc.accolade
 {
     public class HeadToHead : AccoladeProcessor
     {
-        static HeadToHead()
+        /**
+         * <summary>Sets default configuration values for keys that relate to this class.
+         * Should be called before using the global Configuration.Default object.</summary>
+         */
+        public static void SetConfigDefaults()
         {
             Configuration.Default.SetValue<int>("accolade_h2h_diff", 4);
         }
         int cnt = 0;
         int diff = 0;
-        IBattleshipController op = null;
+        int op = Controller.NONE;
 
         private void ResetCounters()
         {

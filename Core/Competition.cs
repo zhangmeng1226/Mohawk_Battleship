@@ -8,12 +8,37 @@
     using System.Threading;
 
     /**
-     * <summary>A BattleshipCompetition object contains game logic for a game of battleship.
-     * BattleshipCompetition puts two classes, implementing IBattleshipOpponent, into this game.</summary>
+     * <summary>A Competition object contains game logic for a game of battleship.
+     * 
+     * A competition has 3 events that are called internally during game play:
+     * 
+     *      RoundTurnEndEvent - Called when a controller has ended their turn.
+     *      RoundEndEvent - Called when a round has ended.
+     *      MatchEndEvent - Called when a matchup has ended (from any methods invoking RunRounds)
+     *      
+     * The competition can be run either in the same thread as the calling method (RunCompetition()), or
+     * in a different thread (RunCompetitionThread()), which can be stopped at any time (StopCompetitionThread()).
+     * By using one of these methods, the Competition object will use the Configuration object that it has
+     * been constructed with to determine the number of rounds to play. Using RunRounds(int, bool) will run
+     * a custom number of rounds in the same thread, but use of this method is not recommended.
+     * 
+     * The competition can be run in a turn-by-turn manner by utilizing three methods:
+     * 
+     *      NewRound() - Starts a new round in the competition. Finishes any ongoing round.
+     *      RoundTurn() - Run a turn in the round.
+     *      RoundRun() - Run through remaining turns in the round.
+     *      
+     * When constructing a new Competition, keep in mind that the order of the array of IBattleshipControllers
+     * does not change, even in the Field object that is generated.
+     * </summary>
      */
     public class Competition
     {
-        static Competition()
+        /**
+         * <summary>Sets default configuration values for keys that relate to this class.
+         * Should be called before using the global Configuration.Default object.</summary>
+         */
+        public static void SetConfigDefaults()
         {
             Configuration.Default.SetValue<int>("mbc_random_seed", Environment.TickCount);
             Configuration.Default.SetValue<int>("mbc_field_width", 10);
@@ -75,10 +100,8 @@
             roundList = new List<RoundLog>();
 
             controllers = new Controller[2];
-            for (int i = 0; i < ibc.Count(); i++)
-                controllers[i] = new Controller(ibc[i], fieldInfo);
-            foreach (Controller op in controllers)
-                op.NewMatch(Opponent(op).ToString());
+            controllers[0] = new Controller(ibc[0], fieldInfo, 0);
+            controllers[1] = new Controller(ibc[1], fieldInfo, 1);
 
             compThread = new Thread(new ThreadStart(RunCompetition));
         }
@@ -129,9 +152,9 @@
         {
             winner.GameWon();
             loser.GameLost();
-            roundLogger.PutAction(new RoundLog.RoundActivity(null, winner.ibc, RoundLog.RoundAction.Won));
-            roundLogger.PutAction(new RoundLog.RoundActivity(null, loser.ibc, RoundLog.RoundAction.Lost));
-            roundLogger.PutAction(new RoundLog.RoundActivity(reason, null, RoundLog.RoundAction.RoundEnd));
+            roundLogger.PutAction(new RoundLog.RoundActivity(null, winner.FieldIDX, RoundLog.RoundAction.Won));
+            roundLogger.PutAction(new RoundLog.RoundActivity(null, loser.FieldIDX, RoundLog.RoundAction.Lost));
+            roundLogger.PutAction(new RoundLog.RoundActivity(reason, -1, RoundLog.RoundAction.RoundEnd));
             return true;
         }
 
@@ -169,7 +192,7 @@
                 {
                     if (bc.PlaceShips(GenerateNewShips()))
                         return GameResultPush(Opponent(bc), bc, RoundLog.RoundActivity.Reason_Timeout);
-                    RoundLog.RoundActivity action = new RoundLog.RoundActivity(bc.ShipsReady() ? "Ready" : "Invalid", bc.ibc, RoundLog.RoundAction.ShipsPlaced);
+                    RoundLog.RoundActivity action = new RoundLog.RoundActivity(bc.ShipsReady() ? "Ready" : "Invalid", bc.FieldIDX, RoundLog.RoundAction.ShipsPlaced);
                     action.fieldState = new Field(fieldInfo);
                     roundLogger.PutAction(action);
                 } while (!bc.ShipsReady());
@@ -193,17 +216,17 @@
 
             if (shipHit != null)
             {
-                roundLogger.PutAction(new RoundLog.RoundActivity(shot.X + "," + shot.Y, turn.ibc, RoundLog.RoundAction.ShotAndHit, turn.GetTimeTaken()));
+                roundLogger.PutAction(new RoundLog.RoundActivity(shot.X + "," + shot.Y, turn.FieldIDX, RoundLog.RoundAction.ShotAndHit, turn.GetTimeTaken()));
 
                 bool sunk = shipHit.IsSunk(turn.GetFieldInfo().shotsMade);
 
                 turn.ShotHit(shot, sunk);
                 if (sunk)
-                    roundLogger.PutAction(new RoundLog.RoundActivity(shot.X + "," + shot.Y, turn.ibc, RoundLog.RoundAction.ShipDestroyed, turn.GetTimeTaken()));
+                    roundLogger.PutAction(new RoundLog.RoundActivity(shot.X + "," + shot.Y, turn.FieldIDX, RoundLog.RoundAction.ShipDestroyed, turn.GetTimeTaken()));
             }
             else
             {
-                roundLogger.PutAction(new RoundLog.RoundActivity(shot.X + "," + shot.Y, turn.ibc, RoundLog.RoundAction.ShotAndMiss, turn.GetTimeTaken()));
+                roundLogger.PutAction(new RoundLog.RoundActivity(shot.X + "," + shot.Y, turn.FieldIDX, RoundLog.RoundAction.ShotAndMiss, turn.GetTimeTaken()));
                 turn.ShotMiss(shot);
             }
 
@@ -223,13 +246,13 @@
             lock (roundList)
             {
                 if (roundLogger != null && roundLogger.GetAt(roundLogger.GetActivityCount()).action != RoundLog.RoundAction.RoundEnd)
-                    roundLogger.PutAction(new RoundLog.RoundActivity("Round ended before win", null, RoundLog.RoundAction.RoundEnd));
+                    roundLogger.PutAction(new RoundLog.RoundActivity("Round ended before win", -1, RoundLog.RoundAction.RoundEnd));
 
                 roundLogger = new RoundLog();
                 roundList.Add(roundLogger);
 
                 turn = controllers[fieldInfo.fixedRandom.Next(2)];
-                roundLogger.PutAction(new RoundLog.RoundActivity(null, turn.ibc, RoundLog.RoundAction.RoundBegin));
+                roundLogger.PutAction(new RoundLog.RoundActivity(null, turn.FieldIDX, RoundLog.RoundAction.RoundBegin));
             }
 
             return NewGame() || ShipPlacement();
@@ -237,7 +260,7 @@
 
         /**
          * <summary>Part of manual round control. Runs a turn</summary>
-         * <returns>True if the round is still ongoing, false if the round has been won</returns>
+         * <returns>True if the round is still ongoing, false if the round is finished</returns>
          */
         public bool RoundTurn()
         {
@@ -255,7 +278,6 @@
          */
         public void RunRound()
         {
-            NewRound();
             while (!RoundTurn() && isRunning) ;
         }
 

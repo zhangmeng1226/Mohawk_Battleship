@@ -6,44 +6,31 @@ using System.Drawing;
 
 namespace MBC.Core
 {
+
+    /**
+     * <summary>The Field class represents a battleship field. It contains battleship field information and
+     * two ControllerInfo objects that contain information on the two controllers in the Field.
+     * 
+     * Accessing the individual ControllerInfo objects is made simple by using a value of 0 or 1. The order
+     * of the ControllerInfo objects does not change, so constants can be used to access them. For example,
+     * 0 can be CONST_RED_CONTROLLER and 1 can be CONST_BLUE_CONTROLLER throughout the program.</summary>
+     */
     public class Field
     {
         public Size gameSize;           //The size of the battlefield
         public Random fixedRandom;      //A Random object
         public List<int> shipSizes;     //A list of all the ships available on the battlefield
         public TimeSpan timeoutLimit;   //The time limit for this field
-        private Dictionary<IBattleshipController, ControllerInfo> controllers;
+        private ControllerInfo[] info;  //A 2-element array that contains information for each controller.
 
         /**
          * <summary>Constructs a Battlefield object initialized with two opponents</summary>
          */
         public Field(IBattleshipController[] ibc)
         {
-            controllers = new Dictionary<IBattleshipController, ControllerInfo>();
-            foreach (IBattleshipController op in ibc)
-                controllers[op] = new ControllerInfo();
-        }
-
-        /**
-         * <returns>Opponent information for both opponents</returns>
-         */
-        public ControllerInfo[] GetInfo()
-        {
-            return controllers.Values.ToArray();
-        }
-
-        /**
-         * <summary>Gets the first occurrence of IBattleshipController that is not equal to c. If used properly, this
-         * is the opposing controller to the one specified.</summary>
-         */
-        public IBattleshipController GetOpponent(IBattleshipController c)
-        {
-            foreach (IBattleshipController res in controllers.Keys)
-            {
-                if (res != c)
-                    return res;
-            }
-            return null;
+            info = new ControllerInfo[2];
+            info[0] = new ControllerInfo(ibc[0].Name, ibc[0].Version);
+            info[1] = new ControllerInfo(ibc[1].Name, ibc[1].Version);
         }
 
         /**
@@ -51,9 +38,7 @@ namespace MBC.Core
          */
         public Field(Field copy)
         {
-            controllers = new Dictionary<IBattleshipController, ControllerInfo>();
-            foreach (KeyValuePair<IBattleshipController, ControllerInfo> op in copy.controllers)
-                controllers.Add(op.Key, op.Value);
+            info = (ControllerInfo[])copy.info.Clone();
             gameSize = copy.gameSize;
             fixedRandom = copy.fixedRandom;
             shipSizes = copy.shipSizes;
@@ -61,26 +46,41 @@ namespace MBC.Core
         }
 
         /**
-         * <returns>The opponent information for the field from the opponent</returns>
+         * <summary>Gets the controllers in this field.</summary>
          */
-        public ControllerInfo this[IBattleshipController i]
+        public ControllerInfo[] Controllers
         {
-            get {
-                ControllerInfo info = null;
-                controllers.TryGetValue(i, out info);
-                return info;
-            }
+            get { return info; }
+        }
+
+        /**
+         * <returns>The ConrollerInfo object at the specified index.</returns>
+         */
+        public ControllerInfo this[int i]
+        {
+            get { return info[i]; }
         }
 
         /**
          * <summary>Contains information related to the state of the battlefield for
-         * each opponent</summary>
+         * each opponent.</summary>
          */
         public class ControllerInfo
         {
             public List<Point> shotsMade;
             public List<Ship> ships;
             public int score = 0;
+
+            public string name;
+            public Version version;
+
+            public ControllerInfo(string ctrlName, Version ctrlVersion)
+            {
+                shotsMade = new List<Point>();
+                ships = new List<Ship>();
+                name = ctrlName;
+                version = ctrlVersion;
+            }
         }
     }
 }

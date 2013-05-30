@@ -28,6 +28,7 @@ namespace MBC.App.WPF
 
         public MainWindow()
         {
+            Util.LoadConfigurationDefaults();
             InitializeComponent();
             config = Configuration.Global;
         }
@@ -37,7 +38,7 @@ namespace MBC.App.WPF
             RoundActivityEntry entry = new RoundActivityEntry();
             entry.Number = roundActLogEntries.Count().ToString();
             entry.Action = RoundLog.GetActionStr(action.action);
-            entry.ControllerName = action.ibc != null ? Util.ControllerToString(action.ibc) : "Null";
+            entry.ControllerName = action.fieldState != null ? Util.ControllerToString(action.fieldState, action.ibc) : "Null";
             entry.Message = action.activityInfo;
             entry.Time = action.timeElapsed+"ms";
 

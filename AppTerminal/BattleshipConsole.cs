@@ -16,7 +16,11 @@ namespace MBC.App.Terminal
      */
     public class BattleshipConsole
     {
-        static BattleshipConsole()
+        /**
+         * <summary>Sets default configuration values for keys that relate to this class.
+         * Should be called before using the global Configuration.Default object.</summary>
+         */
+        public static void SetConfigDefaults()
         {
             Configuration.Default.SetValue<int>("term_max_columns", 3);
             Configuration.Default.SetValue<string>("term_color_selected", "Green");
@@ -170,12 +174,12 @@ namespace MBC.App.Terminal
 
         static void Main(string[] args)
         {
+            Util.LoadConfigurationDefaults();
             Console.Title = "Mohawk Battleship Competition";
             Console.Clear();
 
             runningMods = new List<TerminalModule>();
-            runningMods.Add(new TerminalInputDisplay());
-            runningMods.Add(new MainMenu());
+            AddModule(new TerminalInputDisplay());
             AddModule(new MainMenu());
 
             string line = "";

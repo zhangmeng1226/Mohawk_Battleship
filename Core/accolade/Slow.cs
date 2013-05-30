@@ -7,7 +7,11 @@ namespace MBC.Core.mbc.accolade
 {
     public class Slow : AccoladeProcessor
     {
-        static Slow()
+        /**
+         * <summary>Sets default configuration values for keys that relate to this class.
+         * Should be called before using the global Configuration.Default object.</summary>
+         */
+        public static void SetConfigDefaults()
         {
             Configuration.Default.SetValue<int>("accolade_slow_diff", 4);
             Configuration.Default.SetValue<int>("accolade_slow_cnt", 25);

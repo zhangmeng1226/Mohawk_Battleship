@@ -10,7 +10,11 @@ namespace MBC.App.Terminal
 {
     public class TerminalInputDisplay : TerminalModule
     {
-        static TerminalInputDisplay()
+        /**
+         * <summary>Sets default configuration values for keys that relate to this class.
+         * Should be called before using the global Configuration.Default object.</summary>
+         */
+        public static void SetConfigDefaults()
         {
             Configuration.Default.SetValue<string>("term_color_input_display", "DarkGreen");
             Configuration.Default.SetValue<string>("term_color_input_text", "White");
