@@ -107,11 +107,21 @@ namespace MBC.Core
         }
 
         /**
-         * <summary>Uses the global configuration to parse the console color value.</summary>
+         * <summary>Sets the foreground color of the Console to the one specified in the given string.</summary>
+         * <param name="colName">The name of the enum in ConsoleColor, as a string</param>
          */
-        public static T EnumKey<T>(string key)
+        public static void SetConsoleForegroundColor(string colName)
         {
-            return (T)Enum.Parse(typeof(T), Configuration.Global.GetValue<string>(key));
+            Console.ForegroundColor = (ConsoleColor)Enum.Parse(typeof(ConsoleColor), colName);
+        }
+
+        /**
+         * <summary>Sets the background color of the Console to the one specified in the given string.</summary>
+         * <param name="colName">The name of the enum in ConsoleColor, as a string</param>
+         */
+        public static void SetConsoleBackgroundColor(string colName)
+        {
+            Console.BackgroundColor = (ConsoleColor)Enum.Parse(typeof(ConsoleColor), colName);
         }
 
         /**

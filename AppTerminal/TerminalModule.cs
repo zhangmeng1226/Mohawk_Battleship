@@ -4,21 +4,75 @@ using System.Linq;
 using System.Text;
 using MBC.Core;
 
+using MBC.App.Terminal.Layouts;
+using MBC.App.Terminal.Controls;
+
 namespace MBC.App.Terminal
 {
     /**
-     * <summary>The base class for a ConsoleModule.</summary>
+     * <summary>The base class for a TerminalModule. Used for providing different states of the terminal
+     * application.
+     * 
+     * Provides various methods to display information in a TerminalModule buffer. Direct output via the
+     * Console class is not to be used.
+     * 
+     * 
+     * </summary>
      */
     public abstract class TerminalModule
     {
         private int writePosX = 0, writePosY = 0, writeWidth = 0, writeHeight = 0;
         private int curX = 0, curY = 0;
+        private List<ControlLayout> controls = new List<ControlLayout>();
+        private ControlLayout currentControlLayout = new NoLayout();
 
-        public delegate void KeyPress(ConsoleKeyInfo key);
-        public event KeyPress KeyPressEvent;
+        protected void AddControlLayout(ControlLayout ctrl)
+        {
+            ctrl.SetModule(this);
+            controls.Add(ctrl);
+            currentControlLayout = controls[0];
+        }
 
-        public delegate void Input(string input);
-        public event Input InputEvent;
+        protected void RemoveControlLayout(ControlLayout ctrl)
+        {
+            PreviousLayout();
+            controls.Remove(ctrl);
+        }
+
+        public void NextLayout()
+        {
+            if (controls == null)
+            {
+                return;
+            }
+            int next = controls.IndexOf(currentControlLayout) + 1;
+            if (next >= controls.Count)
+            {
+                next = 0;
+            }
+            currentControlLayout = controls[next];
+            currentControlLayout.Select();
+        }
+
+        public void PreviousLayout()
+        {
+            if (controls == null)
+            {
+                return;
+            }
+            int prev = controls.IndexOf(currentControlLayout) - 1;
+            if (prev < 0)
+            {
+                prev = controls.Count - 1;
+            }
+            currentControlLayout = controls[prev];
+            currentControlLayout.Select();
+        }
+
+        public bool IsLayoutSelected(ControlLayout layout)
+        {
+            return currentControlLayout == layout;
+        }
 
         /**
          * <summary>Gets the width of characters this ConsoleModule can write</summary>
@@ -44,6 +98,16 @@ namespace MBC.App.Terminal
         public int WriteY
         {
             get { return writePosY; }
+        }
+
+        public int CurrentX
+        {
+            get { return curX; }
+        }
+
+        public int CurrentY
+        {
+            get { return curY; }
         }
 
         /**
@@ -124,14 +188,12 @@ namespace MBC.App.Terminal
         /**
          * <summary>Called when a key is pressed in the console.</summary>
          */
-        public void KeyPressed(ConsoleKeyInfo key)
+        public bool KeyPressed(ConsoleKeyInfo key)
         {
             Util.StoreConsoleColors();
-            if (KeyPressEvent != null)
-            {
-                KeyPressEvent(key);
-                Util.RestoreConsoleColors();
-            }
+            bool result = currentControlLayout.KeyPressed(key);
+            Util.RestoreConsoleColors();
+            return result;
         }
 
         /**
@@ -140,11 +202,8 @@ namespace MBC.App.Terminal
         public void InputEntered(string input)
         {
             Util.StoreConsoleColors();
-            if (InputEvent != null)
-            {
-                InputEvent(input);
-                Util.RestoreConsoleColors();
-            }
+            currentControlLayout.Input(input);
+            Util.RestoreConsoleColors();
         }
 
         /**

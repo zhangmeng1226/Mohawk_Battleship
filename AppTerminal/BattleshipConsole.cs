@@ -22,7 +22,7 @@ namespace MBC.App.Terminal
      * are displayed on the screen simultaneously. After adding/removing modules, update the state of the
      * display by using the UpdateDisplay() method.
      * 
-     * Note, the width and height of the terminal window should be at least 80 and 25, respectively.
+     * Note, the width and height of the terminal window should be a minimum of at least 80 and 25, respectively.
      * </summary>
      */
     public class BattleshipConsole
@@ -36,23 +36,35 @@ namespace MBC.App.Terminal
             Configuration.Default.SetValue<int>("term_max_columns", 3);
             Configuration.Default.SetValue<string>("term_color_selected", "Green");
             Configuration.Default.SetValue<string>("term_color_grid", "Yellow");
+            Configuration.Default.SetValue<string>("term_color_input_display", "DarkGreen");
+            Configuration.Default.SetValue<string>("term_color_input_text", "White");
         }
-        private static List<TerminalModule> runningMods; //The first element is the TerminalInputDisplay module.
-        private static int selectedMod = 1;
-        private static int modRows = 1, modCols = 1;
-        private static int width = 0, height = 0;
-        private static bool isRunning = true;
+        private static List<TerminalModule> runningMods; //The modules attached to this BattleshipConsole.
+        private static int selectedMod = 0; //The selected module from the list of runningMods.
+        private static int modRows = 1, modCols = 1; //The number of rows and columns.
+        private static int width = 0, height = 0; //The width and height registered with this BattleshipConsole.
+        private static bool isRunning = true; //If the application is running.
 
+        private static string inputLine = ""; //A string of input given by the user.
+        private static long lastTickBeep = 0; //Timer used to delay subsequent Console.Beep() invokes.
+
+        /**
+         * <summary>Gets or sets the running state of this application. Setting this false will cause
+         * the application to quit.</summary>
+         */
         public static bool Running
         {
             get { return isRunning; }
             set { isRunning = value; }
         }
 
+        /**
+         * <summary>Makes the grid lines that identify each module displayed on the terminal.</summary>
+         */
         private static void WriteGridLines()
         {
             Util.StoreConsoleColors();
-            Console.BackgroundColor = Util.EnumKey<ConsoleColor>("term_color_grid");
+            Util.SetConsoleBackgroundColor(Configuration.Global.GetValue<string>("term_color_grid"));
             char[] c;
             for (int i = 0; i <= modRows; i++)
             {
@@ -72,15 +84,11 @@ namespace MBC.App.Terminal
                 }
             }
 
-
             //Writing the selected border
-            Console.BackgroundColor = Util.EnumKey<ConsoleColor>("term_color_selected");
+            Util.SetConsoleBackgroundColor(Configuration.Global.GetValue<string>("term_color_selected"));
             c = new char[width / modCols];
             for (int i = 0; i < c.Length; i++)
                 c[i] = ' ';
-            
-            
-            
             
             int modLeft = runningMods[selectedMod].WriteX - 1;
             int modTop = runningMods[selectedMod].WriteY - 1;
@@ -105,43 +113,61 @@ namespace MBC.App.Terminal
             Util.RestoreConsoleColors();
         }
 
+        /**
+         * <summary>Refreshes the entire terminal buffer. Use after adding/removing modules.</summary>
+         */
         public static void UpdateDisplay()
         {
             Console.Clear();
             int maxCols = Configuration.Global.GetValue<int>("term_max_columns");
-            modRows = ((runningMods.Count - 1) / (maxCols + 1)) + 1;
-            modCols = runningMods.Count - 1 > maxCols ? maxCols : runningMods.Count - 1;
+            modRows = (runningMods.Count / (maxCols + 1)) + 1;
+            modCols = runningMods.Count > maxCols ? maxCols : runningMods.Count;
             if (modCols == 0)
                 modCols = 1;
             RecalculateBounds();
             WriteGridLines();
+            UpdateInputLineDisplay(true);
         }
 
+        /**
+         * <summary>Adds a TerminalModule object to this BattleshipConsole for displaying.</summary>
+         */
         public static void AddModule(TerminalModule mod)
         {
             runningMods.Add(mod);
         }
 
+        /**
+         * <summary>Removes a TerminalModule object from this BattleshipConsole.</summary>
+         */
         public static void RemoveModule(TerminalModule mod)
         {
             runningMods.Remove(mod);
         }
 
+        /**
+         * <summary>Calculates the boundaries of the generated number of rows and columns used
+         * for displaying the TerminalModules based on the size of the terminal window.</summary>
+         */
         private static void RecalculateBounds()
         {
             width = Console.WindowWidth;
             height = Console.WindowHeight;
-            runningMods[0].RefreshDisplay(0, height - 1, width, 2);
             int bufferWidth = width / modCols;
             int bufferHeight = (height - 2) / modRows;
-            for (int i = 1; i < runningMods.Count(); i++)
+            for (int i = 0; i < runningMods.Count(); i++)
             {
-                int row = (i - 1) / Configuration.Global.GetValue<int>("term_max_columns");
-                runningMods[i].RefreshDisplay(((i - 1) % (modCols)) * bufferWidth + 1,
+                int row = i / Configuration.Global.GetValue<int>("term_max_columns");
+                runningMods[i].RefreshDisplay((i % (modCols)) * bufferWidth + 1,
                     row * bufferHeight + 1, bufferWidth - 1, bufferHeight - 2);
             }
         }
 
+        /**
+         * <summary>Used for selecting a buffer via arrow keys + CTRL. Also moves
+         * the order of TerminalModules in this BattleshipConsole with arrow keys + CTRL + SHIFT.
+         * Does not do anything and returns false if CTRL is not pressed.</summary>
+         */
         private static bool HandleKey(ConsoleKeyInfo cki)
         {
             if (cki.Modifiers.HasFlag(ConsoleModifiers.Control))
@@ -152,23 +178,23 @@ namespace MBC.App.Terminal
                 {
                     case ConsoleKey.UpArrow:
                         selectedMod -= modCols;
-                        if (selectedMod < 1)
-                            selectedMod = 1;
+                        if (selectedMod < 0)
+                            selectedMod = 0;
                         break;
                     case ConsoleKey.DownArrow:
                         selectedMod += modCols;
-                        if (selectedMod > runningMods.Count-1)
-                            selectedMod = runningMods.Count-1;
+                        if (selectedMod > runningMods.Count - 1)
+                            selectedMod = runningMods.Count - 1;
                         break;
                     case ConsoleKey.LeftArrow:
                         selectedMod--;
-                        if (selectedMod < 1)
-                            selectedMod = 1;
+                        if (selectedMod < 0)
+                            selectedMod = 0;
                         break;
                     case ConsoleKey.RightArrow:
                         selectedMod++;
-                        if (selectedMod > runningMods.Count-1)
-                            selectedMod = runningMods.Count-1;
+                        if (selectedMod > runningMods.Count - 1)
+                            selectedMod = runningMods.Count - 1;
                         break;
                     default:
                         arrow = false;
@@ -186,6 +212,66 @@ namespace MBC.App.Terminal
             return false;
         }
 
+        /**
+         * <summary>Processes a key press and modifies the input string with valid characters.</summary>
+         * <returns>True if the enter key was pressed and processed, False otherwise.</returns>
+         */
+        private static bool ModifyInputLine(ConsoleKeyInfo key)
+        {
+            switch (key.Key)
+            {
+                case ConsoleKey.Enter:
+                    if (inputLine.Length != 0)
+                    {
+                        inputLine = "";
+                        return true;
+                    }
+                    break;
+                case ConsoleKey.Backspace:
+                    if (inputLine.Length > 0)
+                    {
+                        inputLine = inputLine.Substring(0, inputLine.Length - 1);
+                    }
+                    else if (Environment.TickCount - lastTickBeep > 500)
+                    {
+                        lastTickBeep = Environment.TickCount;
+                        Console.Beep();
+                    }
+                    break;
+                default:
+                    if (!Char.IsControl(key.KeyChar))
+                    {
+                        inputLine += key.KeyChar;
+                    }
+                    break;
+            }
+            return false;
+        }
+
+        /**
+         * <summary>Updates the display of the input line on the terminal window. Optionally updates
+         * just the input string that the user has entered instead of the entire line.</summary>
+         */
+        private static void UpdateInputLineDisplay(bool complete)
+        {
+            Util.StoreConsoleColors();
+            if (complete)
+            {
+                Util.SetConsoleForegroundColor(Configuration.Global.GetValue<string>("term_color_input_display"));
+                Console.SetCursorPosition(0, height - 2);
+                Console.Write("[Input]:> ");
+            }
+            else
+            {
+                Console.SetCursorPosition(10, height - 2);
+            }
+            Util.SetConsoleForegroundColor(Configuration.Global.GetValue<string>("term_color_input_text"));
+            Console.Write(new String(' ', width - 10));
+            Console.SetCursorPosition(10, height - 2);
+            Console.Write(inputLine);
+            Util.RestoreConsoleColors();
+        }
+
         static void Main(string[] args)
         {
             Util.LoadConfigurationDefaults();
@@ -193,27 +279,25 @@ namespace MBC.App.Terminal
             Console.Clear();
 
             runningMods = new List<TerminalModule>();
-            AddModule(new TerminalInputDisplay());
             AddModule(new MainMenu());
             UpdateDisplay();
 
-            string line = "";
             while (isRunning)
             {
                 ConsoleKeyInfo key = Console.ReadKey(true);
 
-                if (!HandleKey(key))
-                    runningMods[selectedMod].KeyPressed(key);
-                runningMods[0].KeyPressed(key);
-
-                if (key.Key == ConsoleKey.Enter)
+                if (!HandleKey(key) && !runningMods[selectedMod].KeyPressed(key))
                 {
-                    foreach (TerminalModule mod in runningMods)
-                        mod.InputEntered(line);
-                    line = "";
+                    if (ModifyInputLine(key))
+                    {
+                        runningMods[selectedMod].InputEntered(inputLine);
+                    }
+                    UpdateInputLineDisplay(false);
                 }
                 else
-                    line += key.KeyChar;
+                {
+                    Console.SetCursorPosition(10 + inputLine.Length, height - 2);
+                }
 
                 if (width != Console.WindowWidth || height != Console.WindowHeight)
                 {

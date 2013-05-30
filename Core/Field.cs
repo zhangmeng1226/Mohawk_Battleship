@@ -12,9 +12,9 @@ namespace MBC.Core
      * two ControllerInfo objects that contain information on the two controllers in the Field.
      * 
      * Accessing the individual ControllerInfo objects is made simple by using a value of 0 or 1. The order
-     * of the ControllerInfo objects does not change, so constants can be used to access them. For example,
-     * 0 can be CONST_RED_CONTROLLER and 1 can be CONST_BLUE_CONTROLLER throughout the program.</summary>
+     * of the ControllerInfo objects does not change, so constants can be used to access them.</summary>
      */
+    [Serializable]
     public class Field
     {
         public Size gameSize;           //The size of the battlefield
@@ -65,6 +65,7 @@ namespace MBC.Core
          * <summary>Contains information related to the state of the battlefield for
          * each opponent.</summary>
          */
+        [Serializable]
         public class ControllerInfo
         {
             public List<Point> shotsMade;

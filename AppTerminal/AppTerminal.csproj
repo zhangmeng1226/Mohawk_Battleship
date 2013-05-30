@@ -45,12 +45,19 @@
   <ItemGroup>
     <Compile Include="BattleshipConsole.cs" />
     <Compile Include="BotSelector.cs" />
+    <Compile Include="controls\ButtonControl.cs" />
     <Compile Include="CompetitionDisplay.cs" />
-    <Compile Include="Menu.cs" />
+    <Compile Include="controls\CheckboxControl.cs" />
+    <Compile Include="controls\RadioButtonControl.cs" />
+    <Compile Include="controls\RadioButtonControlGroup.cs" />
+    <Compile Include="controls\StringInputControl.cs" />
+    <Compile Include="layouts\ControlLayout.cs" />
+    <Compile Include="layouts\NoLayout.cs" />
+    <Compile Include="layouts\VerticalLayout.cs" />
     <Compile Include="TerminalModule.cs" />
     <Compile Include="MainMenu.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TerminalInputDisplay.cs" />
+    <Compile Include="controls\UserControl.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

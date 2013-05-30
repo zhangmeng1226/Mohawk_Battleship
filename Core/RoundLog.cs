@@ -26,6 +26,7 @@ namespace MBC.Core
      * RoundActivity object to the RoundLog, while having accolades generated while doing so.
      * </summary>
      */
+    [Serializable]
     public class RoundLog
     {
 
@@ -47,6 +48,8 @@ namespace MBC.Core
 
         private List<RoundActivity> actions = new List<RoundActivity>();    //A list of RoundActivity's
         private List<RoundAccolade> accolades = new List<RoundAccolade>();   //A list of RoundAccolades accumulated.
+        
+        [NonSerialized]
         private List<AccoladeProcessor> a_processors = new List<AccoladeProcessor>();
 
         /**
@@ -102,6 +105,7 @@ namespace MBC.Core
          * See the public member variable documentation to see the information that is stored in a RoundActivity.
          * </summary>
          */
+        [Serializable]
         public class RoundActivity
         {
             public static string Reason_Timeout = "Timeout";  //Common string used for timeout messages
