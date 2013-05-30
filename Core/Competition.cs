@@ -207,7 +207,7 @@
         {
             Point shot = turn.ShootAt(Opponent(turn));
 
-            if (shot.X == Controller.LOSE_MAGIC_NUMBER && shot.Y == Controller.LOSE_MAGIC_NUMBER)
+            if (shot.X == Controller.MagicNumberLose && shot.Y == Controller.MagicNumberLose)
                 return GameResultPush(Opponent(turn), turn, RoundLog.RoundActivity.Reason_Timeout);
             if (Opponent(turn).OpponentShot(shot))
                 return GameResultPush(turn, Opponent(turn), RoundLog.RoundActivity.Reason_Timeout);

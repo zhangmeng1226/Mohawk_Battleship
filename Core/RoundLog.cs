@@ -9,7 +9,22 @@ using MBC.Core.mbc.accolade;
 namespace MBC.Core
 {
     /**
-     * <summary>Keeps a log of a battleship competition round.</summary>
+     * <summary>Keeps a log of a battleship competition round. Most RoundLog objects will be constructed
+     * from a Competition object.
+     * 
+     * Each RoundLog contains a log of all events in a competition round, in order.
+     * 
+     * Utilizing two methods in a RoundLog object will retrieve the RoundActivity objects that make
+     * up the events in a competition round:
+     * 
+     *      GetActivityCount() - The number of activities in the RoundLog
+     *      GetAt(int) - Gets an activity at the specified index.
+     *      
+     * See the documentation for the RoundActivity class for available information.
+     * 
+     * When loading a RoundLog from a file, use the method PutAction(RoundActivity) to store a
+     * RoundActivity object to the RoundLog, while having accolades generated while doing so.
+     * </summary>
      */
     public class RoundLog
     {
@@ -81,18 +96,28 @@ namespace MBC.Core
         }
 
         /**
-         * <summary>Defines a round action record</summary>
+         * <summary>A RoundActivity contains information about a single event in a round. Multiple
+         * RoundActivity objects make up a RoundLog.
+         * 
+         * See the public member variable documentation to see the information that is stored in a RoundActivity.
+         * </summary>
          */
         public class RoundActivity
         {
             public static string Reason_Timeout = "Timeout";  //Common string used for timeout messages
             public string activityInfo;                 //A message attached with this activity.
-            public int ibc;        //The controller this action relates to (by Field idx)
+            public int ibc;        //The controller this action relates to (by Field idx). See constants in the Controller class.
             public RoundAction action;                  //The action
             public long timeElapsed;                    //The time it took for this controller.
             public List<RoundAccolade> accoladeTimelined;    //The accolade(s) that was generated from this action
             public Field fieldState;              //The state of the battlefield at this action.
 
+            /**
+             * <summary>The minimal constructor for a RoundActivity object.
+             * Each RoundActivity requires that a Controller index and RoundAction be specified. Other parameters
+             * are optional.
+             * </summary>
+             */
             public RoundActivity(int bc, RoundAction a)
             {
                 init(null, bc, a, 0, null);
@@ -110,7 +135,7 @@ namespace MBC.Core
 
             public RoundActivity(string info, int bc, RoundAction a, long time, Field state)
             {
-                init(info, bc, a, time, null);
+                init(info, bc, a, time, state);
             }
 
             private void init(string info, int bc, RoundAction a, long time, Field state)
@@ -124,7 +149,8 @@ namespace MBC.Core
             }
 
             /**
-             * <summary>Adds the accolade generated from this activity</summary>
+             * <summary>Adds an accolade associated with this RoundActivity. Not recommended for use outside
+             * of the RoundLog object.</summary>
              */
             public void AddAccolade(RoundAccolade acc)
             {
@@ -132,6 +158,19 @@ namespace MBC.Core
             }
         }
 
+        /**
+         * <summary>A RoundAction defines the type of event that has occurred in a single RoundActivity.
+         * 
+         * ShotAndMiss - A Controller has made a shot, but missed.
+         * ShotAndHit - A Controller has made a shot and hit an opposing ship.
+         * ShipDestroyed - A Controller has destroyed an opposing ship. Always accompanied by a ShotAndHit RoundActivity type.
+         * RoundBegin - A round has begun.
+         * RoundEnd - A round has ended.
+         * ShipsPlaced - A Controller has placed their ships, valid or not.
+         * Won - A Controller has won the round.
+         * Lost - A Controller has lost the round.
+         * </summary>
+         */
         public enum RoundAction
         {
             ShotAndMiss,
@@ -144,6 +183,20 @@ namespace MBC.Core
             Lost
         }
 
+        /**
+         * <summary>A RoundAccolade defines various desired interests in a single RoundLog.
+         * 
+         * HeadToHead - Each Controller makes a hit one after another.
+         * Domination - A Controller is clearly winning the round with a larger number of hits.
+         * Comeback - A Controller has the lead after previously losing the round by a large number of hits.
+         * Fast - The number of misses made by each controller is minimal, making the number of events that
+         *        make up the RoundLog small.
+         * Slow - The number of misses made by each controller is large, making the number of events that
+         *        make up the RoundLog large.
+         * Intense - There is little difference in the number of hits made by both Controllers at a time.
+         * None - Nothing interesting.
+         * </summary>
+         */
         public enum RoundAccolade
         {
             HeadToHead,

@@ -43,7 +43,7 @@ namespace MBC.Core.util
 
         /**
          * <summary>Returns the object that is identified by name.</summary>
-         * <returns>A Controller loaded externally by a DLL, having the same Name property from IBattleshipOpponent as the parameter.
+         * <returns>A Controller loaded externally by a DLL, having the same Name property from IBattleshipController as the parameter.
          * If the class was not found, then this will return null.</returns>
          */
         public static IBattleshipController CreateController(string name)

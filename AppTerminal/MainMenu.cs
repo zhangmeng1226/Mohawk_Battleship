@@ -9,7 +9,10 @@ namespace MBC.App.Terminal
 
     /**
      * <summary>This MainMenu class is the first object to be displayed on the console when the application
-     * is started.</summary>
+     * is started.
+     * 
+     * 
+     * </summary>
      */
     public class MainMenu : TerminalModule
     {
@@ -25,6 +28,9 @@ namespace MBC.App.Terminal
             switch (s)
             {
                 case "Start a competition":
+                    BattleshipConsole.RemoveModule(this);
+                    BattleshipConsole.AddModule(new BotSelector());
+                    BattleshipConsole.UpdateDisplay();
                     break;
                 case "Configuration Manager":
                     break;

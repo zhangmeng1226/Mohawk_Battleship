@@ -16,7 +16,7 @@ namespace MBC.Core.mbc.accolade
             Configuration.Default.SetValue<int>("accolade_dom_diff", 9);
         }
         int diff = 0;
-        int last = Controller.NONE;
+        int last = Controller.None;
 
         public RoundLog.RoundAccolade Process(RoundLog.RoundActivity a)
         {

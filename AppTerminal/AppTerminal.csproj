@@ -44,6 +44,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BattleshipConsole.cs" />
+    <Compile Include="BotSelector.cs" />
+    <Compile Include="CompetitionDisplay.cs" />
     <Compile Include="Menu.cs" />
     <Compile Include="TerminalModule.cs" />
     <Compile Include="MainMenu.cs" />

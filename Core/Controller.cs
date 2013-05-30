@@ -15,15 +15,15 @@ namespace MBC.Core
      * This class is almost exclusively used by the Competition class.
      * 
      * There are three constants available that should be used when determining the side the Controller
-     * is on: NONE, RED, BLUE. Use NONE as an indicator for no controller.
+     * is on: None, Red, Blue. Use None as an indicator for no controller.
      * </summary>
      */
     public class Controller
     {
-        public const int LOSE_MAGIC_NUMBER = -50; //Number used in Point objects to signify a loss (timed out).
-        public const int NONE = -1; //Integer representing no controller.
-        public const int RED = 0; //Integer representing the first controller.
-        public const int BLUE = 1; //Integer representing the second controller.
+        public const int MagicNumberLose = -50; //Number used in Point objects to signify a loss (timed out).
+        public const int None = -1; //Integer representing no controller.
+        public const int Red = 0; //Integer representing the first controller.
+        public const int Blue = 1; //Integer representing the second controller.
         public IBattleshipController ibc; //The class implementing the IBattleshipOpponent interface playing the game.
         private int fieldIdx;
         private Stopwatch stopwatch; //Used to time each call to the iOpponent
@@ -187,7 +187,7 @@ namespace MBC.Core
                 shot.Y = 0;
 
             if (RanOutOfTime())
-                return new Point(LOSE_MAGIC_NUMBER, LOSE_MAGIC_NUMBER);
+                return new Point(MagicNumberLose, MagicNumberLose);
 
             if (info.shotsMade.Where(s => s.X == shot.X && s.Y == shot.Y).Any())
                 return ShootAt(opponent);

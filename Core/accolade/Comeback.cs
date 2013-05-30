@@ -17,7 +17,7 @@ namespace MBC.Core.mbc.accolade
         }
         int diff = 0;
         int backDiff = 0;
-        int last = Controller.NONE;
+        int last = Controller.None;
 
         private void StartNewCount(int op)
         {

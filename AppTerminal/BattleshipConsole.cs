@@ -12,7 +12,18 @@ namespace MBC.App.Terminal
     /**
      * <summary>Provides an interactive console for the user. Supports multiple terminal buffers.
      * Use the CTRL + Arrow keys to navigate between buffers. Use CTRL + SHIFT + Arrow keys to
-     * move buffers around.</summary>
+     * move buffers around.
+     * 
+     * This static class is responsible for the management of multiple buffers which are TerminalModule objects.
+     * This class is static because there can only be one console per application.
+     * 
+     * Use the static methods AddModule(TerminalModule) and RemoveModule(TerminalModule) to add or remove modules
+     * from the terminal display. If multiple TerminalModule objects are added, this class will ensure they
+     * are displayed on the screen simultaneously. After adding/removing modules, update the state of the
+     * display by using the UpdateDisplay() method.
+     * 
+     * Note, the width and height of the terminal window should be at least 80 and 25, respectively.
+     * </summary>
      */
     public class BattleshipConsole
     {
@@ -67,6 +78,10 @@ namespace MBC.App.Terminal
             c = new char[width / modCols];
             for (int i = 0; i < c.Length; i++)
                 c[i] = ' ';
+            
+            
+            
+            
             int modLeft = runningMods[selectedMod].WriteX - 1;
             int modTop = runningMods[selectedMod].WriteY - 1;
             int modHeight = runningMods[selectedMod].Height + 1;
@@ -90,8 +105,9 @@ namespace MBC.App.Terminal
             Util.RestoreConsoleColors();
         }
 
-        private static void SetGrid()
+        public static void UpdateDisplay()
         {
+            Console.Clear();
             int maxCols = Configuration.Global.GetValue<int>("term_max_columns");
             modRows = ((runningMods.Count - 1) / (maxCols + 1)) + 1;
             modCols = runningMods.Count - 1 > maxCols ? maxCols : runningMods.Count - 1;
@@ -104,13 +120,11 @@ namespace MBC.App.Terminal
         public static void AddModule(TerminalModule mod)
         {
             runningMods.Add(mod);
-            SetGrid();
         }
 
         public static void RemoveModule(TerminalModule mod)
         {
             runningMods.Remove(mod);
-            SetGrid();
         }
 
         private static void RecalculateBounds()
@@ -181,6 +195,7 @@ namespace MBC.App.Terminal
             runningMods = new List<TerminalModule>();
             AddModule(new TerminalInputDisplay());
             AddModule(new MainMenu());
+            UpdateDisplay();
 
             string line = "";
             while (isRunning)
@@ -203,7 +218,7 @@ namespace MBC.App.Terminal
                 if (width != Console.WindowWidth || height != Console.WindowHeight)
                 {
                     Console.Clear();
-                    SetGrid();
+                    UpdateDisplay();
                 }
             }
         }

@@ -17,7 +17,7 @@ namespace MBC.Core.mbc.accolade
         }
         int cnt = 0;
         int diff = 0;
-        int op = Controller.NONE;
+        int op = Controller.None;
 
         private void ResetCounters()
         {
