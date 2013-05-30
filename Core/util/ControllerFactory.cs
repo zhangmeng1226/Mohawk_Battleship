@@ -7,6 +7,23 @@ using System.IO;
 
 namespace MBC.Core.util
 {
+    /**
+     * <summary>The ControllerFactory is a purely static class that deals with loading the IBattleshipControllers
+     * from files.
+     * 
+     * Using this class is simple by utilizing 2 methods in this class:
+     * 
+     *      LoadControllerFolder() - Loads the classes that implement the IBattleshipController interface from files.
+     *                               Generally, this method should be invoked when updating a list of IBattleshipControllers.
+     *      CreateController(string) - Constructs an object out of a class implementing IBattleshipController that has been loaded.
+     *                                 The string specifies the name of the loaded IBattleshipController.
+     *      
+     * A list of loaded controllers can be retrieved from the Names property. The strings in the list can then
+     * be used to construct a new controller via CreateController(string).
+     * 
+     * Use of LoadControllers(string) is only required when loading a file from outside the default directory.
+     * </summary>
+     */
     public class ControllerFactory
     {
         private ControllerFactory() { }
@@ -39,7 +56,7 @@ namespace MBC.Core.util
         }
 
         /**
-         * <summary>Loads a .DLL file and saves objects that implement the IBattleshipOpponent interface.</summary>
+         * <summary>Loads a .DLL file and saves objects that implement the IBattleshipController interface.</summary>
          * <param name="fName">The absolute pathname to the .DLL file</param>
          * <remarks>It is currently possible to load more than one controller from a single DLL.</remarks>
          */
@@ -52,12 +69,14 @@ namespace MBC.Core.util
 
                 foreach (Type cont in types)
                     foreach (Type interfaces in cont.GetInterfaces())
-                        if (interfaces.ToString() == "Battleship.IBattleshipOpponent")
+                    {
+                        if (interfaces.ToString() == "MBC.Core.IBattleshipController")
                         {
                             IBattleshipController opp = (IBattleshipController)Activator.CreateInstance(cont);
-                            loadedControllers.Add(Util.ControllerToString(opp), cont);
+                            loadedControllers[Util.ControllerToString(opp)] = cont;
                             break;
                         }
+                    }
             }
             catch (Exception e)
             {
@@ -66,15 +85,18 @@ namespace MBC.Core.util
         }
 
         /**
-         * <summary>Opens each .DLL file in the working directory's "bots" folder.</summary>
+         * <summary>Opens each .DLL file in the working directory's "bots" folder. Overwrites
+         * existing Controller objects with new ones loaded.</summary>
          */
-        private static void LoadControllerFolder()
+        public static void LoadControllerFolder()
         {
             try
             {
                 List<string> files = new List<string>(Directory.GetFiles(Util.WorkingDirectory() + "bots", "*.dll"));
                 foreach (string file in files)
+                {
                     LoadControllers(file);
+                }
             }
             catch (System.IO.DirectoryNotFoundException e)
             {
