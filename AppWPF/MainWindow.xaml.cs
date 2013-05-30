@@ -30,6 +30,9 @@ namespace MBC.App.WPF
         {
             Util.LoadConfigurationDefaults();
             InitializeComponent();
+            centerConsoleBorder.Visibility = System.Windows.Visibility.Collapsed;
+            advTabs.Visibility = System.Windows.Visibility.Collapsed;
+            UpdateLayout();
             config = Configuration.Global;
         }
 
