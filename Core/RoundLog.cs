@@ -149,7 +149,10 @@ namespace MBC.Core
                 ibc = bc;
                 action = a;
                 timeElapsed = time;
-                fieldState = new Field(state);
+                if (state != null)
+                {
+                    fieldState = new Field(state);
+                }
             }
 
             /**

@@ -7,7 +7,7 @@ using MBC.Core;
 using MBC.App.Terminal.Layouts;
 using MBC.App.Terminal.Controls;
 
-namespace MBC.App.Terminal
+namespace MBC.App.Terminal.Modules
 {
     /**
      * <summary>The base class for a TerminalModule. Used for providing different states of the terminal

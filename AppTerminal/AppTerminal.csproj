@@ -44,9 +44,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BattleshipConsole.cs" />
-    <Compile Include="BotSelector.cs" />
+    <Compile Include="controls\NumericControl.cs" />
+    <Compile Include="modules\BotSelector.cs" />
     <Compile Include="controls\ButtonControl.cs" />
-    <Compile Include="CompetitionDisplay.cs" />
+    <Compile Include="modules\CompetitionOptionsDisplay.cs" />
     <Compile Include="controls\CheckboxControl.cs" />
     <Compile Include="controls\RadioButtonControl.cs" />
     <Compile Include="controls\RadioButtonControlGroup.cs" />
@@ -54,8 +55,10 @@
     <Compile Include="layouts\ControlLayout.cs" />
     <Compile Include="layouts\NoLayout.cs" />
     <Compile Include="layouts\VerticalLayout.cs" />
-    <Compile Include="TerminalModule.cs" />
-    <Compile Include="MainMenu.cs" />
+    <Compile Include="modules\CompetitionRun.cs" />
+    <Compile Include="modules\ResultDisplay.cs" />
+    <Compile Include="modules\TerminalModule.cs" />
+    <Compile Include="modules\MainMenu.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="controls\UserControl.cs" />
   </ItemGroup>

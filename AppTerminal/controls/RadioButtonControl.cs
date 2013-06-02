@@ -11,7 +11,6 @@ namespace MBC.App.Terminal.Controls
         private RadioButtonControlGroup radioGroup;
 
         public RadioButtonControl(string text, RadioButtonControlGroup group)
-            : base(text)
         {
             this.text = "( ) " + text;
             isSelected = false;
@@ -19,7 +18,6 @@ namespace MBC.App.Terminal.Controls
         }
 
         public RadioButtonControl(string text, bool select, RadioButtonControlGroup group)
-            : base(text)
         {
             this.text = "(" + (select ? "*" : " ") + ") " + text; 
             isSelected = select;

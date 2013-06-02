@@ -6,7 +6,7 @@ using MBC.Core;
 using MBC.App.Terminal.Layouts;
 using MBC.App.Terminal.Controls;
 
-namespace MBC.App.Terminal
+namespace MBC.App.Terminal.Modules
 {
 
     /**
@@ -28,7 +28,7 @@ namespace MBC.App.Terminal
             AddControlLayout(menuLayout);
         }
 
-        void MenuSelectEvent(string s)
+        bool MenuSelectEvent(string s)
         {
             switch (s)
             {
@@ -36,13 +36,14 @@ namespace MBC.App.Terminal
                     BattleshipConsole.RemoveModule(this);
                     BattleshipConsole.AddModule(new BotSelector());
                     BattleshipConsole.UpdateDisplay();
-                    break;
+                    return true;
                 case "Configuration Manager":
-                    break;
+                    return false;
                 case "Exit":
                     BattleshipConsole.Running = false;
-                    break;
+                    return true;
             }
+            return false;
         }
 
         protected override void Display()

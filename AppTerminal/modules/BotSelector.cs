@@ -7,12 +7,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace MBC.App.Terminal
+namespace MBC.App.Terminal.Modules
 {
     public class BotSelector : TerminalModule
     {
         VerticalLayout redList;
         VerticalLayout blueList;
+        RadioButtonControlGroup redGroup;
+        RadioButtonControlGroup blueGroup;
+
         VerticalLayout buttonConfirmLayout;
 
         public BotSelector()
@@ -20,7 +23,7 @@ namespace MBC.App.Terminal
             ControllerFactory.LoadControllerFolder();
             redList = new VerticalLayout(VerticalLayout.VerticalAlign.Left);
             redList.SetDisplayLine(5);
-            RadioButtonControlGroup redGroup = new RadioButtonControlGroup(redList);
+            redGroup = new RadioButtonControlGroup(redList);
             foreach (string ctrlName in ControllerFactory.Names)
             {
                 redGroup.AddRadioButton(ctrlName);
@@ -29,7 +32,7 @@ namespace MBC.App.Terminal
 
             blueList = new VerticalLayout(VerticalLayout.VerticalAlign.Right);
             blueList.SetDisplayLine(5);
-            RadioButtonControlGroup blueGroup = new RadioButtonControlGroup(blueList);
+            blueGroup = new RadioButtonControlGroup(blueList);
             foreach (string ctrlName in ControllerFactory.Names)
             {
                 blueGroup.AddRadioButton(ctrlName);
@@ -44,9 +47,14 @@ namespace MBC.App.Terminal
             AddControlLayout(buttonConfirmLayout);
         }
 
-        private void SelectionConfirm(string btn)
+        private bool SelectionConfirm(string btn)
         {
-
+            var red = ControllerFactory.CreateController(redGroup.GetSelected());
+            var blue = ControllerFactory.CreateController(blueGroup.GetSelected());
+            BattleshipConsole.RemoveModule(this);
+            BattleshipConsole.AddModule(new CompetitionOptionsDisplay(red, blue));
+            BattleshipConsole.UpdateDisplay();
+            return true;
         }
 
         protected override void Display()

@@ -6,6 +6,7 @@ using System.Text;
 
 using MBC.App.Terminal.Controls;
 using System.Drawing;
+using MBC.App.Terminal.Modules;
 
 namespace MBC.App.Terminal.Layouts
 {

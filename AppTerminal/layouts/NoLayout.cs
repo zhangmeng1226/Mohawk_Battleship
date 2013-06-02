@@ -1,11 +1,10 @@
-﻿using System;
+﻿using MBC.App.Terminal.Controls;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-using MBC.App.Terminal.Layouts;
-
-namespace MBC.App.Terminal.Controls
+namespace MBC.App.Terminal.Layouts
 {
     /**
      * <summary>The NoLayout class is created to provide an empty layout for TerminalModules that

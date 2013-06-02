@@ -12,8 +12,8 @@ namespace MBC.App.Terminal.Controls
         private string inputText;
 
         public StringInputControl(string placeholder)
-            : base(placeholder)
         {
+            text = placeholder;
             placeholderText = placeholder;
             inputText = "";
         }

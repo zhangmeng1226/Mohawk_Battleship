@@ -93,9 +93,9 @@
             config = conf;
             fieldInfo = new Field(ibc);
             fieldInfo.fixedRandom = new Random(seedNum);
-            fieldInfo.gameSize = new Size(config.GetValue<int>("field_width"), config.GetValue<int>("field_height"));
-            fieldInfo.shipSizes = config.GetConfigValueArray<int>("field_ship_sizes");
-            fieldInfo.timeoutLimit = new TimeSpan(0, 0, 0, 0, config.GetValue<int>("timeout_millis"));
+            fieldInfo.gameSize = new Size(config.GetValue<int>("mbc_field_width"), config.GetValue<int>("mbc_field_height"));
+            fieldInfo.shipSizes = config.GetConfigValueArray<int>("mbc_field_ship_sizes");
+            fieldInfo.timeoutLimit = new TimeSpan(0, 0, 0, 0, config.GetValue<int>("mbc_timeout"));
 
             roundList = new List<RoundLog>();
 
@@ -103,7 +103,7 @@
             controllers[0] = new Controller(ibc[0], fieldInfo, 0);
             controllers[1] = new Controller(ibc[1], fieldInfo, 1);
 
-            compThread = new Thread(new ThreadStart(RunCompetition));
+            compThread = new Thread(RunCompetition);
         }
 
         /**
@@ -245,7 +245,7 @@
         {
             lock (roundList)
             {
-                if (roundLogger != null && roundLogger.GetAt(roundLogger.GetActivityCount()).action != RoundLog.RoundAction.RoundEnd)
+                if (roundLogger != null && roundLogger.GetAt(roundLogger.GetActivityCount() - 1).action != RoundLog.RoundAction.RoundEnd)
                     roundLogger.PutAction(new RoundLog.RoundActivity("Round ended before win", -1, RoundLog.RoundAction.RoundEnd));
 
                 roundLogger = new RoundLog();
@@ -316,9 +316,12 @@
             //This loop continues until this competition is complete.
             while (playOut ? !RoundsReached(rnds) : gamePlays++ < (rnds * 2 - 1) && isRunning)
             {
+                NewRound();
                 RunRound();
                 if (RoundEndEvent != null)
+                {
                     RoundEndEvent();
+                }
             }
 
             foreach (Controller bc in controllers)
@@ -333,8 +336,8 @@
          */
         public void RunCompetition()
         {
-            RunRounds(config.GetValue<int>("competition_rounds"),
-                config.GetValue<bool>("competition_mode_playout"));
+            RunRounds(config.GetValue<int>("mbc_rounds"),
+                config.GetValue<bool>("mbc_playout"));
         }
 
         /**
@@ -343,7 +346,9 @@
         public void RunCompetitionThread()
         {
             if (isRunning)
+            {
                 return;
+            }
             compThread.Start();
         }
 

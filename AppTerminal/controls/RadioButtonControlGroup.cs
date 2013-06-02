@@ -37,5 +37,10 @@ namespace MBC.App.Terminal.Controls
             selectedControl = ctrl;
         }
 
+        public string GetSelected()
+        {
+            return selectedControl.Text.Substring(4);
+        }
+
     }
 }

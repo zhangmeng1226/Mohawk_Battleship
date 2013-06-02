@@ -14,6 +14,7 @@ namespace MBC.Core.mbc.accolade
         public static void SetConfigDefaults()
         {
             Configuration.Default.SetValue<int>("accolade_h2h_diff", 4);
+            Configuration.Default.SetValue<int>("accolade_h2h_count", 8);
         }
         int cnt = 0;
         int diff = 0;

@@ -11,16 +11,16 @@ namespace MBC.App.Terminal.Controls
      */
     public class ButtonControl : UserControl
     {
-        public delegate void ButtonSelect(string btnText);
+        public delegate bool ButtonSelect(string btnText);
         public event ButtonSelect ButtonSelectEvent;
 
         /**
          * <summary>Constructs a new ButtonControl object with the specified event to add to this control.</summary>
          */
         public ButtonControl(string text, ButtonSelect selectEvent)
-            : base(text)
         {
             ButtonSelectEvent += selectEvent;
+            this.text = "[" + text + "]";
         }
 
         /**
@@ -43,9 +43,9 @@ namespace MBC.App.Terminal.Controls
             }
             if (ButtonSelectEvent != null)
             {
-                ButtonSelectEvent(Text);
+                return ButtonSelectEvent(Text.Substring(1, Text.Length - 2));
             }
-            return true;
+            return false;
         }
     }
 }

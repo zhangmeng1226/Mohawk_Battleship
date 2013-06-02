@@ -6,6 +6,7 @@ using System.Collections.ObjectModel;
 using System.Drawing;
 using MBC.Core;
 using MBC.App.Terminal;
+using MBC.App.Terminal.Modules;
 
 namespace MBC.App.Terminal
 {
@@ -38,6 +39,7 @@ namespace MBC.App.Terminal
             Configuration.Default.SetValue<string>("term_color_grid", "Yellow");
             Configuration.Default.SetValue<string>("term_color_input_display", "DarkGreen");
             Configuration.Default.SetValue<string>("term_color_input_text", "White");
+            Configuration.Default.SetValue<string>("term_color_background", "Black");
         }
         private static List<TerminalModule> runningMods; //The modules attached to this BattleshipConsole.
         private static int selectedMod = 0; //The selected module from the list of runningMods.
@@ -168,7 +170,7 @@ namespace MBC.App.Terminal
          * the order of TerminalModules in this BattleshipConsole with arrow keys + CTRL + SHIFT.
          * Does not do anything and returns false if CTRL is not pressed.</summary>
          */
-        private static bool HandleKey(ConsoleKeyInfo cki)
+        private static bool HandleKeyControl(ConsoleKeyInfo cki)
         {
             if (cki.Modifiers.HasFlag(ConsoleModifiers.Control))
             {
@@ -216,14 +218,21 @@ namespace MBC.App.Terminal
          * <summary>Processes a key press and modifies the input string with valid characters.</summary>
          * <returns>True if the enter key was pressed and processed, False otherwise.</returns>
          */
-        private static bool ModifyInputLine(ConsoleKeyInfo key)
+        private static bool ProcessInputLine(ConsoleKeyInfo key)
         {
             switch (key.Key)
             {
                 case ConsoleKey.Enter:
                     if (inputLine.Length != 0)
                     {
+                        string input = inputLine;
                         inputLine = "";
+                        switch (input.ToLower())
+                        {
+                            case "exit":
+                                Running = false;
+                                return false;
+                        }
                         return true;
                     }
                     break;
@@ -286,9 +295,9 @@ namespace MBC.App.Terminal
             {
                 ConsoleKeyInfo key = Console.ReadKey(true);
 
-                if (!HandleKey(key) && !runningMods[selectedMod].KeyPressed(key))
+                if (!HandleKeyControl(key) && !runningMods[selectedMod].KeyPressed(key))
                 {
-                    if (ModifyInputLine(key))
+                    if (ProcessInputLine(key))
                     {
                         runningMods[selectedMod].InputEntered(inputLine);
                     }

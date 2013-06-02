@@ -19,7 +19,7 @@ namespace MBC.App.Terminal.Controls
      */
     public abstract class UserControl
     {
-        protected string text; //The string of text this UseControl will display.
+        protected string text = ""; //The string of text this UseControl will display.
         private bool requiresUpdate;
 
         /**
@@ -28,11 +28,6 @@ namespace MBC.App.Terminal.Controls
         public string Text
         {
             get { return text; }
-        }
-
-        public UserControl(string text)
-        {
-            this.text = text;
         }
 
         /**

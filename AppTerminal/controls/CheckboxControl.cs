@@ -10,13 +10,11 @@ namespace MBC.App.Terminal.Controls
         private bool isChecked = false;
 
         public CheckboxControl(string text)
-            : base(text)
         {
             this.text = "[ ] " + text;
         }
 
         public CheckboxControl(string text, bool chk)
-            : base(text)
         {
             this.text = "[" + (chk ? "*" : " ") + "] " + text;
         }
