@@ -63,10 +63,10 @@ namespace MBC.App.Terminal.Modules
             NewLine(2);
             WriteCenteredText("Select two controllers from the list below.");
             NewLine();
-            Util.SetConsoleForegroundColor("Red");
+            Utility.SetConsoleForegroundColor("Red");
             WriteText("Red Controller:");
             AlignToCoord(Width - "Blue Controller:".Length, CurrentY);
-            Util.SetConsoleForegroundColor("Blue");
+            Utility.SetConsoleForegroundColor("Blue");
             WriteText("Blue Controller:");
             redList.Display();
             blueList.Display();

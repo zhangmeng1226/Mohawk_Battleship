@@ -23,7 +23,5 @@ var class_m_b_c_1_1_core_1_1_round_log =
     [ "RoundLog", "class_m_b_c_1_1_core_1_1_round_log.html#a50d3d5c41078aa520500ca86dd5694ab", null ],
     [ "GetActivityCount", "class_m_b_c_1_1_core_1_1_round_log.html#a389bd537cf73c73998e0a789961d7536", null ],
     [ "GetAt", "class_m_b_c_1_1_core_1_1_round_log.html#a14deb5b327e8c77d3535e342701711d9", null ],
-    [ "GetNext", "class_m_b_c_1_1_core_1_1_round_log.html#a02c4c7d407ff609478505d28ff20f884", null ],
-    [ "PutAction", "class_m_b_c_1_1_core_1_1_round_log.html#a0bb405409acf2b889d714bbff68abc94", null ],
-    [ "ResetIterator", "class_m_b_c_1_1_core_1_1_round_log.html#ad5114bea3e605c3587033cc4b9db6aa7", null ]
+    [ "PutAction", "class_m_b_c_1_1_core_1_1_round_log.html#a0bb405409acf2b889d714bbff68abc94", null ]
 ];

@@ -190,9 +190,9 @@ namespace MBC.App.Terminal.Modules
          */
         public bool KeyPressed(ConsoleKeyInfo key)
         {
-            Util.StoreConsoleColors();
+            Utility.StoreConsoleColors();
             bool result = currentControlLayout.KeyPressed(key);
-            Util.RestoreConsoleColors();
+            Utility.RestoreConsoleColors();
             return result;
         }
 
@@ -201,9 +201,9 @@ namespace MBC.App.Terminal.Modules
          */
         public void InputEntered(string input)
         {
-            Util.StoreConsoleColors();
+            Utility.StoreConsoleColors();
             currentControlLayout.Input(input);
-            Util.RestoreConsoleColors();
+            Utility.RestoreConsoleColors();
         }
 
         /**
@@ -254,7 +254,7 @@ namespace MBC.App.Terminal.Modules
          */
         public void RefreshDisplay(int x, int y, int w, int h)
         {
-            Util.StoreConsoleColors();
+            Utility.StoreConsoleColors();
             writePosX = x;
             writePosY = y;
             writeWidth = w;
@@ -263,7 +263,7 @@ namespace MBC.App.Terminal.Modules
             curY = 0;
             Align();
             Display();
-            Util.RestoreConsoleColors();
+            Utility.RestoreConsoleColors();
         }
 
         /**

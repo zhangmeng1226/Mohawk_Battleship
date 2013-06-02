@@ -3,7 +3,7 @@
 }
 
 
-Interaction logic for Field.\-xaml  
+The \hyperlink{class_m_b_c_1_1_app_1_1_w_p_f_1_1_field_control}{Field\-Control} class is a \hyperlink{namespace_m_b_c_1_1_app_1_1_w_p_f}{W\-P\-F} control that graphically displays the state of a Field object. The \hyperlink{class_m_b_c_1_1_app_1_1_w_p_f_1_1_field_control}{Field\-Control} must be given the I\-Battleship\-Controller index that is being displayed on this Field. Usage of this class is simple by utilizing three class members\-: \hyperlink{class_m_b_c_1_1_app_1_1_w_p_f_1_1_field_control_abdf9f4f572eb3f9f84caee3b0a9729a1}{Set\-Controller(int)} -\/ Sets the controller index in a Field. Set\-Field(\-Field) -\/ Sets the Field to display. \hyperlink{class_m_b_c_1_1_app_1_1_w_p_f_1_1_field_control_a5f73d69fb63c3fa2e03b145d66f914b6}{Update\-Field\-Display()} -\/ Updates the \hyperlink{class_m_b_c_1_1_app_1_1_w_p_f_1_1_field_control}{Field\-Control} to display the Field's current state.  
 
 
 
@@ -29,8 +29,15 @@ Collaboration diagram for M\-B\-C.\-App.\-W\-P\-F.\-Field\-Control\-:
 \subsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-void \hyperlink{class_m_b_c_1_1_app_1_1_w_p_f_1_1_field_control_a443ed9690cf8a37c9b535f41974ed8b2}{Set\-Battlefield} (\hyperlink{class_m_b_c_1_1_core_1_1_field}{Field} f, \hyperlink{interface_m_b_c_1_1_core_1_1_i_battleship_controller}{I\-Battleship\-Controller} ibc)
-\begin{DoxyCompactList}\small\item\em Modifies the internal grid to represent the given Field. This may be a C\-P\-U intensive process, so do not use this too often.\end{DoxyCompactList}\item 
+void \hyperlink{class_m_b_c_1_1_app_1_1_w_p_f_1_1_field_control_abdf9f4f572eb3f9f84caee3b0a9729a1}{Set\-Controller} (int ibc)
+\begin{DoxyCompactList}\small\item\em Sets the controller that this \hyperlink{class_m_b_c_1_1_app_1_1_w_p_f_1_1_field_control}{Field\-Control} displays through the internally presented Field.\end{DoxyCompactList}\item 
+\hypertarget{class_m_b_c_1_1_app_1_1_w_p_f_1_1_field_control_a5f73d69fb63c3fa2e03b145d66f914b6}{void \hyperlink{class_m_b_c_1_1_app_1_1_w_p_f_1_1_field_control_a5f73d69fb63c3fa2e03b145d66f914b6}{Update\-Field\-Display} ()}\label{class_m_b_c_1_1_app_1_1_w_p_f_1_1_field_control_a5f73d69fb63c3fa2e03b145d66f914b6}
+
+\begin{DoxyCompactList}\small\item\em Makes this \hyperlink{class_m_b_c_1_1_app_1_1_w_p_f_1_1_field_control}{Field\-Control} update its display to reflect the current state of the internal Field.\end{DoxyCompactList}\item 
+void \hyperlink{class_m_b_c_1_1_app_1_1_w_p_f_1_1_field_control_a77fd051799f4c82c3ca10c4650576d0e}{Set\-Field} (\hyperlink{class_m_b_c_1_1_core_1_1_field}{Field} field)
+\begin{DoxyCompactList}\small\item\em Sets the Field this \hyperlink{class_m_b_c_1_1_app_1_1_w_p_f_1_1_field_control}{Field\-Control} will present.\end{DoxyCompactList}\item 
+void \hyperlink{class_m_b_c_1_1_app_1_1_w_p_f_1_1_field_control_a42a985ed0daa8768932b77eaf87b65b4}{Initialize\-Component} ()
+\begin{DoxyCompactList}\small\item\em Initialize\-Component \end{DoxyCompactList}\item 
 void \hyperlink{class_m_b_c_1_1_app_1_1_w_p_f_1_1_field_control_a42a985ed0daa8768932b77eaf87b65b4}{Initialize\-Component} ()
 \begin{DoxyCompactList}\small\item\em Initialize\-Component \end{DoxyCompactList}\end{DoxyCompactItemize}
 \subsection*{Static Public Attributes}
@@ -42,13 +49,13 @@ void \hyperlink{class_m_b_c_1_1_app_1_1_w_p_f_1_1_field_control_a42a985ed0daa876
 \subsection*{Properties}
 \begin{DoxyCompactItemize}
 \item 
-\hypertarget{class_m_b_c_1_1_app_1_1_w_p_f_1_1_field_control_ae608f81c79edd50c22d3bd20ce824c96}{Color {\bfseries Controller\-Color}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}}\label{class_m_b_c_1_1_app_1_1_w_p_f_1_1_field_control_ae608f81c79edd50c22d3bd20ce824c96}
+\hypertarget{class_m_b_c_1_1_app_1_1_w_p_f_1_1_field_control_ae608f81c79edd50c22d3bd20ce824c96}{Color \hyperlink{class_m_b_c_1_1_app_1_1_w_p_f_1_1_field_control_ae608f81c79edd50c22d3bd20ce824c96}{Controller\-Color}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}}\label{class_m_b_c_1_1_app_1_1_w_p_f_1_1_field_control_ae608f81c79edd50c22d3bd20ce824c96}
 
-\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Gets or sets the colour representation of this \hyperlink{class_m_b_c_1_1_app_1_1_w_p_f_1_1_field_control}{Field\-Control}.\end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \subsection{Detailed Description}
-Interaction logic for Field.\-xaml 
+The \hyperlink{class_m_b_c_1_1_app_1_1_w_p_f_1_1_field_control}{Field\-Control} class is a \hyperlink{namespace_m_b_c_1_1_app_1_1_w_p_f}{W\-P\-F} control that graphically displays the state of a Field object. The \hyperlink{class_m_b_c_1_1_app_1_1_w_p_f_1_1_field_control}{Field\-Control} must be given the I\-Battleship\-Controller index that is being displayed on this Field. Usage of this class is simple by utilizing three class members\-: \hyperlink{class_m_b_c_1_1_app_1_1_w_p_f_1_1_field_control_abdf9f4f572eb3f9f84caee3b0a9729a1}{Set\-Controller(int)} -\/ Sets the controller index in a Field. Set\-Field(\-Field) -\/ Sets the Field to display. \hyperlink{class_m_b_c_1_1_app_1_1_w_p_f_1_1_field_control_a5f73d69fb63c3fa2e03b145d66f914b6}{Update\-Field\-Display()} -\/ Updates the \hyperlink{class_m_b_c_1_1_app_1_1_w_p_f_1_1_field_control}{Field\-Control} to display the Field's current state. 
 
 \hyperlink{class_m_b_c_1_1_app_1_1_w_p_f_1_1_field_control}{Field\-Control} 
 
@@ -64,23 +71,47 @@ Interaction logic for Field.\-xaml
 
 Initialize\-Component 
 
-\hypertarget{class_m_b_c_1_1_app_1_1_w_p_f_1_1_field_control_a443ed9690cf8a37c9b535f41974ed8b2}{\index{M\-B\-C\-::\-App\-::\-W\-P\-F\-::\-Field\-Control@{M\-B\-C\-::\-App\-::\-W\-P\-F\-::\-Field\-Control}!Set\-Battlefield@{Set\-Battlefield}}
-\index{Set\-Battlefield@{Set\-Battlefield}!MBC::App::WPF::FieldControl@{M\-B\-C\-::\-App\-::\-W\-P\-F\-::\-Field\-Control}}
-\subsubsection[{Set\-Battlefield}]{\setlength{\rightskip}{0pt plus 5cm}void M\-B\-C.\-App.\-W\-P\-F.\-Field\-Control.\-Set\-Battlefield (
+\hypertarget{class_m_b_c_1_1_app_1_1_w_p_f_1_1_field_control_a42a985ed0daa8768932b77eaf87b65b4}{\index{M\-B\-C\-::\-App\-::\-W\-P\-F\-::\-Field\-Control@{M\-B\-C\-::\-App\-::\-W\-P\-F\-::\-Field\-Control}!Initialize\-Component@{Initialize\-Component}}
+\index{Initialize\-Component@{Initialize\-Component}!MBC::App::WPF::FieldControl@{M\-B\-C\-::\-App\-::\-W\-P\-F\-::\-Field\-Control}}
+\subsubsection[{Initialize\-Component}]{\setlength{\rightskip}{0pt plus 5cm}void M\-B\-C.\-App.\-W\-P\-F.\-Field\-Control.\-Initialize\-Component (
 \begin{DoxyParamCaption}
-\item[{{\bf Field}}]{f, }
-\item[{{\bf I\-Battleship\-Controller}}]{ibc}
+{}
 \end{DoxyParamCaption}
-)}}\label{class_m_b_c_1_1_app_1_1_w_p_f_1_1_field_control_a443ed9690cf8a37c9b535f41974ed8b2}
+)}}\label{class_m_b_c_1_1_app_1_1_w_p_f_1_1_field_control_a42a985ed0daa8768932b77eaf87b65b4}
 
 
-Modifies the internal grid to represent the given Field. This may be a C\-P\-U intensive process, so do not use this too often.
+Initialize\-Component 
+
+\hypertarget{class_m_b_c_1_1_app_1_1_w_p_f_1_1_field_control_abdf9f4f572eb3f9f84caee3b0a9729a1}{\index{M\-B\-C\-::\-App\-::\-W\-P\-F\-::\-Field\-Control@{M\-B\-C\-::\-App\-::\-W\-P\-F\-::\-Field\-Control}!Set\-Controller@{Set\-Controller}}
+\index{Set\-Controller@{Set\-Controller}!MBC::App::WPF::FieldControl@{M\-B\-C\-::\-App\-::\-W\-P\-F\-::\-Field\-Control}}
+\subsubsection[{Set\-Controller}]{\setlength{\rightskip}{0pt plus 5cm}void M\-B\-C.\-App.\-W\-P\-F.\-Field\-Control.\-Set\-Controller (
+\begin{DoxyParamCaption}
+\item[{int}]{ibc}
+\end{DoxyParamCaption}
+)}}\label{class_m_b_c_1_1_app_1_1_w_p_f_1_1_field_control_abdf9f4f572eb3f9f84caee3b0a9729a1}
+
+
+Sets the controller that this \hyperlink{class_m_b_c_1_1_app_1_1_w_p_f_1_1_field_control}{Field\-Control} displays through the internally presented Field.
 
 
 \begin{DoxyParams}{Parameters}
-{\em f} & The field to monitor\\
+{\em ibc} & The index of the battleship controller in the Field to switch to. Refer to the constants available in the Controller class.\\
 \hline
-{\em ibc} & The controller to monitor in the field\\
+\end{DoxyParams}
+\hypertarget{class_m_b_c_1_1_app_1_1_w_p_f_1_1_field_control_a77fd051799f4c82c3ca10c4650576d0e}{\index{M\-B\-C\-::\-App\-::\-W\-P\-F\-::\-Field\-Control@{M\-B\-C\-::\-App\-::\-W\-P\-F\-::\-Field\-Control}!Set\-Field@{Set\-Field}}
+\index{Set\-Field@{Set\-Field}!MBC::App::WPF::FieldControl@{M\-B\-C\-::\-App\-::\-W\-P\-F\-::\-Field\-Control}}
+\subsubsection[{Set\-Field}]{\setlength{\rightskip}{0pt plus 5cm}void M\-B\-C.\-App.\-W\-P\-F.\-Field\-Control.\-Set\-Field (
+\begin{DoxyParamCaption}
+\item[{{\bf Field}}]{field}
+\end{DoxyParamCaption}
+)}}\label{class_m_b_c_1_1_app_1_1_w_p_f_1_1_field_control_a77fd051799f4c82c3ca10c4650576d0e}
+
+
+Sets the Field this \hyperlink{class_m_b_c_1_1_app_1_1_w_p_f_1_1_field_control}{Field\-Control} will present.
+
+
+\begin{DoxyParams}{Parameters}
+{\em field} & The Field object to display.\\
 \hline
 \end{DoxyParams}
 
@@ -88,4 +119,5 @@ Modifies the internal grid to represent the given Field. This may be a C\-P\-U i
 The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
 \item 
 App\-W\-P\-F/Field\-Control.\-xaml.\-cs\item 
+App\-W\-P\-F/obj/x86/\-Debug/Field\-Control.\-g.\-cs\item 
 App\-W\-P\-F/obj/x86/\-Debug/Field\-Control.\-g.\-i.\-cs\end{DoxyCompactItemize}

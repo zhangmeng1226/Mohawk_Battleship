@@ -8,5 +8,6 @@ var class_m_b_c_1_1_core_1_1util_1_1_log_message =
       [ "Error", "class_m_b_c_1_1_core_1_1util_1_1_log_message.html#a918e760aecb242c573ad99ec7a4ce07aa902b0d55fddef6f8d651fe1035b7d4bd", null ],
       [ "Critical", "class_m_b_c_1_1_core_1_1util_1_1_log_message.html#a918e760aecb242c573ad99ec7a4ce07aa278d01e5af56273bae1bb99a98b370cd", null ],
       [ "Fatal", "class_m_b_c_1_1_core_1_1util_1_1_log_message.html#a918e760aecb242c573ad99ec7a4ce07aa882384ec38ce8d9582b57e70861730e4", null ]
-    ] ]
+    ] ],
+    [ "LogMessage", "class_m_b_c_1_1_core_1_1util_1_1_log_message.html#a28227ed3687ed1b74fd4553373d9caee", null ]
 ];

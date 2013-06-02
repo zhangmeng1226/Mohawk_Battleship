@@ -8,8 +8,6 @@
     /**
      * <summary>A Ship contains information about ship placement and provides various
      * methods to assist with determining various states of the game.
-     * 
-     * 
      * </summary>
      */
     public sealed class Ship

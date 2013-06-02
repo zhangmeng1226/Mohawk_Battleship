@@ -45,7 +45,7 @@ namespace MBC.Core.util
                     if (LogMessageReceivedEvent != null)
                         LogMessageReceivedEvent(new LogMessage(line[2], LogMessage.GetNameLevel(line[1]), DateTime.Parse(line[0])));
                 }
-                catch (Exception) { Util.PrintDebugMessage("Log parsing error occurred."); }
+                catch (Exception) { Utility.PrintDebugMessage("Log parsing error occurred."); }
         }
     }
 }

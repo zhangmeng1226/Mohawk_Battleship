@@ -28,7 +28,7 @@ namespace MBC.App.WPF
 
         public MainWindow()
         {
-            Util.LoadConfigurationDefaults();
+            Utility.LoadConfigurationDefaults();
             InitializeComponent();
             centerConsoleBorder.Visibility = System.Windows.Visibility.Collapsed;
             advTabs.Visibility = System.Windows.Visibility.Collapsed;
@@ -41,7 +41,7 @@ namespace MBC.App.WPF
             RoundActivityEntry entry = new RoundActivityEntry();
             entry.Number = roundActLogEntries.Count().ToString();
             entry.Action = RoundLog.GetActionStr(action.action);
-            entry.ControllerName = action.fieldState != null ? Util.ControllerToString(action.fieldState, action.ibc) : "Null";
+            entry.ControllerName = action.fieldState != null ? Utility.ControllerToString(action.fieldState, action.ibc) : "Null";
             entry.Message = action.activityInfo;
             entry.Time = action.timeElapsed+"ms";
 

@@ -73,14 +73,14 @@ namespace MBC.Core.util
                         if (interfaces.ToString() == "MBC.Core.IBattleshipController")
                         {
                             IBattleshipController opp = (IBattleshipController)Activator.CreateInstance(cont);
-                            loadedControllers[Util.ControllerToString(opp)] = cont;
+                            loadedControllers[Utility.ControllerToString(opp)] = cont;
                             break;
                         }
                     }
             }
             catch (Exception e)
             {
-                Util.PrintDebugMessage("Failed to load " + fName + ": " + e.ToString());
+                Utility.PrintDebugMessage("Failed to load " + fName + ": " + e.ToString());
             }
         }
 
@@ -92,7 +92,7 @@ namespace MBC.Core.util
         {
             try
             {
-                List<string> files = new List<string>(Directory.GetFiles(Util.WorkingDirectory() + "bots", "*.dll"));
+                List<string> files = new List<string>(Directory.GetFiles(Utility.WorkingDirectory() + "bots", "*.dll"));
                 foreach (string file in files)
                 {
                     LoadControllers(file);
@@ -100,7 +100,7 @@ namespace MBC.Core.util
             }
             catch (System.IO.DirectoryNotFoundException e)
             {
-                Util.PrintDebugMessage("The bot directory could not be found. " + e.ToString());
+                Utility.PrintDebugMessage("The bot directory could not be found. " + e.ToString());
             }
         }
     }

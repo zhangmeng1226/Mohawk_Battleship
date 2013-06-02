@@ -36,21 +36,21 @@ namespace MBC.App.Terminal.Layouts
         protected override void DrawSelected(Controls.UserControl ctrl)
         {
             base.DrawSelected(ctrl);
-            Util.StoreConsoleColors();
-            Util.SetConsoleBackgroundColor(Configuration.Global.GetValue<string>("term_color_control_selected_background"));
-            Util.SetConsoleForegroundColor(Configuration.Global.GetValue<string>("term_color_control_selected_foreground"));
+            Utility.StoreConsoleColors();
+            Utility.SetConsoleBackgroundColor(Configuration.Global.GetValue<string>("term_color_control_selected_background"));
+            Utility.SetConsoleForegroundColor(Configuration.Global.GetValue<string>("term_color_control_selected_foreground"));
             DrawControl(ctrl);
-            Util.RestoreConsoleColors();
+            Utility.RestoreConsoleColors();
         }
 
         protected override void DrawUnselected(Controls.UserControl ctrl)
         {
             base.DrawUnselected(ctrl);
-            Util.StoreConsoleColors();
-            Util.SetConsoleBackgroundColor(Configuration.Global.GetValue<string>("term_color_control_unselected_background"));
-            Util.SetConsoleForegroundColor(Configuration.Global.GetValue<string>("term_color_control_unselected_foreground"));
+            Utility.StoreConsoleColors();
+            Utility.SetConsoleBackgroundColor(Configuration.Global.GetValue<string>("term_color_control_unselected_background"));
+            Utility.SetConsoleForegroundColor(Configuration.Global.GetValue<string>("term_color_control_unselected_foreground"));
             DrawControl(ctrl);
-            Util.RestoreConsoleColors();
+            Utility.RestoreConsoleColors();
         }
 
         private void DrawControl(UserControl ctrl)

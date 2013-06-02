@@ -1,22 +1,22 @@
 \hypertarget{class_m_b_c_1_1_core_1_1_field}{\section{M\-B\-C.\-Core.\-Field Class Reference}
 \label{class_m_b_c_1_1_core_1_1_field}\index{M\-B\-C.\-Core.\-Field@{M\-B\-C.\-Core.\-Field}}
 }
+
+
+The \hyperlink{class_m_b_c_1_1_core_1_1_field}{Field} class represents a battleship field. It contains battleship field information and two \hyperlink{class_m_b_c_1_1_core_1_1_field_1_1_controller_info}{Controller\-Info} objects that contain information on the two controllers in the \hyperlink{class_m_b_c_1_1_core_1_1_field}{Field}.  
+
+
 \subsection*{Classes}
 \begin{DoxyCompactItemize}
 \item 
 class \hyperlink{class_m_b_c_1_1_core_1_1_field_1_1_controller_info}{Controller\-Info}
-\begin{DoxyCompactList}\small\item\em Contains information related to the state of the battlefield for each opponent\end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Contains information related to the state of the battlefield for each opponent.\end{DoxyCompactList}\end{DoxyCompactItemize}
 \subsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
 \hypertarget{class_m_b_c_1_1_core_1_1_field_a7310ab93b09a8cd557e4fdcc3f686a78}{\hyperlink{class_m_b_c_1_1_core_1_1_field_a7310ab93b09a8cd557e4fdcc3f686a78}{Field} (\hyperlink{interface_m_b_c_1_1_core_1_1_i_battleship_controller}{I\-Battleship\-Controller}\mbox{[}$\,$\mbox{]} ibc)}\label{class_m_b_c_1_1_core_1_1_field_a7310ab93b09a8cd557e4fdcc3f686a78}
 
 \begin{DoxyCompactList}\small\item\em Constructs a Battlefield object initialized with two opponents\end{DoxyCompactList}\item 
-\hyperlink{class_m_b_c_1_1_core_1_1_field_1_1_controller_info}{Controller\-Info}\mbox{[}$\,$\mbox{]} \hyperlink{class_m_b_c_1_1_core_1_1_field_aaf565a96cdff422ffed99cccb64b400a}{Get\-Info} ()
-\item 
-\hypertarget{class_m_b_c_1_1_core_1_1_field_ae135717a6b4f17d3af926751f687b374}{\hyperlink{interface_m_b_c_1_1_core_1_1_i_battleship_controller}{I\-Battleship\-Controller} \hyperlink{class_m_b_c_1_1_core_1_1_field_ae135717a6b4f17d3af926751f687b374}{Get\-Opponent} (\hyperlink{interface_m_b_c_1_1_core_1_1_i_battleship_controller}{I\-Battleship\-Controller} c)}\label{class_m_b_c_1_1_core_1_1_field_ae135717a6b4f17d3af926751f687b374}
-
-\begin{DoxyCompactList}\small\item\em Gets the first occurrence of \hyperlink{interface_m_b_c_1_1_core_1_1_i_battleship_controller}{I\-Battleship\-Controller} that is not equal to c. If used properly, this is the opposing controller to the one specified.\end{DoxyCompactList}\item 
 \hypertarget{class_m_b_c_1_1_core_1_1_field_a48bb106fc9697c3a8bd7139d06f4aa09}{\hyperlink{class_m_b_c_1_1_core_1_1_field_a48bb106fc9697c3a8bd7139d06f4aa09}{Field} (\hyperlink{class_m_b_c_1_1_core_1_1_field}{Field} copy)}\label{class_m_b_c_1_1_core_1_1_field_a48bb106fc9697c3a8bd7139d06f4aa09}
 
 \begin{DoxyCompactList}\small\item\em Copy constructor\end{DoxyCompactList}\end{DoxyCompactItemize}
@@ -38,29 +38,24 @@ class \hyperlink{class_m_b_c_1_1_core_1_1_field_1_1_controller_info}{Controller\
 \subsection*{Properties}
 \begin{DoxyCompactItemize}
 \item 
-\hyperlink{class_m_b_c_1_1_core_1_1_field_1_1_controller_info}{Controller\-Info} \hyperlink{class_m_b_c_1_1_core_1_1_field_a68bea4ce761a6ddca725e952213a9949}{this\mbox{[}\-I\-Battleship\-Controller i\mbox{]}}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\hypertarget{class_m_b_c_1_1_core_1_1_field_a7eb77e278bbe329641d1ba7ce547be9e}{\hyperlink{class_m_b_c_1_1_core_1_1_field_1_1_controller_info}{Controller\-Info}\mbox{[}$\,$\mbox{]} \hyperlink{class_m_b_c_1_1_core_1_1_field_a7eb77e278bbe329641d1ba7ce547be9e}{Controllers}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}}\label{class_m_b_c_1_1_core_1_1_field_a7eb77e278bbe329641d1ba7ce547be9e}
+
+\begin{DoxyCompactList}\small\item\em Gets the controllers in this field.\end{DoxyCompactList}\item 
+\hyperlink{class_m_b_c_1_1_core_1_1_field_1_1_controller_info}{Controller\-Info} \hyperlink{class_m_b_c_1_1_core_1_1_field_a83df6dda4d27fbd795656ded76db38c9}{this\mbox{[}int i\mbox{]}}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
 \end{DoxyCompactItemize}
 
 
-\subsection{Member Function Documentation}
-\hypertarget{class_m_b_c_1_1_core_1_1_field_aaf565a96cdff422ffed99cccb64b400a}{\index{M\-B\-C\-::\-Core\-::\-Field@{M\-B\-C\-::\-Core\-::\-Field}!Get\-Info@{Get\-Info}}
-\index{Get\-Info@{Get\-Info}!MBC::Core::Field@{M\-B\-C\-::\-Core\-::\-Field}}
-\subsubsection[{Get\-Info}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Controller\-Info} \mbox{[}$\,$\mbox{]} M\-B\-C.\-Core.\-Field.\-Get\-Info (
-\begin{DoxyParamCaption}
-{}
-\end{DoxyParamCaption}
-)}}\label{class_m_b_c_1_1_core_1_1_field_aaf565a96cdff422ffed99cccb64b400a}
-\begin{DoxyReturn}{Returns}
-Opponent information for both opponents
-\end{DoxyReturn}
+\subsection{Detailed Description}
+The \hyperlink{class_m_b_c_1_1_core_1_1_field}{Field} class represents a battleship field. It contains battleship field information and two \hyperlink{class_m_b_c_1_1_core_1_1_field_1_1_controller_info}{Controller\-Info} objects that contain information on the two controllers in the \hyperlink{class_m_b_c_1_1_core_1_1_field}{Field}. 
 
+Accessing the individual \hyperlink{class_m_b_c_1_1_core_1_1_field_1_1_controller_info}{Controller\-Info} objects is made simple by using a value of 0 or 1. The order of the \hyperlink{class_m_b_c_1_1_core_1_1_field_1_1_controller_info}{Controller\-Info} objects does not change, so constants can be used to access them.
 
 \subsection{Property Documentation}
-\hypertarget{class_m_b_c_1_1_core_1_1_field_a68bea4ce761a6ddca725e952213a9949}{\index{M\-B\-C\-::\-Core\-::\-Field@{M\-B\-C\-::\-Core\-::\-Field}!this\mbox{[}\-I\-Battleship\-Controller i\mbox{]}@{this[I\-Battleship\-Controller i]}}
-\index{this\mbox{[}\-I\-Battleship\-Controller i\mbox{]}@{this[I\-Battleship\-Controller i]}!MBC::Core::Field@{M\-B\-C\-::\-Core\-::\-Field}}
-\subsubsection[{this[I\-Battleship\-Controller i]}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Controller\-Info} M\-B\-C.\-Core.\-Field.\-this\mbox{[}{\bf I\-Battleship\-Controller} i\mbox{]}\hspace{0.3cm}{\ttfamily [get]}}}\label{class_m_b_c_1_1_core_1_1_field_a68bea4ce761a6ddca725e952213a9949}
+\hypertarget{class_m_b_c_1_1_core_1_1_field_a83df6dda4d27fbd795656ded76db38c9}{\index{M\-B\-C\-::\-Core\-::\-Field@{M\-B\-C\-::\-Core\-::\-Field}!this\mbox{[}int i\mbox{]}@{this[int i]}}
+\index{this\mbox{[}int i\mbox{]}@{this[int i]}!MBC::Core::Field@{M\-B\-C\-::\-Core\-::\-Field}}
+\subsubsection[{this[int i]}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Controller\-Info} M\-B\-C.\-Core.\-Field.\-this\mbox{[}int i\mbox{]}\hspace{0.3cm}{\ttfamily [get]}}}\label{class_m_b_c_1_1_core_1_1_field_a83df6dda4d27fbd795656ded76db38c9}
 \begin{DoxyReturn}{Returns}
-The opponent information for the field from the opponent
+The Conroller\-Info object at the specified index.
 \end{DoxyReturn}
 
 

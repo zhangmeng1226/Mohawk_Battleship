@@ -1,6 +1,6 @@
 var class_m_b_c_1_1_core_1_1_controller =
 [
-    [ "Controller", "class_m_b_c_1_1_core_1_1_controller.html#ada907b30a847119b01f0d52fa6b05633", null ],
+    [ "Controller", "class_m_b_c_1_1_core_1_1_controller.html#a22b24fb98efeba6e1bc7919a21428882", null ],
     [ "GameLost", "class_m_b_c_1_1_core_1_1_controller.html#afe80359151442aaa5c45dc517bd3e8b2", null ],
     [ "GameWon", "class_m_b_c_1_1_core_1_1_controller.html#a48997aafea2900e29f042c71a2131522", null ],
     [ "GetFieldInfo", "class_m_b_c_1_1_core_1_1_controller.html#af6f8a1a759c38557608ab0faebf49424", null ],
@@ -18,6 +18,10 @@ var class_m_b_c_1_1_core_1_1_controller =
     [ "ShotHit", "class_m_b_c_1_1_core_1_1_controller.html#aa102974b8aeaed8b05a9a9c51793b9d8", null ],
     [ "ShotMiss", "class_m_b_c_1_1_core_1_1_controller.html#a5b6b33ce7d17c2002fe30f89eb22b644", null ],
     [ "ToString", "class_m_b_c_1_1_core_1_1_controller.html#a75fb8c7721eafa5a0d041d15218fcef6", null ],
+    [ "Blue", "class_m_b_c_1_1_core_1_1_controller.html#a0481b13142297921fd0965024dc2d7ab", null ],
     [ "ibc", "class_m_b_c_1_1_core_1_1_controller.html#ab56cab183d1d2e91940839b3556a7cf3", null ],
-    [ "LOSE_MAGIC_NUMBER", "class_m_b_c_1_1_core_1_1_controller.html#a65073a7fa3a6f434a7c6b24c3d8ab59a", null ]
+    [ "MagicNumberLose", "class_m_b_c_1_1_core_1_1_controller.html#a29351ae676e8ce5304b2e1ec66e7e22f", null ],
+    [ "None", "class_m_b_c_1_1_core_1_1_controller.html#ab10b5467602d56dc80aeb35e5e66db5d", null ],
+    [ "Red", "class_m_b_c_1_1_core_1_1_controller.html#a33fde9e88903944490e2630d1d74c76c", null ],
+    [ "FieldIDX", "class_m_b_c_1_1_core_1_1_controller.html#a226d1c9b6006d0f3489669fdc6eaf381", null ]
 ];

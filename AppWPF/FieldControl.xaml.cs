@@ -201,11 +201,12 @@ namespace MBC.App.WPF
         /**
          * <summary>Sets the Field this FieldControl will present.</summary>
          * <param name="field">The Field object to display.</param>
+         * <seealso cref="Field.cs"/>
          */
         public void SetField(Field field)
         {
             battlefield = field;
-            fieldLabel.Content = Util.ControllerToString(field, controller);
+            fieldLabel.Content = Utility.ControllerToString(field, controller);
             MakeGrid(field.gameSize.Width, field.gameSize.Height);
             CreateShips();
             LayShips();

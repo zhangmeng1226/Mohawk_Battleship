@@ -328,6 +328,7 @@
                 bc.MatchOver();
             if (MatchEndEvent != null)
                 MatchEndEvent();
+            isRunning = false;
         }
 
         /**

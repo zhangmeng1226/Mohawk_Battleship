@@ -49,22 +49,22 @@ namespace MBC.App.Terminal.Modules
 
         protected override void Display()
         {
-            Util.SetConsoleForegroundColor("White");
+            Utility.SetConsoleForegroundColor("White");
             WriteCenteredText("=====COMPETITION SETTINGS=====");
             NewLine();
 
-            Util.SetConsoleForegroundColor("Red");
+            Utility.SetConsoleForegroundColor("Red");
             WriteText(controllers[Controller.Red].Name);
 
-            Util.SetConsoleForegroundColor("Green");
+            Utility.SetConsoleForegroundColor("Green");
             WriteCenteredText("VS.");
 
-            Util.SetConsoleForegroundColor("Blue");
+            Utility.SetConsoleForegroundColor("Blue");
             AlignToCoord(Width - controllers[Controller.Blue].Name.Length - 1, CurrentY);
             WriteText(controllers[Controller.Blue].Name);
             NewLine();
 
-            Util.SetConsoleForegroundColor("White");
+            Utility.SetConsoleForegroundColor("White");
             WriteCenteredText("Review the available settings for this matchup.");
             NewLine(2);
             layout.Display();

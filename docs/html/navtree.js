@@ -3,7 +3,11 @@ var NAVTREE =
   [ "Mohawk Battleship", "index.html", [
     [ "Mohawk_Battleship", "md__r_e_a_d_m_e.html", null ],
     [ "Packages", null, [
-      [ "Packages", "namespaces.html", "namespaces" ]
+      [ "Packages", "namespaces.html", "namespaces" ],
+      [ "Package Functions", "namespacemembers.html", [
+        [ "All", "namespacemembers.html", null ],
+        [ "Enumerations", "namespacemembers_enum.html", null ]
+      ] ]
     ] ],
     [ "Classes", null, [
       [ "Class List", "annotated.html", "annotated" ],
@@ -12,6 +16,7 @@ var NAVTREE =
       [ "Class Members", "functions.html", [
         [ "All", "functions.html", null ],
         [ "Functions", "functions_func.html", null ],
+        [ "Enumerations", "functions_enum.html", null ],
         [ "Properties", "functions_prop.html", null ]
       ] ]
     ] ]
@@ -21,7 +26,7 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"namespace_m_b_c_1_1_app.html"
+"class_m_b_c_1_1_core_1_1_field_1_1_controller_info.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

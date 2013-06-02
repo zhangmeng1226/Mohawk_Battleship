@@ -47,7 +47,7 @@ namespace MBC.Core
 
         static Configuration()
         {
-            configsPath = Util.WorkingDirectory() + "configs\\";
+            configsPath = Utility.WorkingDirectory() + "configs\\";
             defaultInstance = new Configuration("default");
             globalInstance = new Configuration("config");
             if (!Directory.Exists(configsPath))
@@ -75,7 +75,7 @@ namespace MBC.Core
          */
         public static List<string> GetAvailableConfigs()
         {
-            string[] absFiles = Directory.GetFiles(Util.WorkingDirectory() + "configs", "*.ini");
+            string[] absFiles = Directory.GetFiles(Utility.WorkingDirectory() + "configs", "*.ini");
             List<string> res = new List<string>();
             foreach (string f in absFiles)
             {
@@ -178,11 +178,11 @@ namespace MBC.Core
             }
             catch (IOException)
             {
-                Util.PrintDebugMessage("Could not load the configuration file " + configName + ". Default values will be used.");
+                Utility.PrintDebugMessage("Could not load the configuration file " + configName + ". Default values will be used.");
             }
             catch
             {
-                Util.PrintDebugMessage("There was an error while parsing the configuration file on line "+eLine);
+                Utility.PrintDebugMessage("There was an error while parsing the configuration file on line "+eLine);
             }
         }
 
@@ -202,7 +202,7 @@ namespace MBC.Core
             }
             catch
             {
-                Util.PrintDebugMessage("Could not open the configuration file for writing.");
+                Utility.PrintDebugMessage("Could not open the configuration file for writing.");
             }
         }
     }

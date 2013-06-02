@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['writecenteredtext',['WriteCenteredText',['../class_m_b_c_1_1_app_1_1_terminal_1_1_terminal_module.html#a7ea2da056ffca96e99d3aeb357e1ef79',1,'MBC::App::Terminal::TerminalModule']]],
-  ['writecharrepeat',['WriteCharRepeat',['../class_m_b_c_1_1_app_1_1_terminal_1_1_terminal_module.html#a274184a9bc3b3c171db5dd530a3e19fc',1,'MBC::App::Terminal::TerminalModule']]],
-  ['writechars',['WriteChars',['../class_m_b_c_1_1_app_1_1_terminal_1_1_terminal_module.html#a035316d3e8c803a7f0f5c2ffe332fab3',1,'MBC::App::Terminal::TerminalModule']]],
-  ['writetext',['WriteText',['../class_m_b_c_1_1_app_1_1_terminal_1_1_terminal_module.html#a7b87bd371c50dc319dff8f131ad6b46a',1,'MBC::App::Terminal::TerminalModule']]]
+  ['writecenteredtext',['WriteCenteredText',['../class_m_b_c_1_1_app_1_1_terminal_1_1_modules_1_1_terminal_module.html#af9048522abedbd185a69116444c80153',1,'MBC::App::Terminal::Modules::TerminalModule']]],
+  ['writecharrepeat',['WriteCharRepeat',['../class_m_b_c_1_1_app_1_1_terminal_1_1_modules_1_1_terminal_module.html#af52c41b856332c0d9582d1ad5900031d',1,'MBC::App::Terminal::Modules::TerminalModule']]],
+  ['writechars',['WriteChars',['../class_m_b_c_1_1_app_1_1_terminal_1_1_modules_1_1_terminal_module.html#a4becd393439906b79963c6dbdb717ad3',1,'MBC::App::Terminal::Modules::TerminalModule']]],
+  ['writetext',['WriteText',['../class_m_b_c_1_1_app_1_1_terminal_1_1_modules_1_1_terminal_module.html#a5fc12ebe62c47d14221d73ed83f048cb',1,'MBC::App::Terminal::Modules::TerminalModule']]]
 ];

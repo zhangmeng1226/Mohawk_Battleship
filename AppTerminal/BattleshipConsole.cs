@@ -65,8 +65,8 @@ namespace MBC.App.Terminal
          */
         private static void WriteGridLines()
         {
-            Util.StoreConsoleColors();
-            Util.SetConsoleBackgroundColor(Configuration.Global.GetValue<string>("term_color_grid"));
+            Utility.StoreConsoleColors();
+            Utility.SetConsoleBackgroundColor(Configuration.Global.GetValue<string>("term_color_grid"));
             char[] c;
             for (int i = 0; i <= modRows; i++)
             {
@@ -87,7 +87,7 @@ namespace MBC.App.Terminal
             }
 
             //Writing the selected border
-            Util.SetConsoleBackgroundColor(Configuration.Global.GetValue<string>("term_color_selected"));
+            Utility.SetConsoleBackgroundColor(Configuration.Global.GetValue<string>("term_color_selected"));
             c = new char[width / modCols];
             for (int i = 0; i < c.Length; i++)
                 c[i] = ' ';
@@ -112,7 +112,7 @@ namespace MBC.App.Terminal
                     Console.Write(' ');
                 }
             }
-            Util.RestoreConsoleColors();
+            Utility.RestoreConsoleColors();
         }
 
         /**
@@ -205,7 +205,7 @@ namespace MBC.App.Terminal
                 if (arrow)
                 {
                     if (cki.Modifiers.HasFlag(ConsoleModifiers.Shift))
-                        Util.ListSwap<TerminalModule>(runningMods, lastSel, selectedMod);
+                        Utility.ListSwap<TerminalModule>(runningMods, lastSel, selectedMod);
                     RecalculateBounds();
                     WriteGridLines();
                     return true;
@@ -263,10 +263,10 @@ namespace MBC.App.Terminal
          */
         private static void UpdateInputLineDisplay(bool complete)
         {
-            Util.StoreConsoleColors();
+            Utility.StoreConsoleColors();
             if (complete)
             {
-                Util.SetConsoleForegroundColor(Configuration.Global.GetValue<string>("term_color_input_display"));
+                Utility.SetConsoleForegroundColor(Configuration.Global.GetValue<string>("term_color_input_display"));
                 Console.SetCursorPosition(0, height - 2);
                 Console.Write("[Input]:> ");
             }
@@ -274,16 +274,16 @@ namespace MBC.App.Terminal
             {
                 Console.SetCursorPosition(10, height - 2);
             }
-            Util.SetConsoleForegroundColor(Configuration.Global.GetValue<string>("term_color_input_text"));
+            Utility.SetConsoleForegroundColor(Configuration.Global.GetValue<string>("term_color_input_text"));
             Console.Write(new String(' ', width - 10));
             Console.SetCursorPosition(10, height - 2);
             Console.Write(inputLine);
-            Util.RestoreConsoleColors();
+            Utility.RestoreConsoleColors();
         }
 
         static void Main(string[] args)
         {
-            Util.LoadConfigurationDefaults();
+            Utility.LoadConfigurationDefaults();
             Console.Title = "Mohawk Battleship Competition";
             Console.Clear();
 

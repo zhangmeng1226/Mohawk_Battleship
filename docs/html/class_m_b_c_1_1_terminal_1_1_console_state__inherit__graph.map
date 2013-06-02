@@ -1,5 +1,0 @@
-<map id="MBC.Terminal.ConsoleState" name="MBC.Terminal.ConsoleState">
-<area shape="rect" id="node2" href="$class_m_b_c_1_1_terminal_1_1_competition_state.html" title="MBC.Terminal.Competition\lState" alt="" coords="5,81,181,122"/>
-<area shape="rect" id="node3" href="$class_m_b_c_1_1_terminal_1_1_result_state.html" title="MBC.Terminal.ResultState" alt="" coords="207,88,383,115"/>
-<area shape="rect" id="node4" href="$class_m_b_c_1_1_terminal_1_1_selector_state.html" title="MBC.Terminal.SelectorState" alt="" coords="407,88,593,115"/>
-</map>

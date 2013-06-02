@@ -267,7 +267,7 @@ namespace MBC.Core
          */
         public override string ToString()
         {
-            return Util.ControllerToString(ibc);
+            return Utility.ControllerToString(ibc);
         }
 
     }

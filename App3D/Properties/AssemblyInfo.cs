@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("MBC 3D")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("App3D")]
+[assembly: AssemblyProduct("App3D")]
 [assembly: AssemblyConfiguration("")]
+[assembly: AssemblyDescription("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("MBC 3D")]
 [assembly: AssemblyCopyright("Copyright ©  2013")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("30b0cdc3-9c51-4f71-a749-242429bdb239")]
+[assembly: Guid("e54f9efd-5ffb-406a-aa67-3973481844da")]
 
 // Version information for an assembly consists of the following four values:
 //

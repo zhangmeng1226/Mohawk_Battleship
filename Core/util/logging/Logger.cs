@@ -30,7 +30,7 @@ namespace MBC.Core.util
             oStreams = new List<StreamWriter>();
             mainStream = new MemoryStream();
             StreamWriter mainWriter = new StreamWriter(mainStream);
-            fileStream = new FileStream(Util.WorkingDirectory() + Configuration.Global.GetValue<string>("logger_directory"), FileMode.OpenOrCreate);
+            fileStream = new FileStream(Utility.WorkingDirectory() + Configuration.Global.GetValue<string>("logger_directory"), FileMode.OpenOrCreate);
 
             logReader = new Log(new StreamReader(mainStream));
 

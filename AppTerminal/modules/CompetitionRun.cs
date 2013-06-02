@@ -39,11 +39,11 @@ namespace MBC.App.Terminal.Modules
         {
             lock (this)
             {
-                Util.StoreConsoleColors();
+                Utility.StoreConsoleColors();
                 turns++;
-                Util.SetConsoleForegroundColor("Red");
+                Utility.SetConsoleForegroundColor("Red");
                 WriteCenteredText(turns + " turns made this round.");
-                Util.RestoreConsoleColors();
+                Utility.RestoreConsoleColors();
             }
         }
 
@@ -63,7 +63,7 @@ namespace MBC.App.Terminal.Modules
                     BattleshipConsole.UpdateDisplay();
                     return;
                 }
-                Util.SetConsoleForegroundColor("White");
+                Utility.SetConsoleForegroundColor("White");
                 WriteCenteredText("=====COMPETITION IN PROGRESS=====");
                 NewLine(2);
 
@@ -76,7 +76,7 @@ namespace MBC.App.Terminal.Modules
                 NewLine();
                 WriteCenteredText(roundsRun + " rounds out of " + totalRounds);
                 NewLine(2);
-                Util.SetConsoleForegroundColor("Red");
+                Utility.SetConsoleForegroundColor("Red");
                 WriteCenteredText(turns + " turns made this round.");
             }
         }
