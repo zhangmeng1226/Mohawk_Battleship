@@ -1,0 +1,243 @@
+﻿<Window x:Class="MBC.App.WPF.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:battlefield="clr-namespace:MBC.App.WPF"
+        Title="MainWindow" Height="550" Width="800">
+    <Window.Resources>
+        <ResourceDictionary>
+            <BooleanToVisibilityConverter x:Key="btvconvert" />
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="ResourceDictionary.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    <Window.Background>
+        <ImageBrush ImageSource="/mbcwpf;component/media/images/dark-metal-texture.jpg" Stretch="UniformToFill" />
+    </Window.Background>
+    <DockPanel LastChildFill="True">
+        <Grid Height="120" Margin="0" DockPanel.Dock="Top">
+            <Grid.Background>
+                <ImageBrush ImageSource="/mbcwpf;component/media/images/Mainbar.png" Stretch="UniformToFill" TileMode="None" AlignmentX="Left"/>
+            </Grid.Background>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="150" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Border Grid.Row="0" Grid.Column="0" Style="{StaticResource borderTopStyle}" Margin="0" Padding="0" />
+                <Border Grid.Row="1" Grid.Column="0" Style="{StaticResource borderTopStyle}" Margin="0" Padding="0" />
+                <Border Grid.Row="0" Grid.Column="1" Style="{StaticResource borderTopStyle}" Margin="0" Padding="0" />
+                <Border Grid.Row="1" Grid.Column="1" Style="{StaticResource borderTopStyle}" Margin="0" Padding="0" />
+                <Border Grid.Row="0" Grid.Column="2" Style="{StaticResource borderTopStyle}" Margin="0" Padding="0" />
+                <Border Grid.Row="1" Grid.Column="2" Style="{StaticResource borderTopStyle}" Margin="0" Padding="0" />
+                <Border Grid.Row="0" Grid.Column="3" Style="{StaticResource borderTopStyle}" Margin="0" Padding="0" />
+                <Border Grid.Row="1" Grid.Column="3" Style="{StaticResource borderTopStyle}" Margin="0" Padding="0" />
+                <Label Grid.Row="0" Grid.Column="0" Content="Controllers" Style="{StaticResource defaultLabelTitle}"/>
+                <Grid Grid.Row="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="120" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <Label HorizontalAlignment="Center" Grid.Row="0" Grid.Column="0" Content="Select" Style="{StaticResource defaultLabel}"/>
+                    <Label HorizontalAlignment="Center" Grid.Row="0" Grid.Column="1" Content="Bot Name" Style="{StaticResource defaultLabel}"/>
+                    <Label HorizontalAlignment="Center" Grid.Row="0" Grid.Column="2" Content="Score" Style="{StaticResource defaultLabel}"/>
+                    <Button Name="btnRedSelect" Width="30" Grid.Row="1" Grid.Column="0" Content="R" Style="{StaticResource redButton}" Click="btnRedSelect_Click" />
+                    <Label Grid.Row="1" Grid.Column="1" Content="None selected!" Style="{StaticResource defaultLabel}"/>
+                    <Label HorizontalAlignment="Right" Grid.Row="1" Grid.Column="2" Content="0" Style="{StaticResource defaultLabel}" />
+                    <Button Name="btnBlueSelect" Width="30" Grid.Row="2" Grid.Column="0" Content="B" Style="{StaticResource blueButton}" Click="btnBlueSelect_Click" />
+                    <Label Grid.Row="2" Grid.Column="1" Content="None selected!" Style="{StaticResource defaultLabel}"/>
+                    <Label HorizontalAlignment="Right" Grid.Row="2" Grid.Column="2" Content="0" Style="{StaticResource defaultLabel}" />
+                    <Button Name="btnScoreReset" Grid.Row="3" Grid.Column="1" Content="Reset Scores" Style="{StaticResource defaultButton}" Click="btnScoreReset_Click" />
+                </Grid>
+                <Label Grid.Column="1" Grid.Row="0" Content="Benchmark" Style="{StaticResource defaultLabelTitle}" />
+                <StackPanel Grid.Row="1" Grid.Column="1">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Label VerticalAlignment="Center" Grid.Column="0" Grid.Row="0" Content="Rounds" Style="{StaticResource defaultLabel}" />
+                        <Grid Grid.Row="0" Grid.Column="1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="3*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+                            <TextBox x:Name="txtNumOfRounds" Width="50" Text="0" Grid.Row="0" Grid.Column="0"
+                                     Grid.RowSpan="2" VerticalContentAlignment="Center"/>
+                            <Button x:Name="btnRndsUp" Content="˄" Height="11" Width="20" Style="{StaticResource numericButton}"
+                                    Grid.Row="0" Grid.Column="1" Click="btnRndsUp_Click" />
+                            <Button x:Name="btnRndsDown"  Content="˅" Height="11" Width="20" Style="{StaticResource numericButton}"
+                                    Grid.Row="1" Grid.Column="1" Click="btnRndsDown_Click" />
+                        </Grid>
+                    </Grid>
+                    <CheckBox Name="chkPlayOut" Content="Play out rounds" Style="{StaticResource defaultCheckbox}" Margin="5"/>
+                    <Button Name="btnRndBegin" Content="Begin" Style="{StaticResource defaultButton}" Click="btnRndBegin_Click" />
+                </StackPanel>
+                <Label Grid.Column="2" Content="Round Control" Style="{StaticResource defaultLabelTitle}" />
+                <StackPanel Grid.Row="1" Grid.Column="2">
+                    <Button Name="btnNewRound" Margin="20" Width="80" Content="New Round" Style="{StaticResource defaultButton}" Click="btnNewRound_Click" />
+                    <Button Name="btnRoundShoot" Margin="0" Width="80" Content="Shoot" Style="{StaticResource defaultButton}" Click="btnRoundShoot_Click" />
+                </StackPanel>
+                <Label Grid.Column="4" Content="Views" Style="{StaticResource defaultLabelTitle}" />
+                <StackPanel Grid.Row="1" Grid.Column="4">
+                    <CheckBox Name="consBasicCheck" Content="Match Queue" Margin="5,20,5,0" Style="{StaticResource defaultCheckbox}" Click="consBasicCheck_Click"/>
+                    <CheckBox Name="consAdvCheck" Content="Advanced" Margin="5,20,5,0" Style="{StaticResource defaultCheckbox}" Click="consAdvCheck_Click"/>
+                </StackPanel>
+            </Grid>
+        </Grid>
+        <Border Name="advTabs" DockPanel.Dock="Bottom" Visibility="Visible" Height="180" Background="Black">
+            <TabControl>
+                <TabItem Header="Round Log">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <ListView Grid.Column="0" ItemsSource="{Binding roundActLogEntries}">
+                            <ListView.View>
+                                <GridView ColumnHeaderTemplate="{StaticResource defaultGridViewHeader}">
+                                    <GridViewColumn Width="20" Header="#" 
+                                                    DisplayMemberBinding="{Binding Number}"/>
+                                    <GridViewColumn Width="80" Header="Action" 
+                                                    DisplayMemberBinding="{Binding Action}"/>
+                                    <GridViewColumn Width="80" Header="Controller" 
+                                                    DisplayMemberBinding="{Binding ControllerName}"/>
+                                    <GridViewColumn Width="150" Header="Message" 
+                                                    DisplayMemberBinding="{Binding Message}"/>
+                                    <GridViewColumn Width="60" Header="Time" 
+                                                    DisplayMemberBinding="{Binding Time}"/>
+                                    <GridViewColumn Width="Auto" Header="Accolades">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <ContentControl Content="{Binding Accolades}" />
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+                        <Grid Grid.Column="1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+                            <Label Content="Round Log" Grid.ColumnSpan="3" Grid.Column="0" Grid.Row="0"
+                                   Style="{StaticResource defaultLabelTitle}"/>
+                            <StackPanel Grid.Column="0" Grid.Row="1">
+                                <Button Name="BtnBenchmarkLoad" Margin="5" Style="{StaticResource defaultButton}" Content="Load Benchmark..." Click="BtnBenchmarkLoad_Click" />
+                                <Button Name="BtnBenchmarkSave" Margin="5" Style="{StaticResource defaultButton}" Content="Save Benchmark..." Click="BtnBenchmarkSave_Click" />
+                                <Button Name="BtnRoundLoad" Margin="5" Style="{StaticResource defaultButton}" Content="Load Round..." Click="BtnRoundLoad_Click" />
+                            </StackPanel>
+                            <ListView Name="lstRoundLog" Grid.Column="1" Grid.Row="1" ItemsSource="{Binding roundLogEntries}">
+                                <ListView.View>
+                                    <GridView ColumnHeaderTemplate="{StaticResource defaultGridViewHeader}">
+                                        <GridViewColumn Header="#" Width="30" DisplayMemberBinding="{Binding Number}"/>
+                                        <GridViewColumn Header="Victor" Width="90" DisplayMemberBinding="{Binding Victor}"/>
+                                    </GridView>
+                                </ListView.View>
+                            </ListView>
+                        </Grid>
+                    </Grid>
+                </TabItem>
+                <TabItem Header="Statistics">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                    </Grid>
+                </TabItem>
+                <TabItem Header="Configuration">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="5">
+                        <StackPanel Margin="5" VerticalAlignment="Center">
+                            <Button Name="BtnAddConfigEntry" Margin="5" Style="{StaticResource defaultButton}" Content="Add entry" Click="BtnAddConfigEntry_Click" />
+                            <Button Name="BtnRemConfigEntry" Margin="5" Style="{StaticResource defaultButton}" Content="Remove entry" Click="BtnRemConfigEntry_Click" />
+                            <Button Name="BtnEntryDefault" Margin="5" Style="{StaticResource defaultButton}" Content="Set entry to default" Click="BtnEntryDefault_Click" />
+                        </StackPanel>
+                        <ListView Name="lstConfigValues" Width="250">
+                            <ListView.View>
+                                <GridView ColumnHeaderTemplate="{StaticResource defaultGridViewHeader}">
+                                    <GridViewColumn Header="Key" Width="120"/>
+                                    <GridViewColumn Header="Value" Width="130"/>
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+                        <StackPanel Margin="5,0,5,0" VerticalAlignment="Center">
+                            <Button Name="BtnResetConfig" Margin="5" Style="{StaticResource defaultButton}" Content="Reset to default" Click="BtnResetConfig_Click" />
+                            <Button Name="BtnSaveConfig" Margin="5" Style="{StaticResource defaultButton}" Content="Save config..." Click="BtnSaveConfig_Click" />
+                            <Button Name="BtnLoadConfig" Margin="5" Style="{StaticResource defaultButton}" Content="Load config..." Click="BtnLoadConfig_Click" />
+                        </StackPanel>
+                        
+                        <!-- Saved or preset configurations are to be listed in this ListView -->
+                        <ListView Name="lstConfigurations" Width="150">
+                            
+                        </ListView>
+                    </StackPanel>
+                </TabItem>
+                <TabItem Header="Bot Terminal" HorizontalAlignment="Left" Width="75" />
+                <TabItem Header="Logs" />
+            </TabControl>
+        </Border>
+        <Grid SizeChanged="Grid_SizeChanged" Name="fieldsContainer">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="4*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="4*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <battlefield:FieldControl x:Name="redField" Grid.Column="0" battlefield:FieldControl.ControllerColor="Red"/>
+            <battlefield:FieldControl x:Name="blueField" DockPanel.Dock="Right" Grid.Column="2" battlefield:FieldControl.ControllerColor="Blue"/>
+            <Border Name="centerConsoleBorder" BorderBrush="{StaticResource borderConsoleBrush}" BorderThickness="2" Grid.Column="1" Visibility="Visible" CornerRadius="10">
+                <Grid Name="centerConsole" Background="{StaticResource BlackTopBrush}" Width="175" >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                </Grid>
+            </Border>
+        </Grid>
+    </DockPanel>
+</Window>
