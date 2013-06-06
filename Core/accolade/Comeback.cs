@@ -5,13 +5,17 @@ using System.Text;
 
 namespace MBC.Core.mbc.accolade
 {
+    /// <summary>
+    /// An AccoladeProcessor that determines if a round has the certain interesting characteristic:
+    /// 
+    ///     A controller that had significantly less ship hits than the opposing controller has brought their
+    ///     number of ship hits back to match or surpass the opposing controller.
+    /// </summary>
     public class Comeback : AccoladeProcessor
     {
-        /**
-         * <summary>Sets default configuration values for keys that relate to this class.
-         * Should be called before using the global Configuration.Default object.</summary>
-         * <seealso cref="Configuration.cs"/>
-         */
+        /// <summary>Sets default configuration values for keys that relate to this class.
+        /// Should be called before using the global Configuration.Default object.</summary>
+        /// <seealso cref="Configuration"/>
         public static void SetConfigDefaults()
         {
             Configuration.Default.SetValue<int>("accolade_comeback_diff", 8);
@@ -27,6 +31,11 @@ namespace MBC.Core.mbc.accolade
             last = op;
         }
 
+        /// <summary>
+        ///  Processes a RoundActivity to determine a certain round characteristic.
+        /// </summary>
+        /// <param name="a">The Activity generated for a round.</param>
+        /// <returns>A RoundAccolade that describes the characteristic earned at the moment.</returns>
         public RoundLog.RoundAccolade Process(RoundLog.RoundActivity a)
         {
             if (a.action != RoundLog.RoundAction.ShotAndHit)

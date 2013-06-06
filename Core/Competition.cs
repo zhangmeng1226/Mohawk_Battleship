@@ -7,38 +7,40 @@
     using System.Linq;
     using System.Threading;
 
-    /**
-     * <summary>A Competition object contains game logic for a game of battleship.
-     * 
-     * A competition has 3 events that are called internally during game play:
-     * 
-     *      RoundTurnEndEvent - Called when a controller has ended their turn.
-     *      RoundEndEvent - Called when a round has ended.
-     *      MatchEndEvent - Called when a matchup has ended (from any methods invoking RunRounds)
-     *      
-     * The competition can be run either in the same thread as the calling method (RunCompetition()), or
-     * in a different thread (RunCompetitionThread()), which can be stopped at any time (StopCompetitionThread()).
-     * By using one of these methods, the Competition object will use the Configuration object that it has
-     * been constructed with to determine the number of rounds to play. Using RunRounds(int, bool) will run
-     * a custom number of rounds in the same thread, but use of this method is not recommended.
-     * 
-     * The competition can be run in a turn-by-turn manner by utilizing three methods:
-     * 
-     *      NewRound() - Starts a new round in the competition. Finishes any ongoing round.
-     *      RoundTurn() - Run a turn in the round.
-     *      RoundRun() - Run through remaining turns in the round.
-     *      
-     * When constructing a new Competition, keep in mind that the order of the array of IBattleshipControllers
-     * does not change, even in the Field object that is generated.
-     * </summary>
-     */
+    /// <summary>A Competition object contains game logic for a game of battleship.
+    /// 
+    /// A competition has 3 events that are called internally during game play. Add methods to be invoked to these
+    /// events as needed.
+    /// 
+    /// <list type="bullet">
+    ///      <item>RoundTurnEndEvent - Called when a controller has ended their turn.</item>
+    ///      <item>RoundEndEvent - Called when a round has ended.</item>
+    ///      <item>MatchEndEvent - Called when a matchup has ended (from any methods invoking RunRounds)</item>
+    /// </list>
+    ///      
+    /// The competition can be run either in the same thread as the calling method (RunCompetition()), or
+    /// in a different thread (RunCompetitionThread()), which can be stopped at any time (StopCompetitionThread()).
+    /// By using one of these methods, the Competition object will use the Configuration object that it has
+    /// been constructed with to determine the number of rounds to play. Using RunRounds(int, bool) will run
+    /// a custom number of rounds in the same thread, but use of this method is not recommended.
+    /// 
+    /// The competition can be run in a turn-by-turn manner by utilizing three methods:
+    /// 
+    /// <list type="bullet">
+    ///      <item>NewRound() - Starts a new round in the competition. Finishes any ongoing round.</item>
+    ///      <item>RoundTurn() - Run a turn in the round.</item>
+    ///      <item>RoundRun() - Run through remaining turns in the round.</item>
+    /// </list>
+    ///      
+    /// When constructing a new Competition, keep in mind that the order of the array of IBattleshipControllers
+    /// does not change, even in the Field object that is generated.
+    /// </summary>
     public class Competition
     {
-        /**
-         * <summary>Sets default configuration values for keys that relate to this class.
-         * Should be called before using the global Configuration.Default object.</summary>
-         * <seealso cref="Configuration"/>
-         */
+        
+        /// <summary>Sets default configuration values for keys that relate to this class.
+        /// Should be called before using the global Configuration.Default object.</summary>
+        /// <seealso cref="Configuration"/>
         public static void SetConfigDefaults()
         {
             Configuration.Default.SetValue<int>("mbc_random_seed", Environment.TickCount);
@@ -60,35 +62,61 @@
 
         private Controller turn;            //The current opponent's turn
 
+        /// <summary>
+        /// Notification of a controller ending their turn.
+        /// </summary>
         public delegate void RndTick();
+
+        /// <summary>
+        /// Fires when a controller has ended their turn.
+        /// </summary>
         public event RndTick RoundTurnEndEvent;
 
+        /// <summary>
+        /// Notification of a round in the competition ending.
+        /// </summary>
         public delegate void RndEnd();
+
+        /// <summary>
+        /// Fires when a round has finished.
+        /// </summary>
         public event RndEnd RoundEndEvent;
 
+        /// <summary>
+        /// Notification of the end of a matchup in the competition.
+        /// </summary>
         public delegate void MatchEnd();
+
+        /// <summary>
+        /// Fires when a matchup in the competition has finished.
+        /// </summary>
         public event MatchEnd MatchEndEvent;
 
-        /**
-         * <summary>Constructs a new BattleshipCompetition object using a BattleshipConfig for configuration.</summary>
-         */
+        
+        /// <summary>Constructs a new Competition object. A Configuration object is to be provided
+        /// to set the behaviour of this Competition.</summary>
+        /// <param name="config">The Configuration to utilize. See SetConfigDefaults()</param>
+        /// <param name="ibc">The controllers to create a matchup with.</param>
         public Competition(IBattleshipController[] ibc, Configuration config)
         {
             init(ibc, config, config.GetValue<int>("mbc_random_seed"));
         }
 
-        /**
-         * <summary>Constructs a new BattleshipCompetition object using a BattleshipConfig for configuration.
-         * Also, a seed value can be specified.</summary>
-         */
+        
+        /// <summary>Constructs a new Competition object. A Configuration object is to be provided
+        /// to set the behaviour of this Competition, and a random seed number must be provided to
+        /// set the internal random number generator.</summary>
+        /// <param name="config">The Configuration to utilize. See SetConfigDefaults()</param>
+        /// <param name="ibc">The controllers to create a matchup with.</param>
+        /// <param name="seedNum">The random seed number to create a desired outcome.</param>
         public Competition(IBattleshipController[] ibc, Configuration config, int seedNum)
         {
             init(ibc, config, seedNum); 
         }
 
-        /**
-         * <summary>Called only by the constructor, does initialization of this class.</summary>
-         */
+        
+        /// <summary>Called only by the constructor, does initialization of this class. See the constructors
+        /// Competition().</summary>
         private void init(IBattleshipController[] ibc, Configuration conf, int seedNum)
         {
             config = conf;
@@ -107,25 +135,26 @@
             compThread = new Thread(RunCompetition);
         }
 
-        /**
-         * <returns>The battlefield associated with this competition</returns>
-         */
+        
+        /// <summary>A Getter method used to get the Field associated with this Competition.</summary>
+        /// <returns>The battlefield associated with this competition</returns>
+        /// <seealso cref="Field"/>
         public Field GetBattlefield()
         {
             return fieldInfo;
         }
 
-        /**
-         * <returns>The number of rounds played, complete or incomplete</returns>
-         */
+        
+        /// <summary>Gets the rounds that are in progress or completed. Useful for invoking GetRoundLogAt().</summary>
+        /// <returns>The number of rounds played, complete or incomplete</returns>
         public int GetRoundCount()
         {
             return roundList.Count;
         }
 
-        /**
-         * <returns>The log for the round #idx</returns>
-         */
+        /// <summary>Gets a RoundLog object associated with a specific round number.</summary>
+        /// <param name="idx">The round number (starting at 0).</param>
+        /// <returns>A RoundLog object</returns>
         public RoundLog GetRoundLogAt(int idx)
         {
             lock(roundList) {
@@ -135,20 +164,17 @@
             }
         }
 
-        /**
-         * <summary>Creates a list of new ships to be placed</summary>
-         * <returns>A list of ships not placed on the board, defined to having a length specified by shipSizes</returns>
-         */
+        /// <summary>Creates a list of new ships to be placed</summary>
+        /// <returns>A list of ships not placed on the board, defined to having a length specified by shipSizes</returns>
         private List<Ship> GenerateNewShips()
         {
             return (from s in fieldInfo.shipSizes
                     select new Ship(s)).ToList();
         }
 
-        /**
-         * <summary>Used to notify both players whether they won or lost.</summary>
-         * <returns>Always returns true</returns>
-         */
+        
+        /// <summary>Used to notify both players whether they won or lost.</summary>
+        /// <returns>Always returns true</returns>
         private bool GameResultPush(Controller winner, Controller loser, string reason)
         {
             winner.GameWon();
@@ -159,9 +185,8 @@
             return true;
         }
 
-        /**
-         * <returns>The opposing BattleshipOpponent relative to 'ibc'</returns>
-         */
+        
+        /// <returns>The opposing BattleshipOpponent relative to 'ibc'</returns>
         private Controller Opponent(Controller ibc)
         {
             foreach (Controller bc in controllers)
@@ -170,10 +195,9 @@
             return null;
         }
 
-        /**
-         * <summary>Notifys each player that a new game is commencing</summary>
-         * <returns>True if the game is over, false if the game is still on-going.</returns>
-         */
+        
+        /// <summary>Notifys each player that a new game is commencing</summary>
+        /// <returns>True if the game is over, false if the game is still on-going.</returns>
         private bool NewGame()
         {
             foreach (Controller bc in controllers)
@@ -182,10 +206,9 @@
             return false;
         }
 
-        /**
-         * <summary>Ship placement mode for the players. Repeats until ships have been placed validly</summary>
-         * <returns>True if the game is over. False if the game is on-going</returns>
-         */
+        
+        /// <summary>Ship placement mode for the players. Repeats until ships have been placed validly</summary>
+        /// <returns>True if the game is over. False if the game is on-going</returns>
         private bool ShipPlacement()
         {
             foreach (Controller bc in controllers)
@@ -200,10 +223,9 @@
             return false;
         }
 
-        /**
-         * <summary>The main game logic of battleship.</summary>
-         * <returns>True if the game is over (the method never returns false)</returns>
-         */
+        
+        /// <summary>The main game logic of battleship.</summary>
+        /// <returns>True if the game is over (the method never returns false)</returns>
         private bool GamePlay()
         {
             Point shot = turn.ShootAt(Opponent(turn));
@@ -237,11 +259,12 @@
             return false;
         }
 
-        /**
-         * <summary>Part of manual round control. Clears the previous round if it exists
-         * and starts a new round</summary>
-         * <returns>True if the round is ongoing, false if it has been won</returns>
-         */
+        
+        /// <summary>Part of manual round control. Clears the previous round if it exists
+        /// and starts a new round</summary>
+        /// <returns>True if the round is ongoing, false if it has been won</returns>
+        /// <seealso cref="RoundTurn()"/>
+        /// <seealso cref="RunRound()"/>
         public bool NewRound()
         {
             lock (roundList)
@@ -259,10 +282,11 @@
             return NewGame() || ShipPlacement();
         }
 
-        /**
-         * <summary>Part of manual round control. Runs a turn</summary>
-         * <returns>True if the round is still ongoing, false if the round is finished</returns>
-         */
+        
+        /// <summary>Part of manual round control. Runs a turn</summary>
+        /// <returns>True if the round is still ongoing, false if the round is finished</returns>
+        /// <seealso cref="RunRound()"/>
+        /// <seealso cref="NewRound()"/>
         public bool RoundTurn()
         {
             bool res = GamePlay();
@@ -274,38 +298,37 @@
             return res;
         }
 
-        /**
-         * <summary>Runs an entire round until an opponent wins</summary>
-         */
+        
+        /// <summary>Runs an entire round until an opponent wins</summary>
+        /// <seealso cref="RoundTurn()"/>
+        /// <seealso cref="NewRound()"/>
         public void RunRound()
         {
             while (!RoundTurn() && isRunning) ;
         }
 
-        /**
-         * <summary>Determines if the number of rounds specified has been reached</summary>
-         * <returns>True if an opponent has reached the number of rounds</returns>
-         */
+        
+        /// <summary>Determines if the number of rounds specified has been reached</summary>
+        /// <returns>True if an opponent has reached the number of rounds</returns>
         private bool RoundsReached(int rnds)
         {
             return controllers[0].GetFieldInfo().score >= rnds || controllers[1].GetFieldInfo().score >= rnds;
         }
 
-        /**
-         * <summary>Returns a dictionary linking the scores to the opponents.</summary>
-         */
+        
+        /// <summary>Returns a dictionary linking the scores to the opponents.</summary>
+        /// <returns>A dictionary linking the scores to the opponents.</returns>
         public Dictionary<IBattleshipController, int> GetScores()
         {
             return controllers.ToDictionary(s => s.ibc, s => s.GetFieldInfo().score);
         }
 
-        /**
-         * <summary>Runs a specified amount of rounds between two opponents.</summary>
-         * <returns>A list of the two opponents with their scores attached.</returns>
-         * <param name="playOut">If the amount of rounds specified is to be played out (ie.
-         * total score between the two opponents) or not (ie. first score to rounds)</param>
-         * <param name="rnds">The amount of rounds to play.</param>
-         */
+        
+        /// <summary>Runs a specified amount of rounds between two opponents.</summary>
+        /// <returns>A list of the two opponents with their scores attached.</returns>
+        /// <param name="playOut">If the amount of rounds specified is to be played out (ie.
+        /// total score between the two opponents) or not (ie. first score to rounds)</param>
+        /// <param name="rnds">The amount of rounds to play.</param>
         public void RunRounds(int rnds, bool playOut)
         {
             isRunning = true;
@@ -332,19 +355,17 @@
             isRunning = false;
         }
 
-        /**
-         * <summary>Runs the match between two opponents.
-         * Bases the amount of rounds to play and how to play them in the configuration.</summary>
-         */
+        
+        /// <summary>Runs the match between two opponents.
+        /// Bases the amount of rounds to play and how to play them in the configuration.</summary>
         public void RunCompetition()
         {
             RunRounds(config.GetValue<int>("mbc_rounds"),
                 config.GetValue<bool>("mbc_playout"));
         }
 
-        /**
-         * <summary>Runs the match between two opponents in a separate thread using the configuration.</summary>
-         */
+        
+        /// <summary>Runs the match between two opponents in a separate thread using the configuration.</summary>
         public void RunCompetitionThread()
         {
             if (isRunning)
@@ -354,9 +375,8 @@
             compThread.Start();
         }
 
-        /**
-         * <summary>Stops rounds from being played anymore.</summary>
-         */
+        
+        /// <summary>Stops rounds from being played anymore.</summary>
         public void StopCompetitionThread()
         {
             isRunning = false;

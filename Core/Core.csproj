@@ -22,6 +22,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>..\bin\mbc_core.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -55,11 +56,7 @@
     <Compile Include="RoundLog.cs" />
     <Compile Include="util\Configuration.cs" />
     <Compile Include="util\ControllerFactory.cs" />
-    <Compile Include="util\logging\Log.cs" />
-    <Compile Include="util\logging\LogMessage.cs" />
     <Compile Include="util\Utility.cs" />
-    <Compile Include="util\logging\Logger.cs" />
-    <Compile Include="util\logging\LoggerManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Controller Plugin\Controller Plugin.csproj">

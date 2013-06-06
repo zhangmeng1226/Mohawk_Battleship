@@ -5,13 +5,16 @@ using System.Text;
 
 namespace MBC.Core.mbc.accolade
 {
+    /// <summary>
+    /// An AccoladeProcessor that determines if a round has the certain interesting characteristic:
+    /// 
+    ///     Both controllers are making ship hits one after another with little difference.
+    /// </summary>
     public class HeadToHead : AccoladeProcessor
     {
-        /**
-         * <summary>Sets default configuration values for keys that relate to this class.
-         * Should be called before using the global Configuration.Default object.</summary>
-         * <seealso cref="Configuration.cs"/>
-         */
+        /// <summary>Sets default configuration values for keys that relate to this class.
+        /// Should be called before using the global Configuration.Default object.</summary>
+        /// <seealso cref="Configuration"/>
         public static void SetConfigDefaults()
         {
             Configuration.Default.SetValue<int>("accolade_h2h_diff", 4);
@@ -27,6 +30,11 @@ namespace MBC.Core.mbc.accolade
             diff = 0;
         }
 
+        /// <summary>
+        ///  Processes a RoundActivity to determine a certain round characteristic.
+        /// </summary>
+        /// <param name="a">The Activity generated for a round.</param>
+        /// <returns>A RoundAccolade that describes the characteristic earned at the moment.</returns>
         public RoundLog.RoundAccolade Process(RoundLog.RoundActivity a)
         {
             if (a.action != RoundLog.RoundAction.ShotAndHit)

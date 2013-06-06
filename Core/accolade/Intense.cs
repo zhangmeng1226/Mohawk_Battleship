@@ -5,13 +5,16 @@ using System.Text;
 
 namespace MBC.Core.mbc.accolade
 {
+    /// <summary>
+    /// An AccoladeProcessor that determines if a round has the certain interesting characteristic:
+    /// 
+    ///     Throughout the round, both controllers have a similar number of ship hits.
+    /// </summary>
     public class Intense : AccoladeProcessor
     {
-        /**
-         * <summary>Sets default configuration values for keys that relate to this class.
-         * Should be called before using the global Configuration.Default object.</summary>
-         * <seealso cref="Configuration.cs"/>
-         */
+        /// <summary>Sets default configuration values for keys that relate to this class.
+        /// Should be called before using the global Configuration.Default object.</summary>
+        /// <seealso cref="Configuration"/>
         public static void SetConfigDefaults()
         {
             Configuration.Default.SetValue<int>("accolade_intense_diff", 4);
@@ -20,6 +23,11 @@ namespace MBC.Core.mbc.accolade
         int[] hits = new int[2];
         int cnt = 0;
 
+        /// <summary>
+        ///  Processes a RoundActivity to determine a certain round characteristic.
+        /// </summary>
+        /// <param name="a">The Activity generated for a round.</param>
+        /// <returns>A RoundAccolade that describes the characteristic earned at the moment.</returns>
         public RoundLog.RoundAccolade Process(RoundLog.RoundActivity a)
         {
             if (a.action != RoundLog.RoundAction.ShotAndHit)

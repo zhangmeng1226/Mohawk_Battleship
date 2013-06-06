@@ -5,13 +5,16 @@ using System.Text;
 
 namespace MBC.Core.mbc.accolade
 {
+    /// <summary>
+    /// An AccoladeProcessor that determines if a round has the certain interesting characteristic:
+    /// 
+    ///     A controller has a significantly larger number of ship hits than the opposing controller.
+    /// </summary>
     public class Domination : AccoladeProcessor
     {
-        /**
-         * <summary>Sets default configuration values for keys that relate to this class.
-         * Should be called before using the global Configuration.Default object.</summary>
-         * <seealso cref="Configuration.cs"/>
-         */
+        /// <summary>Sets default configuration values for keys that relate to this class.
+        /// Should be called before using the global Configuration.Default object.</summary>
+        /// <seealso cref="Configuration"/>
         public static void SetConfigDefaults()
         {
             Configuration.Default.SetValue<int>("accolade_dom_diff", 9);
@@ -19,6 +22,11 @@ namespace MBC.Core.mbc.accolade
         int diff = 0;
         int last = Controller.None;
 
+        /// <summary>
+        ///  Processes a RoundActivity to determine a certain round characteristic.
+        /// </summary>
+        /// <param name="a">The Activity generated for a round.</param>
+        /// <returns>A RoundAccolade that describes the characteristic earned at the moment.</returns>
         public RoundLog.RoundAccolade Process(RoundLog.RoundActivity a)
         {
             if (a.action != RoundLog.RoundAction.ShotAndHit)
