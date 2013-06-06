@@ -57,7 +57,7 @@
     <Compile Include="util\ControllerFactory.cs" />
     <Compile Include="util\logging\Log.cs" />
     <Compile Include="util\logging\LogMessage.cs" />
-    <Compile Include="util\Util.cs" />
+    <Compile Include="util\Utility.cs" />
     <Compile Include="util\logging\Logger.cs" />
     <Compile Include="util\logging\LoggerManager.cs" />
   </ItemGroup>
