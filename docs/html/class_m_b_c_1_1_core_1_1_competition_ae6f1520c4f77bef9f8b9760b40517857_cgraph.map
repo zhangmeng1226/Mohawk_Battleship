@@ -1,4 +1,0 @@
-<map id="MBC.Core.Competition.RunRounds" name="MBC.Core.Competition.RunRounds">
-<area shape="rect" id="node2" href="$class_m_b_c_1_1_core_1_1_controller.html#a880c9ad7cd60528cad4f36da11bfd9bf" title="Notifys the player that they are matched up with a new opponent." alt="" coords="238,5,445,32"/>
-<area shape="rect" id="node3" href="$class_m_b_c_1_1_core_1_1_controller.html#a1beaca8b029cff045923c06b24114653" title="Notifys the player that a matchup is over" alt="" coords="238,56,445,83"/>
-</map>

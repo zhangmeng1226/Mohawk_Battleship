@@ -37,6 +37,7 @@
         /**
          * <summary>Sets default configuration values for keys that relate to this class.
          * Should be called before using the global Configuration.Default object.</summary>
+         * <seealso cref="Configuration"/>
          */
         public static void SetConfigDefaults()
         {
@@ -94,7 +95,7 @@
             fieldInfo = new Field(ibc);
             fieldInfo.fixedRandom = new Random(seedNum);
             fieldInfo.gameSize = new Size(config.GetValue<int>("mbc_field_width"), config.GetValue<int>("mbc_field_height"));
-            fieldInfo.shipSizes = config.GetConfigValueArray<int>("mbc_field_ship_sizes");
+            fieldInfo.shipSizes = config.GetList<int>("mbc_field_ship_sizes");
             fieldInfo.timeoutLimit = new TimeSpan(0, 0, 0, 0, config.GetValue<int>("mbc_timeout"));
 
             roundList = new List<RoundLog>();

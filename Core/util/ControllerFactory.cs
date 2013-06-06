@@ -86,7 +86,7 @@ namespace MBC.Core.util
 
         /**
          * <summary>Opens each .DLL file in the working directory's "bots" folder. Overwrites
-         * existing Controller objects with new ones loaded.</summary>
+         * existing controller objects with new ones loaded.</summary>
          */
         public static void LoadControllerFolder()
         {

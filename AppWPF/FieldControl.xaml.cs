@@ -182,6 +182,7 @@ namespace MBC.App.WPF
          * <summary>Sets the controller that this FieldControl displays through the internally presented Field.</summary>
          * <param name="ibc">The index of the battleship controller in the Field to switch to. Refer to the
          * constants available in the Controller class.</param>
+         * <seealso cref="Field.cs"/>
          */
         public void SetController(int ibc)
         {

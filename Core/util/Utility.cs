@@ -60,6 +60,9 @@ namespace MBC.Core
         }
 
         /**
+         * <summary>Generates a string that identifies a controller by its name and version.</summary>
+         * <param name="c">The class implementing the IBattleshipController interface to get the name and
+         * version from.</param>
          * <returns>A string that contains the name and version of the specified Controller</returns>
          */
         public static string ControllerToString(IBattleshipController c)
@@ -68,7 +71,11 @@ namespace MBC.Core
         }
 
         /**
+         * <summary>Generates a string that identifies a controller by its name and version.</summary>
+         * <param name="field">The field to get the controller from.</param>
+         * <param name="idx>The index within the field to get the name and version of the controller from.</param>
          * <returns>A string that contains the name and version of the specified controller in the given Field object.</returns>
+         * <seealso cref="Field.cs"/>
          */
         public static string ControllerToString(Field field, int idx)
         {

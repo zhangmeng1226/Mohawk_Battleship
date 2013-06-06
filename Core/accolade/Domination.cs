@@ -10,6 +10,7 @@ namespace MBC.Core.mbc.accolade
         /**
          * <summary>Sets default configuration values for keys that relate to this class.
          * Should be called before using the global Configuration.Default object.</summary>
+         * <seealso cref="Configuration.cs"/>
          */
         public static void SetConfigDefaults()
         {

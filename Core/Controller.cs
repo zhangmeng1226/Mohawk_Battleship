@@ -52,6 +52,7 @@ namespace MBC.Core
 
         /**
          * <summary>Gets the ControllerInfo index this object represents in the Field.</summary>
+         * <seealso cref="Field"/>
          */
         public int FieldIDX
         {
@@ -59,7 +60,8 @@ namespace MBC.Core
         }
 
         /**
-         * <returns>The information related to this opponent on the battlefield</returns>
+         * <returns>The information related to this controller on the battlefield</returns>
+         * <seealso cref="Field.ControllerInfo"/>
          */
         public Field.ControllerInfo GetFieldInfo()
         {
@@ -67,7 +69,7 @@ namespace MBC.Core
         }
 
         /**
-         * <returns>The time the last action took for this bot to perform.</returns>
+         * <returns>The time the last action took for this controller to perform.</returns>
          */
         public long GetTimeTaken()
         {
@@ -97,8 +99,8 @@ namespace MBC.Core
         }
 
         /**
-         * <summary>Notifys the player that they are matched up with a new opponent.</summary>
-         * <param name="opponent">The name of the opponent as a string</param>
+         * <summary>Notifys the controller that they are matched up with a new opponent.</summary>
+         * <param name="opponent">The name of the controller as a string</param>
          */
         public void NewMatch(string opponent)
         {
@@ -107,7 +109,7 @@ namespace MBC.Core
 
         /**
          * <summary>Determines if the stopwatch time passed the maximum time allowed.</summary>
-         * <returns>True if the player ran out of time. False if they didn't</returns>
+         * <returns>True if the controller ran out of time. False if they didn't</returns>
          */
         public bool RanOutOfTime()
         {
@@ -117,8 +119,8 @@ namespace MBC.Core
         }
 
         /**
-         * <summary>Resets certain data for a new game and notifys the player of the new game being commenced</summary>
-         * <returns>True if the player ran out of time. False if they didn't</returns>
+         * <summary>Resets certain data for a new game and notifys the controller of the new game being commenced</summary>
+         * <returns>True if the controller ran out of time. False if they didn't</returns>
          */
         public bool NewGame()
         {
@@ -133,9 +135,9 @@ namespace MBC.Core
         }
 
         /**
-         * <summary>Notifys the player to make ship placements.</summary>
+         * <summary>Notifys the controller to make ship placements.</summary>
          * <param name="newShips">A list of ships to place</param>
-         * <returns>True if the player ran out of time. False if they didn't</returns>
+         * <returns>True if the controller ran out of time. False if they didn't</returns>
          */
         public bool PlaceShips(List<Ship> newShips)
         {
@@ -158,7 +160,7 @@ namespace MBC.Core
         }
 
         /**
-         * <returns>True if the opponent is still in the match, false if the opponent has lost</returns>
+         * <returns>True if the controller is still in the match, false if the controller has lost</returns>
          */
         public bool IsAlive(List<Point> shots)
         {
@@ -169,10 +171,10 @@ namespace MBC.Core
         }
 
         /**
-         * <summary>Asks for the player's shot. ShootAt will repeatedly request the shot
+         * <summary>Asks for the controller's shot. ShootAt will repeatedly request the shot
          * until it hasn't made the same shot twice.</summary>
-         * <param name="opponent">The BattleshipOpponent to "shoot at"</param>
-         * <returns>The point the player has shot at. If the player ran out of time,
+         * <param name="opponent">The opposing Controller to "shoot at"</param>
+         * <returns>The point the controller has shot at. If the controller ran out of time,
          * a point at (LOSE_MAGIC_NUMBER, LOSE_MAGIC_NUMBER) will be returned instead.</returns>
          */
         public Point ShootAt(Controller opponent)
@@ -197,10 +199,10 @@ namespace MBC.Core
         }
 
         /**
-         * <summary>Notifys the player that a shot has been made by the other opponent at
+         * <summary>Notifys the controller that a shot has been made by the other opponent at
          * a certain Point</summary>
-         * <param name="shot">The point where the other opponent shot</param>
-         * <returns>True if the player ran out of time. False if they didn't</returns>
+         * <param name="shot">The point where the other controller shot</param>
+         * <returns>True if the controller ran out of time. False if they didn't</returns>
          */
         public bool OpponentShot(Point shot)
         {
@@ -211,10 +213,10 @@ namespace MBC.Core
         }
 
         /**
-         * <summary>Notifys the player that their shot hit a ship at the specified point</summary>
-         * <param name="shot">The point at which the players shot hit a ship</param>
+         * <summary>Notifys the controller that their shot hit a ship at the specified point</summary>
+         * <param name="shot">The point at which the controllers shot hit a ship</param>
          * <param name="sunk">If the shot sunk a ship</param>
-         * <returns>True if the player ran out of time. False if they didn't</returns>
+         * <returns>True if the controller ran out of time. False if they didn't</returns>
          */
         public bool ShotHit(Point shot, bool sunk)
         {
@@ -225,9 +227,9 @@ namespace MBC.Core
         }
 
         /**
-         * <summary>Notifys the player that their shot missed at the specified point</summary>
-         * <param name="shot">The point the player shot at but missed</param>
-         * <returns>True if the player ran out of time. False if they didn't</returns>
+         * <summary>Notifys the controller that their shot missed at the specified point</summary>
+         * <param name="shot">The point the controller shot at but missed</param>
+         * <returns>True if the controller ran out of time. False if they didn't</returns>
          */
         public bool ShotMiss(Point shot)
         {
@@ -238,7 +240,7 @@ namespace MBC.Core
         }
 
         /**
-         * <summary>Notifys the player that a game has been won, and increments this player's score.</summary>
+         * <summary>Notifys the controller that a game has been won, and increments this controller's score.</summary>
          */
         public void GameWon()
         {
@@ -247,7 +249,7 @@ namespace MBC.Core
         }
 
         /**
-         * <summary>Notifys the player that a game has been lost</summary>
+         * <summary>Notifys the controller that a game has been lost</summary>
          */
         public void GameLost()
         {
@@ -255,7 +257,7 @@ namespace MBC.Core
         }
 
         /**
-         * <summary>Notifys the player that a matchup is over</summary>
+         * <summary>Notifys the controller that a matchup is over</summary>
          */
         public void MatchOver()
         {
@@ -263,7 +265,7 @@ namespace MBC.Core
         }
 
         /**
-         * <summary>Generates a string containing the name and version of the encapsulated IBattleshipOpponent</summary>
+         * <summary>Generates a string containing the name and version of the encapsulated IBattleshipController</summary>
          */
         public override string ToString()
         {

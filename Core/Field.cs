@@ -54,6 +54,8 @@ namespace MBC.Core
         }
 
         /**
+         * <summary>It is possible to treat this Field object as a sort of array, by providing the
+         * index value in square-brackets on the object itself.</summary>
          * <returns>The ConrollerInfo object at the specified index.</returns>
          */
         public ControllerInfo this[int i]
