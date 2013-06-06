@@ -283,7 +283,8 @@ namespace MBC.App.Terminal
 
         static void Main(string[] args)
         {
-            Utility.LoadConfigurationDefaults();
+            Configuration.LoadConfigurationDefaults();
+            int integer = Configuration.Global.GetValue<int>("term_max_columns");
             Console.Title = "Mohawk Battleship Competition";
             Console.Clear();
 

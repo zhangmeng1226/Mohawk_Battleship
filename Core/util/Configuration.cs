@@ -82,7 +82,7 @@ namespace MBC.Core
      */
     public class Configuration
     {
-        private Dictionary<string, string> simpleConfig;
+        private Dictionary<string, object> simpleConfig;
         private string configName;
 
         private static string configsPath;
@@ -161,9 +161,9 @@ namespace MBC.Core
          */
         public Configuration(string name)
         {
-            simpleConfig = new Dictionary<string, string>();
+            simpleConfig = new Dictionary<string, object>();
             configName = name;
-            if(name != "default")
+            if (name != "default")
                 LoadConfigFile();
         }
 
@@ -182,19 +182,21 @@ namespace MBC.Core
          * <param name="def">The default value for a given key if the key is not found.</param>
          * <returns>The value loaded from the configuration, otherwise, the default value.</returns>
          * <exception cref="KeyNotFoundException">The given key has no value set.</exception>
-         * <exception cref="InvalidCastException">The generic type specified could not be parsed.</exception>
+         * <exception cref="InvalidCastException">The generic type specified was not the type set in the Configuration.</exception>
          */
         public T GetValue<T>(string key)
         {
-            try
+            if (simpleConfig.ContainsKey(key))
             {
-                return (T)Convert.ChangeType(simpleConfig[key], typeof(T));
+                return (T)simpleConfig[key];
             }
-            catch(KeyNotFoundException e)
+            else if (configName != "default")
             {
-                if (configName == "default")
-                    throw e;
-                return defaultInstance.GetValue<T>(key);
+                return Default.GetValue<T>(key);
+            }
+            else
+            {
+                throw new KeyNotFoundException("The following Configuration key was not set: "+key);
             }
         }
 
@@ -207,7 +209,7 @@ namespace MBC.Core
          */
         public void SetValue<T>(string key, T val)
         {
-            simpleConfig[key] = val.ToString();
+            simpleConfig[key] = val;
         }
 
         /**
@@ -264,7 +266,28 @@ namespace MBC.Core
                     string[] tLine = line.Split('=');
                     tLine[0] = tLine[0].Trim();
                     tLine[1] = tLine[1].Trim();
-                    simpleConfig.Add(tLine[0], tLine[1]);
+
+                    int intVal = 0;
+                    double doubVal = 0;
+
+                    if (int.TryParse(tLine[1], out intVal) || double.TryParse(tLine[1], out doubVal))
+                    {
+                        if (intVal == doubVal)
+                        {
+                            //Must be integer (no decimal point)
+                            simpleConfig.Add(tLine[0], intVal);
+                        }
+                        else
+                        {
+                            //Must be double (has decimal point)
+                            simpleConfig.Add(tLine[0], doubVal);
+                        }
+                    }
+                    else
+                    {
+                        //Must be string (not a number)
+                        simpleConfig.Add(tLine[0], tLine[1]);
+                    }
                     eLine++;
                 } while (reader.Peek() != -1);
                 reader.Close();
@@ -275,7 +298,7 @@ namespace MBC.Core
             }
             catch
             {
-                Utility.PrintDebugMessage("There was an error while parsing the configuration file on line "+eLine);
+                Utility.PrintDebugMessage("There was an error while parsing the configuration file on line " + eLine);
             }
         }
 
@@ -288,8 +311,8 @@ namespace MBC.Core
             try
             {
                 StreamWriter writer = new StreamWriter(configsPath + configName + ".ini", false);
-                foreach (KeyValuePair<string, string> entry in simpleConfig)
-                    writer.WriteLine(entry.Key + " = " + entry.Value);
+                foreach (KeyValuePair<string, object> entry in simpleConfig)
+                    writer.WriteLine(entry.Key + " = " + entry.Value.ToString());
                 writer.Flush();
                 writer.Close();
             }
