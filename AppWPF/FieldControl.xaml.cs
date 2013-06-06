@@ -75,8 +75,11 @@ namespace MBC.App.WPF
             for (int i = 0; i < rows; i++)
             {
                 fieldGrid.RowDefinitions.Add(new RowDefinition());
-                if (i == 0) continue;
-                Line l = new Line();
+                if (i == 0)
+                {
+                    continue;
+                }
+                var l = new Line();
                 Grid.SetColumn(l, 0);
                 Grid.SetRow(l, i);
                 Grid.SetColumnSpan(l, cols);
@@ -94,8 +97,11 @@ namespace MBC.App.WPF
             for (int i = 0; i < cols; i++)
             {
                 fieldGrid.ColumnDefinitions.Add(new ColumnDefinition());
-                if (i == 0) continue;
-                Line l = new Line();
+                if (i == 0)
+                {
+                    continue;
+                }
+                var l = new Line();
                 Grid.SetColumn(l, i);
                 Grid.SetRow(l, 0);
                 Grid.SetRowSpan(l, rows);
@@ -122,7 +128,7 @@ namespace MBC.App.WPF
             foreach (int size in battlefield.shipSizes)
             {
                 //All ships are oriented vertically, so rotate them when needed.
-                Rectangle r = new Rectangle
+                var r = new Rectangle
                 {
                     Width = fieldGrid.ActualWidth / fieldGrid.ColumnDefinitions.Count / 1.05,
                     Height = (fieldGrid.ActualHeight / fieldGrid.RowDefinitions.Count / 1.05) * size,
@@ -148,12 +154,15 @@ namespace MBC.App.WPF
         /// </summary>
         private void LayShips()
         {
-            List<Rectangle> used = new List<Rectangle>();
+            var used = new List<Rectangle>();
             foreach (Ship ship in battlefield[controller].ships)
             {
                 foreach (Rectangle rect in ships[ship.Length])
                 {
-                    if (used.Contains(rect)) continue;
+                    if (used.Contains(rect))
+                    {
+                        continue;
+                    }
 
                     rect.LayoutTransform = new RotateTransform(ship.Orientation == ShipOrientation.Horizontal ? 90 : 180, rect.Width / 2, 0);
 
@@ -161,9 +170,13 @@ namespace MBC.App.WPF
                     Grid.SetColumn(rect, ship.Location.X);
                     Grid.SetZIndex(rect, 100);
                     if (ship.Orientation == ShipOrientation.Horizontal)
+                    {
                         Grid.SetColumnSpan(rect, ship.Length);
+                    }
                     else
+                    {
                         Grid.SetRowSpan(rect, ship.Length);
+                    }
                     used.Add(rect);
                     break;
                 }
@@ -177,11 +190,13 @@ namespace MBC.App.WPF
         private void LayShots()
         {
             foreach (Ellipse e in opponentShots)
+            {
                 fieldGrid.Children.Remove(e);
+            }
             opponentShots.Clear();
             foreach (System.Drawing.Point p in battlefield[1 - controller].shotsMade)
             {
-                Ellipse circle = new Ellipse
+                var circle = new Ellipse
                 {
                     Width = fieldGrid.ActualWidth / fieldGrid.ColumnDefinitions.Count / 1.1,
                     Height = fieldGrid.ActualHeight / fieldGrid.RowDefinitions.Count / 1.1,

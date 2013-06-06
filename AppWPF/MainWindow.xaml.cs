@@ -45,29 +45,29 @@ namespace MBC.App.WPF
         /// <param name="action">The RoundActivity to append.</param>
         private void AddRoundActivity(RoundLog.RoundActivity action)
         {
-            RoundActivityEntry entry = new RoundActivityEntry();
+            var entry = new RoundActivityEntry();
             entry.Number = roundActLogEntries.Count().ToString();
             entry.Action = RoundLog.GetActionStr(action.action);
             entry.ControllerName = action.fieldState != null ? Utility.ControllerToString(action.fieldState, action.ibc) : "Null";
             entry.Message = action.activityInfo;
             entry.Time = action.timeElapsed+"ms";
 
-            long timeout = config.GetValue<long>("mbc_timeout");
-            int diff = (int)(timeout - action.timeElapsed);
+            var timeout = config.GetValue<long>("mbc_timeout");
+            var diff = (int)(timeout - action.timeElapsed);
             diff = diff < 0 ? 255 : (int)((1 - (diff / timeout)) * 255);
             entry.Color = Color.FromArgb(255, 255, (byte)diff, (byte)diff);
 
             entry.Accolades = new Grid();
-            int colNum = 0;
+            var colNum = 0;
             foreach (RoundLog.RoundAccolade acc in action.accoladeTimelined)
             {
-                ColumnDefinition col = new ColumnDefinition();
+                var col = new ColumnDefinition();
                 col.Width = new GridLength(1, GridUnitType.Auto);
                 entry.Accolades.ColumnDefinitions.Add(col);
 
-                Image img = (Image)FindResource("Acc" + RoundLog.GetAccoladeStr(acc) + "Img");
+                var img = (Image)FindResource("Acc" + RoundLog.GetAccoladeStr(acc) + "Img");
 
-                ToolTip tip = new ToolTip();
+                var tip = new ToolTip();
                 tip.Content = RoundLog.GetAccoladeStr(acc);
 
                 img.ToolTip = tip;
@@ -142,9 +142,11 @@ namespace MBC.App.WPF
         /// <param name="e"></param>
         private void Grid_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            Size s = new Size(fieldsContainer.ColumnDefinitions[0].ActualWidth, fieldsContainer.RowDefinitions[0].ActualHeight);
+            var s = new Size(fieldsContainer.ColumnDefinitions[0].ActualWidth, fieldsContainer.RowDefinitions[0].ActualHeight);
             if (s.Width == s.Height)
+            {
                 return;
+            }
             double smaller = s.Width > s.Height ? s.Height : s.Width;
             redField.Width = smaller;
             redField.Height = smaller;
@@ -160,9 +162,13 @@ namespace MBC.App.WPF
         private void consBasicCheck_Click(object sender, RoutedEventArgs e)
         {
             if (consBasicCheck.IsChecked == true)
+            {
                 centerConsoleBorder.Visibility = System.Windows.Visibility.Visible;
+            }
             else
+            {
                 centerConsoleBorder.Visibility = System.Windows.Visibility.Collapsed;
+            }
             UpdateLayout();
             Grid_SizeChanged(null, null);
         }
