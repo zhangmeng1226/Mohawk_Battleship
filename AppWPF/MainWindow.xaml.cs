@@ -18,7 +18,7 @@ using System.ComponentModel;
 namespace MBC.App.WPF
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// The AppWPF application uses the MainWindow to provide controls and display information to the user graphically.
     /// </summary>
     public partial class MainWindow : Window
     {
@@ -26,9 +26,12 @@ namespace MBC.App.WPF
         ObservableCollection<RoundEntry> roundLogEntries = new ObservableCollection<RoundEntry>();
         Configuration config;
 
+        /// <summary>
+        /// Constructor for the MainWindow. Collapses the collapseable elements of the WPF application.
+        /// </summary>
         public MainWindow()
         {
-            Utility.LoadConfigurationDefaults();
+            Configuration.LoadConfigurationDefaults();
             InitializeComponent();
             centerConsoleBorder.Visibility = System.Windows.Visibility.Collapsed;
             advTabs.Visibility = System.Windows.Visibility.Collapsed;
@@ -36,6 +39,10 @@ namespace MBC.App.WPF
             config = Configuration.Global;
         }
 
+        /// <summary>
+        /// Adds a RoundActivity to the display that shows information about the current RoundLog.
+        /// </summary>
+        /// <param name="action">The RoundActivity to append.</param>
         private void AddRoundActivity(RoundLog.RoundActivity action)
         {
             RoundActivityEntry entry = new RoundActivityEntry();
@@ -70,23 +77,69 @@ namespace MBC.App.WPF
             }
         }
 
+        /// <summary>
+        /// Provides information to the WPF ListView control that displays the current round's RoundLog.
+        /// </summary>
         public class RoundActivityEntry
         {
+            /// <summary>
+            /// The activity number (starting from 1)
+            /// </summary>
             public string Number;
+
+            /// <summary>
+            /// A string representation of the action that describes a RoundActivity.
+            /// </summary>
             public string Action;
+
+            /// <summary>
+            /// The name of the controller that had performed this activity (if it applies)
+            /// </summary>
             public string ControllerName;
+
+            /// <summary>
+            /// The message that provides extra detail about this activity.
+            /// </summary>
             public string Message;
+
+            /// <summary>
+            /// A string representation of the time it took for the controller to perform this activity.
+            /// </summary>
             public string Time;
+
+            /// <summary>
+            /// A WPF Grid component that contains icons of the accolades earned by this activity.
+            /// </summary>
             public Grid Accolades;
+
+            /// <summary>
+            /// Colors the ListViewItem that displays this class's information based on the <see cref="Time"/>
+            /// </summary>
             public Color Color;
         }
 
+        /// <summary>
+        /// Contained within a matchup, identifies a round by number and victor.
+        /// </summary>
         public class RoundEntry
         {
+            /// <summary>
+            /// The round number in the benchmark.
+            /// </summary>
             public string Number;
+
+            /// <summary>
+            /// A string representation of the name of the controller that had won this round.
+            /// </summary>
             public string Victor;
         }
 
+        /// <summary>
+        /// Invoked when the size of either FieldControl attached to this MainWindow has changed, either by
+        /// clicking a checkbox that changes a view, or through a window resize.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Grid_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             Size s = new Size(fieldsContainer.ColumnDefinitions[0].ActualWidth, fieldsContainer.RowDefinitions[0].ActualHeight);
@@ -99,6 +152,11 @@ namespace MBC.App.WPF
             blueField.Height = smaller;
         }
 
+        /// <summary>
+        /// Invoked when the checkbox that represents the center console display, is clicked.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void consBasicCheck_Click(object sender, RoutedEventArgs e)
         {
             if (consBasicCheck.IsChecked == true)
@@ -109,6 +167,11 @@ namespace MBC.App.WPF
             Grid_SizeChanged(null, null);
         }
 
+        /// <summary>
+        /// Invoked when the checkbox that represents the advanced tabs display, is clicked.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void consAdvCheck_Click(object sender, RoutedEventArgs e)
         {
             if (consAdvCheck.IsChecked == true)
@@ -124,160 +187,126 @@ namespace MBC.App.WPF
             UpdateLayout();
             Grid_SizeChanged(null, null);
         }
-
-        /**
-         * <summary>Called when the user clicks on the blue opponent selector on the top menu.
-         * Should provide a popup menu displaying all of the available controllers.</summary>
-         */
+        
+        /// <summary>Called when the user clicks on the blue opponent selector on the top menu.
+        /// Should provide a popup menu displaying all of the available controllers.</summary>
         private void btnBlueSelect_Click(object sender, RoutedEventArgs e)
         {
             throw new NotImplementedException();
         }
-
-        /**
-         * <summary>Called when the user clicks on the "Reset Scores" button on the top menu.
-         * Should reset the scores between the two opponents.</summary>
-         */
+        
+        /// <summary>Called when the user clicks on the "Reset Scores" button on the top menu.
+        /// Should reset the scores between the two opponents.</summary>
         private void btnScoreReset_Click(object sender, RoutedEventArgs e)
         {
             throw new NotImplementedException();
         }
-
-        /**
-         * <summary>Called when the user clicks on the benchmark start button on the top menu.
-         * Should utilize txtNumOfRounds and chkPlayOut to modify the competition benchmark
-         * parameters.</summary>
-         */
+        
+        /// <summary>Called when the user clicks on the benchmark start button on the top menu.
+        /// Should utilize txtNumOfRounds and chkPlayOut to modify the competition benchmark
+        /// parameters.</summary>
         private void btnRndBegin_Click(object sender, RoutedEventArgs e)
         {
             throw new NotImplementedException();
         }
-
-        /**
-         * <summary>Called when the user clicks on the "New Round" button on the top menu.
-         * Should end the current round between the two opponents, if it is still in progress,
-         * and start a new one.</summary>
-         */
+        
+        /// <summary>Called when the user clicks on the "New Round" button on the top menu.
+        /// Should end the current round between the two opponents, if it is still in progress,
+        /// and start a new one.</summary>
         private void btnNewRound_Click(object sender, RoutedEventArgs e)
         {
             throw new NotImplementedException();
         }
-
-        /**
-         * <summary>Called when the user clicks on the "Shoot" button on the top menu.
-         * Should progress the current round if it is still in progress.</summary>
-         */
+        
+        /// <summary>Called when the user clicks on the "Shoot" button on the top menu.
+        /// Should progress the current round if it is still in progress.</summary>
         private void btnRoundShoot_Click(object sender, RoutedEventArgs e)
         {
             throw new NotImplementedException();
         }
-
-        /**
-         * <summary>Called when the user clicks on the red opponent selector on the top menu.
-         * Should provide a popup menu displaying all of the available controllers.</summary>
-         */
+        
+        /// <summary>Called when the user clicks on the red opponent selector on the top menu.
+        /// Should provide a popup menu displaying all of the available controllers.</summary>
         private void btnRedSelect_Click(object sender, RoutedEventArgs e)
         {
             throw new NotImplementedException();
         }
-
-        /**
-         * <summary>Called when the user clicks on the "Load Benchmark..." button in the Round Log tab.
-         * Should load a benchmark (a collection of rounds) from a file, and display all the rounds
-         * in the lstRoundLog view.</summary>
-         */
+        
+        /// <summary>Called when the user clicks on the "Load Benchmark..." button in the Round Log tab.
+        /// Should load a benchmark (a collection of rounds) from a file, and display all the rounds
+        /// in the lstRoundLog view.</summary>
         private void BtnBenchmarkLoad_Click(object sender, RoutedEventArgs e)
         {
             throw new NotImplementedException();
         }
-
-        /**
-         * <summary>Called when the user clicks on the "Save Benchmark..." button in the Round Log tab.
-         * Should save a benchmark (a collection of rounds) to a file.</summary>
-         */
+        
+        /// <summary>Called when the user clicks on the "Save Benchmark..." button in the Round Log tab.
+        /// Should save a benchmark (a collection of rounds) to a file.</summary>
         private void BtnBenchmarkSave_Click(object sender, RoutedEventArgs e)
         {
             throw new NotImplementedException();
         }
-
-        /**
-         * <summary>Called when the user clicks on the "Load Round..." button in the Round Log tab.
-         * Should load the selected round from the lstRoundLog view into the main display.</summary>
-         */
+        
+        /// <summary>Called when the user clicks on the "Load Round..." button in the Round Log tab.
+        /// Should load the selected round from the lstRoundLog view into the main display.</summary>
         private void BtnRoundLoad_Click(object sender, RoutedEventArgs e)
         {
             throw new NotImplementedException();
         }
 
-        /**
-         * <summary>Called when the user clicks on the increment button in the top menu.
-         * Should increment the numeric value in txtNumOfRounds (# of rounds benchmark).</summary>
-         */
+        /// <summary>Called when the user clicks on the increment button in the top menu.
+        /// Should increment the numeric value in txtNumOfRounds (# of rounds benchmark).</summary>
         private void btnRndsUp_Click(object sender, RoutedEventArgs e)
         {
             throw new NotImplementedException();
         }
-
-        /**
-         * <summary>Called when the user clicks on the decrement button in the top menu.
-         * Should decrement the numeric value in txtNumofRounds (# of rounds benchmark).</summary>
-         */
+        
+        /// <summary>Called when the user clicks on the decrement button in the top menu.
+        /// Should decrement the numeric value in txtNumofRounds (# of rounds benchmark).</summary>
         private void btnRndsDown_Click(object sender, RoutedEventArgs e)
         {
             throw new NotImplementedException();
         }
-
-        /**
-         * <summary>Called when the user clicks on the "Add entry" button under the configuration tab.
-         * Should place a new entry into the lstConfigValues view and allow the user to modify it.</summary>
-         */
+        
+        /// <summary>Called when the user clicks on the "Add entry" button under the configuration tab.
+        /// Should place a new entry into the lstConfigValues view and allow the user to modify it.</summary>
         private void BtnAddConfigEntry_Click(object sender, RoutedEventArgs e)
         {
             throw new NotImplementedException();
         }
 
-        /**
-         * <summary>Called when the user clicks on the "Remove entry" button under the configuration tab.
-         * Should remove the selected entry(s) in the lstConfigValues view, and from the global
-         * configuration.</summary>
-         */
+        /// <summary>Called when the user clicks on the "Remove entry" button under the configuration tab.
+        /// Should remove the selected entry(s) in the lstConfigValues view, and from the global
+        /// configuration.</summary>
         private void BtnRemConfigEntry_Click(object sender, RoutedEventArgs e)
         {
             throw new NotImplementedException();
         }
 
-        /**
-         * <summary>Called when the user clicks on the "Set entry to default" button under the configuration tab.
-         * Should cause the selected entry to revert to its default setting, and reflect this change in the
-         * lstConfigValues view.</summary>
-         */
+        /// <summary>Called when the user clicks on the "Set entry to default" button under the configuration tab.
+        /// Should cause the selected entry to revert to its default setting, and reflect this change in the
+        /// lstConfigValues view.</summary>
         private void BtnEntryDefault_Click(object sender, RoutedEventArgs e)
         {
             throw new NotImplementedException();
         }
-
-        /**
-         * <summary>Called when the user clicks on the "Reset to default" button under the configuration tab.
-         * Should cause the current configuration to be cleared, or replaced with the default configuration.</summary>
-         */
+        
+        /// <summary>Called when the user clicks on the "Reset to default" button under the configuration tab.
+        /// Should cause the current configuration to be cleared, or replaced with the default configuration.</summary>
         private void BtnResetConfig_Click(object sender, RoutedEventArgs e)
         {
             throw new NotImplementedException();
         }
-
-        /**
-         * <summary>Called when the user clicks on the "Save config..." button under the configuration tab.
-         * Should save the current configuration to a configuration file, under a name specified by the user.</summary>
-         */
+        
+        /// <summary>Called when the user clicks on the "Save config..." button under the configuration tab.
+        /// Should save the current configuration to a configuration file, under a name specified by the user.</summary>
         private void BtnSaveConfig_Click(object sender, RoutedEventArgs e)
         {
             throw new NotImplementedException();
         }
-
-        /**
-         * <summary>Called when the user clicks on the "Load config..." button under the configuration tab.
-         * Should load the selected configuration in the lstConfigurations list from a file.</summary>
-         */
+        
+        /// <summary>Called when the user clicks on the "Load config..." button under the configuration tab.
+        /// Should load the selected configuration in the lstConfigurations list from a file.</summary>
         private void BtnLoadConfig_Click(object sender, RoutedEventArgs e)
         {
             throw new NotImplementedException();
