@@ -13,7 +13,7 @@ namespace MBC.App.Terminal.Controls
 
         public StringInputControl(string placeholder)
         {
-            text = placeholder;
+            Text = placeholder;
             placeholderText = placeholder;
             inputText = "";
         }
@@ -21,8 +21,7 @@ namespace MBC.App.Terminal.Controls
         public override void Input(string txt)
         {
             inputText = txt;
-            text = inputText;
-            RequiresUpdate = true;
+            Text = inputText;
         }
 
         public override bool KeyPress(ConsoleKeyInfo key)
@@ -35,8 +34,7 @@ namespace MBC.App.Terminal.Controls
                         inputText = inputText.Substring(0, inputText.Length - 1);
                         if (inputText.Length == 0)
                         {
-                            RequiresUpdate = true;
-                            text = placeholderText;
+                            Text = placeholderText;
                         }
                     }
                     break;
@@ -44,8 +42,7 @@ namespace MBC.App.Terminal.Controls
                     if (!Char.IsControl(key.KeyChar))
                     {
                         inputText += key.KeyChar;
-                        text = inputText;
-                        RequiresUpdate = true;
+                        Text = inputText;
                         return true;
                     }
                     break;

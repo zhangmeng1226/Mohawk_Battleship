@@ -5,11 +5,11 @@
     using System.Drawing;
     using System.Linq;
 
-    /**
-     * <summary>A Ship contains information about ship placement and provides various
-     * methods to assist with determining various states of the game.
-     * </summary>
-     */
+    
+    /// <summary>A Ship contains information about ship placement and provides various
+    /// methods to assist with determining various states of the game.
+    /// </summary>
+     
     public sealed class Ship
     {
         private bool isPlaced = false;
@@ -17,10 +17,10 @@
         private ShipOrientation orientation;
         private int length;
 
-        /**
-         * <summary>Constructs a Ship with the specified length</summary>
-         * <param name="length">The length of this Ship, in number of cells.</param>
-         */
+        
+        /// <summary>Constructs a Ship with the specified length</summary>
+        /// <param name="length">The length of this Ship, in number of cells.</param>
+         
         public Ship(int length)
         {
             if (length <= 1)
@@ -31,9 +31,9 @@
             this.length = length;
         }
 
-        /**
-         * <summary>Gets a bool that indicates whether this ship has been placed.</summary>
-         */
+        
+        /// <summary>Gets a bool that indicates whether this ship has been placed.</summary>
+         
         public bool IsPlaced
         {
             get
@@ -42,9 +42,9 @@
             }
         }
 
-        /**
-         * <summary>Gets a Point that indicates the start of the bottom/left of this Ship.</summary>
-         */
+        
+        /// <summary>Gets a Point that indicates the start of the bottom/left of this Ship.</summary>
+         
         public Point Location
         {
             get
@@ -58,9 +58,9 @@
             }
         }
 
-        /**
-         * <summary>Gets the ShipOrientation of this Ship.</summary>
-         */
+        
+        /// <summary>Gets the ShipOrientation of this Ship.</summary>
+         
         public ShipOrientation Orientation
         {
             get
@@ -74,9 +74,9 @@
             }
         }
 
-        /**
-         * <summary>Gets the length of this ship in number of cells on the field.</summary>
-         */
+        
+        /// <summary>Gets the length of this ship in number of cells on the field.</summary>
+         
         public int Length
         {
             get
@@ -85,11 +85,11 @@
             }
         }
 
-        /**
-         * <summary>Used when placing this Ship on the field.</summary>
-         * <param name="location">The coordinates of the bottom/left most part of this ship.</param>
-         * <param name="orientation">The orientation of this Ship.</param>
-         */
+        
+        /// <summary>Used when placing this Ship on the field.</summary>
+        /// <param name="location">The coordinates of the bottom/left most part of this ship.</param>
+        /// <param name="orientation">The orientation of this Ship.</param>
+         
         public void Place(Point location, ShipOrientation orientation)
         {
             this.location = location;
@@ -97,10 +97,10 @@
             this.isPlaced = true;
         }
 
-        /**
-         * <summary>Used to check whether the placement of this ship is valid or not.</summary>
-         * <param name="boardSize">The size of the field grid to check boundaries for.</param>
-         */
+        
+        /// <summary>Used to check whether the placement of this ship is valid or not.</summary>
+        /// <param name="boardSize">The size of the field grid to check boundaries for.</param>
+         
         public bool IsValid(Size boardSize)
         {
             if (!this.isPlaced)
@@ -131,10 +131,10 @@
             return true;
         }
 
-        /**
-         * <summary>Used to check whether this Ship takes up space in the cell located at the specified location.</summary>
-         * <param name="location">The cell on the field.</param>
-         */
+        
+        /// <summary>Used to check whether this Ship takes up space in the cell located at the specified location.</summary>
+        /// <param name="location">The cell on the field.</param>
+         
         public bool IsAt(Point location)
         {
             if (this.Orientation == ShipOrientation.Horizontal)
@@ -147,9 +147,9 @@
             }
         }
 
-        /**
-         * <summary>Gets a list of Points that represents the cells this Ship occupies.</summary>
-         */
+        
+        /// <summary>Gets a list of Points that represents the cells this Ship occupies.</summary>
+         
         public IEnumerable<Point> GetAllLocations()
         {
             if (this.Orientation == ShipOrientation.Horizontal)
@@ -168,10 +168,10 @@
             }
         }
 
-        /**
-         * <summary>Used to check whether this Ship occupies any cell that another Ship occupies.</summary>
-         * <param name="otherShip">The other ship to compare with.</param>
-         */
+        
+        /// <summary>Used to check whether this Ship occupies any cell that another Ship occupies.</summary>
+        /// <param name="otherShip">The other ship to compare with.</param>
+         
         public bool ConflictsWith(Ship otherShip)
         {
             foreach (var otherShipLocation in otherShip.GetAllLocations())
@@ -185,12 +185,12 @@
             return false;
         }
 
-        /**
-         * <summary>Checks if the given list of Points completely occupy the cells this Ship occupies. This
-         * is used to determine if shots have sunk this Ship.</summary>
-         * <param name="shots">A list of Point objects that represent shots made.</param>
-         * <returns>True if the given Points completely occupy the same cells this Ship occupies. False if otherwise.</returns>
-         */
+        
+        /// <summary>Checks if the given list of Points completely occupy the cells this Ship occupies. This
+        /// is used to determine if shots have sunk this Ship.</summary>
+        /// <param name="shots">A list of Point objects that represent shots made.</param>
+        /// <returns>True if the given Points completely occupy the same cells this Ship occupies. False if otherwise.</returns>
+         
         public bool IsSunk(IEnumerable<Point> shots)
         {
             foreach (Point location in this.GetAllLocations())

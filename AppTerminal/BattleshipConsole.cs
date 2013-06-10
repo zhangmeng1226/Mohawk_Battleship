@@ -10,28 +10,26 @@ using MBC.App.Terminal.Modules;
 
 namespace MBC.App.Terminal
 {
-    /**
-     * <summary>Provides an interactive console for the user. Supports multiple terminal buffers.
-     * Use the CTRL + Arrow keys to navigate between buffers. Use CTRL + SHIFT + Arrow keys to
-     * move buffers around.
-     * 
-     * This static class is responsible for the management of multiple buffers which are TerminalModule objects.
-     * This class is static because there can only be one console per application.
-     * 
-     * Use the static methods AddModule(TerminalModule) and RemoveModule(TerminalModule) to add or remove modules
-     * from the terminal display. If multiple TerminalModule objects are added, this class will ensure they
-     * are displayed on the screen simultaneously. After adding/removing modules, update the state of the
-     * display by using the UpdateDisplay() method.
-     * 
-     * Note, the width and height of the terminal window should be a minimum of at least 80 and 25, respectively.
-     * </summary>
-     */
+    
+    /// <summary>Provides an interactive console for the user. Supports multiple terminal buffers.
+    /// Use the CTRL + Arrow keys to navigate between buffers. Use CTRL + SHIFT + Arrow keys to
+    /// move buffers around.
+    /// 
+    /// This static class is responsible for the management of multiple buffers which are TerminalModule objects.
+    /// This class is static because there can only be one console per application.
+    /// 
+    /// Use the static methods AddModule(TerminalModule) and RemoveModule(TerminalModule) to add or remove modules
+    /// from the terminal display. If multiple TerminalModule objects are added, this class will ensure they
+    /// are displayed on the screen simultaneously. After adding/removing modules, update the state of the
+    /// display by using the UpdateDisplay() method.
+    /// 
+    /// Note, the width and height of the terminal window should be a minimum of at least 80 and 25, respectively.
+    /// </summary>
     public class BattleshipConsole
     {
-        /**
-         * <summary>Sets default configuration values for keys that relate to this class.
-         * Should be called before using the global Configuration.Default object.</summary>
-         */
+        
+        /// <summary>Sets default configuration values for keys that relate to this class.
+        /// Should be called before using the global Configuration.Default object.</summary>
         public static void SetConfigDefaults()
         {
             Configuration.Default.SetValue<int>("term_max_columns", 3);
@@ -41,7 +39,7 @@ namespace MBC.App.Terminal
             Configuration.Default.SetValue<string>("term_color_input_text", "White");
             Configuration.Default.SetValue<string>("term_color_background", "Black");
         }
-        private static List<TerminalModule> runningMods; //The modules attached to this BattleshipConsole.
+        private static List<ConsoleModule> runningMods; //The modules attached to this BattleshipConsole.
         private static int selectedMod = 0; //The selected module from the list of runningMods.
         private static int modRows = 1, modCols = 1; //The number of rows and columns.
         private static int width = 0, height = 0; //The width and height registered with this BattleshipConsole.
@@ -50,19 +48,17 @@ namespace MBC.App.Terminal
         private static string inputLine = ""; //A string of input given by the user.
         private static long lastTickBeep = 0; //Timer used to delay subsequent Console.Beep() invokes.
 
-        /**
-         * <summary>Gets or sets the running state of this application. Setting this false will cause
-         * the application to quit.</summary>
-         */
+        
+        /// <summary>Gets or sets the running state of this application. Setting this false will cause
+        /// the application to quit.</summary>
         public static bool Running
         {
             get { return isRunning; }
             set { isRunning = value; }
         }
 
-        /**
-         * <summary>Makes the grid lines that identify each module displayed on the terminal.</summary>
-         */
+        
+        /// <summary>Makes the grid lines that identify each module displayed on the terminal.</summary>
         private static void WriteGridLines()
         {
             Utility.StoreConsoleColors();
@@ -70,7 +66,7 @@ namespace MBC.App.Terminal
             char[] c;
             for (int i = 0; i <= modRows; i++)
             {
-                Console.SetCursorPosition(0, i == modRows ? height - 3 : (height / modRows) * i - i);
+                Console.SetCursorPosition(0, i == modRows ? height - 3 : (height / modRows)* i - i);
                 c = new char[width];
                 for (int j = 0; j < c.Length; j++)
                     c[j] = ' ';
@@ -78,7 +74,7 @@ namespace MBC.App.Terminal
             }
             for (int i = 0; i <= modCols; i++)
             {
-                int left = i == modCols ? width - 1 : i * (width / modCols);
+                int left = i == modCols ? width - 1 : i* (width / modCols);
                 for (int j = 0; j < height - 3; j++)
                 {
                     Console.SetCursorPosition(left, j);
@@ -99,12 +95,12 @@ namespace MBC.App.Terminal
 
             for (int i = 0; i < 2; i++)
             {
-                Console.SetCursorPosition(modLeft, modTop + (modHeight * i));
+                Console.SetCursorPosition(modLeft, modTop + (modHeight*i));
                 Console.Write(c);
             }
             for (int i = 0; i < 2; i++)
             {
-                int x = modLeft + modWidth * i;
+                int x = modLeft + modWidth*i;
                 x = x >= width ? width - 1 : x;
                 for (int j = 0; j < modHeight; j++)
                 {
@@ -115,9 +111,8 @@ namespace MBC.App.Terminal
             Utility.RestoreConsoleColors();
         }
 
-        /**
-         * <summary>Refreshes the entire terminal buffer. Use after adding/removing modules.</summary>
-         */
+        
+        /// <summary>Refreshes the entire terminal buffer. Use after adding/removing modules.</summary>
         public static void UpdateDisplay()
         {
             Console.Clear();
@@ -131,26 +126,23 @@ namespace MBC.App.Terminal
             UpdateInputLineDisplay(true);
         }
 
-        /**
-         * <summary>Adds a TerminalModule object to this BattleshipConsole for displaying.</summary>
-         */
-        public static void AddModule(TerminalModule mod)
+        
+        /// <summary>Adds a TerminalModule object to this BattleshipConsole for displaying.</summary>
+        public static void AddModule(ConsoleModule mod)
         {
             runningMods.Add(mod);
         }
 
-        /**
-         * <summary>Removes a TerminalModule object from this BattleshipConsole.</summary>
-         */
-        public static void RemoveModule(TerminalModule mod)
+        
+        /// <summary>Removes a TerminalModule object from this BattleshipConsole.</summary>
+        public static void RemoveModule(ConsoleModule mod)
         {
             runningMods.Remove(mod);
         }
 
-        /**
-         * <summary>Calculates the boundaries of the generated number of rows and columns used
-         * for displaying the TerminalModules based on the size of the terminal window.</summary>
-         */
+        
+        /// <summary>Calculates the boundaries of the generated number of rows and columns used
+        /// for displaying the TerminalModules based on the size of the terminal window.</summary>
         private static void RecalculateBounds()
         {
             width = Console.WindowWidth;
@@ -160,16 +152,15 @@ namespace MBC.App.Terminal
             for (int i = 0; i < runningMods.Count(); i++)
             {
                 int row = i / Configuration.Global.GetValue<int>("term_max_columns");
-                runningMods[i].RefreshDisplay((i % (modCols)) * bufferWidth + 1,
-                    row * bufferHeight + 1, bufferWidth - 1, bufferHeight - 2);
+                runningMods[i].UpdateBounds((i % (modCols))* bufferWidth + 1,
+                    row* bufferHeight + 1, bufferWidth - 1, bufferHeight - 2);
             }
         }
 
-        /**
-         * <summary>Used for selecting a buffer via arrow keys + CTRL. Also moves
-         * the order of TerminalModules in this BattleshipConsole with arrow keys + CTRL + SHIFT.
-         * Does not do anything and returns false if CTRL is not pressed.</summary>
-         */
+        
+        /// <summary>Used for selecting a buffer via arrow keys + CTRL. Also moves
+        /// the order of TerminalModules in this BattleshipConsole with arrow keys + CTRL + SHIFT.
+        /// Does not do anything and returns false if CTRL is not pressed.</summary>
         private static bool HandleKeyControl(ConsoleKeyInfo cki)
         {
             if (cki.Modifiers.HasFlag(ConsoleModifiers.Control))
@@ -205,7 +196,7 @@ namespace MBC.App.Terminal
                 if (arrow)
                 {
                     if (cki.Modifiers.HasFlag(ConsoleModifiers.Shift))
-                        Utility.ListSwap<TerminalModule>(runningMods, lastSel, selectedMod);
+                        Utility.ListSwap<ConsoleModule>(runningMods, lastSel, selectedMod);
                     RecalculateBounds();
                     WriteGridLines();
                     return true;
@@ -214,10 +205,9 @@ namespace MBC.App.Terminal
             return false;
         }
 
-        /**
-         * <summary>Processes a key press and modifies the input string with valid characters.</summary>
-         * <returns>True if the enter key was pressed and processed, False otherwise.</returns>
-         */
+        
+        /// <summary>Processes a key press and modifies the input string with valid characters.</summary>
+        /// <returns>True if the enter key was pressed and processed, False otherwise.</returns>
         private static bool ProcessInputLine(ConsoleKeyInfo key)
         {
             switch (key.Key)
@@ -257,10 +247,9 @@ namespace MBC.App.Terminal
             return false;
         }
 
-        /**
-         * <summary>Updates the display of the input line on the terminal window. Optionally updates
-         * just the input string that the user has entered instead of the entire line.</summary>
-         */
+        
+        /// <summary>Updates the display of the input line on the terminal window. Optionally updates
+        /// just the input string that the user has entered instead of the entire line.</summary>
         private static void UpdateInputLineDisplay(bool complete)
         {
             Utility.StoreConsoleColors();
@@ -288,7 +277,7 @@ namespace MBC.App.Terminal
             Console.Title = "Mohawk Battleship Competition";
             Console.Clear();
 
-            runningMods = new List<TerminalModule>();
+            runningMods = new List<ConsoleModule>();
             AddModule(new MainMenu());
             UpdateDisplay();
 

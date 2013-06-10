@@ -9,19 +9,19 @@ using MBC.App.Terminal.Controls;
 namespace MBC.App.Terminal.Modules
 {
 
-    /**
-     * <summary>This MainMenu class is the first object to be displayed on the console when the application
-     * is started.
-     * 
-     * 
-     * </summary>
-     */
-    public class MainMenu : TerminalModule
+    
+    /// <summary>This MainMenu class is the first object to be displayed on the console when the application
+    /// is started.
+    /// 
+    /// 
+    /// </summary>
+     
+    public class MainMenu : ConsoleModule
     {
-        VerticalLayout menuLayout;
+        FlowLayout menuLayout;
         public MainMenu()
         {
-            menuLayout = new VerticalLayout(VerticalLayout.VerticalAlign.Center);
+            menuLayout = new FlowLayout(FlowLayout.Alignment.Center);
             menuLayout.Add(new ButtonControl("Start a competition", MenuSelectEvent));
             menuLayout.Add(new ButtonControl("Configuration Manager", MenuSelectEvent));
             menuLayout.Add(new ButtonControl("Exit", MenuSelectEvent));

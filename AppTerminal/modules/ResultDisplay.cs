@@ -8,16 +8,16 @@ using System.Text;
 
 namespace MBC.App.Terminal.Modules
 {
-    public class ResultDisplay : TerminalModule
+    public class ResultDisplay : ConsoleModule
     {
         Competition competition;
-        VerticalLayout buttonLayout;
+        FlowLayout buttonLayout;
 
         public ResultDisplay(Competition comp)
         {
             competition = comp;
 
-            buttonLayout = new VerticalLayout(VerticalLayout.VerticalAlign.Center);
+            buttonLayout = new FlowLayout(FlowLayout.Alignment.Center);
             buttonLayout.Add(new ButtonControl("Back to Main Menu", ButtonClick));
 
             AddControlLayout(buttonLayout);

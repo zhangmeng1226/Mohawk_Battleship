@@ -172,7 +172,6 @@
                     select new Ship(s)).ToList();
         }
 
-        
         /// <summary>Used to notify both players whether they won or lost.</summary>
         /// <returns>Always returns true</returns>
         private bool GameResultPush(Controller winner, Controller loser, string reason)
@@ -338,7 +337,7 @@
                 bc.NewMatch(Opponent(bc).ToString());
 
             //This loop continues until this competition is complete.
-            while (playOut ? !RoundsReached(rnds) : gamePlays++ < (rnds * 2 - 1) && isRunning)
+            while (playOut ? !RoundsReached(rnds) : gamePlays++ < (rnds* 2 - 1) && isRunning)
             {
                 NewRound();
                 RunRound();

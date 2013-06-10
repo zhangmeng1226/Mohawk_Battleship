@@ -9,19 +9,19 @@ using System.Text;
 
 namespace MBC.App.Terminal.Modules
 {
-    public class BotSelector : TerminalModule
+    public class BotSelector : ConsoleModule
     {
-        VerticalLayout redList;
-        VerticalLayout blueList;
+        FlowLayout redList;
+        FlowLayout blueList;
         RadioButtonControlGroup redGroup;
         RadioButtonControlGroup blueGroup;
 
-        VerticalLayout buttonConfirmLayout;
+        FlowLayout buttonConfirmLayout;
 
         public BotSelector()
         {
             ControllerFactory.LoadControllerFolder();
-            redList = new VerticalLayout(VerticalLayout.VerticalAlign.Left);
+            redList = new FlowLayout(FlowLayout.Alignment.Left);
             redList.SetDisplayLine(5);
             redGroup = new RadioButtonControlGroup(redList);
             foreach (string ctrlName in ControllerFactory.Names)
@@ -30,7 +30,7 @@ namespace MBC.App.Terminal.Modules
             }
 
 
-            blueList = new VerticalLayout(VerticalLayout.VerticalAlign.Right);
+            blueList = new FlowLayout(FlowLayout.Alignment.Right);
             blueList.SetDisplayLine(5);
             blueGroup = new RadioButtonControlGroup(blueList);
             foreach (string ctrlName in ControllerFactory.Names)
@@ -38,7 +38,7 @@ namespace MBC.App.Terminal.Modules
                 blueGroup.AddRadioButton(ctrlName);
             }
 
-            buttonConfirmLayout = new VerticalLayout(VerticalLayout.VerticalAlign.Center);
+            buttonConfirmLayout = new FlowLayout(FlowLayout.Alignment.Center);
             buttonConfirmLayout.SetDisplayLine(6 + ControllerFactory.Names.Count);
             buttonConfirmLayout.Add(new ButtonControl("Confirm", SelectionConfirm));
 

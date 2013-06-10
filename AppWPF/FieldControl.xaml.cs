@@ -131,7 +131,7 @@ namespace MBC.App.WPF
                 var r = new Rectangle
                 {
                     Width = fieldGrid.ActualWidth / fieldGrid.ColumnDefinitions.Count / 1.05,
-                    Height = (fieldGrid.ActualHeight / fieldGrid.RowDefinitions.Count / 1.05) * size,
+                    Height = (fieldGrid.ActualHeight / fieldGrid.RowDefinitions.Count / 1.05)* size,
                     Fill = new SolidColorBrush(ControllerColor),
                     Stroke = new SolidColorBrush(Colors.Black),
                     StrokeThickness = 1,
@@ -214,32 +214,32 @@ namespace MBC.App.WPF
             }
         }
 
-        /**
-         * <summary>Sets the controller that this FieldControl displays through the internally presented Field.</summary>
-         * <param name="ibc">The index of the battleship controller in the Field to switch to. Refer to the
-         * constants available in the Controller class.</param>
-         * <seealso cref="Field"/>
-         */
+        
+        /// <summary>Sets the controller that this FieldControl displays through the internally presented Field.</summary>
+        /// <param name="ibc">The index of the battleship controller in the Field to switch to. Refer to the
+        /// constants available in the Controller class.</param>
+        /// <seealso cref="Field"/>
+         
         public void SetController(int ibc)
         {
             controller = ibc;
         }
 
-        /**
-         * <summary>Makes this FieldControl update its display to reflect the 
-         * current state of the internal Field.</summary>
-         */
+        
+        /// <summary>Makes this FieldControl update its display to reflect the 
+        /// current state of the internal Field.</summary>
+         
         public void UpdateFieldDisplay()
         {
             LayShips();
             LayShots();
         }
 
-        /**
-         * <summary>Sets the Field this FieldControl will present.</summary>
-         * <param name="field">The Field object to display.</param>
-         * <seealso cref="Field"/>
-         */
+        
+        /// <summary>Sets the Field this FieldControl will present.</summary>
+        /// <param name="field">The Field object to display.</param>
+        /// <seealso cref="Field"/>
+         
         public void SetField(Field field)
         {
             battlefield = field;

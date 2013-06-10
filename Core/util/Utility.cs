@@ -31,7 +31,7 @@ namespace MBC.Core
         /// <seealso cref="BytesToString"/>
         public static byte[] StringToBytes(string s)
         {
-            var res = new byte[s.Length * sizeof(char)];
+            var res = new byte[s.Length*sizeof(char)];
             System.Buffer.BlockCopy(s.ToCharArray(), 0, res, 0, res.Length);
             return res;
         }

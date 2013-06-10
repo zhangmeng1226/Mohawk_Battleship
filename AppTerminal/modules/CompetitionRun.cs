@@ -8,7 +8,7 @@ using System.Text;
 
 namespace MBC.App.Terminal.Modules
 {
-    public class CompetitionRun : TerminalModule
+    public class CompetitionRun : ConsoleModule
     {
         Competition competition;
         private int roundsRun;

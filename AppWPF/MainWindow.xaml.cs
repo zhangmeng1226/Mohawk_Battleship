@@ -54,7 +54,7 @@ namespace MBC.App.WPF
 
             var timeout = config.GetValue<long>("mbc_timeout");
             var diff = (int)(timeout - action.timeElapsed);
-            diff = diff < 0 ? 255 : (int)((1 - (diff / timeout)) * 255);
+            diff = diff < 0 ? 255 : (int)((1 - (diff / timeout))* 255);
             entry.Color = Color.FromArgb(255, 255, (byte)diff, (byte)diff);
 
             entry.Accolades = new Grid();

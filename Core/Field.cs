@@ -7,7 +7,6 @@ using System.Drawing;
 namespace MBC.Core
 {
 
-    
     /// <summary>The Field class represents a battleship field. It contains battleship field information and
     /// two ControllerInfo objects that contain information on the two controllers in the Field.
     /// 

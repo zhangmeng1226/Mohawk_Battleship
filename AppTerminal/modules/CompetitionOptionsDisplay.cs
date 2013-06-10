@@ -8,10 +8,10 @@ using System.Text;
 
 namespace MBC.App.Terminal.Modules
 {
-    public class CompetitionOptionsDisplay : TerminalModule
+    public class CompetitionOptionsDisplay : ConsoleModule
     {
         IBattleshipController[] controllers;
-        VerticalLayout layout;
+        FlowLayout layout;
         NumericControl roundsNumberControl;
 
         public CompetitionOptionsDisplay(IBattleshipController red, IBattleshipController blue)
@@ -27,7 +27,7 @@ namespace MBC.App.Terminal.Modules
         private void Init(IBattleshipController[] ctrls)
         {
             controllers = ctrls;
-            layout = new VerticalLayout(VerticalLayout.VerticalAlign.Center);
+            layout = new FlowLayout(FlowLayout.Alignment.Center);
             roundsNumberControl = new NumericControl(new NumericControl.NumericControlParameters("# of rounds", false, 1, 100000, 1, 50));
             layout.Add(roundsNumberControl);
             layout.Add(new CheckboxControl("Play out rounds"));

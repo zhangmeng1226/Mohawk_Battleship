@@ -44,6 +44,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BattleshipConsole.cs" />
+    <Compile Include="ConsoleColorSet.cs" />
+    <Compile Include="ConsoleUI.cs" />
+    <Compile Include="Coordinate2D.cs" />
+    <Compile Include="Component.cs" />
     <Compile Include="controls\NumericControl.cs" />
     <Compile Include="modules\BotSelector.cs" />
     <Compile Include="controls\ButtonControl.cs" />
@@ -52,15 +56,16 @@
     <Compile Include="controls\RadioButtonControl.cs" />
     <Compile Include="controls\RadioButtonControlGroup.cs" />
     <Compile Include="controls\StringInputControl.cs" />
-    <Compile Include="layouts\ControlLayout.cs" />
-    <Compile Include="layouts\NoLayout.cs" />
-    <Compile Include="layouts\VerticalLayout.cs" />
+    <Compile Include="layouts\Layout.cs" />
+    <Compile Include="layouts\FlowLayout.cs" />
     <Compile Include="modules\CompetitionRun.cs" />
     <Compile Include="modules\ResultDisplay.cs" />
-    <Compile Include="modules\TerminalModule.cs" />
+    <Compile Include="modules\ConsoleModule.cs" />
     <Compile Include="modules\MainMenu.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="controls\UserControl.cs" />
+    <Compile Include="RootComponent.cs" />
+    <Compile Include="Size2D.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
