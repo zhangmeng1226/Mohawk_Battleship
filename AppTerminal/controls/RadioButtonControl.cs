@@ -7,6 +7,7 @@ namespace MBC.App.Terminal.Controls
 {
     public class RadioButtonControl : UserControl
     {
+        /*
         private bool isSelected;
         private RadioButtonControlGroup radioGroup;
 
@@ -45,6 +46,6 @@ namespace MBC.App.Terminal.Controls
                     return true;
             }
             return false;
-        }
+        }*/
     }
 }

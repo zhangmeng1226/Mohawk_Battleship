@@ -11,6 +11,7 @@ namespace MBC.App.Terminal.Modules
 {
     public class BotSelector : ConsoleModule
     {
+        /*
         FlowLayout redList;
         FlowLayout blueList;
         RadioButtonControlGroup redGroup;
@@ -71,6 +72,6 @@ namespace MBC.App.Terminal.Modules
             redList.Display();
             blueList.Display();
             buttonConfirmLayout.Display();
-        }
+        }*/
     }
 }

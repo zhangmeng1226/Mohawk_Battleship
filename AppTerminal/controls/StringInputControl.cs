@@ -8,6 +8,7 @@ namespace MBC.App.Terminal.Controls
 {
     public class StringInputControl : UserControl
     {
+        /*
         private string placeholderText;
         private string inputText;
 
@@ -48,6 +49,6 @@ namespace MBC.App.Terminal.Controls
                     break;
             }
             return false;
-        }
+        }*/
     }
 }

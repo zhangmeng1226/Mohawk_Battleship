@@ -10,6 +10,7 @@ namespace MBC.App.Terminal.Modules
 {
     public class ResultDisplay : ConsoleModule
     {
+        /*
         Competition competition;
         FlowLayout buttonLayout;
 
@@ -54,6 +55,6 @@ namespace MBC.App.Terminal.Modules
             }
             NewLine(2);
             buttonLayout.Display();
-        }
+        }*/
     }
 }

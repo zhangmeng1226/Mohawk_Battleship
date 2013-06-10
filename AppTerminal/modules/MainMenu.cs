@@ -18,6 +18,7 @@ namespace MBC.App.Terminal.Modules
      
     public class MainMenu : ConsoleModule
     {
+        /*
         FlowLayout menuLayout;
         public MainMenu()
         {
@@ -55,6 +56,6 @@ namespace MBC.App.Terminal.Modules
             WriteCenteredText("Use the arrow keys to navigate menus.");
             NewLine(2);
             menuLayout.Display();
-        }
+        }*/
     }
 }

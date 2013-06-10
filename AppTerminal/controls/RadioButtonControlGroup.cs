@@ -8,6 +8,7 @@ namespace MBC.App.Terminal.Controls
 {
     public class RadioButtonControlGroup
     {
+        /*
         private ControlLayout radioLayout;
         private List<RadioButtonControl> radioControls;
         RadioButtonControl selectedControl;
@@ -41,6 +42,6 @@ namespace MBC.App.Terminal.Controls
         {
             return selectedControl.Text.Substring(4);
         }
-
+        */
     }
 }

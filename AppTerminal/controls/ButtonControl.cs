@@ -11,6 +11,7 @@ namespace MBC.App.Terminal.Controls
      
     public class ButtonControl : UserControl
     {
+        /*
         public delegate bool ButtonSelect(string btnText);
         public event ButtonSelect ButtonSelectEvent;
 
@@ -46,6 +47,6 @@ namespace MBC.App.Terminal.Controls
                 return ButtonSelectEvent(Text.Substring(1, Text.Length - 2));
             }
             return false;
-        }
+        }*/
     }
 }

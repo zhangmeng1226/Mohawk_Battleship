@@ -7,6 +7,7 @@ namespace MBC.App.Terminal.Controls
 {
     public class CheckboxControl : UserControl
     {
+        /*
         private bool isChecked = false;
 
         public CheckboxControl(string text)
@@ -40,6 +41,6 @@ namespace MBC.App.Terminal.Controls
                     return true;
             }
             return false;
-        }
+        }*/
     }
 }

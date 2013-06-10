@@ -10,6 +10,7 @@ namespace MBC.App.Terminal.Modules
 {
     public class CompetitionRun : ConsoleModule
     {
+        /*
         Competition competition;
         private int roundsRun;
         private int totalRounds;
@@ -79,6 +80,6 @@ namespace MBC.App.Terminal.Modules
                 Utility.SetConsoleForegroundColor("Red");
                 WriteCenteredText(turns + " turns made this round.");
             }
-        }
+        }*/
     }
 }

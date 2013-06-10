@@ -10,6 +10,7 @@ namespace MBC.App.Terminal.Modules
 {
     public class CompetitionOptionsDisplay : ConsoleModule
     {
+        /*
         IBattleshipController[] controllers;
         FlowLayout layout;
         NumericControl roundsNumberControl;
@@ -68,6 +69,6 @@ namespace MBC.App.Terminal.Modules
             WriteCenteredText("Review the available settings for this matchup.");
             NewLine(2);
             layout.Display();
-        }
+        }*/
     }
 }

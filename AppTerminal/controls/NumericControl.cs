@@ -7,6 +7,7 @@ namespace MBC.App.Terminal.Controls
 {
     public class NumericControl : UserControl
     {
+        /*
         private int value;
         private NumericControlParameters parameters;
 
@@ -83,6 +84,6 @@ namespace MBC.App.Terminal.Controls
                 initVal = init;
                 text = txt;
             }
-        }
+        }*/
     }
 }
