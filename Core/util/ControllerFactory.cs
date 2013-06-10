@@ -71,7 +71,7 @@ namespace MBC.Core.util
                         if (interfaces.ToString() == "MBC.Core.IBattleshipController")
                         {
                             var opp = (IBattleshipController)Activator.CreateInstance(cont);
-                            loadedControllers[Utility.ControllerToString(opp)] = cont;
+                            loadedControllers[opp.Name + " (v" + opp.Version + ")"] = cont;
                             break;
                         }
                     }
@@ -79,17 +79,18 @@ namespace MBC.Core.util
             }
             catch (Exception e)
             {
-                Utility.PrintDebugMessage("Failed to load " + fName + ": " + e.ToString());
+                //Failure to load DLL file.
             }
         }
 
-        /// <summary>Opens each .DLL file in the working directory's "bots" folder. Overwrites
+        /// <summary>Opens each .DLL file in the given path. Overwrites
         /// existing controller objects with new ones loaded.</summary>
-        public static void LoadControllerFolder()
+        /// <param name="path">The path to the folder containing the .DLL files.</param>
+        public static void LoadControllerFolder(string path)
         {
             try
             {
-                var files = new List<string>(Directory.GetFiles(Utility.WorkingDirectory() + "bots", "*.dll"));
+                var files = new List<string>(Directory.GetFiles(path, "*.dll"));
                 foreach (string file in files)
                 {
                     LoadControllers(file);
@@ -97,7 +98,7 @@ namespace MBC.Core.util
             }
             catch (System.IO.DirectoryNotFoundException e)
             {
-                Utility.PrintDebugMessage("The bot directory could not be found. " + e.ToString());
+                //'bot' directory was not found.
             }
         }
     }

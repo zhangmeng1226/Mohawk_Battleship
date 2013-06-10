@@ -12,9 +12,12 @@ namespace MBC.Core
     /// <summary>
     /// Configuration deals with a single configuration file and parses each key/value pair.
     /// 
+    /// The Configuration class must be initialized by calling the static method InitializeConfiguration(). Provide
+    /// the path where the config files will be saved through this method.
+    /// 
     /// Use the static variable Configuration.Global to access a configuration that represents the entirety
-    /// of the application. This global configuration is loaded through the file named "config.ini" in the config
-    /// directory of the root of the project directory.
+    /// of the application. This global configuration is loaded through the file named "config.ini" in the initialized
+    /// config directory.
     /// 
     /// Use the static variable Configuration.Default to access a Configuration that represents all default
     /// values of the application. This values should be utilized before using the default Configuration.
@@ -96,17 +99,6 @@ namespace MBC.Core
         private static string configsPath;
         private static Configuration globalInstance;
         private static Configuration defaultInstance;
-
-        static Configuration()
-        {
-            //Initializes some global Configuration properties.
-            configsPath = Utility.WorkingDirectory() + "configs\\";
-            defaultInstance = new Configuration("default");
-            globalInstance = new Configuration("config");
-            if (!Directory.Exists(configsPath))
-                Directory.CreateDirectory(configsPath);
-        }
-
         
         /// <summary>
         /// Gets a common Configuration object for use.
@@ -124,6 +116,20 @@ namespace MBC.Core
             get { return defaultInstance; }
         }
 
+        /// <summary>
+        /// Initializes the Configuration system with the given path. Creates the directory of the path if it
+        /// does not exist.
+        /// </summary>
+        /// <param name="confPath">A string to the absolute path of the directory to save config files in.</param>
+        public static void InitializeConfiguration(string confPath)
+        {
+            //Initializes some global Configuration properties.
+            configsPath = confPath;
+            defaultInstance = new Configuration("default");
+            globalInstance = new Configuration("config");
+            if (!Directory.Exists(configsPath))
+                Directory.CreateDirectory(configsPath);
+        }
         
         /// <summary>
         /// Call at the beginning of an application to invoke all the static methods that match
@@ -157,7 +163,7 @@ namespace MBC.Core
         /// </returns>
         public static List<string> GetAvailableConfigs()
         {
-            string[] absFiles = Directory.GetFiles(Utility.WorkingDirectory() + "configs", "*.ini");
+            string[] absFiles = Directory.GetFiles(configsPath, "*.ini");
             var res = new List<string>();
             foreach (var f in absFiles)
             {
@@ -294,11 +300,11 @@ namespace MBC.Core
             }
             catch (IOException)
             {
-                Utility.PrintDebugMessage("Could not load the configuration file " + configName + ". Default values will be used.");
+                //Failed to read the file (probably does not exist).
             }
             catch
             {
-                Utility.PrintDebugMessage("There was an error while parsing the configuration file on line " + errorLineNum);
+                //Failed to parse. (error with file).
             }
         }
 
@@ -318,7 +324,7 @@ namespace MBC.Core
             }
             catch
             {
-                Utility.PrintDebugMessage("Could not open the configuration file for writing.");
+                //Could not open file for writing (already open?)
             }
         }
     }

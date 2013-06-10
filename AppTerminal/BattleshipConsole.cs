@@ -48,6 +48,41 @@ namespace MBC.App.Terminal
         private static string inputLine = ""; //A string of input given by the user.
         private static long lastTickBeep = 0; //Timer used to delay subsequent Console.Beep() invokes.
 
+        private static ConsoleColor consForeground;
+        private static ConsoleColor consBackground;
+
+
+
+        /// <summary>Stores the current state of the console colors.</summary>
+        public static void StoreConsoleColors()
+        {
+            consForeground = Console.ForegroundColor;
+            consBackground = Console.BackgroundColor;
+        }
+
+
+        /// <summary>Restores the stored state of console colors</summary>
+        public static void RestoreConsoleColors()
+        {
+            Console.ForegroundColor = consForeground;
+            Console.BackgroundColor = consBackground;
+        }
+
+
+        /// <summary>Sets the foreground color of the Console to the one specified in the given string.</summary>
+        /// <param name="colName">The name of the enum in ConsoleColor, as a string</param>
+        public static void SetConsoleForegroundColor(string colName)
+        {
+            Console.ForegroundColor = (ConsoleColor)Enum.Parse(typeof(ConsoleColor), colName);
+        }
+
+
+        /// <summary>Sets the background color of the Console to the one specified in the given string.</summary>
+        /// <param name="colName">The name of the enum in ConsoleColor, as a string</param>
+        public static void SetConsoleBackgroundColor(string colName)
+        {
+            Console.BackgroundColor = (ConsoleColor)Enum.Parse(typeof(ConsoleColor), colName);
+        }
         
         /// <summary>Gets or sets the running state of this application. Setting this false will cause
         /// the application to quit.</summary>
@@ -61,8 +96,8 @@ namespace MBC.App.Terminal
         /// <summary>Makes the grid lines that identify each module displayed on the terminal.</summary>
         private static void WriteGridLines()
         {
-            Utility.StoreConsoleColors();
-            Utility.SetConsoleBackgroundColor(Configuration.Global.GetValue<string>("term_color_grid"));
+            StoreConsoleColors();
+            SetConsoleBackgroundColor(Configuration.Global.GetValue<string>("term_color_grid"));
             char[] c;
             for (int i = 0; i <= modRows; i++)
             {
@@ -83,7 +118,7 @@ namespace MBC.App.Terminal
             }
 
             //Writing the selected border
-            Utility.SetConsoleBackgroundColor(Configuration.Global.GetValue<string>("term_color_selected"));
+            SetConsoleBackgroundColor(Configuration.Global.GetValue<string>("term_color_selected"));
             c = new char[width / modCols];
             for (int i = 0; i < c.Length; i++)
                 c[i] = ' ';
@@ -108,7 +143,7 @@ namespace MBC.App.Terminal
                     Console.Write(' ');
                 }
             }
-            Utility.RestoreConsoleColors();
+            RestoreConsoleColors();
         }
 
         
@@ -196,7 +231,11 @@ namespace MBC.App.Terminal
                 if (arrow)
                 {
                     if (cki.Modifiers.HasFlag(ConsoleModifiers.Shift))
-                        Utility.ListSwap<ConsoleModule>(runningMods, lastSel, selectedMod);
+                    {
+                        ConsoleModule tmp = runningMods[lastSel];
+                        runningMods[lastSel] = runningMods[selectedMod];
+                        runningMods[selectedMod] = tmp;
+                    }
                     RecalculateBounds();
                     WriteGridLines();
                     return true;
@@ -252,10 +291,10 @@ namespace MBC.App.Terminal
         /// just the input string that the user has entered instead of the entire line.</summary>
         private static void UpdateInputLineDisplay(bool complete)
         {
-            Utility.StoreConsoleColors();
+            StoreConsoleColors();
             if (complete)
             {
-                Utility.SetConsoleForegroundColor(Configuration.Global.GetValue<string>("term_color_input_display"));
+                SetConsoleForegroundColor(Configuration.Global.GetValue<string>("term_color_input_display"));
                 Console.SetCursorPosition(0, height - 2);
                 Console.Write("[Input]:> ");
             }
@@ -263,11 +302,11 @@ namespace MBC.App.Terminal
             {
                 Console.SetCursorPosition(10, height - 2);
             }
-            Utility.SetConsoleForegroundColor(Configuration.Global.GetValue<string>("term_color_input_text"));
+            SetConsoleForegroundColor(Configuration.Global.GetValue<string>("term_color_input_text"));
             Console.Write(new String(' ', width - 10));
             Console.SetCursorPosition(10, height - 2);
             Console.Write(inputLine);
-            Utility.RestoreConsoleColors();
+            RestoreConsoleColors();
         }
 
         static void Main(string[] args)

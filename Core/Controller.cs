@@ -264,7 +264,7 @@ namespace MBC.Core
         /// <summary>Generates a string containing the name and version of the encapsulated IBattleshipController</summary>
         public override string ToString()
         {
-            return Utility.ControllerToString(ibc);
+            return ibc.Name + " (v" + ibc.Version + ")";
         }
 
     }

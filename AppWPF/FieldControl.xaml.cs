@@ -243,7 +243,7 @@ namespace MBC.App.WPF
         public void SetField(Field field)
         {
             battlefield = field;
-            fieldLabel.Content = Utility.ControllerToString(field, controller);
+            fieldLabel.Content = field[controller].name + " (v" + field[controller].version + ")";
             MakeGrid(field.gameSize.Width, field.gameSize.Height);
             CreateShips();
             LayShips();

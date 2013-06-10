@@ -48,7 +48,7 @@ namespace MBC.App.WPF
             var entry = new RoundActivityEntry();
             entry.Number = roundActLogEntries.Count().ToString();
             entry.Action = RoundLog.GetActionStr(action.action);
-            entry.ControllerName = action.fieldState != null ? Utility.ControllerToString(action.fieldState, action.ibc) : "Null";
+            entry.ControllerName = action.fieldState != null ? action.fieldState[action.ibc].name + " (v" + action.fieldState[action.ibc].version + ")" : "Null";
             entry.Message = action.activityInfo;
             entry.Time = action.timeElapsed+"ms";
 
