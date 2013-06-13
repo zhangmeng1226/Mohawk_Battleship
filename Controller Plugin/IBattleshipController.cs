@@ -28,7 +28,7 @@ namespace MBC.Core
         /// <summary>Called when this controller is being placed in a match.</summary>
         /// <param name="matchInfo">Information about the match this controller is being placed in.</param>
         /// <seealso cref="MatchInfo"/>
-        void NewMatch(MatchInfo matchInfo);
+        void NewMatch(ControllerID thisId, MatchInfo matchInfo);
 
         /// <summary>Called when a new round in the match is commencing.</summary>
         void NewRound();

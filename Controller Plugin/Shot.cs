@@ -10,7 +10,7 @@ namespace MBC.Core
     /// the location of the Shot via Coordinates.
     /// </summary>
     /// <seealso cref="ControllerID"/>
-    public class Shot : IEquatable<Shot>
+    public class Shot : IEquatable<Shot>, IComparable<Shot>
     {
         private Coordinates coords;
         private ControllerID receiver;
@@ -92,6 +92,21 @@ namespace MBC.Core
         public static bool operator !=(Shot shot1, Shot shot2)
         {
             return !(shot1 == shot2);
+        }
+
+        /// <summary>
+        /// Determines the order between this Shot and another Shot.
+        /// </summary>
+        /// <param name="shot">The Shot to compare to.</param>
+        /// <returns>1 if this Shot is ordered higher, 0 if they are the same, -1 if this one preceeds the other.</returns>
+        public int CompareTo(Shot shot)
+        {
+            if (shot == null)
+            {
+                return 1;
+            }
+
+            return coords.CompareTo(shot.coords) + (receiver - shot.receiver);
         }
 
         /// <summary>

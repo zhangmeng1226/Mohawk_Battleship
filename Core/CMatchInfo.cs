@@ -15,8 +15,8 @@ namespace MBC.Core
     ///     <item><b>mbc_timeout</b> - The time in milliseconds of the maximum amount of time a method call from a controller interface will have
     ///     before they lose the Round.    
     ///     </item>
-    ///     <item><b>mbc_game_mode</b> - "classic", "salvo", "powered", "classic multi", "salvo multi", "powered multi"
-    ///     determines the game logic.
+    ///     <item><b>mbc_game_mode</b> - "classic", "salvo", or "powered", followed with a space, "multi" or "teams"
+    ///     determines the game logic. eg, "salvo multi teams" or "classic multi".
     ///     </item>
     /// </list>
     /// This class is an extension of the MatchInfo class, which cannot be constructed. This class provides
@@ -40,6 +40,18 @@ namespace MBC.Core
 
         public CMatchInfo(Configuration config, params Controller.ClassInfo[] controllerInfos)
         {
+            //Get the game mode from the Configuration.
+            DetermineGameMode(config);
+
+            //Make sure all of the controllers are compatible with the given game mode.
+            foreach (var controllerInfo in controllerInfos)
+            {
+                if (!controllerInfo.Capabilities.CompatibleWith(gameMode))
+                {
+                    throw new ControllerIncompatibleException(controllerInfo, gameMode);
+                }
+            }
+
             this.playerNames = new List<string>();
             foreach (var controllerInfo in controllerInfos)
             {
@@ -56,30 +68,31 @@ namespace MBC.Core
 
             //Configuration setting for the amount of time a controller is allowed per method invoke.
             methodTimeLimit = config.GetValue<int>("mbc_timeout");
+        }
 
-            gameMode = GameMode.Classic;
-            //Configuration setting for the kind of game mode this match will be set to.
-            switch (config.GetValue<string>("mbc_game_mode"))
+        private void DetermineGameMode(Configuration config)
+        {
+            string[] gameModeSplit = config.GetValue<string>("mbc_game_mode").Split(' ');
+            gameMode = 0;
+            foreach (var gmStr in gameModeSplit)
             {
-                //Add the game modes here as they are implemented...
-                case "classic":
-                    gameMode = GameMode.Classic;
-                    break;
-                case "classic multi":
-                    gameMode = GameMode.ClassicMulti;
-                    break;
-                default:
-                    config.SetValue<string>("mbc_game_mode", "classic");
-                    gameMode = GameMode.Classic;
-                    break;
-            }
-
-            //Make sure all of the controllers are compatible with the given game mode.
-            foreach (var controllerInfo in controllerInfos)
-            {
-                if (!controllerInfo.CompatibleModes.Contains(gameMode))
+                switch (gmStr)
                 {
-                    throw new ControllerIncompatibleException(controllerInfo, gameMode);
+                    case "classic":
+                        gameMode |= GameMode.Classic;
+                        break;
+                    case "salvo":
+                        gameMode |= GameMode.Salvo;
+                        throw new NotImplementedException("Salvo game mode does not exist yet.");
+                    case "powered":
+                        gameMode |= GameMode.Powered;
+                        throw new NotImplementedException("Powered game mode does not exist yet.");
+                    case "multi":
+                        gameMode |= GameMode.Multi;
+                        break;
+                    case "teams":
+                        gameMode |= GameMode.Teams;
+                        throw new NotImplementedException("Teams game mode does not exist yet.");
                 }
             }
         }

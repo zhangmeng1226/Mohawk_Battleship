@@ -31,7 +31,7 @@ namespace MBC.Core
         /// <summary>
         /// Constructs a new empty ShotList object.
         /// </summary>
-        public ShotList()
+        public ShotList(params ControllerID[] expectedIds)
         {
             shotHistory = new List<Shot>();
             shotsByReceiver = new Dictionary<ControllerID, List<Shot>>();
@@ -44,6 +44,10 @@ namespace MBC.Core
         public void Add(Shot shot)
         {
             shotHistory.Add(shot);
+            if (!shotsByReceiver.ContainsKey(shot.Receiver))
+            {
+                MakeReceiver(shot.Receiver);
+            }
             shotsByReceiver[shot.Receiver].Add(shot);
         }
 
@@ -58,6 +62,15 @@ namespace MBC.Core
                 shotHistory.Add(shot);
                 shotsByReceiver[shot.Receiver].Add(shot);
             }
+        }
+
+        /// <summary>
+        /// Creates a new empty internal list for Shot objects for a specific receiver ID.
+        /// </summary>
+        /// <param name="receiver">The ControllerID of the receiver to create the list for.</param>
+        public void MakeReceiver(ControllerID receiver)
+        {
+            shotsByReceiver[receiver] = new List<Shot>();
         }
 
         /// <summary>
@@ -287,15 +300,44 @@ namespace MBC.Core
 
         /// <summary>
         /// Removes the shots in this ShotList and adds the shots that were previously not made to
-        /// this ShotList up to the provided maximum Coordinates.
+        /// this ShotList up to the provided maximum Coordinates. This method will only invert shots
+        /// of known controller ids. They become known once a Shot is added to this ShotList, or if
+        /// they are specified with the AddReceiver() method.
         /// </summary>
         /// <param name="maxCoords">The maximum Coordinates to add shots not placed before.</param>
         public void Invert(Coordinates maxCoords)
         {
-            foreach (var receiver in shotsByReceiver)
+            //The list of every shot (unorganized) to use for replacement.
+            var totalList = new List<Shot>();
+
+            foreach (var receiverPair in shotsByReceiver)
             {
-                
+                var invertedShots = new List<Shot>();
+
+                //Populate the inverted shots list for a certain receiver up to the maxCoords.
+                for (var x = 0; x <= maxCoords.X; x++)
+                {
+                    for (var y = 0; y <= maxCoords.Y; y++)
+                    {
+                        var newShot = new Shot(receiverPair.Key);
+                        newShot.Coordinates = new Coordinates(x, y);
+                        invertedShots.Add(newShot);
+                    }
+                }
+
+                //Subtract the inverted shots list for a certain receiver to get the inverted list.
+                foreach (var receiverShot in receiverPair.Value)
+                {
+                    invertedShots.Remove(receiverShot);
+                }
+
+                //Substitute this ShotList's list for that receiver for that one.
+                shotsByReceiver[receiverPair.Key] = invertedShots;
+                totalList.AddRange(invertedShots);
             }
+
+            //Replace the entire shot contents of this ShotList with the inverted one.
+            shotHistory = totalList;
         }
 
         /// <summary>

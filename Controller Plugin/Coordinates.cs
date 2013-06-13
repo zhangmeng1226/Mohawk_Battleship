@@ -19,7 +19,7 @@ namespace MBC.Core
     /// <item><=</item>
     /// </list>
     /// </summary>
-    public struct Coordinates : IEquatable<Coordinates>
+    public struct Coordinates : IEquatable<Coordinates>, IComparable<Coordinates>
     {
         private int x;
         private int y;
@@ -156,6 +156,20 @@ namespace MBC.Core
         public override string ToString()
         {
             return "("+x+", "+y+")";
+        }
+
+        /// <summary>
+        /// Compares the order between these Coordinates with another set of Coordinates.
+        /// </summary>
+        /// <param name="coords">Coordinates to compare to.</param>
+        /// <returns>1 if these Coordinates are ordered higher, 0 if they are equal, -1 if these Coordinates preceed the other.</returns>
+        public int CompareTo(Coordinates coords)
+        {
+            if (coords == null)
+            {
+                return 1;
+            }
+            return (y - coords.y) + (x - coords.x);
         }
 
         /// <summary>

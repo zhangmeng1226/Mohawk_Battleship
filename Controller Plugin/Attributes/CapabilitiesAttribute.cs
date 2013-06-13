@@ -32,5 +32,22 @@ namespace MBC.Core.Attributes
                 return modesDesignedFor;
             }
         }
+
+        /// <summary>
+        /// Checks whether the given GameMode is compatible with a controller.
+        /// </summary>
+        /// <param name="mode">The GameMode to check</param>
+        /// <returns>true if the GameMode is compatible, false otherwise.</returns>
+        public bool CompatibleWith(GameMode mode)
+        {
+            foreach (var givenModes in modesDesignedFor)
+            {
+                if ((mode & givenModes) != givenModes)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
     }
 }

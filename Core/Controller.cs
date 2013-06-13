@@ -235,11 +235,11 @@ namespace MBC.Core
                 }
             }
 
-            public List<GameMode> CompatibleModes
+            public CapabilitiesAttribute Capabilities
             {
                 get
                 {
-                    return capableAttrib.Capabilities;
+                    return capableAttrib;
                 }
             }
 
@@ -554,7 +554,7 @@ namespace MBC.Core
             currentScore = 0;
 
             var thread = new Thread(() =>
-            controllerInterface.NewMatch(matchInfo));
+            controllerInterface.NewMatch(idNum, matchInfo));
 
             HandleThread(thread, "NewMatch");
         }
