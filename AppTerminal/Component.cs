@@ -16,7 +16,7 @@ namespace MBC.App.Terminal
         private ConsoleColorSet unselectedColors;
         private ConsoleColorSet selectedColors;
         private bool selectable;
-        private Coordinate2D coords;
+        private Coordinates2D coords;
         private Size2D size;
 
         public Component()
@@ -25,7 +25,7 @@ namespace MBC.App.Terminal
             selectedColors = new ConsoleColorSet(ConsoleColor.Black, ConsoleColor.White);
             unselectedColors = new ConsoleColorSet(ConsoleColor.White, ConsoleColor.Black);
             selectable = false;
-            coords = new Coordinate2D(0, 0);
+            coords = new Coordinates2D(0, 0);
             size = new Size2D(0, 0);
         }
 
@@ -131,7 +131,7 @@ namespace MBC.App.Terminal
             }
         }
 
-        public virtual Coordinate2D Location
+        public virtual Coordinates2D Location
         {
             get
             {

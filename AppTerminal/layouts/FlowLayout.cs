@@ -81,7 +81,7 @@ namespace MBC.App.Terminal.Layouts
         private void AlignLeft()
         {
             Size2D tSize = new Size2D(0, 0);
-            Coordinate2D coordPlacement = new Coordinate2D(0, 0);
+            Coordinates2D coordPlacement = new Coordinates2D(0, 0);
             int curHeight = 0;
             int afterPlacementX;
             foreach (var comp in LayoutComponent.Children)

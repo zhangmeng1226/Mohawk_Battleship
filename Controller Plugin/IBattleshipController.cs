@@ -1,103 +1,86 @@
-﻿namespace MBC.Core
-{
-    using System;
-    using System.Collections.ObjectModel;
-    using System.Drawing;
-    using System.Diagnostics;
-    using System.Collections.Generic;
+﻿using System;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
+using System.Collections.Generic;
 
-    
-    /// <summary>This interface is to be implemented by any class that is to participate in a battleship competition.
+namespace MBC.Core
+{
+    /// <summary>
+    /// A delegate defining a method that receives a string.
+    /// </summary>
+    /// <param name="message">The message that this controller interface wants to output.</param>
+    public delegate void StringOutputHandler(string message);
+
+    /// <summary>This interface is to be implemented by any class that is to participate in a classic or salvo
+    /// match of battleship (see <see cref="GameMode"/>).
     /// 
-    /// The various methods in this class are called at times during the battleship competition. Read over the
+    /// The various methods in this class are called at times during the battleship game. Read over the
     /// documentation for each method to understand when these methods are invoked.
     /// </summary>
-    /// 
-     
     public interface IBattleshipController
     {
-        
-        /// <summary>Gets a string that represents the name of this IBattleshipController.</summary>
-         
-        string Name
-        {
-            get;
-        }
 
-        
-        /// <summary>Gets a Version object that represents the assembly version of this IBattleshipController.</summary>
-         
-        Version Version
-        {
-            get;
-        }
+        /// <summary>
+        /// This event should be invoked when the controller interface wants to output a message.
+        /// </summary>
+        event StringOutputHandler ControllerMessageEvent;
 
-        
-        /// <summary>Called when this IBattleshipController has been matched up with another IBattleshipController
-        /// on the field.</summary>
-        /// <param name="opponent">The name of the opposing IBattleshipController.</param>
-         
-        void NewMatch(string opponent);
+        /// <summary>Called when this controller is being placed in a match.</summary>
+        /// <param name="matchInfo">Information about the match this controller is being placed in.</param>
+        /// <seealso cref="MatchInfo"/>
+        void NewMatch(MatchInfo matchInfo);
 
-        
-        /// <summary>Called when a new game (round) is commencing.</summary>
-        /// <param name="size">The size of the battlefield.</param>
-        /// <param name="timeSpan">The time that this IBattleshipController has to finish an invoked method.</param>
-        /// <param name="rand">A Random object that is to be used by this IBattleshipController.
-        /// Do not use any other Random object. This object is created specifically for being able to create
-        /// replays.</param>
-         
-        void NewGame(Size size, TimeSpan timeSpan, Random rand);
+        /// <summary>Called when a new round in the match is commencing.</summary>
+        void NewRound();
 
-        
-        /// <summary>Called when this IBattleshipOpponent must place their ships. Utilize the Ship objects in the
+        /// <summary>Called when this controller must place their ships. Utilize the Ship objects in the
         /// given collection to place ships. Do not provide invalid ship placements (overlapping, bad coords, etc.)</summary>
         /// <param name="ships">A collection of ships to place.</param>
-         
-        void PlaceShips(ReadOnlyCollection<Ship> ships);
+        void PlaceShips(ShipList ships);
 
-        
-        /// <summary>Called when this IBattleshipOpponent has the opportunity to make a shot in their turn.</summary>
-        /// <returns>The shot to be made.</returns>
-         
-        Point GetShot();
+        /// <summary>
+        /// Called when this controller has the opportunity to make a shot in their turn. The given
+        /// Shot object must have its properties modified to whatever is desired, keeping in mind the rules
+        /// of a round.
+        /// </summary>
+        /// <param name="shot">The Shot given to this controller to modify.</param>
+        /// <seealso cref="Shot"/>
+        void MakeShot(Shot shot);
 
-        
-        /// <summary>Called when this IBattleshipOpponent is being shot at by the opponent.</summary>
-        /// <param name="shot">The shot the opponent has made against this IBattleshipOpponent</param>
-         
-        void OpponentShot(Point shot);
+        /// <summary>Called when this controller is being shot at by another controller.</summary>
+        /// <param name="shot">The shot the opponent has made against this controller</param>
+        /// <seealso cref="Shot"/>
+        void OpponentShot(Shot shot);
 
-        
-        /// <summary>Called when this IBattleshipOpponent has hit an opponent ship from the Point given by a previous
-        /// call to GetShot().</summary>
-        /// <param name="shot">The Point that made a ship hit on the opponent</param>
-        /// <param name="sunk">True if the shot had sunk an opponent ship.</param>
-         
-        void ShotHit(Point shot, bool sunk);
+        /// <summary>Called when this controller has hit an opposing Ship from the Shot given by a previous
+        /// call to MakeShot().</summary>
+        /// <param name="shot">The Shot that made a ship hit on a controller.</param>
+        /// <param name="sunk">True if the shot had sunk an opposing ship.</param>
+        /// <seealso cref="Shot"/>
+        void ShotHit(Shot shot, bool sunk);
 
-        
-        /// <summary>Called when this IBattleshipOpponent did not hit an opponent ship from the Point given by a previous
-        /// call to GetShot().</summary>
-        /// <param name="shot">The Point that missed.</param>
-         
-        void ShotMiss(Point shot);
+        /// <summary>Called when this controller did not hit an opposing ship from the Shot given by a previous
+        /// call to MakeShot().</summary>
+        /// <param name="shot">The Shot that missed.</param>
+        /// <seealso cref="Shot"/>
+        void ShotMiss(Shot shot);
 
-        
+        /// <summary>
+        /// Called when an opposing controller has been removed from the round and has lost.
+        /// </summary>
+        /// <param name="destroyedID">The ControllerID of the controller that lost.</param>
+        /// <seealso cref="ControllerID"/>
+        void OpponentDestroyed(ControllerID destroyedID);
+
          /// <summary>
-         /// Called when a game (round) is over. In this case, this IBattleshipController has won the round.
+         /// Called when a round is over. In this case, this controller has won the round.
          /// </summary>
-        void GameWon();
+        void RoundWon();
 
-        
-        /// <summary>Called when a game (round) is over. In this case, this IBattelshipController has lost the round.</summary>
-         
-        void GameLost();
+        /// <summary>Called when a round is over. In this case, this controller has lost the round.</summary>
+        void RoundLost();
 
-        
-        /// <summary>Called when a competition matchup is over. Note that a matchup can start up again with the same
-        /// parameters.</summary>
-         
+        /// <summary>Called when a matchup has ended.</summary>
         void MatchOver();
     }
 }

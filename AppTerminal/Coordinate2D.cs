@@ -5,13 +5,13 @@ using System.Text;
 
 namespace MBC.App.Terminal
 {
-    public class Coordinate2D
+    public class Coordinates2D
     {
 
         private int x;
         private int y;
 
-        public Coordinate2D(int coordX, int coordY)
+        public Coordinates2D(int coordX, int coordY)
         {
             x = coordX;
             y = coordY;

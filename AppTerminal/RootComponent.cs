@@ -19,7 +19,7 @@ namespace MBC.App.Terminal
             }
         }
 
-        public override Coordinate2D Location
+        public override Coordinates2D Location
         {
             get
             {

@@ -42,21 +42,29 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="accolade\AccoladeProcessor.cs" />
-    <Compile Include="accolade\Comeback.cs" />
-    <Compile Include="accolade\Domination.cs" />
-    <Compile Include="accolade\Fast.cs" />
-    <Compile Include="accolade\HeadToHead.cs" />
-    <Compile Include="accolade\Intense.cs" />
-    <Compile Include="accolade\Slow.cs" />
-    <Compile Include="Competition.cs" />
+    <Compile Include="accolades\Accolade.cs" />
+    <Compile Include="accolades\AccoladeGenerator.cs" />
+    <Compile Include="ClassicRound.cs" />
     <Compile Include="Controller.cs" />
-    <Compile Include="Field.cs" />
+    <Compile Include="ControllerTimeoutException.cs" />
+    <Compile Include="events\ControllerDestroyedShipEvent.cs" />
+    <Compile Include="events\ControllerHitShipEvent.cs" />
+    <Compile Include="events\ControllerLostEvent.cs" />
+    <Compile Include="events\ControllerShipsPlacedEvent.cs" />
+    <Compile Include="events\ControllerShotEvent.cs" />
+    <Compile Include="events\ControllerTimeoutEvent.cs" />
+    <Compile Include="events\ControllerWonEvent.cs" />
+    <Compile Include="events\Event.cs" />
+    <Compile Include="events\RoundAccoladeEvent.cs" />
+    <Compile Include="events\RoundBeginEvent.cs" />
+    <Compile Include="events\RoundControllerEvent.cs" />
+    <Compile Include="events\RoundEndEvent.cs" />
+    <Compile Include="events\RoundEvent.cs" />
+    <Compile Include="CMatchInfo.cs" />
+    <Compile Include="Match.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RoundLog.cs" />
+    <Compile Include="Round.cs" />
     <Compile Include="util\Configuration.cs" />
-    <Compile Include="util\ControllerFactory.cs" />
-    <Compile Include="util\Utility.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Controller Plugin\Controller Plugin.csproj">
@@ -64,6 +72,7 @@
       <Name>Controller Plugin</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

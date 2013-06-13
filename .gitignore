@@ -1,11 +1,13 @@
 /config.ini
 
 /TODO.txt
+/doxygen_*
 
 /bots
 /bin
 /configs
 /docs
+/work on later
 
 /AppTerminal/obj
 /Core/obj

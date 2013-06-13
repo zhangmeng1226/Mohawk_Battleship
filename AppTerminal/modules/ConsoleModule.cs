@@ -205,16 +205,16 @@ namespace MBC.App.Terminal.Modules
                 ConsoleColorSet colors = comp == rootComponent.Selected ? comp.SelectedColors : comp.UnselectedColors;
                 Console.BackgroundColor = colors.Background;
                 Console.ForegroundColor = colors.Foreground;
-                Coordinate2D absolute = GetAbsoluteCoordFromComponent(comp);
+                Coordinates2D absolute = GetAbsoluteCoordFromComponent(comp);
                 curX = absolute.X;
                 curY = absolute.Y;
                 WriteText(comp.Text, comp.TextFormatParameters);
             }
         }
 
-        private Coordinate2D GetAbsoluteCoordFromComponent(Component comp)
+        private Coordinates2D GetAbsoluteCoordFromComponent(Component comp)
         {
-            Coordinate2D coords = new Coordinate2D(comp.Location.X, comp.Location.Y);
+            Coordinates2D coords = new Coordinates2D(comp.Location.X, comp.Location.Y);
             Component curParent = comp.Parent;
             while (curParent != null)
             {

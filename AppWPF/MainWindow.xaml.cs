@@ -43,11 +43,11 @@ namespace MBC.App.WPF
         /// Adds a RoundActivity to the display that shows information about the current RoundLog.
         /// </summary>
         /// <param name="action">The RoundActivity to append.</param>
-        private void AddRoundActivity(RoundLog.RoundActivity action)
+        private void AddRoundActivity(Round.Event action)
         {
             var entry = new RoundActivityEntry();
             entry.Number = roundActLogEntries.Count().ToString();
-            entry.Action = RoundLog.GetActionStr(action.action);
+            entry.Action = Round.GetActionStr(action.action);
             entry.ControllerName = action.fieldState != null ? action.fieldState[action.ibc].name + " (v" + action.fieldState[action.ibc].version + ")" : "Null";
             entry.Message = action.activityInfo;
             entry.Time = action.timeElapsed+"ms";
@@ -59,16 +59,16 @@ namespace MBC.App.WPF
 
             entry.Accolades = new Grid();
             var colNum = 0;
-            foreach (RoundLog.RoundAccolade acc in action.accoladeTimelined)
+            foreach (Round.RoundAccolade acc in action.accoladeTimelined)
             {
                 var col = new ColumnDefinition();
                 col.Width = new GridLength(1, GridUnitType.Auto);
                 entry.Accolades.ColumnDefinitions.Add(col);
 
-                var img = (Image)FindResource("Acc" + RoundLog.GetAccoladeStr(acc) + "Img");
+                var img = (Image)FindResource("Acc" + Round.GetAccoladeStr(acc) + "Img");
 
                 var tip = new ToolTip();
-                tip.Content = RoundLog.GetAccoladeStr(acc);
+                tip.Content = Round.GetAccoladeStr(acc);
 
                 img.ToolTip = tip;
                 Grid.SetColumn(img, colNum++);

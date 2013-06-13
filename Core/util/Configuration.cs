@@ -273,15 +273,15 @@ namespace MBC.Core
                     tLine[0] = tLine[0].Trim();
                     tLine[1] = tLine[1].Trim();
 
-                    int intVal = 0;
+                    long longVal = 0;
                     double doubVal = 0d;
 
-                    if (int.TryParse(tLine[1], out intVal) || double.TryParse(tLine[1], out doubVal))
+                    if (long.TryParse(tLine[1], out longVal) || double.TryParse(tLine[1], out doubVal))
                     {
-                        if (intVal == doubVal)
+                        if (longVal == doubVal)
                         {
                             //Must be integer (no decimal point)
-                            simpleConfig.Add(tLine[0], intVal);
+                            simpleConfig.Add(tLine[0], longVal);
                         }
                         else
                         {

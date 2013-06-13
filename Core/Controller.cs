@@ -1,271 +1,683 @@
-﻿using System;
+﻿using MBC.Core.Attributes;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Diagnostics;
-using System.Drawing;
-using System.Collections.ObjectModel;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Text;
+using System.Threading;
 
 namespace MBC.Core
 {
-    
-    /// <summary>The Controller class wraps around an IBattleshipController object and provides
-    /// various utilities that are used by a Competition object.
-    /// 
-    /// This class is almost exclusively used by the Competition class.
-    /// 
-    /// There are three constants available that should be used when determining the side the Controller
-    /// is on: None, Red, Blue. Use None as an indicator for no controller.
+    /// <summary>
+    /// The Controller class manages the controller Type objects which are classes that implement the
+    /// IBattleshipController interface. Statically, it handles loading these classes and provides the name
+    /// and version of these classes through a list of generated controller classes that are used to
+    /// determine the available controllers.<br/>
+    /// Use the following methods in this order to load and retrieve information for controllers:
+    /// <list type="number">
+    ///     <item>LoadControllerFolder() or AddControllerFolder() - Populates the list of ClassInfo objects that contain the Type objects required to create controller interfaces.</item>
+    ///     <item>GetControllerList() - Gets the list of ClassInfo objects that have been constructed.</item>
+    ///     <item>GetControllersFromName() - Gets a list of ClassInfo objects from a name.</item>
+    ///     <item>GetController() - Gets a ClassInfo object from a name and version number.</item>
+    /// </list>
+    /// Configuration keys:
+    /// <list type="bullet">
+    ///     <item><b>mbc_controller_thread_timeout</b> - The time to wait before aborting a called method in a controller interface.
+    ///     This value must be greater than the mbc_match_timeout value.
+    ///     </item>
+    /// </list>
     /// </summary>
-    public class Controller
+    /// <seealso cref="ClassInfo"/>
+    public partial class Controller
     {
-        /// <summary>
-        /// Number used in Point objects to signify a loss (timed out).
-        /// </summary>
-        public const int MagicNumberLose = -50;
+        //This part of the Controller class deals with loading controllers from DLLs.
 
-        /// <summary>
-        /// Integer representing no controller.
-        /// </summary>
-        public const int None = -1;
-
-        /// <summary>
-        /// Integer representing the first controller.
-        /// </summary>
-        public const int Red = 0;
-
-        /// <summary>
-        /// Integer representing the second controller.
-        /// </summary>
-        public const int Blue = 1;
-
-        /// <summary>
-        /// The class implementing the IBattleshipOpponent interface playing the game.
-        /// </summary>
-        public IBattleshipController ibc;
-        private int fieldIdx;
-        private Stopwatch stopwatch; //Used to time each call to the iOpponent
-        private Field field;
-        private Field.ControllerInfo info;
-
-        
-        /// <summary>Sets up this Controller</summary>
-        /// <param name="ic">The object that implements the IBattleshipController interface to play the game.</param>
-        /// <param name="f">The Field object this Controller will make changes to.</param>
-        /// <param name="idx">The index number in the ControllerInfo array in the Field that this Controller represents.</param>
-        /// <seealso cref="Field"/>
-        public Controller(IBattleshipController ic, Field f, int idx)
+        /// <summary>Sets default configuration values for keys that relate to this class.
+        /// Should be called before using the global Configuration.Default object.</summary>
+        /// <seealso cref="Configuration"/>
+        public static void SetConfigDefaults()
         {
-            ibc = ic;
-            field = f;
-
-            info = f[idx];
-
-            fieldIdx = idx;
-
-            info.score = 0;
-            info.shotsMade = new List<Point>();
-            stopwatch = new Stopwatch();
+            Configuration.Default.SetValue<int>("mbc_controller_thread_timeout", 1000);
         }
 
-        
-        /// <summary>Gets the ControllerInfo index this object represents in the Field.</summary>
-        /// <seealso cref="Field"/>
-        public int FieldIDX
-        {
-            get { return fieldIdx; }
-        }
+        private static Dictionary<NameVersionPair, ClassInfo> loadedControllerClasses;
 
-        
-        /// <returns>The information related to this controller on the battlefield</returns>
-        /// <seealso cref="Field.ControllerInfo"/>
-        public Field.ControllerInfo GetFieldInfo()
+        /// <summary>
+        /// Loads all of the .dll files located in a given directory and stores information about all 
+        /// of the controller classes implementing the IBattleshipController interface for future use.
+        /// </summary>
+        /// <param name="path">The absolute path name to a folder containing DLL files.</param>
+        /// <exception cref="DirectoryNotFoundException">The given directory was not found or was a relative path.</exception>
+        public static void AddControllerFolder(string path)
         {
-            return info;
-        }
+            //filePaths should be a list of absolute paths to .dll files
+            var filePaths = new List<string>(Directory.GetFiles(path, "*.dll"));
 
-        
-        /// <returns>The time the last action took for this controller to perform.</returns>
-        public long GetTimeTaken()
-        {
-            return stopwatch.ElapsedMilliseconds;
-        }
-
-        
-        /// <summary>Checks whether all of the ships have been placed in valid locations</summary>
-        /// <returns>True if all ships are placed, not conflicting each other, and in valid locations.
-        /// False if otherwise</returns>
-        public bool ShipsReady()
-        {
-            foreach (Ship s1 in info.ships)
+            foreach (var file in filePaths)
             {
-
-                if (!s1.IsPlaced || !s1.IsValid(field.gameSize))
-                    return false;
-
-                foreach (Ship s2 in info.ships)
+                try
                 {
-                    if (s2 == s1) continue;
-                    if (s2.ConflictsWith(s1)) return false;
+                    var dllInfo = Assembly.LoadFile(file);
+                    var types = dllInfo.GetTypes();
+
+                    foreach (Type cont in types)
+                    {
+                        //Iterating through each class in this assembly.
+                        if (cont.GetInterface("MBC.Core.IBattleshipController") != null)
+                        {
+                            NameAttribute nameAttrib = (NameAttribute)cont.GetCustomAttributes(typeof(NameAttribute), false)[0];
+                            VersionAttribute verAttrib = (VersionAttribute)cont.GetCustomAttributes(typeof(VersionAttribute), false)[0];
+                            if (nameAttrib != null && verAttrib != null)
+                            {
+                                //Split the absolute path. We only want the name of the DLL file.
+                                string[] pathSplit = file.Split('\\');
+
+                                ClassInfo info = new ClassInfo(nameAttrib, verAttrib,
+                                    (DescriptionAttribute)cont.GetCustomAttributes(typeof(DescriptionAttribute), false)[0],
+                                    (AuthorAttribute)cont.GetCustomAttributes(typeof(AuthorAttribute), false)[0],
+                                    (AcademicInfoAttribute)cont.GetCustomAttributes(typeof(AcademicInfoAttribute), false)[0],
+                                    (CapabilitiesAttribute)cont.GetCustomAttributes(typeof(CapabilitiesAttribute), false)[0],
+                                    pathSplit[pathSplit.Count() - 1],
+                                    cont);
+                                loadedControllerClasses[new NameVersionPair(nameAttrib.Name, verAttrib.Version)] = info;
+                            }
+                            break;
+                        }
+                    }
+                }
+                catch
+                {
+                    //Unable to load a .DLL file; we don't care about this assembly.
                 }
             }
-            return true;
         }
 
-        
-        /// <summary>Notifys the controller that they are matched up with a new opponent.</summary>
-        /// <param name="opponent">The name of the controller as a string</param>
-        public void NewMatch(string opponent)
+        /// <summary>
+        /// Clears the currently loaded controllers from the internal list, loads all of the .dll files
+        /// located in a given directory, and stores information about all of the controller classes
+        /// implementing the IBattleshipController interface for future use.
+        /// </summary>
+        /// <param name="path">The absolute path name to a folder containing DLL files.</param>
+        /// <exception cref="DirectoryNotFoundException">The given directory was not found or was a relative path.</exception>
+        public static void LoadControllerFolder(string path)
         {
-            ibc.NewMatch(opponent);
+            loadedControllerClasses = new Dictionary<NameVersionPair, ClassInfo>();
+
+            AddControllerFolder(path);
         }
 
-        
-        /// <summary>Determines if the stopwatch time passed the maximum time allowed.</summary>
-        /// <returns>True if the controller ran out of time. False if they didn't</returns>
-        public bool RanOutOfTime()
+        /// <summary>
+        /// Retrieves a list of ClassInfo objects that represent the controller classes that have been loaded
+        /// from DLL files.
+        /// </summary>
+        /// <returns>A List of ClassInfo objects.</returns>
+        public static List<ClassInfo> GetControllerList()
         {
-            if (stopwatch.Elapsed > field.timeoutLimit)
-                return true;
-            return false;
+            return loadedControllerClasses.Values.ToList();
         }
 
-        
-        /// <summary>Resets certain data for a new game and notifys the controller of the new game being commenced</summary>
-        /// <returns>True if the controller ran out of time. False if they didn't</returns>
-        public bool NewGame()
+        /// <summary>
+        /// Retrieves a list of ClassInfo objects with the same name given. The only difference between
+        /// controllers with identical names is the version number.
+        /// </summary>
+        /// <param name="name">The name of a controller.</param>
+        /// <returns>A List of ClassInfo objects that have the same name given.</returns>
+        public static List<ClassInfo> GetControllersFromName(string name)
         {
-            stopwatch.Reset();
-            info.shotsMade.Clear();
-            stopwatch.Start();
-
-            ibc.NewGame(field.gameSize, field.timeoutLimit, field.fixedRandom);
-
-            stopwatch.Stop();
-            return RanOutOfTime();
+            var controllers = new List<ClassInfo>();
+            foreach (var info in loadedControllerClasses.ToList())
+            {
+                if (info.Key.Name == name)
+                {
+                    controllers.Add(info.Value);
+                }
+            }
+            return controllers;
         }
 
-        
-        /// <summary>Notifys the controller to make ship placements.</summary>
-        /// <param name="newShips">A list of ships to place</param>
-        /// <returns>True if the controller ran out of time. False if they didn't</returns>
-        public bool PlaceShips(List<Ship> newShips)
+        /// <summary>
+        /// Gets a ClassInfo object from the given name and version parameters. This returns null if no such
+        /// controller with the given information exists.
+        /// </summary>
+        /// <param name="name">A string of the name of the controller to get.</param>
+        /// <param name="ver">The Version of the controller to get.</param>
+        /// <returns>A ClassInfo object of the resulting controller. null if there was no such controller
+        /// found.</returns>
+        public static ClassInfo GetController(string name, Version ver)
         {
-            info.ships = newShips;
-            stopwatch.Start();
-            ibc.PlaceShips(info.ships.AsReadOnly());
-            stopwatch.Stop();
-            return RanOutOfTime();
+            ClassInfo result;
+            loadedControllerClasses.TryGetValue(new NameVersionPair(name, ver), out result);
+            return result;
         }
 
-        
-        /// <returns>The ship at point p. Null if there is no ship.</returns>
-        public Ship GetShipAtPoint(Point p)
+        /// <summary>
+        /// Provides information about a controller interface that has been loaded from a DLL file.
+        /// </summary>
+        public class ClassInfo
         {
-            foreach (Ship s in info.ships)
-                if (s.IsAt(p))
-                    return s;
-            return null;
+            //The attributes loaded from the controller class.
+            private NameAttribute nameAttrib;
+            private VersionAttribute verAttrib;
+            private DescriptionAttribute descAttrib;
+            private AuthorAttribute authorAttrib;
+            private AcademicInfoAttribute academicAttrib;
+            private CapabilitiesAttribute capableAttrib;
+
+            private string dllFile;
+            private Type typeInterface;
+
+            /// <summary>
+            /// Constructs a ClassInfo object with the given values.
+            /// </summary>
+            /// <param name="name">The name of the controller.</param>
+            /// <param name="ver">The version number of the controller.</param>
+            /// <param name="dll">The file name of the DLL that this controller was loaded in.</param>
+            /// <param name="inter">The class implementing the IBattleshipInterface (un-constructed state).</param>
+            public ClassInfo(NameAttribute name, VersionAttribute ver, DescriptionAttribute desc,
+                AuthorAttribute auth, AcademicInfoAttribute academic, CapabilitiesAttribute capabilities, 
+                string dll, Type inter)
+            {
+                this.nameAttrib = name;
+                this.verAttrib = ver;
+                this.descAttrib = desc;
+                this.authorAttrib = auth;
+                this.academicAttrib = academic;
+                this.capableAttrib = capabilities;
+                this.dllFile = dll;
+                this.typeInterface = inter;
+            }
+
+            /// <summary>
+            /// Gets the name of this controller.
+            /// </summary>
+            public string Name
+            {
+                get
+                {
+                    return nameAttrib.Name;
+                }
+            }
+
+            /// <summary>
+            /// Gets the version number of this controller.
+            /// </summary>
+            public Version Version
+            {
+                get
+                {
+                    return verAttrib.Version;
+                }
+            }
+
+            /// <summary>
+            /// Gets a string describing this controller.
+            /// </summary>
+            public string Description
+            {
+                get
+                {
+                    return descAttrib.Description;
+                }
+            }
+
+            /// <summary>
+            /// Gets an AuthorAttribute class that contains information about the author.
+            /// </summary>
+            /// <seealso cref="AuthorAttribute"/>
+            public AuthorAttribute AuthorInfo
+            {
+                get
+                {
+                    return authorAttrib;
+                }
+            }
+
+            public List<GameMode> CompatibleModes
+            {
+                get
+                {
+                    return capableAttrib.Capabilities;
+                }
+            }
+
+            /// <summary>
+            /// Gets an AcademicInfoAttribute class that contains information about the author's academics.
+            /// </summary>
+            /// <seealso cref="AcademicInfoAttribute"/>
+            public AcademicInfoAttribute AcademicInfo
+            {
+                get
+                {
+                    return academicAttrib;
+                }
+            }
+
+            /// <summary>
+            /// Gets the file name of the dll that this controller originates from.
+            /// </summary>
+            public string DLLFileName
+            {
+                get
+                {
+                    return dllFile;
+                }
+            }
+
+            /// <summary>
+            /// Gets the type class for this controller.
+            /// </summary>
+            public Type Controller
+            {
+                get
+                {
+                    return typeInterface;
+                }
+            }
+
+            /// <summary>
+            /// Generates and returns a string representation for this controller.
+            /// </summary>
+            public override string ToString()
+            {
+                return Name + " v(" + Version.ToString() + ")";
+            }
         }
 
-        
-        /// <returns>True if the controller is still in the match, false if the controller has lost</returns>
-        public bool IsAlive(List<Point> shots)
+        /// <summary>
+        /// A NameVersionPair object identifies a unique controller type. There can exist controllers
+        /// with the same name or with the same version, but not both. NameVersionPair objects
+        /// are used as keys for the internally used dictionary to store Controller ClassInfo objects.
+        /// </summary>
+        private class NameVersionPair : IEquatable<NameVersionPair>
         {
-            foreach (Ship s in info.ships)
-                if (!s.IsSunk(shots))
-                    return true;
-            return false;
-        }
+            private string name;
+            private Version version;
 
-        
-        /// <summary>Asks for the controller's shot. ShootAt will repeatedly request the shot
-        /// until it hasn't made the same shot twice.</summary>
-        /// <param name="opponent">The opposing Controller to "shoot at"</param>
-        /// <returns>The point the controller has shot at. If the controller ran out of time,
-        /// a point at (LOSE_MAGIC_NUMBER, LOSE_MAGIC_NUMBER) will be returned instead.</returns>
-        public Point ShootAt(Controller opponent)
+            /// <summary>
+            /// Initializes this NameVersionPair with the given values.
+            /// </summary>
+            /// <param name="name">The name of the controller.</param>
+            /// <param name="version">The version number of the controller.</param>
+            public NameVersionPair(string name, Version version)
+            {
+                this.name = name;
+                this.version = version;
+            }
+
+            /// <summary>
+            /// Gets the string representation of the name of a controller.
+            /// </summary>
+            public string Name
+            {
+                get
+                {
+                    return name;
+                }
+            }
+
+            /// <summary>
+            /// Gets the Version object that identifies the version associated with this controller.
+            /// </summary>
+            public Version Version
+            {
+                get
+                {
+                    return version;
+                }
+            }
+
+            /// <summary>
+            /// Returns a value that indicates whether or not this NameVersionPair is equal to another given
+            /// NameVersionPair.
+            /// </summary>
+            /// <param name="obj">The NameVersionPair to compare to.</param>
+            /// <returns>true if the values of this NameVersionPair is the same as the other. false otherwise.</returns>
+            public bool Equals(NameVersionPair obj)
+            {
+                return obj.name == name && version.Equals(obj.version);
+            }
+        }
+    }
+
+    /// <summary>
+    /// The Controller class also represents a loaded controller implementing the IBattleshipController class
+    /// and wraps this class to provide various utilities such as timing.
+    /// </summary>
+    public partial class Controller
+    {
+        //This part of the Controller class deals with interface-wrapping Controller objects
+
+        private IBattleshipController controllerInterface;
+        private ClassInfo controllerInfo;
+        private NameVersionPair identifier;
+
+        private MatchInfo matchInfo;
+
+        private int currentScore;
+
+        private ShipList ships;
+
+        private ControllerID idNum;
+
+        private Stopwatch timeElapsed;
+
+        /// <summary>
+        /// Invoked whenever the underlying controller interface wants to output a message string.
+        /// </summary>
+        public event StringOutputHandler ControllerMessageEvent;
+
+        /// <summary>
+        /// Constructs a new Controller object with the given ClassInfo controller information and MatchInfo.
+        /// </summary>
+        /// <param name="targetControllerInfo">The ClassInfo to create the object from.</param>
+        /// <param name="matchInfo">The MatchInfo to set the behaviour of this Controller for.</param>
+        public Controller(ClassInfo targetControllerInfo, MatchInfo matchInfo)
         {
-            stopwatch.Start();
-            Point shot = ibc.GetShot();
-            stopwatch.Stop();
+            this.matchInfo = matchInfo;
+            this.controllerInfo = targetControllerInfo;
 
-            if (shot.X < 0)
-                shot.X = 0;
-            if (shot.Y < 0)
-                shot.Y = 0;
-
-            if (RanOutOfTime())
-                return new Point(MagicNumberLose, MagicNumberLose);
-
-            if (info.shotsMade.Where(s => s.X == shot.X && s.Y == shot.Y).Any())
-                return ShootAt(opponent);
-
-            info.shotsMade.Add(shot);
-            return shot;
+            controllerInterface = (IBattleshipController)Activator.CreateInstance(targetControllerInfo.Controller);
+            controllerInterface.ControllerMessageEvent += ReceiveMessage;
+            identifier = new NameVersionPair(controllerInfo.Name, controllerInfo.Version);
         }
 
-        /// <summary>Notifys the controller that a shot has been made by the other opponent at
-        /// a certain Point</summary>
-        /// <param name="shot">The point where the other controller shot</param>
-        /// <returns>True if the controller ran out of time. False if they didn't</returns>
-        public bool OpponentShot(Point shot)
+        /// <summary>
+        /// Constructs a Controller object without a controller interface to control. In this state, this object
+        /// may only be used to provide the score, ships placed, and shots made. Used in reloading Match objects
+        /// from files where the controller interface has been previously removed.
+        /// </summary>
+        public Controller(string name, Version ver, MatchInfo matchInfo)
         {
-            stopwatch.Start();
-            ibc.OpponentShot(shot);
-            stopwatch.Stop();
-            return RanOutOfTime();
+            this.matchInfo = matchInfo;
+
+            identifier = new NameVersionPair(name, ver);
         }
 
-        /// <summary>Notifys the controller that their shot hit a ship at the specified point</summary>
-        /// <param name="shot">The point at which the controllers shot hit a ship</param>
-        /// <param name="sunk">If the shot sunk a ship</param>
-        /// <returns>True if the controller ran out of time. False if they didn't</returns>
-        public bool ShotHit(Point shot, bool sunk)
+        /// <summary>
+        /// Invoked when the controller interface wants to output a string.
+        /// </summary>
+        /// <param name="message">A string containing the message.</param>
+        private void ReceiveMessage(string message)
         {
-            stopwatch.Start();
-            ibc.ShotHit(shot, sunk);
-            stopwatch.Stop();
-            return RanOutOfTime();
-        }
-        
-        /// <summary>Notifys the controller that their shot missed at the specified point</summary>
-        /// <param name="shot">The point the controller shot at but missed</param>
-        /// <returns>True if the controller ran out of time. False if they didn't</returns>
-        public bool ShotMiss(Point shot)
-        {
-            stopwatch.Start();
-            ibc.ShotMiss(shot);
-            stopwatch.Stop();
-            return RanOutOfTime();
+            if (ControllerMessageEvent != null)
+            {
+                ControllerMessageEvent(message);
+            }
         }
 
-        /// <summary>Notifys the controller that a game has been won, and increments this controller's score.</summary>
-        public void GameWon()
+        /// <summary>
+        /// Gets the ClassInfo that this Controller object refers to.
+        /// </summary>
+        /// <seealso cref="ClassInfo"/>
+        public ClassInfo Info
         {
-            info.score++;
-            ibc.GameWon();
+            get
+            {
+                return controllerInfo;
+            }
         }
 
-        /// <summary>Notifys the controller that a game has been lost</summary>
-        public void GameLost()
+        /// <summary>
+        /// Gets a value indicating whether or not this Controller wraps around a controller interface.
+        /// </summary>
+        public bool InterfaceExists
         {
-            ibc.GameLost();
+            get
+            {
+                return controllerInterface != null;
+            }
         }
 
-        
-        /// <summary>Notifys the controller that a matchup is over</summary>
+        /// <summary>
+        /// Gets the time (in milliseconds) that the controller interface took to finish the last method invoked.
+        /// </summary>
+        public int TimeElapsed
+        {
+            get
+            {
+                return (int)timeElapsed.ElapsedMilliseconds;
+            }
+        }
+
+        /// <summary>
+        /// Gets the name of the controller interface.
+        /// </summary>
+        public string Name
+        {
+            get
+            {
+                return identifier.Name;
+            }
+        }
+
+        /// <summary>
+        /// Gets the Version number of the controller interface.
+        /// </summary>
+        public Version Version
+        {
+            get
+            {
+                return identifier.Version;
+            }
+        }
+
+        /// <summary>
+        /// Gets a string representation of this Controller that may be used for display.
+        /// </summary>
+        public string DisplayName
+        {
+            get
+            {
+                return Name+" v("+Version.ToString()+")";
+            }
+        }
+
+        public ShipList Ships
+        {
+            get
+            {
+                return ships;
+            }
+        }
+
+        public ControllerID ControllerID
+        {
+            get
+            {
+                return idNum;
+            }
+        }
+
+        public MatchInfo MatchInfo
+        {
+            get
+            {
+                return matchInfo;
+            }
+        }
+
+        /// <summary>
+        /// Handles a given Thread by providing a timing and timeout function. If there is no controller interface
+        /// loaded with this controller, the thread will not be called.
+        /// </summary>
+        /// <param name="thread">The Thread to monitor and time.</param>
+        private void HandleThread(Thread thread, string method)
+        {
+            //Start the thread.
+            timeElapsed.Restart();
+            thread.Start();
+            if (!thread.Join(matchInfo.TimeLimit))
+            {
+                //Thread timed out.
+                thread.Abort();
+            }
+            timeElapsed.Stop();
+            if (TimedOut())
+            {
+                throw new ControllerTimeoutException(this, method, TimeElapsed);
+            }
+        }
+
+        /// <summary>
+        /// Determines whether or not this Controller had exceeded the allowed time limit during the last method
+        /// invoke.
+        /// </summary>
+        /// <returns>true if this Controller passed the time limit, false otherwise.</returns>
+        public bool TimedOut()
+        {
+            return TimeElapsed > matchInfo.TimeLimit;
+        }
+
+        /// <summary>
+        /// Resets match-related information made by this Controller and invokes the NewMatch method on the
+        /// controller interface. Copies the information given instead of passing them to the controller interface
+        /// by reference.
+        /// </summary>
+        /// <param name="opponentName">A string representing the name of the newly matched up opponent controller.</param>
+        /// <param name="fieldSize">The size of the battlefield.</param>
+        /// <param name="methodTime">The time limit given for this Controller.</param>
+        /// <param name="initShips">The ships that a match will play with.</param>
+        public void NewMatch()
+        {
+            currentScore = 0;
+
+            var thread = new Thread(() =>
+            controllerInterface.NewMatch(matchInfo));
+
+            HandleThread(thread, "NewMatch");
+        }
+
+        /// <summary>
+        /// Resets round-related information made by this Controller and invokes the NewRound method on the
+        /// controller interface.
+        /// </summary>
+        public void NewRound(ControllerID id)
+        {
+            idNum = id;
+            var thread = new Thread(() => controllerInterface.NewRound());
+
+            HandleThread(thread, "NewRound");
+        }
+
+        /// <summary>
+        /// Copies the initial ShipList from the match info and passes this list to the
+        /// method PlaceShips in the controller interface to be invoked.
+        /// </summary>
+        public void PlaceShips()
+        {
+            ships = matchInfo.StartingShips;
+
+            var thread = new Thread(() => controllerInterface.PlaceShips(ships));
+
+            HandleThread(thread, "PlaceShips");
+        }
+
+        /// <summary>
+        /// Invokes the controller interface's GetShot method to get the Coordinates of its next shot.
+        /// </summary>
+        /// <returns>A Coordinates object of the controller's shot. If null, the controller interface failed to
+        /// return the Coordinates within the time limit.</returns>
+        public Shot MakeShot(ControllerID defaultReceiver)
+        {
+            Shot result = new Shot(idNum, defaultReceiver);
+            var thread = new Thread(() => controllerInterface.MakeShot(result));
+
+            HandleThread(thread, "GetShot");
+
+            if (result == null)
+            {
+                result = new Shot(idNum, defaultReceiver);
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Notifies this controller interface about a shot made by the opposing controller. Invokes the
+        /// OpponentShot method with the Coordinates of the shot made.
+        /// </summary>
+        /// <param name="opShot">The Coordinates of the opposing controller's shot.</param>
+        public void NotifyOpponentShot(Shot opShot)
+        {
+            var thread = new Thread(() => controllerInterface.OpponentShot(opShot));
+
+            HandleThread(thread, "OpponentShot");
+        }
+
+        /// <summary>
+        /// Notifies this controller about a shot that was previously made that had shot an opposing controller's
+        /// Ship with an indication of whether or not the shot sunk the ship. Invokes the ShotHit method
+        /// of the controller interface with this information.
+        /// </summary>
+        /// <param name="shotMade">The Coordinates of the shot previously made.</param>
+        /// <param name="sink">true if the Coordinates of the shot sunk a ship, false otherwise.</param>
+        public void NotifyShotHit(Shot shotMade, bool sink)
+        {
+            var thread = new Thread(() => controllerInterface.ShotHit(shotMade, sink));
+
+            HandleThread(thread, "ShotHit");
+        }
+
+        /// <summary>
+        /// Notifies this controller about a shot that has been previously made that had missed an opposing
+        /// controller's Ship. Invokes the controller interface's ShotMiss method with the Coordinates of this
+        /// Shot.
+        /// </summary>
+        /// <param name="shotMade">The Coordinates of the shot that missed.</param>
+        public void NotifyShotMiss(Shot shotMade)
+        {
+            var thread = new Thread(() => controllerInterface.ShotMiss(shotMade));
+
+            HandleThread(thread, "ShotMiss");
+        }
+
+        /// <summary>
+        /// Adds to this Controller object's score and invokes the RoundWon method on the controller interface.
+        /// </summary>
+        public void RoundWon()
+        {
+            currentScore++;
+
+            var thread = new Thread(() =>
+            controllerInterface.RoundWon());
+
+            HandleThread(thread, "RoundWon");
+        }
+
+        /// <summary>
+        /// Invokes the RoundLost method on the controller interface.
+        /// </summary>
+        public void RoundLost()
+        {
+            var thread = new Thread(() =>
+            controllerInterface.RoundLost());
+
+            HandleThread(thread, "RoundLost");
+        }
+
+        /// <summary>
+        /// Resets Match-specific variables to null values and invokes the controller interface's MatchOver
+        /// method.
+        /// </summary>
         public void MatchOver()
         {
-            ibc.MatchOver();
+            matchInfo = null;
+
+            var thread = new Thread(() =>
+            controllerInterface.MatchOver());
+
+            HandleThread(thread, "MatchOver");
         }
 
-        
-        /// <summary>Generates a string containing the name and version of the encapsulated IBattleshipController</summary>
+        /// <summary>
+        /// Gets a string representation of this Controller. This is the same as the DisplayName property.
+        /// </summary>
+        /// <returns>A string that names this Controller.</returns>
         public override string ToString()
         {
-            return ibc.Name + " (v" + ibc.Version + ")";
+            return DisplayName;
         }
-
     }
 }
