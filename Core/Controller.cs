@@ -1,5 +1,6 @@
 ﻿using MBC.Core.Attributes;
 using System;
+using System.Collections.ObjectModel;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -358,6 +359,7 @@ namespace MBC.Core
         private int currentScore;
 
         private ShipList ships;
+        private ShotList shotsMade;
 
         private ControllerID idNum;
 
@@ -482,6 +484,14 @@ namespace MBC.Core
             }
         }
 
+        public ShotList Shots
+        {
+            get
+            {
+                return shotsMade;
+            }
+        }
+
         public ControllerID ControllerID
         {
             get
@@ -556,6 +566,8 @@ namespace MBC.Core
         public void NewRound(ControllerID id)
         {
             idNum = id;
+            shotsMade = new ShotList();
+
             var thread = new Thread(() => controllerInterface.NewRound());
 
             HandleThread(thread, "NewRound");
@@ -569,7 +581,7 @@ namespace MBC.Core
         {
             ships = matchInfo.StartingShips;
 
-            var thread = new Thread(() => controllerInterface.PlaceShips(ships));
+            var thread = new Thread(() => controllerInterface.PlaceShips(ships.ToReadOnlyCollection()));
 
             HandleThread(thread, "PlaceShips");
         }
@@ -581,14 +593,14 @@ namespace MBC.Core
         /// return the Coordinates within the time limit.</returns>
         public Shot MakeShot(ControllerID defaultReceiver)
         {
-            Shot result = new Shot(idNum, defaultReceiver);
+            Shot result = new Shot(defaultReceiver);
             var thread = new Thread(() => controllerInterface.MakeShot(result));
 
             HandleThread(thread, "GetShot");
 
             if (result == null)
             {
-                result = new Shot(idNum, defaultReceiver);
+                result = new Shot(defaultReceiver);
             }
 
             return result;

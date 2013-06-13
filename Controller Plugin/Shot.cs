@@ -13,7 +13,6 @@ namespace MBC.Core
     public class Shot : IEquatable<Shot>
     {
         private Coordinates coords;
-        private ControllerID sender;
         private ControllerID receiver;
 
         /// <summary>
@@ -23,7 +22,6 @@ namespace MBC.Core
         public Shot(Shot copyShot)
         {
             coords = copyShot.coords;
-            sender = copyShot.sender;
             receiver = copyShot.receiver;
         }
 
@@ -33,10 +31,9 @@ namespace MBC.Core
         /// </summary>
         /// <param name="sender">The ControllerID of the sender.</param>
         /// <param name="receiver">The ControllerID of the receiver.</param>
-        public Shot(ControllerID sender, ControllerID receiver)
+        public Shot(ControllerID receiver)
         {
             this.coords = new Coordinates(-1, -1);
-            this.sender = sender;
             this.receiver = receiver;
         }
 
@@ -52,17 +49,6 @@ namespace MBC.Core
             set
             {
                 receiver = value;
-            }
-        }
-
-        /// <summary>
-        /// Gets the ControllerID of this Shot that represents the sender.
-        /// </summary>
-        public ControllerID Sender
-        {
-            get
-            {
-                return sender;
             }
         }
 
@@ -97,7 +83,7 @@ namespace MBC.Core
             {
                 return false;
             }
-            return (shot1.Coordinates == shot2.Coordinates) && (shot1.Sender == shot2.Sender) && (shot1.Receiver == shot2.Receiver);
+            return (shot1.Coordinates == shot2.Coordinates) && (shot1.Receiver == shot2.Receiver);
         }
 
         /// <summary>
@@ -137,7 +123,6 @@ namespace MBC.Core
             int hash = 23;
             hash = hash * 37 + coords.X;
             hash = hash * 37 + coords.Y;
-            hash = hash * 37 + sender;
             hash = hash * 37 + receiver;
             return hash;
         }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 
@@ -27,6 +28,20 @@ namespace MBC.Core
             foreach (var ship in copyList.shipList)
             {
                 Add(new Ship(ship));
+            }
+        }
+
+        /// <summary>
+        /// Contructs a new ShipList with existing Ship objects contained in a collection.
+        /// </summary>
+        /// <param name="ships">The collection of Ship objects to store in this ShipList.</param>
+        public ShipList(IEnumerable<Ship> ships)
+        {
+            minLength = ships.First().Length;
+            maxLength = minLength;
+            foreach (var ship in ships)
+            {
+                Add(ship);
             }
         }
 
@@ -165,6 +180,15 @@ namespace MBC.Core
             {
                 array[i + arrayIndex] = shipList[i];
             }
+        }
+
+        /// <summary>
+        /// Generates a ReadOnlyCollection of the Ship objects that are contained in this ShipList.
+        /// </summary>
+        /// <returns>A ReadOnlyCollection of Ship objects contained in this ShipList.</returns>
+        public ReadOnlyCollection<Ship> ToReadOnlyCollection()
+        {
+            return new ReadOnlyCollection<Ship>(shipList);
         }
 
         /// <summary>

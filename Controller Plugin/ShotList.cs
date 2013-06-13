@@ -13,8 +13,7 @@ namespace MBC.Core
     public class ShotList : ICollection<Shot>
     {
         private List<Shot> shotHistory;
-        private Dictionary<ControllerID, List<Shot>> shotsOrganizedSender;
-        private Dictionary<ControllerID, List<Shot>> shotsOrganizedReceiver;
+        private Dictionary<ControllerID, List<Shot>> shotsByReceiver;
 
         /// <summary>
         /// Contructs a new ShotList copying the contents of an existing ShotList.
@@ -22,8 +21,7 @@ namespace MBC.Core
         /// <param name="copyList">The ShotList to copy.</param>
         public ShotList(ShotList copyList)
         {
-            shotsOrganizedSender = new Dictionary<ControllerID, List<Shot>>();
-            shotsOrganizedReceiver = new Dictionary<ControllerID, List<Shot>>();
+            shotsByReceiver = new Dictionary<ControllerID, List<Shot>>();
 
             shotHistory = new List<Shot>();
 
@@ -36,8 +34,7 @@ namespace MBC.Core
         public ShotList()
         {
             shotHistory = new List<Shot>();
-            shotsOrganizedSender = new Dictionary<ControllerID, List<Shot>>();
-            shotsOrganizedReceiver = new Dictionary<ControllerID, List<Shot>>();
+            shotsByReceiver = new Dictionary<ControllerID, List<Shot>>();
         }
 
         /// <summary>
@@ -47,8 +44,7 @@ namespace MBC.Core
         public void Add(Shot shot)
         {
             shotHistory.Add(shot);
-            shotsOrganizedSender[shot.Sender].Add(shot);
-            shotsOrganizedReceiver[shot.Receiver].Add(shot);
+            shotsByReceiver[shot.Receiver].Add(shot);
         }
 
         /// <summary>
@@ -60,8 +56,7 @@ namespace MBC.Core
             foreach (var shot in shots.shotHistory)
             {
                 shotHistory.Add(shot);
-                shotsOrganizedSender[shot.Sender].Add(shot);
-                shotsOrganizedReceiver[shot.Receiver].Add(shot);
+                shotsByReceiver[shot.Receiver].Add(shot);
             }
         }
 
@@ -72,7 +67,7 @@ namespace MBC.Core
         /// <returns>true if a Shot with the same field values as the given Shot exists in this ShipList.</returns>
         public bool Contains(Shot shot)
         {
-            return shotsOrganizedSender[shot.Sender].Contains(shot) || shotsOrganizedReceiver[shot.Receiver].Contains(shot);
+            return shotsByReceiver[shot.Receiver].Contains(shot);
         }
 
         /// <summary>
@@ -100,7 +95,7 @@ namespace MBC.Core
         public bool Remove(Shot shot)
         {
             bool result = shotHistory.Remove(shot);
-            result &= shotsOrganizedReceiver[shot.Receiver].Remove(shot) || shotsOrganizedSender[shot.Sender].Remove(shot);
+            result &= shotsByReceiver[shot.Receiver].Remove(shot);
             return result;
         }
 
@@ -112,12 +107,7 @@ namespace MBC.Core
             var lastShot = shotHistory.Last();
             shotHistory.RemoveAt(shotHistory.Count - 1);
 
-            var organizedList = shotsOrganizedReceiver[lastShot.Receiver];
-            if (organizedList.Last() == lastShot)
-            {
-                organizedList.RemoveAt(organizedList.Count);
-            }
-            organizedList = shotsOrganizedSender[lastShot.Sender];
+            var organizedList = shotsByReceiver[lastShot.Receiver];
             if (organizedList.Last() == lastShot)
             {
                 organizedList.RemoveAt(organizedList.Count);
@@ -165,8 +155,7 @@ namespace MBC.Core
         public void Clear()
         {
             shotHistory.Clear();
-            shotsOrganizedSender.Clear();
-            shotsOrganizedReceiver.Clear();
+            shotsByReceiver.Clear();
         }
 
         /// <summary>
@@ -262,24 +251,13 @@ namespace MBC.Core
         }
 
         /// <summary>
-        /// Generates and returns a ShotList of Shot objects that have been sent by a specific ControllerID.
-        /// </summary>
-        public ShotList ShotsFromSender(ControllerID idx)
-        {
-            ShotList newList = new ShotList();
-            newList.shotHistory = shotHistory;
-            newList.shotsOrganizedSender[idx] = shotsOrganizedSender[idx];
-            return newList;
-        }
-
-        /// <summary>
         /// Generates and returns a ShotList of Shot objects that have been received by a specific ControllerID
         /// </summary>
         public ShotList ShotsToReceiver(ControllerID idx)
         {
             ShotList newList = new ShotList();
             newList.shotHistory = shotHistory;
-            newList.shotsOrganizedReceiver[idx] = shotsOrganizedReceiver[idx];
+            newList.shotsByReceiver[idx] = shotsByReceiver[idx];
             return newList;
         }
 
@@ -305,6 +283,19 @@ namespace MBC.Core
             ShotList newList = new ShotList(list1);
             newList.Remove(list2);
             return newList;
+        }
+
+        /// <summary>
+        /// Removes the shots in this ShotList and adds the shots that were previously not made to
+        /// this ShotList up to the provided maximum Coordinates.
+        /// </summary>
+        /// <param name="maxCoords">The maximum Coordinates to add shots not placed before.</param>
+        public void Invert(Coordinates maxCoords)
+        {
+            foreach (var receiver in shotsByReceiver)
+            {
+                
+            }
         }
 
         /// <summary>

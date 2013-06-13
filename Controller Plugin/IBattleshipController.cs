@@ -36,7 +36,7 @@ namespace MBC.Core
         /// <summary>Called when this controller must place their ships. Utilize the Ship objects in the
         /// given collection to place ships. Do not provide invalid ship placements (overlapping, bad coords, etc.)</summary>
         /// <param name="ships">A collection of ships to place.</param>
-        void PlaceShips(ShipList ships);
+        void PlaceShips(ReadOnlyCollection<Ship> ships);
 
         /// <summary>
         /// Called when this controller has the opportunity to make a shot in their turn. The given

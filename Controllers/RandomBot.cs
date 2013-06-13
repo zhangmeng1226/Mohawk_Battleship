@@ -8,40 +8,56 @@ namespace MBC.Controllers
     [Name("RandomBot")]
     [Version(1, 0)]
     [Description("A controller that uses a random number generator to make all of its decisions.")]
+    [Capabilities(GameMode.Classic, GameMode.ClassicMulti)]
     public class RandomBot : IBattleshipController
     {
         Random rand;
-        Size gameSize;
+        MatchInfo matchInfo;
+        ShotList shotsMade;
 
-        public void NewRound(Size size, TimeSpan timeSpan)
+        public void NewMatch(MatchInfo matchInfo)
         {
-            rand = new Random();
-            this.gameSize = size;
+            this.matchInfo = matchInfo;
+            this.shotsMade = new ShotList();
+
+            rand = new Random(Environment.TickCount);
+        }
+
+        private ShipOrientation RandomShipOrientation()
+        {
+            var orientations = new ShipOrientation[] { ShipOrientation.Horizontal, ShipOrientation.Vertical };
+            return orientations[rand.Next(2)];
+        }
+
+        private Coordinates RandomCoordinates()
+        {
+            var xCoord = rand.Next(matchInfo.FieldSize.X);
+            var yCoord = rand.Next(matchInfo.FieldSize.Y);
+            return new Coordinates(xCoord, yCoord);
         }
 
         public void PlaceShips(ReadOnlyCollection<Ship> ships)
         {
-            foreach (Ship s in ships)
+            var myShips = new ShipList(ships);
+
+            while (!myShips.ShipsPlaced)
             {
-                s.Place(
-                    new Coordinates(
-                        rand.Next(this.gameSize.Width),
-                        rand.Next(this.gameSize.Height)),
-                    (ShipOrientation)rand.Next(2));
+                var randomCoords = RandomCoordinates();
+                var orientation = RandomShipOrientation();
+
+                myShips.PlaceShip(randomCoords, orientation);
             }
         }
 
-        public Coordinates MakeShot()
+        public void MakeShot(Shot shot)
         {
-            return new Coordinates(
-                rand.Next(this.gameSize.Width),
-                rand.Next(this.gameSize.Height));
+            shot.Coordinates = RandomCoordinates();
         }
 
-        public void NewMatch(string opponent) { }
-        public void OpponentShot(Coordinates shot) { }
-        public void ShotHit(Coordinates shot, bool sunk) { }
-        public void ShotMiss(Coordinates shot) { }
+        public void NewRound() { }
+        public void OpponentShot(Shot shot) { }
+        public void ShotHit(Shot shot, bool sunk) { }
+        public void ShotMiss(Shot shot) { }
         public void RoundWon() { }
         public void RoundLost() { }
         public void MatchOver() { }

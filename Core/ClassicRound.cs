@@ -24,7 +24,7 @@ namespace MBC.Core
 
         private bool ShotRepeated(Shot shot)
         {
-            return AllShots.Contains(shot);
+            return Controllers[CurrentTurnID].Shots.Contains(shot);
         }
 
         private bool ShotDestroyed(Shot shot)
@@ -73,13 +73,13 @@ namespace MBC.Core
             var sender = Controllers[CurrentTurnID];
             var receiver = Controllers[NextRemaining()];
 
-            var shotsFromSender = AllShots.ShotsFromSender(CurrentTurnID);
+            var shotsFromSender = sender.Shots;
 
             try
             {
                 Shot shot = sender.MakeShot(receiver.ControllerID);
                 MakeEvent(new ControllerShotEvent(sender, this, shot.Coordinates, receiver));
-                AllShots.Add(shot);
+                sender.Shots.Add(shot);
 
                 if (ShotOutOfBounds(shot) || ShotSuicidal(shot) || ShotRepeated(shot) || ShotDestroyed(shot))
                 {
@@ -99,14 +99,14 @@ namespace MBC.Core
                     //The shot made by the sender hit a ship.
 
                     MakeEvent(new ControllerHitShipEvent(sender, this, shot.Coordinates, receiver));
-                    bool sunk = shotShip.IsSunk(AllShots.ShotsToReceiver(shot.Receiver));
+                    bool sunk = shotShip.IsSunk(sender.Shots.ShotsToReceiver(shot.Receiver));
                     sender.NotifyShotHit(shot, sunk);
                     if (sunk)
                     {
                         //The last shot sunk a receiver's ship.
 
                         MakeEvent(new ControllerDestroyedShipEvent(sender, this, shotShip, receiver));
-                        if (receiver.Ships.GetSunkShips(AllShots.ShotsToReceiver(receiver.ControllerID)).Count == receiver.Ships.Count)
+                        if (receiver.Ships.GetSunkShips(sender.Shots.ShotsToReceiver(receiver.ControllerID)).Count == receiver.Ships.Count)
                         {
                             //All of the receiving controller's ships have been destroyed.
                             PlayerLose(receiver);
