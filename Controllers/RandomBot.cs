@@ -246,10 +246,12 @@ namespace MBC.Controllers
             ControllerMessageEvent("Unsurprisingly I lost...");
         }
 
+        //The rest of these methods are not used by this controller.
         public void NewRound() { }
         public void OpponentShot(Shot shot) { }
         public void ShotHit(Shot shot, bool sunk) { }
         public void ShotMiss(Shot shot) { }
         public void MatchOver() { }
+        public void OpponentDestroyed(ControllerID destroyedID) { }
     }
 }

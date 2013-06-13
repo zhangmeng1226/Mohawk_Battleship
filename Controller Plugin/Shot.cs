@@ -6,7 +6,7 @@ using System.Text;
 namespace MBC.Core
 {
     /// <summary>
-    /// A Shot is used to identify the ControllerID of both the sender and receiver of the Shot, and provide
+    /// A Shot is used to identify the ControllerID of the receiver of the Shot, and provide
     /// the location of the Shot via Coordinates.
     /// </summary>
     /// <seealso cref="ControllerID"/>

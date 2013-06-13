@@ -46,6 +46,7 @@
     <Compile Include="accolades\AccoladeGenerator.cs" />
     <Compile Include="ClassicRound.cs" />
     <Compile Include="Controller.cs" />
+    <Compile Include="ControllerIncompatibleException.cs" />
     <Compile Include="ControllerTimeoutException.cs" />
     <Compile Include="events\ControllerDestroyedShipEvent.cs" />
     <Compile Include="events\ControllerHitShipEvent.cs" />
