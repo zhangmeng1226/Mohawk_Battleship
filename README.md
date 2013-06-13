@@ -1,4 +1,4 @@
-Mohawk_Battleship
+Mohawk Battleship Competition
 =================
 
-Mohawk College AI Club Battleship Framework
+This framework is maintained and developed by the Mohawk College AI Club.
