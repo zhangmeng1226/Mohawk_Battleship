@@ -42,34 +42,34 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="accolades\Accolade.cs" />
-    <Compile Include="accolades\AccoladeGenerator.cs" />
+    <Compile Include="Accolades\Accolade.cs" />
+    <Compile Include="Accolades\AccoladeGenerator.cs" />
     <Compile Include="ClassicRound.cs" />
     <Compile Include="ControllerInformation.cs" />
     <Compile Include="ControllerUser.cs" />
     <Compile Include="ControllerIncompatibleException.cs" />
     <Compile Include="ControllerTimeoutException.cs" />
-    <Compile Include="events\ControllerDestroyedShipEvent.cs" />
-    <Compile Include="events\ControllerHitShipEvent.cs" />
-    <Compile Include="events\ControllerLostEvent.cs" />
-    <Compile Include="events\ControllerShipsPlacedEvent.cs" />
-    <Compile Include="events\ControllerShotEvent.cs" />
-    <Compile Include="events\ControllerTimeoutEvent.cs" />
-    <Compile Include="events\ControllerWonEvent.cs" />
-    <Compile Include="events\Event.cs" />
-    <Compile Include="events\MatchBeginEvent.cs" />
-    <Compile Include="events\MatchEvent.cs" />
-    <Compile Include="events\RoundAccoladeEvent.cs" />
-    <Compile Include="events\RoundBeginEvent.cs" />
-    <Compile Include="events\RoundControllerEvent.cs" />
-    <Compile Include="events\RoundEndEvent.cs" />
-    <Compile Include="events\RoundEvent.cs" />
+    <Compile Include="Events\ControllerDestroyedShipEvent.cs" />
+    <Compile Include="Events\ControllerHitShipEvent.cs" />
+    <Compile Include="Events\ControllerLostEvent.cs" />
+    <Compile Include="Events\ControllerShipsPlacedEvent.cs" />
+    <Compile Include="Events\ControllerShotEvent.cs" />
+    <Compile Include="Events\ControllerTimeoutEvent.cs" />
+    <Compile Include="Events\ControllerWonEvent.cs" />
+    <Compile Include="Events\Event.cs" />
+    <Compile Include="Events\MatchBeginEvent.cs" />
+    <Compile Include="Events\MatchEvent.cs" />
+    <Compile Include="Events\RoundAccoladeEvent.cs" />
+    <Compile Include="Events\RoundBeginEvent.cs" />
+    <Compile Include="Events\RoundControllerEvent.cs" />
+    <Compile Include="Events\RoundEndEvent.cs" />
+    <Compile Include="Events\RoundEvent.cs" />
     <Compile Include="CMatchInfo.cs" />
     <Compile Include="Match.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Round.cs" />
-    <Compile Include="util\Configuration.cs" />
-    <Compile Include="util\ConfigurationAttribute.cs" />
+    <Compile Include="Util\Configuration.cs" />
+    <Compile Include="Util\ConfigurationAttribute.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Controller Plugin\Controller Plugin.csproj">

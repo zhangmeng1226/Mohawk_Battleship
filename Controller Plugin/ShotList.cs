@@ -88,6 +88,18 @@ namespace MBC.Core
         }
 
         /// <summary>
+        /// Creates a new empty internal list for Shot objects for a list of specific receiver IDs.
+        /// </summary>
+        /// <param name="receivers">A List of ControllerIDs to create lists for.</param>
+        public void MakeReceivers(List<ControllerID> receivers)
+        {
+            foreach (var receiver in receivers)
+            {
+                MakeReceiver(receiver);
+            }
+        }
+
+        /// <summary>
         /// Determines whether or not this ShotList contains a Shot.
         /// </summary>
         /// <param name="shot">The Shot to check for.</param>

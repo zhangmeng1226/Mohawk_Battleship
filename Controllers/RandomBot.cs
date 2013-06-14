@@ -57,29 +57,10 @@ namespace MBC.Controllers
         Random rand;
 
         /// <summary>
-        /// This is the ControllerID that was given to this controller for a match.
-        /// </summary>
-        ControllerID myID;
-
-        /// <summary>
-        /// This is the match information that was given to this controller that describes the match parameters.
-        /// </summary>
-        MatchInfo matchInfo;
-
-        /// <summary>
         /// This is a list of shots that this controller has against another controller or controllers.
         /// It will start out being filled with every possible shot made.
         /// </summary>
         ShotList shotQueue;
-
-        /// <summary>
-        /// The ControllerMessageEvent event must be implemented by this controller, as defined in
-        /// the IBattleshipController interface. It provides this controller a way to output information
-        /// in the form of strings. It is called within this controller just like any other method. There
-        /// is no need to check if the event is null because the competition will attach itself to this method
-        /// immediately.
-        /// </summary>
-        public event StringOutputHandler ControllerMessageEvent;
 
         /// <summary>
         /// This method will create a new ShotList in the shotQueue field of this controller. It will
@@ -90,24 +71,12 @@ namespace MBC.Controllers
             //Construct a new ShotList object.
             shotQueue = new ShotList();
 
-            //Start a loop from 0 to the number of players - 1. These numbers correspond to the
-            //ControllerID numbers of each controller involved in a match. We want to add the
-            //ControllerID numbers of every controller that is not this controller's to make
-            //shots against.
-            for (var ids = 0; ids < matchInfo.Players.Count; ids++)
-            {
-
-                //Check if an ID is equal to this controller's ID.
-                if (ids != myID)
-                {
-                    //The ID is not this controller's so add it to the ShotList.
-                    shotQueue.MakeReceiver(ids);
-                }
-            }
+            //Set up our shot queue with our opponents.
+            shotQueue.MakeReceivers(Register.Opponents);
 
             //Initially, a ShotList is empty when it is constructed, so the ShotList can be filled
             //easily by inverting it up to the size of the field in the game.
-            shotQueue.Invert(matchInfo.FieldSize);
+            shotQueue.Invert(Register.Match.FieldSize);
         }
 
         /// <summary>
@@ -117,13 +86,9 @@ namespace MBC.Controllers
         /// </summary>
         /// <param name="thisId">The ControllerID that this controller is given.</param>
         /// <param name="matchInfo">The information about the matchup.</param>
-        public void NewMatch(ControllerID thisId, MatchInfo matchInfo)
+        public override void NewMatch()
         {
-            //The controller will begin by copying the information given by the match.
-            this.matchInfo = matchInfo;
-            this.myID = thisId;
-
-            //The controller then calls the SetShots() method to initialize the shotQueue field.
+            //The controller calls the SetShots() method to initialize the shotQueue field.
             SetShots();
 
             //Finally, the controller creates a random number generator into the "rand" field defined
@@ -155,10 +120,10 @@ namespace MBC.Controllers
         {
             //First generate a random X coordinate. Note that rand.Next() gets a random number that is
             //always less than the given value; we add one to get the full range of the field.
-            var xCoord = rand.Next(matchInfo.FieldSize.X+1);
+            var xCoord = rand.Next(Register.Match.FieldSize.X + 1);
 
             //Then generate a random Y coordinate.
-            var yCoord = rand.Next(matchInfo.FieldSize.Y+1);
+            var yCoord = rand.Next(Register.Match.FieldSize.Y + 1);
 
             //Then put the two coordinates together and return it.
             return new Coordinates(xCoord, yCoord);
@@ -190,11 +155,10 @@ namespace MBC.Controllers
         /// of Ship objects that can be accessed.
         /// </summary>
         /// <param name="ships">A collection of Ship objects to place.</param>
-        public void PlaceShips(ReadOnlyCollection<Ship> ships)
+        public override void PlaceShips()
         {
-            //First encapsulate the ship collection into a ShipList, which is simpler to use
-            //to manipulate Ship objects.
-            var myShips = new ShipList(ships);
+            //First we'll refer to the ships given to us through a single variable.
+            var myShips = Register.Ships;
 
             //This loop will continue until all of the Ship objects have been placed.
             while (!myShips.ShipsPlaced)
@@ -221,7 +185,7 @@ namespace MBC.Controllers
         /// the Shot receiver is the next controller in the turn.
         /// </summary>
         /// <param name="shot">The Shot to modify.</param>
-        public void MakeShot(Shot shot)
+        public override void MakeShot(Shot shot)
         {
             //The controller only cares about modifying the Coordinates. The Coordinates of the next random
             //shot from the NextRandomShot() method is provided.
@@ -231,27 +195,19 @@ namespace MBC.Controllers
         /// <summary>
         /// This method is called when this controller won the round.
         /// </summary>
-        public void RoundWon()
+        public override void RoundWon()
         {
             //Demonstrating the use of the ControllerMessageEvent by sending a string.
-            ControllerMessageEvent("Yay, I won! What are the chances of that?");
+            SendMessage("Yay, I won! What are the chances of that?");
         }
 
         /// <summary>
         /// This method is called when the controller lost the round.
         /// </summary>
-        public void RoundLost()
+        public override void RoundLost()
         {
             //Demonstrating the use of the ControllerMessageEvent by sending a string.
-            ControllerMessageEvent("Unsurprisingly I lost...");
+            SendMessage("Unsurprisingly I lost...");
         }
-
-        //The rest of these methods are not used by this controller.
-        public void NewRound() { }
-        public void OpponentShot(Shot shot) { }
-        public void ShotHit(Shot shot, bool sunk) { }
-        public void ShotMiss(Shot shot) { }
-        public void MatchOver() { }
-        public void OpponentDestroyed(ControllerID destroyedID) { }
     }
 }

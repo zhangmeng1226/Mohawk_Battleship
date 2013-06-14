@@ -15,6 +15,7 @@ namespace MBC.Core
         public ShotList Shots { get; set; }
 
         public ControllerID ID { get; set; }
+        public List<ControllerID> Opponents { get; set; }
 
         public ControllerRegister(ControllerRegister copy)
         {

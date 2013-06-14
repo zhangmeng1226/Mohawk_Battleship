@@ -8,7 +8,7 @@ namespace MBC.Core
     /// <summary>
     /// A delegate defining a method that receives a string.
     /// </summary>
-    /// <param name="message">The message that this controller interface wants to output.</param>
+    /// <param name="message">The message that the controller wants to output.</param>
     public delegate void StringOutputHandler(string message);
 
     /// <summary>This interface is to be implemented by any class that is to participate in a classic or salvo
@@ -26,18 +26,23 @@ namespace MBC.Core
         /// </summary>
         public event StringOutputHandler ControllerMessageEvent;
 
+        public void SendMessage(string message)
+        {
+            ControllerMessageEvent(message);
+        }
+
         /// <summary>Called when this controller is being placed in a match.</summary>
         /// <param name="matchInfo">Information about the match this controller is being placed in.</param>
         /// <seealso cref="MatchInfo"/>
-        public abstract void NewMatch();
+        public virtual void NewMatch() { }
 
         /// <summary>Called when a new round in the match is commencing.</summary>
-        public abstract void NewRound();
+        public virtual void NewRound() { }
 
         /// <summary>Called when this controller must place their ships. Utilize the Ship objects in the
         /// given collection to place ships. Do not provide invalid ship placements (overlapping, bad coords, etc.)</summary>
         /// <param name="ships">A collection of ships to place.</param>
-        public abstract void PlaceShips();
+        public virtual void PlaceShips() { }
 
         /// <summary>
         /// Called when this controller has the opportunity to make a shot in their turn. The given
@@ -46,42 +51,42 @@ namespace MBC.Core
         /// </summary>
         /// <param name="shot">The Shot given to this controller to modify.</param>
         /// <seealso cref="Shot"/>
-        public abstract void MakeShot(Shot shot);
+        public virtual void MakeShot(Shot shot) { }
 
         /// <summary>Called when this controller is being shot at by another controller.</summary>
         /// <param name="shot">The shot the opponent has made against this controller</param>
         /// <seealso cref="Shot"/>
-        public abstract void OpponentShot(Shot shot);
+        public virtual void OpponentShot(Shot shot) { }
 
         /// <summary>Called when this controller has hit an opposing Ship from the Shot given by a previous
         /// call to MakeShot().</summary>
         /// <param name="shot">The Shot that made a ship hit on a controller.</param>
         /// <param name="sunk">True if the shot had sunk an opposing ship.</param>
         /// <seealso cref="Shot"/>
-        public abstract void ShotHit(Shot shot, bool sunk);
+        public virtual void ShotHit(Shot shot, bool sunk) { }
 
         /// <summary>Called when this controller did not hit an opposing ship from the Shot given by a previous
         /// call to MakeShot().</summary>
         /// <param name="shot">The Shot that missed.</param>
         /// <seealso cref="Shot"/>
-        public abstract void ShotMiss(Shot shot);
+        public virtual void ShotMiss(Shot shot) { }
 
         /// <summary>
         /// Called when an opposing controller has been removed from the round and has lost.
         /// </summary>
         /// <param name="destroyedID">The ControllerID of the controller that lost.</param>
         /// <seealso cref="ControllerID"/>
-        public abstract void OpponentDestroyed(ControllerID destroyedID);
+        public virtual void OpponentDestroyed(ControllerID destroyedID) { }
 
          /// <summary>
          /// Called when a round is over. In this case, this controller has won the round.
          /// </summary>
-        public abstract void RoundWon();
+        public virtual void RoundWon() { }
 
         /// <summary>Called when a round is over. In this case, this controller has lost the round.</summary>
-        public abstract void RoundLost();
+        public virtual void RoundLost() { }
 
         /// <summary>Called when a matchup has ended.</summary>
-        public abstract void MatchOver();
+        public virtual void MatchOver() { }
     }
 }
