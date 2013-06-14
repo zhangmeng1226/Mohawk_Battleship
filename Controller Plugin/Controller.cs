@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Collections.Generic;
+using System.Security.Permissions;
 
 namespace MBC.Shared
 {
@@ -17,6 +18,7 @@ namespace MBC.Shared
     /// The various methods in this class are called at times during the battleship game. Read over the
     /// documentation for each method to understand when these methods are invoked.
     /// </summary>
+    [SecurityPermission(SecurityAction.PermitOnly, SerializationFormatter=true)]
     public abstract class Controller
     {
         /// <summary>
