@@ -6,17 +6,17 @@ using System.Text;
 
 namespace MBC.Core.Events
 {
-    public class ControllerShipsPlacedEvent : RoundControllerEvent
+    public class ControllerShipsPlacedEvent : ControllerEvent
     {
         private ShipList shipsPlaced;
 
-        public ControllerShipsPlacedEvent(ControllerUser controller, Round round, ShipList ships)
-            : base(controller, round)
+        public ControllerShipsPlacedEvent(ControllerRegister register, ShipList ships)
+            : base(register)
         {
             shipsPlaced = ships;
 
             StringBuilder msg = new StringBuilder();
-            msg.Append(controller);
+            msg.Append(register);
             int placedCount = 0;
             foreach (var ship in shipsPlaced.Ships)
             {

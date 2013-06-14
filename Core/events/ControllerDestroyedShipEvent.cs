@@ -6,18 +6,18 @@ using System.Text;
 
 namespace MBC.Core.Events
 {
-    public class ControllerDestroyedShipEvent : RoundControllerEvent
+    public class ControllerDestroyedShipEvent : ControllerEvent
     {
         private Ship destroyed;
-        private ControllerUser owner;
+        private ControllerRegister owner;
 
-        public ControllerDestroyedShipEvent(ControllerUser controller, Round round, Ship destroyedShip, ControllerUser opponent)
-            : base(controller, round)
+        public ControllerDestroyedShipEvent(ControllerRegister register, ControllerRegister shipOwner, Ship destroyedShip)
+            : base(register)
         {
             this.destroyed = destroyedShip;
-            this.owner = opponent;
+            this.owner = shipOwner;
 
-            message = controller + " destroyed a ship at " + destroyedShip + " from " + opponent + ".";
+            message = register + " destroyed a ship at " + destroyedShip + " from " + shipOwner + ".";
         }
     }
 }

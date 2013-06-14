@@ -330,7 +330,7 @@ namespace MBC.Core
             timeElapsed.Stop();
             if (TimedOut())
             {
-                throw new ControllerTimeoutException(this, method, TimeElapsed);
+                throw new ControllerTimeoutException(Register, method, TimeElapsed);
             }
         }
     }

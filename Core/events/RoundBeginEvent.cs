@@ -9,10 +9,10 @@ namespace MBC.Core.Events
     {
         public RoundBeginEvent(Round round) : base(round)
         {
-            var roundControllers = round.GetControllers();
+            var roundControllers = round.Registers;
 
             StringBuilder msg = new StringBuilder();
-            msg.Append("A round has begun between ");
+            msg.Append("A round has begun with ");
             int controllerCount = 0;
             foreach (var controller in roundControllers)
             {
@@ -24,6 +24,9 @@ namespace MBC.Core.Events
                 {
                     msg.Append(" and ");
                 }
+                msg.Append('[');
+                msg.Append(controller.ID);
+                msg.Append("] ");
                 msg.Append(controller);
             }
             msg.Append('.');

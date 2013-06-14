@@ -120,6 +120,15 @@ namespace MBC.Shared
         }
 
         /// <summary>
+        /// Generates a string representation of this Shot.
+        /// </summary>
+        /// <returns>A string representing this shot.</returns>
+        public override string ToString()
+        {
+            return Coordinates.ToString() + "=>["+Receiver+"]";
+        }
+
+        /// <summary>
         /// Compares the equality of this Shot with an object.
         /// </summary>
         /// <param name="shot">The object to compare to.</param>

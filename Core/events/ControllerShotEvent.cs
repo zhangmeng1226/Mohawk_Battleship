@@ -6,19 +6,19 @@ using System.Text;
 
 namespace MBC.Core.Events
 {
-    public class ControllerShotEvent : RoundControllerEvent
+    public class ControllerShotEvent : ControllerEvent
     {
-        private Coordinates coords;
-        private ControllerUser opponent;
+        private Shot coords;
+        private ControllerRegister opponent;
 
-        public ControllerShotEvent(ControllerUser controller, Round round, Coordinates coords, ControllerUser opposer)
-            : base(controller, round)
+        public ControllerShotEvent(ControllerRegister register, ControllerRegister opposer, Shot shot)
+            : base(register)
         {
-            this.coords = coords;
+            this.coords = shot;
             this.opponent = opposer;
 
             StringBuilder msg = new StringBuilder();
-            msg.Append(controller);
+            msg.Append(register);
             msg.Append(" made a shot against ");
             if (opposer != null)
             {
@@ -29,11 +29,11 @@ namespace MBC.Core.Events
                 msg.Append("nobody");
             }
             msg.Append(" at ");
-            msg.Append(coords);
+            msg.Append(shot.Coordinates);
             message = msg.ToString();
         }
 
-        public Coordinates ShotCoordinates
+        public Shot Shot
         {
             get
             {
@@ -41,7 +41,7 @@ namespace MBC.Core.Events
             }
         }
 
-        public ControllerUser Opponent
+        public ControllerRegister Opponent
         {
             get
             {

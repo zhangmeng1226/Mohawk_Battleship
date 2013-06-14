@@ -34,7 +34,7 @@ namespace MBC.Core
         private MatchInfo info;
         private PlayMode roundPlay;
 
-        private List<ControllerUser> participants;
+        private List<ControllerUser> controllers;
 
         private int targetRounds;
         private int roundIteration;
@@ -58,6 +58,7 @@ namespace MBC.Core
 
         public event MBCMatchEventHandler MatchEvent;
         public event MBCRoundEventHandler RoundEvent;
+        public event MBCControllerEventHandler ControllerEvent;
 
         /// <summary>
         /// This enumerator identifies the behaviour of rounds being played out, given a number.
@@ -175,14 +176,14 @@ namespace MBC.Core
             roundIteration = targetRounds;
         }
 
-        public List<ControllerRegister> GetRegistered()
+        public List<ControllerRegister> GetRegisters()
         {
-            var registered = new List<ControllerRegister>();
-            foreach (var user in participants)
+            var registers = new List<ControllerRegister>();
+            foreach (var user in controllers)
             {
-                registered.Add(user.Register);
+                registers.Add(user.Register);
             }
-            return registered;
+            return registers;
         }
 
         public bool IsRoundTargetReached()
@@ -193,7 +194,7 @@ namespace MBC.Core
             }
             else if (roundPlay == PlayMode.FirstTo)
             {
-                foreach (var registrant in participants)
+                foreach (var registrant in controllers)
                 {
                     if (registrant.Register.Score == targetRounds)
                     {
@@ -202,11 +203,6 @@ namespace MBC.Core
                 }
             }
             return false;
-        }
-
-        private void RoundEventCall(RoundEvent ev)
-        {
-            RoundEvent(ev);
         }
 
         private void MakeEvent(MatchEvent ev)
@@ -266,11 +262,11 @@ namespace MBC.Core
 
         private void RegisterControllers(IEnumerable<ControllerInformation> registrants)
         {
-            participants = new List<ControllerUser>();
+            controllers = new List<ControllerUser>();
             for (var id = 0; id < registrants.Count(); id++)
             {
                 ControllerRegister newRegistration = new ControllerRegister(info, id);
-                participants.Add(new ControllerUser(registrants.ElementAt(id), newRegistration));
+                controllers.Add(new ControllerUser(registrants.ElementAt(id), newRegistration));
             }
         }
 
@@ -304,8 +300,11 @@ namespace MBC.Core
         {
             if ((info.GameMode & GameMode.Classic) == GameMode.Classic)
             {
-                currentRound = new ClassicRound(info, participants);
-                currentRound.EventCreated += RoundEventCall;
+                currentRound = new ClassicRound(info, controllers);
+                currentRound.RoundEvent += (ev) =>
+                    {
+                        RoundEvent(ev);
+                    };
                 roundList.Add(currentRound);
                 return true;
             }

@@ -7,7 +7,7 @@ using System.Text;
 
 namespace MBC.Core
 {
-    public class ClassicRound : Round
+    public class ClassicRound : ControlledRound
     {
         public ClassicRound(MatchInfo info, List<ControllerUser> controllers)
             : base(info, controllers) { }
@@ -18,18 +18,18 @@ namespace MBC.Core
         /// </summary>
         public override void End()
         {
-            if (RemainingControllers.Count <= 1)
+            if (currentTurn == null)
             {
-                //There is a winner (or two losers).
-                foreach (var controller in Controllers)
+                //There is a winner (or every controller is a loser).
+                foreach (var controller in Registers)
                 {
-                    if (RemainingControllers.Contains(controller))
+                    if (RemainingRegisters.Contains(controller))
                     {
-                        MakeEvent(new ControllerWonEvent(controller, this));
+                        MakeEvent(new ControllerWonEvent(controller));
                     }
                     else
                     {
-                        MakeEvent(new ControllerLostEvent(controller, this));
+                        MakeEvent(new ControllerLostEvent(controller));
                     }
                 }
             }
@@ -42,75 +42,73 @@ namespace MBC.Core
         /// </summary>
         protected override void DoMainLogic()
         {
-            if (CurrentTurnID == NextRemaining() || CurrentTurnID == -1)
+            if (currentTurn == null)
             {
-                //0 or 1 controllers remain.
-
+                //Game is over
                 End();
                 return;
             }
 
-            var sender = Controllers[CurrentTurnID];
-            var receiver = Controllers[NextRemaining()];
+            var receiver = NextRemaining();
 
-            var shotsFromSender = sender.Register.Shots;
+            var shotsFromSender = currentTurn.Shots;
 
             try
             {
-                Shot shot = sender.MakeShot(receiver.Register.ID);
-                MakeEvent(new ControllerShotEvent(sender, this, shot.Coordinates, receiver));
-                sender.Register.Shots.Add(shot);
+                Shot shot = Controllers[currentTurn.ID].MakeShot(receiver.ID);
+                MakeEvent(new ControllerShotEvent(currentTurn, receiver, shot));
+                currentTurn.Shots.Add(shot);
 
                 if (ShotOutOfBounds(shot) || ShotSuicidal(shot) || ShotRepeated(shot) || ShotDestroyed(shot))
                 {
-                    //The shot violated one of the rules of the round.
+                    //The current controller violated one of the rules of the round.
 
-                    PlayerLose(sender);
+                    MakeLoser(currentTurn);
                     NextTurn();
                     return;
                 }
 
                 //Get the actual receiver of the shot
-                receiver = Controllers[shot.Receiver];
+                receiver = Registers[shot.Receiver];
 
-                Ship shotShip = receiver.Register.Ships.ShipAt(shot.Coordinates);
+                Ship shotShip = receiver.Ships.ShipAt(shot.Coordinates);
                 if (shotShip != null)
                 {
                     //The shot made by the sender hit a ship.
 
-                    MakeEvent(new ControllerHitShipEvent(sender, this, shot.Coordinates, receiver));
-                    bool sunk = shotShip.IsSunk(sender.Register.Shots.ShotsToReceiver(shot.Receiver));
-                    sender.NotifyShotHit(shot, sunk);
+                    MakeEvent(new ControllerHitShipEvent(currentTurn, receiver, shot));
+                    bool sunk = shotShip.IsSunk(currentTurn.Shots.ShotsToReceiver(shot.Receiver));
+                    Controllers[currentTurn.ID].NotifyShotHit(shot, sunk);
                     if (sunk)
                     {
                         //The last shot sunk a receiver's ship.
 
-                        MakeEvent(new ControllerDestroyedShipEvent(sender, this, shotShip, receiver));
-                        if (receiver.Register.Ships.GetSunkShips(sender.Register.Shots.ShotsToReceiver(receiver.Register.ID)).Count == receiver.Register.Ships.Count)
+                        MakeEvent(new ControllerDestroyedShipEvent(currentTurn, receiver, shotShip));
+                        if (receiver.Ships.GetSunkShips(currentTurn.Shots.ShotsToReceiver(receiver.ID)).Count == receiver.Ships.Count)
                         {
                             //All of the receiving controller's ships have been destroyed.
-                            PlayerLose(receiver);
+                            MakeLoser(receiver);
                         }
                     }
                 }
                 else
                 {
-                    sender.NotifyShotMiss(shot);
+                    Controllers[currentTurn.ID].NotifyShotMiss(shot);
                 }
 
-                if (RemainingControllers.Contains(receiver))
+                if (RemainingRegisters.Contains(receiver))
                 {
                     //The receiver is still in the round.
 
-                    receiver.NotifyOpponentShot(shot);
+                    Controllers[receiver.ID].NotifyOpponentShot(shot);
                 }
             }
             catch (ControllerTimeoutException ex)
             {
                 //An aforementioned controller timed out.
 
-                MakeEvent(new ControllerTimeoutEvent(this, ex));
-                PlayerLose(ex.Controller);
+                MakeEvent(new ControllerTimeoutEvent(ex));
+                MakeLoser(ex.Register);
             }
 
             NextTurn();
@@ -124,17 +122,17 @@ namespace MBC.Core
 
         private bool ShotSuicidal(Shot shot)
         {
-            return CurrentTurnID == shot.Receiver;
+            return currentTurn.ID == shot.Receiver;
         }
 
         private bool ShotRepeated(Shot shot)
         {
-            return Controllers[CurrentTurnID].Register.Shots.Contains(shot);
+            return Registers[currentTurn.ID].Shots.Contains(shot);
         }
 
         private bool ShotDestroyed(Shot shot)
         {
-            return !RemainingControllers.Contains(Controllers[shot.Receiver]);
+            return !RemainingRegisters.Contains(Registers[shot.Receiver]);
         }
     }
 }

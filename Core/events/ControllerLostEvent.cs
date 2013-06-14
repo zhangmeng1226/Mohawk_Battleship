@@ -1,14 +1,15 @@
-﻿using System;
+﻿using MBC.Shared;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
 namespace MBC.Core.Events
 {
-    public class ControllerLostEvent : RoundControllerEvent
+    public class ControllerLostEvent : ControllerEvent
     {
-        public ControllerLostEvent(ControllerUser controller, Round round)
-            : base(controller, round)
+        public ControllerLostEvent(ControllerRegister controller)
+            : base(controller)
         {
             message = controller + " has lost the round.";
         }

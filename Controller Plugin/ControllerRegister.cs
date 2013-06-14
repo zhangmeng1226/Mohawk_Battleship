@@ -5,7 +5,7 @@ using System.Text;
 
 namespace MBC.Shared
 {
-    public class ControllerRegister
+    public class ControllerRegister : IEquatable<ControllerRegister>
     {
         public ControllerRegister(ControllerRegister copy)
         {
@@ -38,6 +38,33 @@ namespace MBC.Shared
             copy.Ships = new ShipList(Ships);
             copy.Shots = Shots.DeepCopy();
             return copy;
+        }
+
+        public override string ToString()
+        {
+            return Match.Players[ID];
+        }
+
+        public bool Equals(ControllerRegister register)
+        {
+            if (register == null)
+            {
+                return false;
+            }
+            return (ID == register.ID) && (Match == register.Match);
+        }
+
+        public override bool Equals(object obj)
+        {
+            return base.Equals(obj);
+        }
+
+        public override int GetHashCode()
+        {
+            int hash = 23;
+            hash = hash * 37 + ID;
+            hash = hash * 37 + Match.GetHashCode();
+            return hash;
         }
     }
 }

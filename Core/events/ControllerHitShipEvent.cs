@@ -6,21 +6,21 @@ using System.Text;
 
 namespace MBC.Core.Events
 {
-    public class ControllerHitShipEvent : RoundControllerEvent
+    public class ControllerHitShipEvent : ControllerEvent
     {
-        private Coordinates coords;
-        private ControllerUser opponent;
+        private Shot coords;
+        private ControllerRegister opponent;
 
-        public ControllerHitShipEvent(ControllerUser controller, Round round, Coordinates coords, ControllerUser opposer)
-            : base(controller, round)
+        public ControllerHitShipEvent(ControllerRegister register, ControllerRegister opposer, Shot shot)
+            : base(register)
         {
-            this.coords = coords;
+            this.coords = shot;
             this.opponent = opposer;
 
-            message = controller + " hit a " + opposer + " ship at " + coords;
+            message = register + " hit a " + opposer + " ship at " + shot.Coordinates;
         }
 
-        public Coordinates HitCoords
+        public Shot HitCoords
         {
             get
             {
@@ -28,7 +28,7 @@ namespace MBC.Core.Events
             }
         }
 
-        public ControllerUser Opponent
+        public ControllerRegister Opponent
         {
             get
             {
