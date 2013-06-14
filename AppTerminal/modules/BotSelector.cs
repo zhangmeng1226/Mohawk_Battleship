@@ -1,7 +1,6 @@
 ﻿using MBC.App.Terminal.Controls;
 using MBC.App.Terminal.Layouts;
 using MBC.Core;
-using MBC.Core.util;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -6,7 +6,7 @@ using System.Text;
 namespace MBC.Core.Attributes
 {
     /// <summary>
-    /// Provides academic information about the author of a class implementing the IBattleshipController interface.
+    /// Allows a controller to provide information about it's developer's academic information.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class)]
     public class AcademicInfoAttribute : Attribute
