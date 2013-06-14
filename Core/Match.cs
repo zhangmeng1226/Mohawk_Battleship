@@ -12,10 +12,7 @@ namespace MBC.Core
     ///     <item><b>mbc_match_rounds_mode</b> - "all", "play to", or "best of".
     ///     <list type="bullet">
     ///         <item><b>all</b> - Runs N number of Rounds.</item>
-    ///         <item><b>play to</b> - Runs rounds until a controller has reached N number of wins.</item>
-    ///         <item><b>best of</b> - Tournament style; runs rounds until a controller has reached a number of wins that is then
-    ///         impossible for the other controller to reach. Eg, 3 out of 5, 6 out of 13, 101 out of 200...
-    ///         </item>
+    ///         <item><b>first to</b> - Runs rounds until a controller has reached N number of wins.</item>
     ///     </list>
     ///     </item>
     ///     <item><b>mbc_match_rounds</b> - The number of rounds.</item>
@@ -80,9 +77,6 @@ namespace MBC.Core
                     break;
                 case "first to":
                     roundPlay = PlayMode.FirstTo;
-                    break;
-                case "best of":
-                    roundPlay = PlayMode.BestOf;
                     break;
                 default:
                     conf.SetValue<string>("mbc_match_rounds_mode", "all");
@@ -170,13 +164,7 @@ namespace MBC.Core
             /// <summary>
             /// Runs rounds until a controller has reached N number of wins.
             /// </summary>
-            FirstTo,
-
-            /// <summary>
-            /// Tournament style; runs rounds until a controller has reached a number of wins that is then
-            /// impossible for the other controller to reach. Eg, 3 out of 5, 6 out of 13, 101 out of 200...
-            /// </summary>
-            BestOf
+            FirstTo
         }
     }
 }
