@@ -1,4 +1,4 @@
-﻿using MBC.Core.Attributes;
+﻿using MBC.Shared.Attributes;
 using System;
 using System.Collections.Generic;
 using System.IO;

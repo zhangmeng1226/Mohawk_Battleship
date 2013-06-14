@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace MBC.Core
+namespace MBC.Shared
 {
     /// <summary>
     /// The GameMode enumeration identifies the type of game logic that will be used in a battleship round.

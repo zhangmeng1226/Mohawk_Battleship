@@ -5,7 +5,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 
-namespace MBC.Core
+namespace MBC.Shared
 {
     /// <summary>
     /// A ShipList is a specialized collection of Ship objects.

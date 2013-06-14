@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using MBC.Core;
-using MBC.Core.Attributes;
+using MBC.Shared;
+using MBC.Shared.Attributes;
 
 namespace MBC.Controllers
 {

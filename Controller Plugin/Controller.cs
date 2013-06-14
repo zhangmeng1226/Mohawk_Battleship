@@ -3,7 +3,7 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Collections.Generic;
 
-namespace MBC.Core
+namespace MBC.Shared
 {
     /// <summary>
     /// A delegate defining a method that receives a string.

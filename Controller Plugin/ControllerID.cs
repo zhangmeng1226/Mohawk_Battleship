@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace MBC.Core
+namespace MBC.Shared
 {
     /// <summary>
     /// A ControllerID is an integer that represents the order that a controller is placed in a round.

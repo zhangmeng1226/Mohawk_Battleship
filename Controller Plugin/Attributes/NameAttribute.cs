@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace MBC.Core.Attributes
+namespace MBC.Shared.Attributes
 {
     /// <summary>
     /// Provides the name of a controller class implementing the IBattleshipController interface.

@@ -1,4 +1,4 @@
-﻿namespace MBC.Core
+﻿namespace MBC.Shared
 {
     
     /// <summary>A ShipOrientaton defines the orientation of a Ship.

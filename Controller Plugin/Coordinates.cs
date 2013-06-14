@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace MBC.Core
+namespace MBC.Shared
 {
     /// <summary>
     /// Coordinates are used to represent X and Y Coordinates. Coordinates can be operated on with the following

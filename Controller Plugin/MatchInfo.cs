@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace MBC.Core
+namespace MBC.Shared
 {
     /// <summary>
     /// Provides information about a matchup. Each MatchInfo is persistent throughout each matchup.

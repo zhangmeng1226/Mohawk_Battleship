@@ -1,5 +1,4 @@
-﻿using MBC.Core.Attributes;
-using System;
+﻿using System;
 using System.Collections.ObjectModel;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -9,6 +8,8 @@ using System.Reflection;
 using System.Text;
 using System.Threading;
 using MBC.Core.Util;
+using MBC.Shared;
+using MBC.Shared.Attributes;
 
 namespace MBC.Core
 {

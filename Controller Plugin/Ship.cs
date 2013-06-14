@@ -1,4 +1,4 @@
-﻿namespace MBC.Core
+﻿namespace MBC.Shared
 {
     using System;
     using System.Collections.Generic;
