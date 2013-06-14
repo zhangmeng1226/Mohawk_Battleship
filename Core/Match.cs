@@ -8,7 +8,7 @@ using System.Threading;
 
 namespace MBC.Core
 {
-    public delegate void MatchEventHandler(MatchEvent ev);
+    public delegate void MBCMatchEventHandler(MatchEvent ev);
 
     /// <summary>
     /// Provides information about a matchup of controllers. The Match class sets and uses the following
@@ -29,7 +29,8 @@ namespace MBC.Core
     [Configuration("mbc_match_rounds", 100)]
     public class Match
     {
-        public event MatchEventHandler MatchEvent;
+        public event MBCMatchEventHandler MatchEvent;
+        public event MBCRoundEventHandler RoundEvent;
 
         private MatchInfo info;
         private PlayMode roundPlay;
@@ -142,11 +143,17 @@ namespace MBC.Core
             return false;
         }
 
+        private void RoundEventCall(RoundEvent ev)
+        {
+            RoundEvent(ev);
+        }
+
         private bool SetNewRound()
         {
             if ((info.GameMode & GameMode.Classic) == GameMode.Classic)
             {
                 currentRound = new ClassicRound(info, participants);
+                currentRound.EventCreated += RoundEventCall;
                 roundList.Add(currentRound);
                 return true;
             }
@@ -277,6 +284,14 @@ namespace MBC.Core
             get
             {
                 return roundList;
+            }
+        }
+
+        public Round CurrentRound
+        {
+            get
+            {
+                return currentRound;
             }
         }
 
