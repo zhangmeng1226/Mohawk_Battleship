@@ -8,7 +8,7 @@ namespace MBC.Core
 {
     public class ClassicRound : Round
     {
-        public ClassicRound(MatchInfo info, params ControllerUser[] controllers)
+        public ClassicRound(MatchInfo info, List<ControllerUser> controllers)
             : base(info, controllers) { }
 
         private bool ShotOutOfBounds(Shot shot)

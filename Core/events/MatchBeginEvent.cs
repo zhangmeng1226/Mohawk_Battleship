@@ -9,7 +9,7 @@ namespace MBC.Core.Events
     {
         public MatchBeginEvent(Match match) : base(match)
         {
-
+            message = "The match has begun.";
         }
     }
 }

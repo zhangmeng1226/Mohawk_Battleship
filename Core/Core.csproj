@@ -57,7 +57,10 @@
     <Compile Include="Events\ControllerTimeoutEvent.cs" />
     <Compile Include="Events\ControllerWonEvent.cs" />
     <Compile Include="Events\Event.cs" />
+    <Compile Include="Events\MatchPlayEvent.cs" />
+    <Compile Include="Events\MatchStopEvent.cs" />
     <Compile Include="Events\MatchBeginEvent.cs" />
+    <Compile Include="Events\MatchEndEvent.cs" />
     <Compile Include="Events\MatchEvent.cs" />
     <Compile Include="Events\RoundAccoladeEvent.cs" />
     <Compile Include="Events\RoundBeginEvent.cs" />

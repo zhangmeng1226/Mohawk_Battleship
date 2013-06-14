@@ -30,7 +30,7 @@ namespace MBC.Core
         /// <summary>
         /// The Events generated and accumulated by this Round.
         /// </summary>
-        protected List<RoundEvent> Events { get; set; }
+        private List<RoundEvent> generatedEvents;
 
         /// <summary>
         /// The AccoladeGenerator that generates and adds Accolade objects to this Round.
@@ -77,10 +77,10 @@ namespace MBC.Core
         /// </summary>
         /// <param name="inputControllers">A variable number of controllers that are involved in this Round.</param>
         /// <param name="matchInfo">Information about the match that determines Round behaviour.</param>
-        public Round(MatchInfo matchInfo, params ControllerUser[] inputControllers)
+        public Round(MatchInfo matchInfo, List<ControllerUser> inputControllers)
         {
             Accolades = new List<Accolade>();
-            Events = new List<RoundEvent>();
+            generatedEvents = new List<RoundEvent>();
             Controllers = new List<ControllerUser>();
             RemainingControllers = new List<ControllerUser>();
             accoladeGenerator = new AccoladeGenerator(this);
@@ -260,16 +260,6 @@ namespace MBC.Core
             return currentState != State.End;
         }
 
-        public List<ControllerUser> GetControllers()
-        {
-            return new List<ControllerUser>(Controllers);
-        }
-
-        public ControllerUser ControllerFromID(ControllerID id)
-        {
-            return Controllers[id];
-        }
-
         /// <summary>
         /// Gets the current State of this Round.
         /// </summary>
@@ -308,6 +298,14 @@ namespace MBC.Core
             }
         }
 
+        public List<RoundEvent> Events
+        {
+            get
+            {
+                return new List<RoundEvent>(generatedEvents);
+            }
+        }
+
         /// <summary>
         /// Invokes all event listeners on the RoundEvent event in this Round with the given RoundEvent object.
         /// </summary>
@@ -323,7 +321,7 @@ namespace MBC.Core
         /// <param name="ev">The Event to add.</param>
         private void AddEvent(RoundEvent ev)
         {
-            Events.Add(ev);
+            generatedEvents.Add(ev);
         }
 
         /// <summary>
