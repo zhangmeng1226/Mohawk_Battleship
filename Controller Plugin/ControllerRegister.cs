@@ -8,15 +8,6 @@ namespace MBC.Core
 {
     public class ControllerRegister
     {
-        public MatchInfo Match { get; set; }
-        public int Score { get; set; }
-
-        public ShipList Ships { get; set; }
-        public ShotList Shots { get; set; }
-
-        public ControllerID ID { get; set; }
-        public List<ControllerID> Opponents { get; set; }
-
         public ControllerRegister(ControllerRegister copy)
         {
             Match = copy.Match;
@@ -32,6 +23,15 @@ namespace MBC.Core
             ID = id;
             Score = 0;
         }
+
+        public MatchInfo Match { get; set; }
+        public int Score { get; set; }
+
+        public ShipList Ships { get; set; }
+        public ShotList Shots { get; set; }
+
+        public ControllerID ID { get; set; }
+        public List<ControllerID> Opponents { get; set; }
 
         public ControllerRegister MakeCompleteCopy()
         {

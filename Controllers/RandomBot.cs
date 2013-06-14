@@ -63,23 +63,6 @@ namespace MBC.Controllers
         ShotList shotQueue;
 
         /// <summary>
-        /// This method will create a new ShotList in the shotQueue field of this controller. It will
-        /// fill this ShotList with shots that this controller has available.
-        /// </summary>
-        private void SetShots()
-        {
-            //Construct a new ShotList object.
-            shotQueue = new ShotList();
-
-            //Set up our shot queue with our opponents.
-            shotQueue.MakeReceivers(Register.Opponents);
-
-            //Initially, a ShotList is empty when it is constructed, so the ShotList can be filled
-            //easily by inverting it up to the size of the field in the game.
-            shotQueue.Invert(Register.Match.FieldSize);
-        }
-
-        /// <summary>
         /// This method is called from the competition whenever this controller is being involved in a new
         /// matchup against a controller, or controllers. This can be treated similarily like a constructor
         /// for this controller for simplicity's sake.
@@ -94,60 +77,6 @@ namespace MBC.Controllers
             //Finally, the controller creates a random number generator into the "rand" field defined
             //in this class. It uses the tick count of the system as a seed.
             rand = new Random(Environment.TickCount);
-        }
-
-        /// <summary>
-        /// This method randomly returns one of two ShipOrientation enums.
-        /// </summary>
-        /// <returns>A randomly selected ShipOrientation.</returns>
-        private ShipOrientation RandomShipOrientation()
-        {
-            //The controller first makes a two-element array that contains the two possible orientations.
-            var orientations = new ShipOrientation[] { ShipOrientation.Horizontal, ShipOrientation.Vertical };
-
-            //Then the controller uses the random number generator "rand" to choose either a 0 or a 1 to
-            //pick the index of a ShipOrientation randomly. The ShipOrientation is then returned back to the
-            //caller.
-            return orientations[rand.Next(2)];
-        }
-
-        /// <summary>
-        /// This method generates a random set of coordinates within the match field boundaries.
-        /// </summary>
-        /// <returns>Coordinates of randomized X and Y components within this controller's match information
-        /// field boundaries.</returns>
-        private Coordinates RandomCoordinates()
-        {
-            //First generate a random X coordinate. Note that rand.Next() gets a random number that is
-            //always less than the given value; we add one to get the full range of the field.
-            var xCoord = rand.Next(Register.Match.FieldSize.X + 1);
-
-            //Then generate a random Y coordinate.
-            var yCoord = rand.Next(Register.Match.FieldSize.Y + 1);
-
-            //Then put the two coordinates together and return it.
-            return new Coordinates(xCoord, yCoord);
-        }
-
-        /// <summary>
-        /// This method gets a random Shot that remains in the shotQueue.
-        /// </summary>
-        /// <returns>A random Shot from the shotQueue.</returns>
-        private Shot NextRandomShot()
-        {
-            //First generate a random number which will be the index of a random
-            //shot from within the shotQueue.
-            var randomShotIndex = rand.Next(shotQueue.Count);
-
-            //Then get the Shot object from the shotQueue at the random index.
-            Shot randomShot = shotQueue[randomShotIndex];
-
-            //According to the rules of most game modes, a controller cannot make the same shot
-            //twice, so remove this shot from the shotQueue.
-            shotQueue.Remove(randomShot);
-
-            //Then return the random shot back to the caller.
-            return randomShot;
         }
 
         /// <summary>
@@ -208,6 +137,77 @@ namespace MBC.Controllers
         {
             //Demonstrating the use of the ControllerMessageEvent by sending a string.
             SendMessage("Unsurprisingly I lost...");
+        }
+
+        /// <summary>
+        /// This method randomly returns one of two ShipOrientation enums.
+        /// </summary>
+        /// <returns>A randomly selected ShipOrientation.</returns>
+        private ShipOrientation RandomShipOrientation()
+        {
+            //The controller first makes a two-element array that contains the two possible orientations.
+            var orientations = new ShipOrientation[] { ShipOrientation.Horizontal, ShipOrientation.Vertical };
+
+            //Then the controller uses the random number generator "rand" to choose either a 0 or a 1 to
+            //pick the index of a ShipOrientation randomly. The ShipOrientation is then returned back to the
+            //caller.
+            return orientations[rand.Next(2)];
+        }
+
+        /// <summary>
+        /// This method generates a random set of coordinates within the match field boundaries.
+        /// </summary>
+        /// <returns>Coordinates of randomized X and Y components within this controller's match information
+        /// field boundaries.</returns>
+        private Coordinates RandomCoordinates()
+        {
+            //First generate a random X coordinate. Note that rand.Next() gets a random number that is
+            //always less than the given value; we add one to get the full range of the field.
+            var xCoord = rand.Next(Register.Match.FieldSize.X + 1);
+
+            //Then generate a random Y coordinate.
+            var yCoord = rand.Next(Register.Match.FieldSize.Y + 1);
+
+            //Then put the two coordinates together and return it.
+            return new Coordinates(xCoord, yCoord);
+        }
+
+        /// <summary>
+        /// This method gets a random Shot that remains in the shotQueue.
+        /// </summary>
+        /// <returns>A random Shot from the shotQueue.</returns>
+        private Shot NextRandomShot()
+        {
+            //First generate a random number which will be the index of a random
+            //shot from within the shotQueue.
+            var randomShotIndex = rand.Next(shotQueue.Count);
+
+            //Then get the Shot object from the shotQueue at the random index.
+            Shot randomShot = shotQueue[randomShotIndex];
+
+            //According to the rules of most game modes, a controller cannot make the same shot
+            //twice, so remove this shot from the shotQueue.
+            shotQueue.Remove(randomShot);
+
+            //Then return the random shot back to the caller.
+            return randomShot;
+        }
+
+        /// <summary>
+        /// This method will create a new ShotList in the shotQueue field of this controller. It will
+        /// fill this ShotList with shots that this controller has available.
+        /// </summary>
+        private void SetShots()
+        {
+            //Construct a new ShotList object.
+            shotQueue = new ShotList();
+
+            //Set up our shot queue with our opponents.
+            shotQueue.MakeReceivers(Register.Opponents);
+
+            //Initially, a ShotList is empty when it is constructed, so the ShotList can be filled
+            //easily by inverting it up to the size of the field in the game.
+            shotQueue.Invert(Register.Match.FieldSize);
         }
     }
 }

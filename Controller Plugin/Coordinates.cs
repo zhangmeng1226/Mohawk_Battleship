@@ -150,15 +150,6 @@ namespace MBC.Core
         }
 
         /// <summary>
-        /// Creates a formatted string representation of these Coordinates in the format: (x, y)
-        /// </summary>
-        /// <returns>The string representation of these Coordinates.</returns>
-        public override string ToString()
-        {
-            return "("+x+", "+y+")";
-        }
-
-        /// <summary>
         /// Compares the order between these Coordinates with another set of Coordinates.
         /// </summary>
         /// <param name="coords">Coordinates to compare to.</param>
@@ -180,6 +171,15 @@ namespace MBC.Core
         public bool Equals(Coordinates obj)
         {
             return this == obj;
+        }
+
+        /// <summary>
+        /// Creates a formatted string representation of these Coordinates in the format: (x, y)
+        /// </summary>
+        /// <returns>The string representation of these Coordinates.</returns>
+        public override string ToString()
+        {
+            return "(" + x + ", " + y + ")";
         }
 
         /// <summary>

@@ -93,12 +93,26 @@ namespace MBC.Core.Util
     /// </summary>
     public class Configuration
     {
-        private Dictionary<string, object> simpleConfig;
-        private string configName;
-
         private static string configsPath;
         private static Configuration globalInstance;
         private static Configuration defaultInstance;
+
+        private Dictionary<string, object> simpleConfig;
+        private string configName;
+
+        /// <summary>
+        /// Initializes this Configuration by loading from a configuration file named by the given string. If it does not
+        /// exist, then getting values from this Configuration will get the Configuration.Default values as needed.
+        /// </summary>
+        public Configuration(string name)
+        {
+            simpleConfig = new Dictionary<string, object>();
+            configName = name;
+            if (name != "default")
+            {
+                LoadConfigFile();
+            }
+        }
         
         /// <summary>
         /// Gets a common Configuration object for use.
@@ -168,19 +182,6 @@ namespace MBC.Core.Util
             return res;
         }
 
-        /// <summary>
-        /// Initializes this Configuration by loading from a configuration file named by the given string. If it does not
-        /// exist, then getting values from this Configuration will get the Configuration.Default values as needed.
-        /// </summary>
-        public Configuration(string name)
-        {
-            simpleConfig = new Dictionary<string, object>();
-            configName = name;
-            if (name != "default")
-            {
-                LoadConfigFile();
-            }
-        }
         /// <summary>
         /// Renames this Configuration object; effectively changing the name of the file this
         /// Configuration will be changed to.
@@ -254,6 +255,26 @@ namespace MBC.Core.Util
             return GetList<T>(key);
         }
 
+        /// <summary>Saves the current configuration to a file.</summary>
+        /// <exception cref="IOException">The file could not be written to.</exception>
+        public void SaveConfigFile()
+        {
+            try
+            {
+                var writer = new StreamWriter(configsPath + configName + ".ini", false);
+                foreach (var entry in simpleConfig)
+                {
+                    writer.WriteLine(entry.Key + " = " + entry.Value.ToString());
+                }
+                writer.Flush();
+                writer.Close();
+            }
+            catch
+            {
+                //Could not open file for writing (already open?)
+            }
+        }
+
         /// <summary>Loads a configuration file from the configuration folder.</summary>
         private void LoadConfigFile()
         {
@@ -300,26 +321,6 @@ namespace MBC.Core.Util
             catch
             {
                 //Failed to parse. (error with file).
-            }
-        }
-
-        /// <summary>Saves the current configuration to a file.</summary>
-        /// <exception cref="IOException">The file could not be written to.</exception>
-        public void SaveConfigFile()
-        {
-            try
-            {
-                var writer = new StreamWriter(configsPath + configName + ".ini", false);
-                foreach (var entry in simpleConfig)
-                {
-                    writer.WriteLine(entry.Key + " = " + entry.Value.ToString());
-                }
-                writer.Flush();
-                writer.Close();
-            }
-            catch
-            {
-                //Could not open file for writing (already open?)
             }
         }
     }

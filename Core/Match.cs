@@ -29,8 +29,6 @@ namespace MBC.Core
     [Configuration("mbc_match_rounds", 100)]
     public class Match
     {
-        public event MBCMatchEventHandler MatchEvent;
-        public event MBCRoundEventHandler RoundEvent;
 
         private MatchInfo info;
         private PlayMode roundPlay;
@@ -55,6 +53,167 @@ namespace MBC.Core
         public Match(Configuration conf, params ControllerInformation[] controllers)
         {
             Init(conf, controllers);
+        }
+
+        public event MBCMatchEventHandler MatchEvent;
+        public event MBCRoundEventHandler RoundEvent;
+
+        /// <summary>
+        /// This enumerator identifies the behaviour of rounds being played out, given a number.
+        /// </summary>
+        public enum PlayMode
+        {
+            /// <summary>
+            /// Runs N rounds.
+            /// </summary>
+            AllRounds,
+
+            /// <summary>
+            /// Runs rounds until a controller has reached N number of wins.
+            /// </summary>
+            FirstTo
+        }
+
+        /// <summary>
+        /// Gets the behaviour of rounds being played in this Match.
+        /// </summary>
+        public PlayMode RoundPlayMode
+        {
+            get
+            {
+                return roundPlay;
+            }
+        }
+
+        /// <summary>
+        /// Gets the MatchInfo object associated with this Match that describes the behaviour of the games
+        /// by this Match.
+        /// </summary>
+        public MatchInfo Info
+        {
+            get
+            {
+                return info;
+            }
+        }
+
+        /// <summary>
+        /// Gets the number of rounds set in this Match.
+        /// </summary>
+        public int NumberOfRounds
+        {
+            get
+            {
+                return targetRounds;
+            }
+        }
+
+        public List<Round> Rounds
+        {
+            get
+            {
+                return roundList;
+            }
+        }
+
+        public Round CurrentRound
+        {
+            get
+            {
+                return currentRound;
+            }
+        }
+
+        public int TurnDelay
+        {
+            get
+            {
+                return delay;
+            }
+            set
+            {
+                if (value <= 0)
+                {
+                    delay = 0;
+                }
+                else
+                {
+                    delay = value;
+                }
+            }
+        }
+
+        public bool Step()
+        {
+            if (isRunning)
+            {
+                return true;
+            }
+            return Progress();
+        }
+
+        public void Play()
+        {
+            MakeEvent(new MatchBeginEvent(this));
+            isRunning = true;
+            sleepHandle.Reset();
+            runningThread.Start();
+        }
+
+        public void Stop()
+        {
+            MakeEvent(new MatchStopEvent(this));
+            isRunning = false;
+            sleepHandle.Set();
+        }
+
+        public void End()
+        {
+            Stop();
+            MakeEvent(new MatchEndEvent(this));
+            roundIteration = targetRounds;
+        }
+
+        public List<ControllerRegister> GetRegistered()
+        {
+            var registered = new List<ControllerRegister>();
+            foreach (var user in participants)
+            {
+                registered.Add(user.Register);
+            }
+            return registered;
+        }
+
+        public bool IsRoundTargetReached()
+        {
+            if (roundPlay == PlayMode.AllRounds)
+            {
+                return roundIteration == targetRounds;
+            }
+            else if (roundPlay == PlayMode.FirstTo)
+            {
+                foreach (var registrant in participants)
+                {
+                    if (registrant.Register.Score == targetRounds)
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+        private void RoundEventCall(RoundEvent ev)
+        {
+            RoundEvent(ev);
+        }
+
+        private void MakeEvent(MatchEvent ev)
+        {
+            if (MatchEvent != null)
+            {
+                MatchEvent(ev);
+            }
         }
 
         private void Init(Configuration conf, params ControllerInformation[] controllersToLoad)
@@ -114,56 +273,6 @@ namespace MBC.Core
             }
         }
 
-        public List<ControllerRegister> GetRegistered()
-        {
-            var registered = new List<ControllerRegister>();
-            foreach (var user in participants)
-            {
-                registered.Add(user.Register);
-            }
-            return registered;
-        }
-
-        public bool IsRoundTargetReached()
-        {
-            if (roundPlay == PlayMode.AllRounds)
-            {
-                return roundIteration == targetRounds;
-            }
-            else if (roundPlay == PlayMode.FirstTo)
-            {
-                foreach (var registrant in participants)
-                {
-                    if (registrant.Register.Score == targetRounds)
-                    {
-                        return true;
-                    }
-                }
-            }
-            return false;
-        }
-
-        private void RoundEventCall(RoundEvent ev)
-        {
-            RoundEvent(ev);
-        }
-
-        private bool SetNewRound()
-        {
-            if ((info.GameMode & GameMode.Classic) == GameMode.Classic)
-            {
-                currentRound = new ClassicRound(info, participants);
-                currentRound.EventCreated += RoundEventCall;
-                roundList.Add(currentRound);
-                return true;
-            }
-            else
-            {
-                End();
-                return false;
-            }
-        }
-
         /// <summary>
         /// Progresses the Match. Sets up a new Round when there is no Round in progress. Progresses the
         /// current Round in progress. Continues this until the criteria set by the PlayMode has been met.
@@ -190,6 +299,22 @@ namespace MBC.Core
             return true;
         }
 
+        private bool SetNewRound()
+        {
+            if ((info.GameMode & GameMode.Classic) == GameMode.Classic)
+            {
+                currentRound = new ClassicRound(info, participants);
+                currentRound.EventCreated += RoundEventCall;
+                roundList.Add(currentRound);
+                return true;
+            }
+            else
+            {
+                End();
+                return false;
+            }
+        }
+
         private void PlayLoop()
         {
             while (isRunning)
@@ -204,130 +329,6 @@ namespace MBC.Core
                 }
             }
             isRunning = false;
-        }
-
-        public bool Step()
-        {
-            if (isRunning)
-            {
-                return true;
-            }
-            return Progress();
-        }
-
-        public void Play()
-        {
-            MakeEvent(new MatchBeginEvent(this));
-            isRunning = true;
-            sleepHandle.Reset();
-            runningThread.Start();
-        }
-
-        public void Stop()
-        {
-            MakeEvent(new MatchStopEvent(this));
-            isRunning = false;
-            sleepHandle.Set();
-        }
-
-        public void End()
-        {
-            Stop();
-            MakeEvent(new MatchEndEvent(this));
-            roundIteration = targetRounds;
-        }
-
-        private void MakeEvent(MatchEvent ev)
-        {
-            if (MatchEvent != null)
-            {
-                MatchEvent(ev);
-            }
-        }
-
-        /// <summary>
-        /// Gets the behaviour of rounds being played in this Match.
-        /// </summary>
-        public PlayMode RoundPlayMode
-        {
-            get
-            {
-                return roundPlay;
-            }
-        }
-
-        /// <summary>
-        /// Gets the MatchInfo object associated with this Match that describes the behaviour of the games
-        /// by this Match.
-        /// </summary>
-        public MatchInfo Info
-        {
-            get
-            {
-                return info;
-            }
-        }
-
-        /// <summary>
-        /// Gets the number of rounds set in this Match.
-        /// </summary>
-        public int NumberOfRounds
-        {
-            get
-            {
-                return targetRounds;
-            }
-        }
-
-        public List<Round> Rounds
-        {
-            get
-            {
-                return roundList;
-            }
-        }
-
-        public Round CurrentRound
-        {
-            get
-            {
-                return currentRound;
-            }
-        }
-
-        public int Delay
-        {
-            get
-            {
-                return delay;
-            }
-            set
-            {
-                if (value <= 0)
-                {
-                    delay = 0;
-                }
-                else
-                {
-                    delay = value;
-                }
-            }
-        }
-
-        /// <summary>
-        /// This enumerator identifies the behaviour of rounds being played out, given a number.
-        /// </summary>
-        public enum PlayMode
-        {
-            /// <summary>
-            /// Runs N rounds.
-            /// </summary>
-            AllRounds,
-
-            /// <summary>
-            /// Runs rounds until a controller has reached N number of wins.
-            /// </summary>
-            FirstTo
         }
     }
 }

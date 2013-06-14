@@ -29,11 +29,6 @@ namespace MBC.Core
         private Stopwatch timeElapsed;
 
         /// <summary>
-        /// Invoked whenever the underlying controller interface wants to output a message string.
-        /// </summary>
-        public event StringOutputHandler ControllerMessageEvent;
-
-        /// <summary>
         /// Constructs a new Controller object with the given ClassInfo controller information and MatchInfo.
         /// </summary>
         /// <param name="targetControllerInfo">The ClassInfo to create the object from.</param>
@@ -62,16 +57,9 @@ namespace MBC.Core
         }
 
         /// <summary>
-        /// Invoked when the controller interface wants to output a string.
+        /// Invoked whenever the underlying controller interface wants to output a message string.
         /// </summary>
-        /// <param name="message">A string containing the message.</param>
-        private void ReceiveMessage(string message)
-        {
-            if (ControllerMessageEvent != null)
-            {
-                ControllerMessageEvent(message);
-            }
-        }
+        public event StringOutputHandler ControllerMessageEvent;
 
         /// <summary>
         /// Gets the ClassInfo that this Controller object refers to.
@@ -145,28 +133,6 @@ namespace MBC.Core
             get
             {
                 return register;
-            }
-        }
-
-        /// <summary>
-        /// Handles a given Thread by providing a timing and timeout function. If there is no controller interface
-        /// loaded with this controller, the thread will not be called.
-        /// </summary>
-        /// <param name="thread">The Thread to monitor and time.</param>
-        private void HandleThread(Thread thread, string method)
-        {
-            //Start the thread.
-            timeElapsed.Restart();
-            thread.Start();
-            if (!thread.Join(Register.Match.TimeLimit))
-            {
-                //Thread timed out.
-                thread.Abort();
-            }
-            timeElapsed.Stop();
-            if (TimedOut())
-            {
-                throw new ControllerTimeoutException(this, method, TimeElapsed);
             }
         }
 
@@ -331,6 +297,40 @@ namespace MBC.Core
         public override string ToString()
         {
             return DisplayName;
+        }
+
+        /// <summary>
+        /// Invoked when the controller interface wants to output a string.
+        /// </summary>
+        /// <param name="message">A string containing the message.</param>
+        private void ReceiveMessage(string message)
+        {
+            if (ControllerMessageEvent != null)
+            {
+                ControllerMessageEvent(message);
+            }
+        }
+
+        /// <summary>
+        /// Handles a given Thread by providing a timing and timeout function. If there is no controller interface
+        /// loaded with this controller, the thread will not be called.
+        /// </summary>
+        /// <param name="thread">The Thread to monitor and time.</param>
+        private void HandleThread(Thread thread, string method)
+        {
+            //Start the thread.
+            timeElapsed.Restart();
+            thread.Start();
+            if (!thread.Join(Register.Match.TimeLimit))
+            {
+                //Thread timed out.
+                thread.Abort();
+            }
+            timeElapsed.Stop();
+            if (TimedOut())
+            {
+                throw new ControllerTimeoutException(this, method, TimeElapsed);
+            }
         }
     }
 }

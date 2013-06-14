@@ -38,6 +38,30 @@ namespace MBC.Core
         }
 
         /// <summary>
+        /// Creates a new ShotList with Shot objects in both list1 and list2.
+        /// </summary>
+        /// <returns>A new ShotList object with the Coordinatess of both ShotList objects.</returns>
+        public static ShotList operator +(ShotList list1, ShotList list2)
+        {
+            ShotList newList = new ShotList(list1);
+            newList.Add(list2);
+            return newList;
+        }
+
+        /// <summary>
+        /// Creates a new ShotList with the Shot objects in list2 removed from list1.
+        /// </summary>
+        /// <param name="list1">The ShotList to remove Shot objects from.</param>
+        /// <param name="list2">The ShotList containing the Shot objects to remove from list1</param>
+        /// <returns>A new ShotList object.</returns>
+        public static ShotList operator -(ShotList list1, ShotList list2)
+        {
+            ShotList newList = new ShotList(list1);
+            newList.Remove(list2);
+            return newList;
+        }
+
+        /// <summary>
         /// Adds a Shot to this ShotList.
         /// </summary>
         /// <param name="shot">The Shot to add.</param>
@@ -206,14 +230,6 @@ namespace MBC.Core
         }
 
         /// <summary>
-        /// Gets a ShotListEnumerator for this ShotList.
-        /// </summary>
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return new ShotListEnumerator(this);
-        }
-
-        /// <summary>
         /// Copies the contents of this ShotList to a specified array.
         /// </summary>
         /// <param name="array">The array to copy to.</param>
@@ -301,30 +317,6 @@ namespace MBC.Core
         }
 
         /// <summary>
-        /// Creates a new ShotList with Shot objects in both list1 and list2.
-        /// </summary>
-        /// <returns>A new ShotList object with the Coordinatess of both ShotList objects.</returns>
-        public static ShotList operator +(ShotList list1, ShotList list2)
-        {
-            ShotList newList = new ShotList(list1);
-            newList.Add(list2);
-            return newList;
-        }
-
-        /// <summary>
-        /// Creates a new ShotList with the Shot objects in list2 removed from list1.
-        /// </summary>
-        /// <param name="list1">The ShotList to remove Shot objects from.</param>
-        /// <param name="list2">The ShotList containing the Shot objects to remove from list1</param>
-        /// <returns>A new ShotList object.</returns>
-        public static ShotList operator -(ShotList list1, ShotList list2)
-        {
-            ShotList newList = new ShotList(list1);
-            newList.Remove(list2);
-            return newList;
-        }
-
-        /// <summary>
         /// Removes the shots in this ShotList and adds the shots that were previously not made to
         /// this ShotList up to the provided maximum Coordinates. This method will only invert shots
         /// of known controller ids. They become known once a Shot is added to this ShotList, or if
@@ -364,6 +356,14 @@ namespace MBC.Core
 
             //Replace the entire shot contents of this ShotList with the inverted one.
             shotHistory = totalList;
+        }
+
+        /// <summary>
+        /// Gets a ShotListEnumerator for this ShotList.
+        /// </summary>
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return new ShotListEnumerator(this);
         }
 
         /// <summary>

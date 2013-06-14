@@ -193,29 +193,6 @@
         }
 
         /// <summary>
-        /// Provides a string representation of the Ship object.
-        /// </summary>
-        /// <returns>The string representing this Ship.</returns>
-        public override string ToString()
-        {
-            return location+" L"+length+" "+Enum.GetName(typeof(ShipOrientation), orientation);
-        }
-
-        /// <summary>
-        /// Generates a hash code of this Ship based on its fields.
-        /// </summary>
-        /// <returns>A hash code.</returns>
-        public override int GetHashCode()
-        {
-            int hash = 23;
-            hash = hash * 37 + isPlaced.GetHashCode();
-            hash = hash * 37 + location.GetHashCode();
-            hash = hash * 37 + orientation.GetHashCode();
-            hash = hash * 37 + length.GetHashCode();
-            return hash;
-        }
-
-        /// <summary>
         /// Determines whether or not this Ship is equal to another Ship in terms of the values of the fields.
         /// </summary>
         /// <param name="ship">The Ship to compare to.</param>
@@ -230,6 +207,29 @@
                 location == ship.location &&
                 orientation == ship.orientation &&
                 length == ship.length;
+        }
+
+        /// <summary>
+        /// Provides a string representation of the Ship object.
+        /// </summary>
+        /// <returns>The string representing this Ship.</returns>
+        public override string ToString()
+        {
+            return location + " L" + length + " " + Enum.GetName(typeof(ShipOrientation), orientation);
+        }
+
+        /// <summary>
+        /// Generates a hash code of this Ship based on its fields.
+        /// </summary>
+        /// <returns>A hash code.</returns>
+        public override int GetHashCode()
+        {
+            int hash = 23;
+            hash = hash * 37 + isPlaced.GetHashCode();
+            hash = hash * 37 + location.GetHashCode();
+            hash = hash * 37 + orientation.GetHashCode();
+            hash = hash * 37 + length.GetHashCode();
+            return hash;
         }
 
         /// <summary>

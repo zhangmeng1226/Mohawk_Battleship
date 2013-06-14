@@ -148,15 +148,6 @@ namespace MBC.Core
         }
 
         /// <summary>
-        /// Gets the enumerator for this ShipList.
-        /// </summary>
-        /// <returns>The ShipListEnumerator.</returns>
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return new ShipListEnumerator(this);
-        }
-
-        /// <summary>
         /// Copies the contents of this ShipList to the given Ship array, starting at the specified index within
         /// that array.
         /// </summary>
@@ -396,6 +387,15 @@ namespace MBC.Core
         }
 
         /// <summary>
+        /// Gets the enumerator for this ShipList.
+        /// </summary>
+        /// <returns>The ShipListEnumerator.</returns>
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return new ShipListEnumerator(this);
+        }
+
+        /// <summary>
         /// The ShipListEnumerator is used to iterate through the elements of a ShipList.
         /// </summary>
         private class ShipListEnumerator : IEnumerator<Ship>
@@ -408,18 +408,6 @@ namespace MBC.Core
                 collection = ships;
                 currentIdx = -1;
             }
-
-            public bool MoveNext()
-            {
-                return (++currentIdx >= collection.Count);
-            }
-
-            public void Reset()
-            {
-                currentIdx = -1;
-            }
-
-            void IDisposable.Dispose() { }
 
             public Ship Current
             {
@@ -436,6 +424,18 @@ namespace MBC.Core
                     return Current;
                 }
             }
+
+            public bool MoveNext()
+            {
+                return (++currentIdx >= collection.Count);
+            }
+
+            public void Reset()
+            {
+                currentIdx = -1;
+            }
+
+            void IDisposable.Dispose() { }
         }
     }
 }

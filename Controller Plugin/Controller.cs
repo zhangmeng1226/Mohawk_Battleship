@@ -19,12 +19,12 @@ namespace MBC.Core
     /// </summary>
     public abstract class Controller
     {
-        public ControllerRegister Register { get; set; }
-
         /// <summary>
         /// This event should be invoked when the controller interface wants to output a message.
         /// </summary>
         public event StringOutputHandler ControllerMessageEvent;
+
+        public ControllerRegister Register { get; set; }
 
         public void SendMessage(string message)
         {

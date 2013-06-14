@@ -40,6 +40,7 @@ namespace MBC.Core
                 return fieldSize;
             }
         }
+
         /// <summary>
         /// Gets the time in milliseconds of the max allowed time of a controller to return from a method invoke.
         /// </summary>

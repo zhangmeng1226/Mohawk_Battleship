@@ -11,25 +11,14 @@ namespace MBC.Core.Attributes
     [AttributeUsage(AttributeTargets.Class)]
     public class CapabilitiesAttribute : Attribute
     {
-        private List<GameMode> modesDesignedFor;
+        private readonly List<GameMode> Capabilities;
 
         public CapabilitiesAttribute(params GameMode[] modes)
         {
-            modesDesignedFor = new List<GameMode>();
+            Capabilities = new List<GameMode>();
             foreach (var mode in modes)
             {
-                modesDesignedFor.Add(mode);
-            }
-        }
-
-        /// <summary>
-        /// Gets a List of GameModes that a controller is compatible with.
-        /// </summary>
-        public List<GameMode> Capabilities
-        {
-            get
-            {
-                return modesDesignedFor;
+                Capabilities.Add(mode);
             }
         }
 
@@ -40,7 +29,7 @@ namespace MBC.Core.Attributes
         /// <returns>true if the GameMode is compatible, false otherwise.</returns>
         public bool CompatibleWith(GameMode mode)
         {
-            foreach (var givenModes in modesDesignedFor)
+            foreach (var givenModes in Capabilities)
             {
                 if ((mode & givenModes) != givenModes)
                 {

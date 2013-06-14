@@ -11,27 +11,6 @@ namespace MBC.Core
         public ClassicRound(MatchInfo info, List<ControllerUser> controllers)
             : base(info, controllers) { }
 
-        private bool ShotOutOfBounds(Shot shot)
-        {
-            return (shot.Coordinates > MatchInfo.FieldSize) ||
-                    (shot.Coordinates < MatchInfo.FieldSize);
-        }
-
-        private bool ShotSuicidal(Shot shot)
-        {
-            return CurrentTurnID == shot.Receiver;
-        }
-
-        private bool ShotRepeated(Shot shot)
-        {
-            return Controllers[CurrentTurnID].Register.Shots.Contains(shot);
-        }
-
-        private bool ShotDestroyed(Shot shot)
-        {
-            return !RemainingControllers.Contains(Controllers[shot.Receiver]);
-        }
-
         /// <summary>
         /// Ends the Round. Fires ControllerWonEvent and ControllerLostEvent depending on the existance of remaning
         /// Player objects.
@@ -60,7 +39,7 @@ namespace MBC.Core
         /// Does the game logic for the current Player turn. Iterates to the next Player in the remaining
         /// list of Player objects. Ends the game when only one Player remains.
         /// </summary>
-        protected override void Main()
+        protected override void DoMainLogic()
         {
             if (CurrentTurnID == NextRemaining() || CurrentTurnID == -1)
             {
@@ -134,6 +113,27 @@ namespace MBC.Core
             }
 
             NextTurn();
+        }
+
+        private bool ShotOutOfBounds(Shot shot)
+        {
+            return (shot.Coordinates > MatchInfo.FieldSize) ||
+                    (shot.Coordinates < MatchInfo.FieldSize);
+        }
+
+        private bool ShotSuicidal(Shot shot)
+        {
+            return CurrentTurnID == shot.Receiver;
+        }
+
+        private bool ShotRepeated(Shot shot)
+        {
+            return Controllers[CurrentTurnID].Register.Shots.Contains(shot);
+        }
+
+        private bool ShotDestroyed(Shot shot)
+        {
+            return !RemainingControllers.Contains(Controllers[shot.Receiver]);
         }
     }
 }
