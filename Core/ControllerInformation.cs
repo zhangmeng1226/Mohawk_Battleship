@@ -1,4 +1,5 @@
-﻿using MBC.Shared.Attributes;
+﻿using MBC.Shared;
+using MBC.Shared.Attributes;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -176,7 +177,7 @@ namespace MBC.Core
                     foreach (Type cont in types)
                     {
                         //Iterating through each class in this assembly.
-                        if (cont.GetInterface("MBC.Core.IBattleshipController") != null)
+                        if (cont.IsSubclassOf(typeof(Controller))) 
                         {
                             NameAttribute nameAttrib = (NameAttribute)cont.GetCustomAttributes(typeof(NameAttribute), false)[0];
                             VersionAttribute verAttrib = (VersionAttribute)cont.GetCustomAttributes(typeof(VersionAttribute), false)[0];
