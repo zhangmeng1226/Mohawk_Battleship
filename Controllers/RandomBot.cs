@@ -10,7 +10,7 @@ namespace MBC.Controllers
     /// controller is highly documented and gives a good idea of how to develop a controller for use in MBC.
     /// 
     /// Every controller must implement the IBattleshipController interface from the shared framework in
-    /// order to be detected by the MBC core. See <see cref="IBattleshipController"/> for information about
+    /// order to be detected by the MBC core. See <see cref="Controller"/> for information about
     /// when each of the methods are called during a competition.
     /// 
     /// Then, each controller must use at least three attributes to describe itself, which are the NameAttribute
@@ -48,7 +48,7 @@ namespace MBC.Controllers
     //Here, an AcademicInfoAttribute is defined, which provides information about the educational institution
     //and program that the developer of this controller is in. This attribute is optional and can be omitted.
     [AcademicInfo("Mohawk College", "Software Development", 1)]
-    public class RandomBot : IBattleshipController
+    public class RandomBot : Controller
     {
         /// <summary>
         /// This is a Random object that this controller will be using through each match to generate

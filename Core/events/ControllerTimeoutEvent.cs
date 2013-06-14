@@ -16,13 +16,13 @@ namespace MBC.Core.Events
             Init(exception.Controller, round, exception.TimeTaken, exception.MethodName);
         }
 
-        public ControllerTimeoutEvent(Controller controller, Round round, int time, string method)
+        public ControllerTimeoutEvent(ControllerUser controller, Round round, int time, string method)
             : base(controller, round)
         {
             Init(controller, round, time, method);
         }
 
-        private void Init(Controller controller, Round round, int time, string method)
+        private void Init(ControllerUser controller, Round round, int time, string method)
         {
             this.time = time;
             this.methodName = method;

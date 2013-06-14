@@ -8,9 +8,9 @@ namespace MBC.Core.Events
     public class ControllerDestroyedShipEvent : RoundControllerEvent
     {
         private Ship destroyed;
-        private Controller owner;
+        private ControllerUser owner;
 
-        public ControllerDestroyedShipEvent(Controller controller, Round round, Ship destroyedShip, Controller opponent)
+        public ControllerDestroyedShipEvent(ControllerUser controller, Round round, Ship destroyedShip, ControllerUser opponent)
             : base(controller, round)
         {
             this.destroyed = destroyedShip;

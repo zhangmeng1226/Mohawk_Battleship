@@ -16,6 +16,15 @@ namespace MBC.Core.Attributes
         public readonly Version Version;
 
         /// <summary>
+        /// Initializes this VersionAttribute with an existing Version object.
+        /// </summary>
+        /// <param name="ver">The Version object to set to.</param>
+        public VersionAttribute(Version ver)
+        {
+            Version = ver;
+        }
+
+        /// <summary>
         /// Initializes this VersionAttribute with the specified string.
         /// </summary>
         /// <param name="ver">A string representing the version.</param>

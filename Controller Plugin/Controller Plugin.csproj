@@ -50,13 +50,14 @@
     <Compile Include="Attributes\NameAttribute.cs" />
     <Compile Include="Attributes\VersionAttribute.cs" />
     <Compile Include="ControllerID.cs" />
+    <Compile Include="ControllerRegister.cs" />
     <Compile Include="MatchInfo.cs" />
     <Compile Include="GameMode.cs" />
     <Compile Include="ShipList.cs" />
     <Compile Include="Shot.cs" />
     <Compile Include="ShotList.cs" />
     <Compile Include="Coordinates.cs" />
-    <Compile Include="IBattleshipController.cs" />
+    <Compile Include="Controller.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Ship.cs" />
     <Compile Include="ShipOrientation.cs" />

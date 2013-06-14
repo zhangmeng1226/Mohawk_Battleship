@@ -7,7 +7,7 @@ using System.Collections.ObjectModel;
 using System.Reflection;
 using MBC.Core;
 
-namespace MBC.Core
+namespace MBC.Core.Util
 {
     /// <summary>
     /// Configuration deals with a single configuration file and parses each key/value pair.
@@ -141,15 +141,10 @@ namespace MBC.Core
             var assemblies = AppDomain.CurrentDomain.GetAssemblies();
             foreach (var thisAssembly in assemblies)
             {
-                foreach (var type in thisAssembly.GetTypes())
+                object[] attribs = thisAssembly.GetCustomAttributes(typeof(ConfigurationAttribute), false);
+                foreach (ConfigurationAttribute defaultPair in attribs)
                 {
-                    foreach (var method in type.GetMethods())
-                    {
-                        if (method.Name == "SetConfigDefaults")
-                        {
-                            method.Invoke(null, null);
-                        }
-                    }
+                    defaultInstance.simpleConfig[defaultPair.Key] = defaultPair.Value;
                 }
             }
         }

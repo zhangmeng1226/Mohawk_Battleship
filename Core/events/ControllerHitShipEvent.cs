@@ -8,9 +8,9 @@ namespace MBC.Core.Events
     public class ControllerHitShipEvent : RoundControllerEvent
     {
         private Coordinates coords;
-        private Controller opponent;
+        private ControllerUser opponent;
 
-        public ControllerHitShipEvent(Controller controller, Round round, Coordinates coords, Controller opposer)
+        public ControllerHitShipEvent(ControllerUser controller, Round round, Coordinates coords, ControllerUser opposer)
             : base(controller, round)
         {
             this.coords = coords;
@@ -27,7 +27,7 @@ namespace MBC.Core.Events
             }
         }
 
-        public Controller Opponent
+        public ControllerUser Opponent
         {
             get
             {

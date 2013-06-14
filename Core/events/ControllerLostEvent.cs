@@ -7,7 +7,7 @@ namespace MBC.Core.Events
 {
     public class ControllerLostEvent : RoundControllerEvent
     {
-        public ControllerLostEvent(Controller controller, Round round)
+        public ControllerLostEvent(ControllerUser controller, Round round)
             : base(controller, round)
         {
             message = controller + " has lost the round.";

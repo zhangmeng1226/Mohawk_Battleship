@@ -45,12 +45,12 @@ namespace MBC.Core
         /// <summary>
         /// A List of Controller objects that have not lost.
         /// </summary>
-        protected List<Controller> RemainingControllers { get; set; }
+        protected List<ControllerUser> RemainingControllers { get; set; }
 
         /// <summary>
         /// A List of Controller objects that are involved in this Round.
         /// </summary>
-        protected List<Controller> Controllers { get; set; }
+        protected List<ControllerUser> Controllers { get; set; }
 
         /// <summary>
         /// The ControllerID of the Controller that plays first.
@@ -77,12 +77,12 @@ namespace MBC.Core
         /// </summary>
         /// <param name="inputControllers">A variable number of controllers that are involved in this Round.</param>
         /// <param name="matchInfo">Information about the match that determines Round behaviour.</param>
-        public Round(MatchInfo matchInfo, params Controller[] inputControllers)
+        public Round(MatchInfo matchInfo, params ControllerUser[] inputControllers)
         {
             Accolades = new List<Accolade>();
             Events = new List<RoundEvent>();
-            Controllers = new List<Controller>();
-            RemainingControllers = new List<Controller>();
+            Controllers = new List<ControllerUser>();
+            RemainingControllers = new List<ControllerUser>();
             accoladeGenerator = new AccoladeGenerator(this);
 
             //Set the state to Begin.
@@ -111,10 +111,10 @@ namespace MBC.Core
         {
             MakeEvent(new RoundBeginEvent(this));
 
-            for(var i = 0; i < Controllers.Count; i++) {
+            foreach(var controller in Controllers) {
                 try
                 {
-                    Controllers[i].NewRound(i);
+                    controller.NewRound();
                 }
                 catch (ControllerTimeoutException ex)
                 {
@@ -152,9 +152,9 @@ namespace MBC.Core
         /// </summary>
         /// <param name="controller">The Entity ships to check</param>
         /// <returns>true if the ships related to the given Entity are valid, false otherwise.</returns>
-        protected bool ControllerShipsValid(Controller controller)
+        protected bool ControllerShipsValid(ControllerUser controller)
         {
-            return controller.Ships != null && controller.Ships.ShipsPlaced && controller.Ships.GetConflictingShips().Count == 0;
+            return controller.Register.Ships != null && controller.Register.Ships.ShipsPlaced && controller.Register.Ships.GetConflictingShips().Count == 0;
         }
 
         /// <summary>
@@ -162,7 +162,7 @@ namespace MBC.Core
         /// Player from the remaining Player objects in this Round. Switches the turn to the next Player.
         /// </summary>
         /// <param name="loser">The loser.</param>
-        protected virtual void PlayerLose(Controller loser)
+        protected virtual void PlayerLose(ControllerUser loser)
         {
             MakeEvent(new ControllerLostEvent(loser, this));
             try
@@ -200,7 +200,7 @@ namespace MBC.Core
                 try
                 {
                     controller.PlaceShips();
-                    MakeEvent(new ControllerShipsPlacedEvent(controller, this, controller.Ships));
+                    MakeEvent(new ControllerShipsPlacedEvent(controller, this, controller.Register.Ships));
 
                     if (!ControllerShipsValid(controller))
                     {
@@ -260,12 +260,12 @@ namespace MBC.Core
             return currentState != State.End;
         }
 
-        public List<Controller> GetControllers()
+        public List<ControllerUser> GetControllers()
         {
-            return new List<Controller>(Controllers);
+            return new List<ControllerUser>(Controllers);
         }
 
-        public Controller ControllerFromID(ControllerID id)
+        public ControllerUser ControllerFromID(ControllerID id)
         {
             return Controllers[id];
         }

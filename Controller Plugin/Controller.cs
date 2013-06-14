@@ -17,26 +17,27 @@ namespace MBC.Core
     /// The various methods in this class are called at times during the battleship game. Read over the
     /// documentation for each method to understand when these methods are invoked.
     /// </summary>
-    public interface IBattleshipController
+    public abstract class Controller
     {
+        public ControllerRegister Register { get; set; }
 
         /// <summary>
         /// This event should be invoked when the controller interface wants to output a message.
         /// </summary>
-        event StringOutputHandler ControllerMessageEvent;
+        public event StringOutputHandler ControllerMessageEvent;
 
         /// <summary>Called when this controller is being placed in a match.</summary>
         /// <param name="matchInfo">Information about the match this controller is being placed in.</param>
         /// <seealso cref="MatchInfo"/>
-        void NewMatch(ControllerID thisId, MatchInfo matchInfo);
+        public abstract void NewMatch();
 
         /// <summary>Called when a new round in the match is commencing.</summary>
-        void NewRound();
+        public abstract void NewRound();
 
         /// <summary>Called when this controller must place their ships. Utilize the Ship objects in the
         /// given collection to place ships. Do not provide invalid ship placements (overlapping, bad coords, etc.)</summary>
         /// <param name="ships">A collection of ships to place.</param>
-        void PlaceShips(ReadOnlyCollection<Ship> ships);
+        public abstract void PlaceShips();
 
         /// <summary>
         /// Called when this controller has the opportunity to make a shot in their turn. The given
@@ -45,42 +46,42 @@ namespace MBC.Core
         /// </summary>
         /// <param name="shot">The Shot given to this controller to modify.</param>
         /// <seealso cref="Shot"/>
-        void MakeShot(Shot shot);
+        public abstract void MakeShot(Shot shot);
 
         /// <summary>Called when this controller is being shot at by another controller.</summary>
         /// <param name="shot">The shot the opponent has made against this controller</param>
         /// <seealso cref="Shot"/>
-        void OpponentShot(Shot shot);
+        public abstract void OpponentShot(Shot shot);
 
         /// <summary>Called when this controller has hit an opposing Ship from the Shot given by a previous
         /// call to MakeShot().</summary>
         /// <param name="shot">The Shot that made a ship hit on a controller.</param>
         /// <param name="sunk">True if the shot had sunk an opposing ship.</param>
         /// <seealso cref="Shot"/>
-        void ShotHit(Shot shot, bool sunk);
+        public abstract void ShotHit(Shot shot, bool sunk);
 
         /// <summary>Called when this controller did not hit an opposing ship from the Shot given by a previous
         /// call to MakeShot().</summary>
         /// <param name="shot">The Shot that missed.</param>
         /// <seealso cref="Shot"/>
-        void ShotMiss(Shot shot);
+        public abstract void ShotMiss(Shot shot);
 
         /// <summary>
         /// Called when an opposing controller has been removed from the round and has lost.
         /// </summary>
         /// <param name="destroyedID">The ControllerID of the controller that lost.</param>
         /// <seealso cref="ControllerID"/>
-        void OpponentDestroyed(ControllerID destroyedID);
+        public abstract void OpponentDestroyed(ControllerID destroyedID);
 
          /// <summary>
          /// Called when a round is over. In this case, this controller has won the round.
          /// </summary>
-        void RoundWon();
+        public abstract void RoundWon();
 
         /// <summary>Called when a round is over. In this case, this controller has lost the round.</summary>
-        void RoundLost();
+        public abstract void RoundLost();
 
         /// <summary>Called when a matchup has ended.</summary>
-        void MatchOver();
+        public abstract void MatchOver();
     }
 }

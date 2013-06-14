@@ -31,7 +31,7 @@ namespace MBC.Core
         /// <summary>
         /// Constructs a new empty ShotList object.
         /// </summary>
-        public ShotList(params ControllerID[] expectedIds)
+        public ShotList()
         {
             shotHistory = new List<Shot>();
             shotsByReceiver = new Dictionary<ControllerID, List<Shot>>();
@@ -62,6 +62,20 @@ namespace MBC.Core
                 shotHistory.Add(shot);
                 shotsByReceiver[shot.Receiver].Add(shot);
             }
+        }
+
+        /// <summary>
+        /// Makes a copy of this ShotList with copies of its containing Shot objects.
+        /// </summary>
+        /// <returns>A deep-copied ShotList.</returns>
+        public ShotList DeepCopy()
+        {
+            ShotList copy = new ShotList();
+            foreach (var shot in shotHistory)
+            {
+                copy.Add(new Shot(shot));
+            }
+            return copy;
         }
 
         /// <summary>

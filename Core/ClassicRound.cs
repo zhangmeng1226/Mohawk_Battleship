@@ -8,7 +8,7 @@ namespace MBC.Core
 {
     public class ClassicRound : Round
     {
-        public ClassicRound(MatchInfo info, params Controller[] controllers)
+        public ClassicRound(MatchInfo info, params ControllerUser[] controllers)
             : base(info, controllers) { }
 
         private bool ShotOutOfBounds(Shot shot)
@@ -24,7 +24,7 @@ namespace MBC.Core
 
         private bool ShotRepeated(Shot shot)
         {
-            return Controllers[CurrentTurnID].Shots.Contains(shot);
+            return Controllers[CurrentTurnID].Register.Shots.Contains(shot);
         }
 
         private bool ShotDestroyed(Shot shot)
@@ -73,13 +73,13 @@ namespace MBC.Core
             var sender = Controllers[CurrentTurnID];
             var receiver = Controllers[NextRemaining()];
 
-            var shotsFromSender = sender.Shots;
+            var shotsFromSender = sender.Register.Shots;
 
             try
             {
-                Shot shot = sender.MakeShot(receiver.ControllerID);
+                Shot shot = sender.MakeShot(receiver.Register.ID);
                 MakeEvent(new ControllerShotEvent(sender, this, shot.Coordinates, receiver));
-                sender.Shots.Add(shot);
+                sender.Register.Shots.Add(shot);
 
                 if (ShotOutOfBounds(shot) || ShotSuicidal(shot) || ShotRepeated(shot) || ShotDestroyed(shot))
                 {
@@ -93,20 +93,20 @@ namespace MBC.Core
                 //Get the actual receiver of the shot
                 receiver = Controllers[shot.Receiver];
 
-                Ship shotShip = receiver.Ships.ShipAt(shot.Coordinates);
+                Ship shotShip = receiver.Register.Ships.ShipAt(shot.Coordinates);
                 if (shotShip != null)
                 {
                     //The shot made by the sender hit a ship.
 
                     MakeEvent(new ControllerHitShipEvent(sender, this, shot.Coordinates, receiver));
-                    bool sunk = shotShip.IsSunk(sender.Shots.ShotsToReceiver(shot.Receiver));
+                    bool sunk = shotShip.IsSunk(sender.Register.Shots.ShotsToReceiver(shot.Receiver));
                     sender.NotifyShotHit(shot, sunk);
                     if (sunk)
                     {
                         //The last shot sunk a receiver's ship.
 
                         MakeEvent(new ControllerDestroyedShipEvent(sender, this, shotShip, receiver));
-                        if (receiver.Ships.GetSunkShips(sender.Shots.ShotsToReceiver(receiver.ControllerID)).Count == receiver.Ships.Count)
+                        if (receiver.Register.Ships.GetSunkShips(sender.Register.Shots.ShotsToReceiver(receiver.Register.ID)).Count == receiver.Register.Ships.Count)
                         {
                             //All of the receiving controller's ships have been destroyed.
                             PlayerLose(receiver);

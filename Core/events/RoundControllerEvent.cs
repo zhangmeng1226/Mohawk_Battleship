@@ -7,15 +7,15 @@ namespace MBC.Core.Events
 {
     public abstract class RoundControllerEvent : RoundEvent
     {
-        private Controller controller;
+        private ControllerUser controller;
 
-        public RoundControllerEvent(Controller controller, Round round)
+        public RoundControllerEvent(ControllerUser controller, Round round)
             : base(round)
         {
             this.controller = controller;
         }
 
-        public Controller Controller
+        public ControllerUser Controller
         {
             get
             {

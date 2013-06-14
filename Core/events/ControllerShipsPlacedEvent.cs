@@ -9,7 +9,7 @@ namespace MBC.Core.Events
     {
         private ShipList shipsPlaced;
 
-        public ControllerShipsPlacedEvent(Controller controller, Round round, ShipList ships)
+        public ControllerShipsPlacedEvent(ControllerUser controller, Round round, ShipList ships)
             : base(controller, round)
         {
             shipsPlaced = ships;

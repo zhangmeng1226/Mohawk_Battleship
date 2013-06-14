@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MBC.Core.Util;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -24,21 +25,15 @@ namespace MBC.Core
     /// prevent the need to place the Configuration class into the plugin DLL.
     /// </summary>
     /// <seealso cref="MatchInfo"/>
+    [Configuration("mbc_field_width", 10)]
+    [Configuration("mbc_field_height", 10)]
+    [Configuration("mbc_ship_sizes", "2,3,3,4,5")]
+    [Configuration("mbc_timeout", 100)]
+    [Configuration("mbc_game_mode", "classic")]
     public class CMatchInfo : MatchInfo
     {
-        /// <summary>Sets default configuration values for keys that relate to this class.
-        /// Should be called before using the global Configuration.Default object.</summary>
-        /// <seealso cref="Configuration"/>
-        public static void SetConfigDefaults()
-        {
-            Configuration.Default.SetValue<int>("mbc_field_width", 10);
-            Configuration.Default.SetValue<int>("mbc_field_height", 10);
-            Configuration.Default.SetValue<string>("mbc_ship_sizes", "2,3,3,4,5");
-            Configuration.Default.SetValue<int>("mbc_timeout", 100);
-            Configuration.Default.SetValue<string>("mbc_game_mode", "classic");
-        }
 
-        public CMatchInfo(Configuration config, params Controller.ClassInfo[] controllerInfos)
+        public CMatchInfo(Configuration config, params ControllerInformation[] controllerInfos)
         {
             //Get the game mode from the Configuration.
             DetermineGameMode(config);

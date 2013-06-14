@@ -8,9 +8,9 @@ namespace MBC.Core.Events
     public class ControllerShotEvent : RoundControllerEvent
     {
         private Coordinates coords;
-        private Controller opponent;
+        private ControllerUser opponent;
 
-        public ControllerShotEvent(Controller controller, Round round, Coordinates coords, Controller opposer)
+        public ControllerShotEvent(ControllerUser controller, Round round, Coordinates coords, ControllerUser opposer)
             : base(controller, round)
         {
             this.coords = coords;
@@ -40,7 +40,7 @@ namespace MBC.Core.Events
             }
         }
 
-        public Controller Opponent
+        public ControllerUser Opponent
         {
             get
             {

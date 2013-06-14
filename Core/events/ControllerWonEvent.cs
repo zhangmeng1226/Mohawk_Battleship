@@ -7,7 +7,7 @@ namespace MBC.Core.Events
 {
     public class ControllerWonEvent : RoundControllerEvent
     {
-        public ControllerWonEvent(Controller controller, Round round)
+        public ControllerWonEvent(ControllerUser controller, Round round)
             : base(controller, round)
         {
             message = controller + " has won the round.";

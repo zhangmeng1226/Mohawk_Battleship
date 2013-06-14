@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MBC.Core.Util;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,50 +21,41 @@ namespace MBC.Core
     /// Match objects internally orders each controller in the same order they are received in the constructors.
     /// Keep this in mind when accessing lists that are associated with the controllers in a Match or Round.
     /// </summary>
+    [Configuration("mbc_match_rounds_mode", "all")]
+    [Configuration("mbc_match_rounds", 100)]
     public class Match
     {
-        /// <summary>Sets default configuration values for keys that relate to this class.
-        /// Should be called before using the global Configuration.Default object.</summary>
-        /// <seealso cref="Configuration"/>
-        public static void SetConfigDefaults()
-        {
-            Configuration.Default.SetValue<string>("mbc_match_rounds_mode", "all");
-            Configuration.Default.SetValue<int>("mbc_match_rounds", 100);
-        }
-
         private MatchInfo info;
         private PlayMode roundPlay;
 
-        private List<Controller> controllers;
-        private List<int> scores;
+        private List<ControllerUser> participants;
 
         private int totalRounds;
         private int currentRound;
 
-        public Match(params Controller.ClassInfo[] controllers)
+        public Match(params ControllerInformation[] controllers)
         {
             Init(Configuration.Global, controllers);
         }
 
-        public Match(Configuration conf, params Controller.ClassInfo[] controllers)
+        public Match(Configuration conf, params ControllerInformation[] controllers)
         {
             Init(conf, controllers);
         }
 
-        private void Init(Configuration conf, params Controller.ClassInfo[] controllers)
+        private void Init(Configuration conf, params ControllerInformation[] controllersToLoad)
         {
             //Get the game info from the Configuration.
             //Expecting an exception to be thrown here if a controller isn't compatible with the configured game mode.
             info = new CMatchInfo(conf);
 
-            //Populate the Match object's list of Controller objects present.
-            this.controllers = new List<Controller>();
-            foreach (var controller in controllers)
+            //Populate the Match object's list of Controller objects present and generate their IDs.
+            participants = new List<ControllerUser>();
+            for(var id = 0; id < controllersToLoad.Count(); id++)
             {
-                this.controllers.Add(new Controller(controller, info));
+                ControllerRegister newRegistration = new ControllerRegister(info, id);
+                participants.Add(new ControllerUser(controllersToLoad[id], newRegistration));
             }
-
-            this.scores = new List<int>();
 
             //Configuration setting for the number of rounds this Match will perform.
             totalRounds = conf.GetValue<int>("mbc_match_rounds");
@@ -84,16 +76,14 @@ namespace MBC.Core
             }
         }
 
-        /// <summary>
-        /// Gets the score of the controllers in this Match. The order of the scores is identical to the order
-        /// of the controllers given when constructing this Match.
-        /// </summary>
-        public List<int> Scoreboard
+        public List<ControllerRegister> GetRegistered()
         {
-            get
+            var registered = new List<ControllerRegister>();
+            foreach (var user in participants)
             {
-                return new List<int>(scores);
+                registered.Add(user.Register);
             }
+            return registered;
         }
 
         /// <summary>
