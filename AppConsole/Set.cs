@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MBC.Core.Util;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,11 +15,18 @@ namespace MBC.App.BattleshipConsole
             var key = commandParams[idx++];
             var valueUnparsed = commandParams[idx++];
 
-            Console.Write("Configuration key \"");
-            Console.Write(key);
-            Console.Write("\" set to \"");
-            Console.Write(valueUnparsed);
-            Console.WriteLine("\"");
+            if (!Input.Configuration.SetValue(key, valueUnparsed))
+            {
+                Console.WriteLine("The given value type differs from the required type of "+Configuration.ParseString(valueUnparsed).GetType().ToString());
+            }
+            else
+            {
+                Console.Write("Configuration key \"");
+                Console.Write(key);
+                Console.Write("\" set to \"");
+                Console.Write(valueUnparsed);
+                Console.WriteLine("\"");
+            }
         }
 
         public static void Parse(string[] commandParams, ref int idx)

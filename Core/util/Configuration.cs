@@ -237,9 +237,37 @@ namespace MBC.Core.Util
         /// </summary>
         /// <param name="key">The key that identifies this value.</param>
         /// <param name="val">The value linked to the given key, as a string.</param>
-        public void SetValue(string key, string val)
+        public bool SetValue(string key, string val)
         {
+            object newValue = ParseString(val);
+
+            if (defaultInstance.simpleConfig.Keys.Contains(key) && newValue.GetType() != defaultInstance.simpleConfig[key].GetType())
+            {
+                return false;
+            }
+
             simpleConfig[key] = val;
+            return true;
+        }
+
+        public static object ParseString(string value)
+        {
+            bool boolVal;
+            long integerVal;
+            double decimalVal;
+            if (bool.TryParse(value, out boolVal))
+            {
+                return boolVal;
+            }
+            else if (long.TryParse(value, out integerVal))
+            {
+                return integerVal;
+            }
+            else if (double.TryParse(value, out decimalVal))
+            {
+                return decimalVal;
+            }
+            return value;
         }
 
         /// <summary>
@@ -258,10 +286,17 @@ namespace MBC.Core.Util
         public List<T> GetList<T>(string key)
         {
             var vals = new List<T>();
-            var csvStringSplit = GetValue<string>(key).Split(',');
-            foreach (var csvToken in csvStringSplit)
+            var value = GetValue<object>(key);
+            if (value.GetType() != typeof(string))
             {
-                vals.Add((T)Convert.ChangeType(csvToken, typeof(T)));
+                vals.Add((T)value);
+            }
+            else
+            {
+                foreach (var csvToken in ((string)value).Split(','))
+                {
+                    vals.Add((T)Convert.ChangeType(csvToken.Trim(), typeof(T)));
+                }
             }
             return vals;
         }
