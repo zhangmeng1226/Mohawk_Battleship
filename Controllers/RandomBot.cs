@@ -69,14 +69,14 @@ namespace MBC.Controllers
         /// </summary>
         /// <param name="thisId">The ControllerID that this controller is given.</param>
         /// <param name="matchInfo">The information about the matchup.</param>
-        public override void NewMatch()
+        public override void NewRound()
         {
             //The controller calls the SetShots() method to initialize the shotQueue field.
             SetShots();
 
             //Finally, the controller creates a random number generator into the "rand" field defined
             //in this class. It uses the tick count of the system as a seed.
-            rand = new Random(Environment.TickCount);
+            rand = new Random();
         }
 
         /// <summary>
@@ -101,7 +101,7 @@ namespace MBC.Controllers
                 //Use the function within the ShipList object "myShips" to place a ship for the controller.
                 //As explained in the PlaceShip() method of the ShipList, placing a ship at the randomly
                 //generated coordinates may fail.
-                myShips.PlaceShip(randomCoords, orientation);
+                myShips.PlaceShip(randomCoords, orientation, Register.Match.FieldSize);
             }
 
             //Since the controller had modified the Ship objects directly, there is no need to do anything
@@ -114,11 +114,11 @@ namespace MBC.Controllers
         /// the Shot receiver is the next controller in the turn.
         /// </summary>
         /// <param name="shot">The Shot to modify.</param>
-        public override void MakeShot(Shot shot)
+        public override Shot MakeShot()
         {
             //The controller only cares about modifying the Coordinates. The Coordinates of the next random
             //shot from the NextRandomShot() method is provided.
-            shot.Coordinates = NextRandomShot().Coordinates;
+            return NextRandomShot();
         }
 
         /// <summary>
@@ -163,7 +163,7 @@ namespace MBC.Controllers
         {
             //First generate a random X coordinate. Note that rand.Next() gets a random number that is
             //always less than the given value; we add one to get the full range of the field.
-            var xCoord = rand.Next(Register.Match.FieldSize.X + 1);
+            var xCoord = rand.Next(Register.Match.FieldSize.X+1);
 
             //Then generate a random Y coordinate.
             var yCoord = rand.Next(Register.Match.FieldSize.Y + 1);

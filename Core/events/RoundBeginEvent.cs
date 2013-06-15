@@ -24,9 +24,6 @@ namespace MBC.Core.Events
                 {
                     msg.Append(" and ");
                 }
-                msg.Append('[');
-                msg.Append(controller.ID);
-                msg.Append("] ");
                 msg.Append(controller);
             }
             msg.Append('.');

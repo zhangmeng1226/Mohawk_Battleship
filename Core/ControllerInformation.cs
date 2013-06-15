@@ -35,10 +35,10 @@ namespace MBC.Core
 
         private NameAttribute nameAttrib;
         private VersionAttribute verAttrib;
+        private CapabilitiesAttribute capableAttrib;
         private DescriptionAttribute descAttrib;
         private AuthorAttribute authorAttrib;
         private AcademicInfoAttribute academicAttrib;
-        private CapabilitiesAttribute capableAttrib;
 
         private string dllFile;
         private Type typeInterface;
@@ -165,6 +165,10 @@ namespace MBC.Core
         public static void AddControllerFolder(string path)
         {
             //filePaths should be a list of absolute paths to .dll files
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
             var filePaths = new List<string>(Directory.GetFiles(path, "*.dll"));
 
             foreach (var file in filePaths)
@@ -181,7 +185,8 @@ namespace MBC.Core
                         {
                             NameAttribute nameAttrib = (NameAttribute)cont.GetCustomAttributes(typeof(NameAttribute), false)[0];
                             VersionAttribute verAttrib = (VersionAttribute)cont.GetCustomAttributes(typeof(VersionAttribute), false)[0];
-                            if (nameAttrib != null && verAttrib != null)
+                            CapabilitiesAttribute capAttrib = (CapabilitiesAttribute)cont.GetCustomAttributes(typeof(CapabilitiesAttribute), false)[0];
+                            if (nameAttrib != null && verAttrib != null && capAttrib != null)
                             {
                                 //Split the absolute path. We only want the name of the DLL file.
                                 string[] pathSplit = file.Split('\\');
@@ -190,7 +195,7 @@ namespace MBC.Core
                                     (DescriptionAttribute)cont.GetCustomAttributes(typeof(DescriptionAttribute), false)[0],
                                     (AuthorAttribute)cont.GetCustomAttributes(typeof(AuthorAttribute), false)[0],
                                     (AcademicInfoAttribute)cont.GetCustomAttributes(typeof(AcademicInfoAttribute), false)[0],
-                                    (CapabilitiesAttribute)cont.GetCustomAttributes(typeof(CapabilitiesAttribute), false)[0],
+                                    capAttrib,
                                     pathSplit[pathSplit.Count() - 1],
                                     cont);
                                 loadedInformation[new NameVersionPair(nameAttrib.Name, verAttrib.Version)] = info;

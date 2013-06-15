@@ -21,16 +21,9 @@ namespace MBC.Core
             if (currentTurn == null)
             {
                 //There is a winner (or every controller is a loser).
-                foreach (var controller in Registers)
+                foreach (var controller in RemainingRegisters)
                 {
-                    if (RemainingRegisters.Contains(controller))
-                    {
-                        MakeEvent(new ControllerWonEvent(controller));
-                    }
-                    else
-                    {
-                        MakeEvent(new ControllerLostEvent(controller));
-                    }
+                    MakeEvent(new ControllerWonEvent(controller));
                 }
             }
             base.End();
@@ -42,24 +35,24 @@ namespace MBC.Core
         /// </summary>
         protected override void DoMainLogic()
         {
-            if (currentTurn == null)
+            var next = NextRemaining();
+            if (currentTurn == null || next == null)
             {
                 //Game is over
                 End();
                 return;
             }
 
-            var receiver = NextRemaining();
+            var receiver = next;
 
             var shotsFromSender = currentTurn.Shots;
 
             try
             {
-                Shot shot = Controllers[currentTurn.ID].MakeShot(receiver.ID);
-                MakeEvent(new ControllerShotEvent(currentTurn, receiver, shot));
-                currentTurn.Shots.Add(shot);
+                Shot shot = Controllers[currentTurn.ID].MakeShot();
+                MakeEvent(new ControllerShotEvent(currentTurn, shot));
 
-                if (ShotOutOfBounds(shot) || ShotSuicidal(shot) || ShotRepeated(shot) || ShotDestroyed(shot))
+                if (shot == null || ShotOutOfBounds(shot) || ShotSuicidal(shot) || ShotRepeated(shot) || ShotDestroyed(shot))
                 {
                     //The current controller violated one of the rules of the round.
 
@@ -67,6 +60,7 @@ namespace MBC.Core
                     NextTurn();
                     return;
                 }
+                currentTurn.Shots.Add(shot);
 
                 //Get the actual receiver of the shot
                 receiver = Registers[shot.Receiver];
@@ -87,6 +81,7 @@ namespace MBC.Core
                         if (receiver.Ships.GetSunkShips(currentTurn.Shots.ShotsToReceiver(receiver.ID)).Count == receiver.Ships.Count)
                         {
                             //All of the receiving controller's ships have been destroyed.
+                            Console.WriteLine("Loser " + receiver);
                             MakeLoser(receiver);
                         }
                     }
@@ -117,7 +112,7 @@ namespace MBC.Core
         private bool ShotOutOfBounds(Shot shot)
         {
             return (shot.Coordinates > MatchInfo.FieldSize) ||
-                    (shot.Coordinates < MatchInfo.FieldSize);
+                    (shot.Coordinates < new Coordinates(0, 0));
         }
 
         private bool ShotSuicidal(Shot shot)

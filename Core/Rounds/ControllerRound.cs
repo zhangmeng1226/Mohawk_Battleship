@@ -71,7 +71,7 @@ namespace MBC.Core
 
         protected override void ShipPlacement()
         {
-            foreach (var register in RemainingRegisters)
+            foreach (var register in Registers)
             {
                 try
                 {

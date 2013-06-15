@@ -9,11 +9,15 @@ namespace MBC.Shared
     {
         public ControllerRegister(ControllerRegister copy)
         {
-            Match = copy.Match;
-            Score = copy.Score;
-            Ships = copy.Ships;
-            Shots = copy.Shots;
-            ID = copy.ID;
+            if (copy != null)
+            {
+                Match = copy.Match;
+                Score = copy.Score;
+                Ships = new ShipList(copy.Ships);
+                Shots = new ShotList(copy.Shots);
+                ID = copy.ID;
+                Opponents = new List<ControllerID>(copy.Opponents);
+            }
         }
 
         public ControllerRegister(MatchInfo match, ControllerID id)
@@ -32,17 +36,9 @@ namespace MBC.Shared
         public ControllerID ID { get; set; }
         public List<ControllerID> Opponents { get; set; }
 
-        public ControllerRegister MakeCompleteCopy()
-        {
-            ControllerRegister copy = new ControllerRegister(this);
-            copy.Ships = new ShipList(Ships);
-            copy.Shots = Shots.DeepCopy();
-            return copy;
-        }
-
         public override string ToString()
         {
-            return Match.Players[ID];
+            return "["+ID+"]"+Match.Players[ID];
         }
 
         public bool Equals(ControllerRegister register)

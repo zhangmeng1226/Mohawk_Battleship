@@ -138,7 +138,7 @@ namespace MBC.Core
         {
             get
             {
-                return MatchInfo;
+                return matchInfo;
             }
         }
 
@@ -252,7 +252,7 @@ namespace MBC.Core
                         return register;
                     }
                 }
-                next++;
+                next = (next + 1) % registers.Count;
             }
             return null;
         }
@@ -273,12 +273,18 @@ namespace MBC.Core
         /// <param name="ev">The RoundEvent to pass to the event listeners.</param>
         protected void MakeEvent(RoundEvent ev)
         {
-            RoundEvent(ev);
+            if (RoundEvent != null)
+            {
+                RoundEvent(ev);
+            }
         }
 
         protected void MakeEvent(ControllerEvent ev)
         {
-            ControllerEvent(ev);
+            if (RoundEvent != null)
+            {
+                ControllerEvent(ev);
+            }
         }
 
         /// <summary>

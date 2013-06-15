@@ -23,7 +23,7 @@ namespace MBC.Core.Events
             this.methodName = method;
 
             message = register + " went over the time limit of " + register.Match.TimeLimit +
-                "ms by " + (register.Match.TimeLimit - time) + "ms on the invoke of " + method + ".";
+                "ms by " + (time - register.Match.TimeLimit) + "ms on the invoke of " + method + ".";
         }
 
         public int TimeTaken

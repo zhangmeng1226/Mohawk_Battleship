@@ -11,14 +11,13 @@ namespace MBC.Shared.Attributes
     [AttributeUsage(AttributeTargets.Class)]
     public class CapabilitiesAttribute : Attribute
     {
-        private readonly List<GameMode> Capabilities;
+        private readonly GameMode Capabilities;
 
         public CapabilitiesAttribute(params GameMode[] modes)
         {
-            Capabilities = new List<GameMode>();
             foreach (var mode in modes)
             {
-                Capabilities.Add(mode);
+                Capabilities |= mode;
             }
         }
 
@@ -29,9 +28,9 @@ namespace MBC.Shared.Attributes
         /// <returns>true if the GameMode is compatible, false otherwise.</returns>
         public bool CompatibleWith(GameMode mode)
         {
-            foreach (var givenModes in Capabilities)
+            foreach (var gameMode in Enum.GetValues(typeof(GameMode)))
             {
-                if ((mode & givenModes) != givenModes)
+                if (mode.HasFlag((GameMode)gameMode) && !Capabilities.HasFlag((GameMode)gameMode))
                 {
                     return false;
                 }

@@ -18,7 +18,7 @@ namespace MBC.Core
     /// The Controller class also represents a loaded controller implementing the IBattleshipController class
     /// and wraps this class to provide various utilities such as timing.
     /// </summary>
-    [Configuration("mbc_controller_thread_timeout", 1000)]
+    [Configuration("mbc_controller_thread_timeout", 500)]
     public class ControllerUser
     {
         private Controller controller;
@@ -27,6 +27,8 @@ namespace MBC.Core
 
         private ControllerRegister register;
 
+        private int maxTimeout;
+
         private Stopwatch timeElapsed;
 
         /// <summary>
@@ -34,27 +36,16 @@ namespace MBC.Core
         /// </summary>
         /// <param name="targetControllerInfo">The ClassInfo to create the object from.</param>
         /// <param name="matchInfo">The MatchInfo to set the behaviour of this Controller for.</param>
-        public ControllerUser(ControllerInformation targetControllerInfo, ControllerRegister matchStats)
+        public ControllerUser(ControllerInformation targetControllerInfo, ControllerRegister register)
         {
             this.controllerInfo = targetControllerInfo;
+            this.timeElapsed = new Stopwatch();
+            this.maxTimeout = Configuration.Global.GetValue<int>("mbc_controller_thread_timeout");
 
-            register = matchStats;
+            this.register = register;
 
             controller = (Controller)Activator.CreateInstance(targetControllerInfo.Controller);
             controller.ControllerMessageEvent += ReceiveMessage;
-        }
-
-        /// <summary>
-        /// Constructs a Controller object without a controller interface to control. In this state, this object
-        /// may only be used to provide the score, ships placed, and shots made. Used in reloading Match objects
-        /// from files where the controller interface has been previously removed.
-        /// </summary>
-        public ControllerUser(string name, Version ver, ControllerRegister matchRegister)
-        {
-            register = matchRegister;
-
-            controllerInfo = new ControllerInformation(new NameAttribute(name), new VersionAttribute(ver),
-                null, null, null, null, null, null);
         }
 
         /// <summary>
@@ -159,7 +150,7 @@ namespace MBC.Core
         public void NewMatch()
         {
             Register.Score = 0;
-            controller.Register = Register.MakeCompleteCopy();
+            controller.Register = new ControllerRegister(Register);
 
             var thread = new Thread(() =>
             controller.NewMatch());
@@ -176,7 +167,7 @@ namespace MBC.Core
             Register.Shots = new ShotList();
             Register.Ships = new ShipList(Register.Match.StartingShips);
 
-            controller.Register = Register.MakeCompleteCopy();
+            controller.Register = new ControllerRegister(Register);
 
             var thread = new Thread(() => controller.NewRound());
 
@@ -189,10 +180,10 @@ namespace MBC.Core
         /// </summary>
         public void PlaceShips()
         {
-
             var thread = new Thread(() => controller.PlaceShips());
 
             HandleThread(thread, "PlaceShips");
+            Register.Ships = new ShipList(controller.Register.Ships);
         }
 
         /// <summary>
@@ -200,17 +191,12 @@ namespace MBC.Core
         /// </summary>
         /// <returns>A Coordinates object of the controller's shot. If null, the controller interface failed to
         /// return the Coordinates within the time limit.</returns>
-        public Shot MakeShot(ControllerID defaultReceiver)
+        public Shot MakeShot()
         {
-            Shot result = new Shot(defaultReceiver);
-            var thread = new Thread(() => controller.MakeShot(result));
+            Shot result = null;
+            var thread = new Thread(() => result = controller.MakeShot());
 
             HandleThread(thread, "GetShot");
-
-            if (result == null)
-            {
-                result = new Shot(defaultReceiver);
-            }
 
             return result;
         }
@@ -322,7 +308,7 @@ namespace MBC.Core
             //Start the thread.
             timeElapsed.Restart();
             thread.Start();
-            if (!thread.Join(Register.Match.TimeLimit))
+            if (!thread.Join(maxTimeout))
             {
                 //Thread timed out.
                 thread.Abort();

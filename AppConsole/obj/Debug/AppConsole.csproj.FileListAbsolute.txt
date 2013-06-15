@@ -1,0 +1,6 @@
+D:\battleship\s1\Mohawk_Battleship\bin\AppConsole.exe.config
+D:\battleship\s1\Mohawk_Battleship\bin\AppConsole.exe
+D:\battleship\s1\Mohawk_Battleship\bin\AppConsole.pdb
+D:\battleship\s1\Mohawk_Battleship\AppConsole\obj\Debug\AppConsole.csprojResolveAssemblyReference.cache
+D:\battleship\s1\Mohawk_Battleship\AppConsole\obj\Debug\AppConsole.exe
+D:\battleship\s1\Mohawk_Battleship\AppConsole\obj\Debug\AppConsole.pdb

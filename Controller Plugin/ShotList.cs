@@ -22,10 +22,15 @@ namespace MBC.Shared
         public ShotList(ShotList copyList)
         {
             shotsByReceiver = new Dictionary<ControllerID, List<Shot>>();
-
             shotHistory = new List<Shot>();
 
-            Add(copyList);
+            if (copyList != null)
+            {
+                foreach (var shot in copyList.shotHistory)
+                {
+                    Add(new Shot(shot));
+                }
+            }
         }
 
         /// <summary>
@@ -89,20 +94,6 @@ namespace MBC.Shared
         }
 
         /// <summary>
-        /// Makes a copy of this ShotList with copies of its containing Shot objects.
-        /// </summary>
-        /// <returns>A deep-copied ShotList.</returns>
-        public ShotList DeepCopy()
-        {
-            ShotList copy = new ShotList();
-            foreach (var shot in shotHistory)
-            {
-                copy.Add(new Shot(shot));
-            }
-            return copy;
-        }
-
-        /// <summary>
         /// Creates a new empty internal list for Shot objects for a specific receiver ID.
         /// </summary>
         /// <param name="receiver">The ControllerID of the receiver to create the list for.</param>
@@ -130,7 +121,7 @@ namespace MBC.Shared
         /// <returns>true if a Shot with the same field values as the given Shot exists in this ShipList.</returns>
         public bool Contains(Shot shot)
         {
-            return shotsByReceiver[shot.Receiver].Contains(shot);
+            return shotsByReceiver.ContainsKey(shot.Receiver) && shotsByReceiver[shot.Receiver].Contains(shot);
         }
 
         /// <summary>
@@ -328,7 +319,7 @@ namespace MBC.Shared
             //The list of every shot (unorganized) to use for replacement.
             var totalList = new List<Shot>();
 
-            foreach (var receiverPair in shotsByReceiver)
+            foreach (var receiverPair in shotsByReceiver.ToList())
             {
                 var invertedShots = new List<Shot>();
 
@@ -342,10 +333,10 @@ namespace MBC.Shared
                         invertedShots.Add(newShot);
                     }
                 }
-
                 //Subtract the inverted shots list for a certain receiver to get the inverted list.
                 foreach (var receiverShot in receiverPair.Value)
                 {
+                    Console.WriteLine(receiverShot);
                     invertedShots.Remove(receiverShot);
                 }
 
@@ -382,7 +373,7 @@ namespace MBC.Shared
 
             public bool MoveNext()
             {
-                return (++currentIdx >= collection.Count);
+                return (++currentIdx < collection.Count);
             }
 
             public void Reset()
@@ -396,6 +387,7 @@ namespace MBC.Shared
             {
                 get
                 {
+                    Console.Write(currentIdx);
                     return collection[currentIdx];
                 }
             }

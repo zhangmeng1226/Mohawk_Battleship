@@ -10,7 +10,7 @@ namespace MBC.Shared
     /// <summary>
     /// A ShipList is a specialized collection of Ship objects.
     /// </summary>
-    public class ShipList : ICollection<Ship>, ICloneable
+    public class ShipList : ICollection<Ship>
     {
         private List<Ship> shipList;
         private int maxLength;
@@ -23,11 +23,14 @@ namespace MBC.Shared
         public ShipList(ShipList copyList)
         {
             shipList = new List<Ship>();
-            minLength = copyList.shipList[0].Length;
-            maxLength = copyList.shipList[0].Length;
-            foreach (var ship in copyList.shipList)
+            if (copyList != null)
             {
-                Add(new Ship(ship));
+                minLength = copyList.shipList[0].Length;
+                maxLength = copyList.shipList[0].Length;
+                foreach (var ship in copyList.shipList)
+                {
+                    Add(new Ship(ship));
+                }
             }
         }
 
@@ -68,16 +71,6 @@ namespace MBC.Shared
             shipList = new List<Ship>();
             minLength = int.MaxValue;
             maxLength = int.MinValue;
-        }
-
-        /// <summary>
-        /// Gets a copy of this ShipList with copies of its containing Ship objects.
-        /// </summary>
-        /// <returns>A ShipList copy.</returns>
-        public object Clone()
-        {
-            ShipList cloned = new ShipList(this);
-            return cloned;
         }
 
         /// <summary>
@@ -345,7 +338,7 @@ namespace MBC.Shared
         /// <param name="orientation">The ShipOrientation to make the Ship.</param>
         /// <returns>true if a Ship was placed. false if there was no ship that was able to fit at the specific
         /// Coordinates or if all ships have been placed.</returns>
-        public bool PlaceShip(Coordinates coord, ShipOrientation orientation)
+        public bool PlaceShip(Coordinates coord, ShipOrientation orientation, Coordinates maxCoords)
         {
             //First determine the largest possible length here...
             int targetLength = 0;
@@ -361,7 +354,7 @@ namespace MBC.Shared
             }
             for (var i = 0; i < maxLength; i++)
             {
-                if (ShipAt(searchCoord) != null)
+                if (ShipAt(searchCoord) != null || searchCoord.X > maxCoords.X || searchCoord.Y > maxCoords.Y)
                 {
                     break;
                 }
@@ -377,7 +370,7 @@ namespace MBC.Shared
             //Now fit a ship with a length lower than the found length.
             foreach (var ship in shipList)
             {
-                if (!ship.IsPlaced && ship.Length < targetLength)
+                if (!ship.IsPlaced && ship.Length <= targetLength)
                 {
                     ship.Place(coord, orientation);
                     return true;

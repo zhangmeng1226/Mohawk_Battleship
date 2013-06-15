@@ -131,6 +131,10 @@
         /// <param name="location">The cell on the field.</param>
         public bool IsAt(Coordinates location)
         {
+            if (!this.isPlaced)
+            {
+                return false;
+            }
             if (this.Orientation == ShipOrientation.Horizontal)
             {
                 return (this.location.Y == location.Y) && (this.location.X <= location.X) && (this.location.X + this.length > location.X);

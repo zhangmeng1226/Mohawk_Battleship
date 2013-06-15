@@ -30,5 +30,10 @@ namespace MBC.Core.Events
                 return message;
             }
         }
+
+        public override string ToString()
+        {
+            return Message;
+        }
     }
 }

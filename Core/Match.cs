@@ -156,7 +156,7 @@ namespace MBC.Core
 
         public void Play()
         {
-            MakeEvent(new MatchBeginEvent(this));
+            MakeEvent(new MatchPlayEvent(this));
             isRunning = true;
             sleepHandle.Reset();
             runningThread.Start();
@@ -217,7 +217,7 @@ namespace MBC.Core
         {
             //Get the game info from the Configuration.
             //Expecting an exception to be thrown here if a controller isn't compatible with the configured game mode.
-            info = new CMatchInfo(conf);
+            info = new CMatchInfo(conf, controllersToLoad);
 
             //Register the given controllers
             RegisterControllers(controllersToLoad);
@@ -243,7 +243,7 @@ namespace MBC.Core
                     roundPlay = PlayMode.FirstTo;
                     break;
                 default:
-                    conf.SetValue<string>("mbc_match_rounds_mode", "all");
+                    conf.SetValue("mbc_match_rounds_mode", "all");
                     break;
             }
         }
@@ -266,7 +266,10 @@ namespace MBC.Core
             for (var id = 0; id < registrants.Count(); id++)
             {
                 ControllerRegister newRegistration = new ControllerRegister(info, id);
-                controllers.Add(new ControllerUser(registrants.ElementAt(id), newRegistration));
+                DetermineOpponents(newRegistration, registrants);
+                var newController = new ControllerUser(registrants.ElementAt(id), newRegistration);
+                newController.NewMatch();
+                controllers.Add(newController);
             }
         }
 
@@ -284,6 +287,10 @@ namespace MBC.Core
 
             if (currentRound == null)
             {
+                if (roundIteration++ == -1)
+                {
+                    MakeEvent(new MatchBeginEvent(this));
+                }
                 if (!SetNewRound())
                 {
                     return false;
@@ -298,12 +305,22 @@ namespace MBC.Core
 
         private bool SetNewRound()
         {
-            if ((info.GameMode & GameMode.Classic) == GameMode.Classic)
+            if (info.GameMode.HasFlag(GameMode.Classic))
             {
                 currentRound = new ClassicRound(info, controllers);
                 currentRound.RoundEvent += (ev) =>
                     {
-                        RoundEvent(ev);
+                        if (RoundEvent != null)
+                        {
+                            RoundEvent(ev);
+                        }
+                    };
+                currentRound.ControllerEvent += (ev) =>
+                    {
+                        if (ControllerEvent != null)
+                        {
+                            ControllerEvent(ev);
+                        }
                     };
                 roundList.Add(currentRound);
                 return true;

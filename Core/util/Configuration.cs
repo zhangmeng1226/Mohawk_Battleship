@@ -113,7 +113,7 @@ namespace MBC.Core.Util
                 LoadConfigFile();
             }
         }
-        
+
         /// <summary>
         /// Gets a common Configuration object for use.
         /// </summary>
@@ -139,26 +139,30 @@ namespace MBC.Core.Util
         {
             //Initializes some global Configuration properties.
             configsPath = confPath;
-            defaultInstance = new Configuration("default");
-            globalInstance = new Configuration("config");
             if (!Directory.Exists(configsPath))
                 Directory.CreateDirectory(configsPath);
+            defaultInstance = new Configuration("default");
+            globalInstance = new Configuration("config");
+            LoadConfigurationDefaults();
         }
-        
+
         /// <summary>
         /// Call at the beginning of an application to invoke all the static methods that match
         /// the name "SetConfigDefaults". This will allow classes to set the default configuration values
         /// into the default Configuration object at startup.
         /// </summary>
-        public static void LoadConfigurationDefaults()
+        private static void LoadConfigurationDefaults()
         {
             var assemblies = AppDomain.CurrentDomain.GetAssemblies();
             foreach (var thisAssembly in assemblies)
             {
-                object[] attribs = thisAssembly.GetCustomAttributes(typeof(ConfigurationAttribute), false);
-                foreach (ConfigurationAttribute defaultPair in attribs)
+                foreach (var classType in thisAssembly.GetTypes())
                 {
-                    defaultInstance.simpleConfig[defaultPair.Key] = defaultPair.Value;
+                    object[] attribs = classType.GetCustomAttributes(typeof(ConfigurationAttribute), false);
+                    foreach (ConfigurationAttribute defaultPair in attribs)
+                    {
+                        defaultInstance.simpleConfig[defaultPair.Key] = defaultPair.Value;
+                    }
                 }
             }
         }
@@ -180,6 +184,20 @@ namespace MBC.Core.Util
                 res.Add(spl[spl.Length].Split('.')[0]);
             }
             return res;
+        }
+
+        /// <summary>
+        /// Gets all of the KeyValuePair objects that make up this Configuration.
+        /// </summary>
+        /// <returns>A List of KeyValuePair objects.</returns>
+        public List<KeyValuePair<string, object>> GetPairs()
+        {
+            var mergedConfigs = new Dictionary<string, object>(defaultInstance.simpleConfig);
+            foreach (var configPairs in simpleConfig)
+            {
+                mergedConfigs[configPairs.Key] = configPairs.Value;
+            }
+            return mergedConfigs.ToList();
         }
 
         /// <summary>
@@ -208,7 +226,7 @@ namespace MBC.Core.Util
             }
             else
             {
-                throw new KeyNotFoundException("The following Configuration key was not set: "+key);
+                throw new KeyNotFoundException("The following Configuration key was not set: " + key);
             }
         }
 
@@ -218,8 +236,8 @@ namespace MBC.Core.Util
         /// previous value identified by the given key.
         /// </summary>
         /// <param name="key">The key that identifies this value.</param>
-        /// <param name="val">The value linked to the given key.</param>
-        public void SetValue<T>(string key, T val)
+        /// <param name="val">The value linked to the given key, as a string.</param>
+        public void SetValue(string key, string val)
         {
             simpleConfig[key] = val;
         }
@@ -261,7 +279,7 @@ namespace MBC.Core.Util
         {
             try
             {
-                var writer = new StreamWriter(configsPath + configName + ".ini", false);
+                var writer = new StreamWriter(configsPath +"\\"+ configName + ".ini", false);
                 foreach (var entry in simpleConfig)
                 {
                     writer.WriteLine(entry.Key + " = " + entry.Value.ToString());
@@ -281,7 +299,7 @@ namespace MBC.Core.Util
             var errorLineNum = 0;
             try
             {
-                var reader = new StreamReader(configsPath + configName + ".ini");
+                var reader = new StreamReader(configsPath +"\\"+ configName + ".ini");
                 do
                 {
                     var line = reader.ReadLine();

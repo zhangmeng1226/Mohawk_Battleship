@@ -29,7 +29,7 @@ namespace MBC.Core
     [Configuration("mbc_field_width", 10)]
     [Configuration("mbc_field_height", 10)]
     [Configuration("mbc_ship_sizes", "2,3,3,4,5")]
-    [Configuration("mbc_timeout", 100)]
+    [Configuration("mbc_timeout", 200)]
     [Configuration("mbc_game_mode", "classic")]
     public class CMatchInfo : MatchInfo
     {
@@ -51,7 +51,7 @@ namespace MBC.Core
             this.playerNames = new List<string>();
             foreach (var controllerInfo in controllerInfos)
             {
-                this.playerNames.Add(controllerInfo.Name);
+                this.playerNames.Add(controllerInfo.ToString());
             }
 
             //Configuration setting for a list of ships that the controllers start with.

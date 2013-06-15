@@ -53,7 +53,7 @@ namespace MBC.Shared
         /// </summary>
         /// <param name="shot">The Shot given to this controller to modify.</param>
         /// <seealso cref="Shot"/>
-        public virtual void MakeShot(Shot shot) { }
+        public virtual Shot MakeShot() { return null; }
 
         /// <summary>Called when this controller is being shot at by another controller.</summary>
         /// <param name="shot">The shot the opponent has made against this controller</param>

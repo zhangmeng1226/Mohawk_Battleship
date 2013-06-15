@@ -8,28 +8,32 @@ namespace MBC.Core.Events
 {
     public class ControllerShotEvent : ControllerEvent
     {
-        private Shot coords;
-        private ControllerRegister opponent;
+        private Shot shot;
 
-        public ControllerShotEvent(ControllerRegister register, ControllerRegister opposer, Shot shot)
+        public ControllerShotEvent(ControllerRegister register, Shot shot)
             : base(register)
         {
-            this.coords = shot;
-            this.opponent = opposer;
-
+            this.shot = shot;
             StringBuilder msg = new StringBuilder();
             msg.Append(register);
-            msg.Append(" made a shot against ");
-            if (opposer != null)
+            if (shot != null)
             {
-                msg.Append(opposer);
+                msg.Append(" shot ");
+                if (shot.Receiver < register.Match.Players.Count && shot.Receiver >= 0)
+                {
+                    msg.Append(register.Match.Players[shot.Receiver]);
+                }
+                else
+                {
+                    msg.Append("nobody");
+                }
+                msg.Append(" at ");
+                msg.Append(shot.Coordinates);
             }
             else
             {
-                msg.Append("nobody");
+                msg.Append(" did not make a shot.");
             }
-            msg.Append(" at ");
-            msg.Append(shot.Coordinates);
             message = msg.ToString();
         }
 
@@ -37,15 +41,7 @@ namespace MBC.Core.Events
         {
             get
             {
-                return coords;
-            }
-        }
-
-        public ControllerRegister Opponent
-        {
-            get
-            {
-                return opponent;
+                return shot;
             }
         }
     }
