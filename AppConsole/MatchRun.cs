@@ -4,19 +4,19 @@ using MBC.Core.Util;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace MBC.App.BattleshipConsole
 {
     [Configuration("mbc_console_match_show_events", true)]
-    [Configuration("", "")]
     public static class MatchRun
     {
         public static Match CurrentMatch { get; set; }
         public static bool Running { get; set; }
 
-        public static void Step()
+        public static void Step(int idx, params string[] param)
         {
             if (CurrentMatch == null)
             {
@@ -30,7 +30,7 @@ namespace MBC.App.BattleshipConsole
             }
         }
 
-        public static void Start()
+        public static void Start(int idx, params string[] param)
         {
             if (CurrentMatch == null)
             {
@@ -42,64 +42,10 @@ namespace MBC.App.BattleshipConsole
             Console.WriteLine("The match has stopped.");
         }
 
-        public static void Stop()
+        public static void Stop(int idx, params string[] param)
         {
             CurrentMatch.End();
             Console.WriteLine("The match has been stopped and removed.");
-        }
-
-        public static void Parse(string[] commandParams, ref int idx)
-        {
-            var playControllers = new List<ControllerInformation>();
-            int strParseInt;
-            while (idx < commandParams.Length && int.TryParse(commandParams[idx++], out strParseInt))
-            {
-                if (strParseInt < 0 || strParseInt > Input.Controllers.Count)
-                {
-                    Console.Write("Invalid controller specified: ");
-                    Console.WriteLine(strParseInt);
-                }
-                else
-                {
-                    playControllers.Add(Input.Controllers[strParseInt]);
-                }
-            }
-            if (playControllers.Count < 2)
-            {
-                Console.WriteLine("A match must include a minimum of two controllers.");
-                return;
-            }
-            try
-            {
-                CurrentMatch = new Match(Configuration.Global, playControllers.ToArray());
-
-                if (Configuration.Global.GetValue<bool>("mbc_console_match_show_events"))
-                {
-                    CurrentMatch.RoundEvent += (ev) =>
-                        {
-                            Console.WriteLine(ev);
-                        };
-                    CurrentMatch.MatchEvent += (ev) =>
-                        {
-                            Console.WriteLine(ev);
-                        };
-                    CurrentMatch.ControllerEvent += (ev) =>
-                        {
-                            Console.WriteLine(ev);
-                        };
-                }
-
-
-                Console.WriteLine("Match created with:");
-                foreach (var controller in playControllers)
-                {
-                    Console.WriteLine(controller);
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
         }
     }
 }

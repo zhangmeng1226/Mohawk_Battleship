@@ -10,7 +10,7 @@ namespace MBC.App.BattleshipConsole
     public static class Show
     {
 
-        public static void Config()
+        public static void Config(int idx, params string[] param)
         {
             Console.WriteLine("[Key] = [Value]");
             foreach (var pair in Configuration.Global.GetPairs())
@@ -21,7 +21,7 @@ namespace MBC.App.BattleshipConsole
             }
         }
 
-        public static void Controllers()
+        public static void Controllers(int idx, params string[] param)
         {
             if (Input.Controllers.Count == 0)
             {
@@ -35,20 +35,6 @@ namespace MBC.App.BattleshipConsole
                 Console.Write(i);
                 Console.Write("]: ");
                 Console.WriteLine(Input.Controllers[i]);
-            }
-        }
-
-        public static void Parse(string[] commandParams, ref int idx)
-        {
-            switch (commandParams[idx++].ToLower())
-            {
-                case "config":
-                    Config();
-                    break;
-                case "bots":
-                case "controllers":
-                    Controllers();
-                    break;
             }
         }
     }

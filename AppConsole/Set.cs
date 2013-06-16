@@ -28,18 +28,5 @@ namespace MBC.App.BattleshipConsole
                 Console.WriteLine("\"");
             }
         }
-
-        public static void Parse(string[] commandParams, ref int idx)
-        {
-            switch (commandParams[idx++])
-            {
-                case "config":
-                    Config(commandParams, ref idx);
-                    break;
-                default:
-                    Console.WriteLine("Nothing set.");
-                    break;
-            }
-        }
     }
 }
