@@ -1,8 +1,5 @@
 ﻿using MBC.Shared;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace MBC.Core
 {
@@ -13,8 +10,8 @@ namespace MBC.Core
         private int timeTaken;
 
         public ControllerTimeoutException(ControllerRegister register, string methodName, int timeTaken)
-            : base(register+" took too long executing "+methodName+" according to the time limit of "+
-            register.Match.TimeLimit+"ms. Time taken was "+timeTaken+"ms.")
+            : base(register + " took too long executing " + methodName + " according to the time limit of " +
+            register.Match.TimeLimit + "ms. Time taken was " + timeTaken + "ms.")
         {
             this.controller = register;
             this.methodName = methodName;

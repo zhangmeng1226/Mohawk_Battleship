@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace MBC.Shared.Attributes
 {
@@ -65,6 +62,5 @@ namespace MBC.Shared.Attributes
         {
             Version = new Version(major, minor, build, revision);
         }
-
     }
 }

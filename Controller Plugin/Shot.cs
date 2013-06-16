@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace MBC.Shared
 {
@@ -65,8 +62,8 @@ namespace MBC.Shared
             {
                 coords = value;
             }
-        }        
-        
+        }
+
         /// <summary>
         /// Compares the field values of two Shot objects.
         /// </summary>
@@ -125,7 +122,7 @@ namespace MBC.Shared
         /// <returns>A string representing this shot.</returns>
         public override string ToString()
         {
-            return Coordinates.ToString() + "=>["+Receiver+"]";
+            return Coordinates.ToString() + "=>[" + Receiver + "]";
         }
 
         /// <summary>

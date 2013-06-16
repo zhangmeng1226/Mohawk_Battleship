@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace MBC.Shared
 {
@@ -16,7 +13,9 @@ namespace MBC.Shared
         protected int methodTimeLimit;
         protected GameMode gameMode;
 
-        protected MatchInfo() { }
+        protected MatchInfo()
+        {
+        }
 
         /// <summary>
         /// Gets a ShipList that contains the Ship objects that a controller can place at the beginning of a

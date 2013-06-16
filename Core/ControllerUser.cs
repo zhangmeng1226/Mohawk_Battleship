@@ -1,19 +1,11 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading;
-using MBC.Core.Util;
+﻿using MBC.Core.Util;
 using MBC.Shared;
-using MBC.Shared.Attributes;
+using System;
+using System.Diagnostics;
+using System.Threading;
 
 namespace MBC.Core
 {
-
     /// <summary>
     /// The Controller class also represents a loaded controller implementing the IBattleshipController class
     /// and wraps this class to provide various utilities such as timing.
@@ -116,7 +108,7 @@ namespace MBC.Core
         {
             get
             {
-                return Name+" v("+Version.ToString()+")";
+                return Name + " v(" + Version.ToString() + ")";
             }
         }
 

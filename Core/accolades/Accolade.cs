@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace MBC.Core.Accolades
+﻿namespace MBC.Core.Accolades
 {
-
     /// <summary>
     /// The Accolade class is the base class for a number of classes that are used to describe a Round from
     /// various events that occur within the Round.

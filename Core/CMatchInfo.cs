@@ -2,8 +2,6 @@
 using MBC.Shared;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace MBC.Core
 {
@@ -15,7 +13,7 @@ namespace MBC.Core
     ///     <item><b>mbc_field_width</b> and <b>mbc_field_height</b> - Sets the boundaries of the field.</item>
     ///     <item><b>mbc_ship_sizes</b> - CSV of the sizes of ships that will be available.</item>
     ///     <item><b>mbc_timeout</b> - The time in milliseconds of the maximum amount of time a method call from a controller interface will have
-    ///     before they lose the Round.    
+    ///     before they lose the Round.
     ///     </item>
     ///     <item><b>mbc_game_mode</b> - "classic", "salvo", or "powered", followed with a space, "multi" or "teams"
     ///     determines the game logic. eg, "salvo multi teams" or "classic multi".
@@ -33,7 +31,6 @@ namespace MBC.Core
     [Configuration("mbc_game_mode", "classic")]
     public class CMatchInfo : MatchInfo
     {
-
         public CMatchInfo(Configuration config, params ControllerInformation[] controllerInfos)
         {
             //Get the game mode from the Configuration.
@@ -77,6 +74,7 @@ namespace MBC.Core
                     case "classic":
                         gameMode |= GameMode.Classic;
                         break;
+
                     case "salvo":
                         gameMode |= GameMode.Salvo;
                         throw new NotImplementedException("Salvo game mode does not exist yet.");
@@ -86,6 +84,7 @@ namespace MBC.Core
                     case "multi":
                         gameMode |= GameMode.Multi;
                         break;
+
                     case "teams":
                         gameMode |= GameMode.Teams;
                         throw new NotImplementedException("Teams game mode does not exist yet.");

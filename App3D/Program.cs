@@ -1,12 +1,13 @@
 ﻿#region Using Statements
+
 using System;
-using System.Collections.Generic;
-using System.Linq;
-#endregion
+
+#endregion Using Statements
 
 namespace MBC.App.App3D
 {
 #if WINDOWS || LINUX
+
     /// <summary>
     /// The main class.
     /// </summary>
@@ -16,11 +17,12 @@ namespace MBC.App.App3D
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
-        static void Main()
+        private static void Main()
         {
             using (var game = new Game1())
                 game.Run();
         }
     }
+
 #endif
 }

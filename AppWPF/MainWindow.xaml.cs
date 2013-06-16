@@ -1,5 +1,8 @@
-﻿using System;
+﻿using MBC.Core;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Windows;
@@ -11,9 +14,6 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using System.Collections.ObjectModel;
-using MBC.Core;
-using System.ComponentModel;
 
 namespace MBC.App.WPF
 {
@@ -22,9 +22,9 @@ namespace MBC.App.WPF
     /// </summary>
     public partial class MainWindow : Window
     {
-        ObservableCollection<RoundActivityEntry> roundActLogEntries = new ObservableCollection<RoundActivityEntry>();
-        ObservableCollection<RoundEntry> roundLogEntries = new ObservableCollection<RoundEntry>();
-        Configuration config;
+        private ObservableCollection<RoundActivityEntry> roundActLogEntries = new ObservableCollection<RoundActivityEntry>();
+        private ObservableCollection<RoundEntry> roundLogEntries = new ObservableCollection<RoundEntry>();
+        private Configuration config;
 
         /// <summary>
         /// Constructor for the MainWindow. Collapses the collapseable elements of the WPF application.
@@ -50,11 +50,11 @@ namespace MBC.App.WPF
             entry.Action = Round.GetActionStr(action.action);
             entry.ControllerName = action.fieldState != null ? action.fieldState[action.ibc].name + " (v" + action.fieldState[action.ibc].version + ")" : "Null";
             entry.Message = action.activityInfo;
-            entry.Time = action.timeElapsed+"ms";
+            entry.Time = action.timeElapsed + "ms";
 
             var timeout = config.GetValue<long>("mbc_timeout");
             var diff = (int)(timeout - action.timeElapsed);
-            diff = diff < 0 ? 255 : (int)((1 - (diff / timeout))* 255);
+            diff = diff < 0 ? 255 : (int)((1 - (diff / timeout)) * 255);
             entry.Color = Color.FromArgb(255, 255, (byte)diff, (byte)diff);
 
             entry.Accolades = new Grid();
@@ -193,21 +193,21 @@ namespace MBC.App.WPF
             UpdateLayout();
             Grid_SizeChanged(null, null);
         }
-        
+
         /// <summary>Called when the user clicks on the blue opponent selector on the top menu.
         /// Should provide a popup menu displaying all of the available controllers.</summary>
         private void btnBlueSelect_Click(object sender, RoutedEventArgs e)
         {
             throw new NotImplementedException();
         }
-        
+
         /// <summary>Called when the user clicks on the "Reset Scores" button on the top menu.
         /// Should reset the scores between the two opponents.</summary>
         private void btnScoreReset_Click(object sender, RoutedEventArgs e)
         {
             throw new NotImplementedException();
         }
-        
+
         /// <summary>Called when the user clicks on the benchmark start button on the top menu.
         /// Should utilize txtNumOfRounds and chkPlayOut to modify the competition benchmark
         /// parameters.</summary>
@@ -215,7 +215,7 @@ namespace MBC.App.WPF
         {
             throw new NotImplementedException();
         }
-        
+
         /// <summary>Called when the user clicks on the "New Round" button on the top menu.
         /// Should end the current round between the two opponents, if it is still in progress,
         /// and start a new one.</summary>
@@ -223,21 +223,21 @@ namespace MBC.App.WPF
         {
             throw new NotImplementedException();
         }
-        
+
         /// <summary>Called when the user clicks on the "Shoot" button on the top menu.
         /// Should progress the current round if it is still in progress.</summary>
         private void btnRoundShoot_Click(object sender, RoutedEventArgs e)
         {
             throw new NotImplementedException();
         }
-        
+
         /// <summary>Called when the user clicks on the red opponent selector on the top menu.
         /// Should provide a popup menu displaying all of the available controllers.</summary>
         private void btnRedSelect_Click(object sender, RoutedEventArgs e)
         {
             throw new NotImplementedException();
         }
-        
+
         /// <summary>Called when the user clicks on the "Load Benchmark..." button in the Round Log tab.
         /// Should load a benchmark (a collection of rounds) from a file, and display all the rounds
         /// in the lstRoundLog view.</summary>
@@ -245,14 +245,14 @@ namespace MBC.App.WPF
         {
             throw new NotImplementedException();
         }
-        
+
         /// <summary>Called when the user clicks on the "Save Benchmark..." button in the Round Log tab.
         /// Should save a benchmark (a collection of rounds) to a file.</summary>
         private void BtnBenchmarkSave_Click(object sender, RoutedEventArgs e)
         {
             throw new NotImplementedException();
         }
-        
+
         /// <summary>Called when the user clicks on the "Load Round..." button in the Round Log tab.
         /// Should load the selected round from the lstRoundLog view into the main display.</summary>
         private void BtnRoundLoad_Click(object sender, RoutedEventArgs e)
@@ -266,14 +266,14 @@ namespace MBC.App.WPF
         {
             throw new NotImplementedException();
         }
-        
+
         /// <summary>Called when the user clicks on the decrement button in the top menu.
         /// Should decrement the numeric value in txtNumofRounds (# of rounds benchmark).</summary>
         private void btnRndsDown_Click(object sender, RoutedEventArgs e)
         {
             throw new NotImplementedException();
         }
-        
+
         /// <summary>Called when the user clicks on the "Add entry" button under the configuration tab.
         /// Should place a new entry into the lstConfigValues view and allow the user to modify it.</summary>
         private void BtnAddConfigEntry_Click(object sender, RoutedEventArgs e)
@@ -296,21 +296,21 @@ namespace MBC.App.WPF
         {
             throw new NotImplementedException();
         }
-        
+
         /// <summary>Called when the user clicks on the "Reset to default" button under the configuration tab.
         /// Should cause the current configuration to be cleared, or replaced with the default configuration.</summary>
         private void BtnResetConfig_Click(object sender, RoutedEventArgs e)
         {
             throw new NotImplementedException();
         }
-        
+
         /// <summary>Called when the user clicks on the "Save config..." button under the configuration tab.
         /// Should save the current configuration to a configuration file, under a name specified by the user.</summary>
         private void BtnSaveConfig_Click(object sender, RoutedEventArgs e)
         {
             throw new NotImplementedException();
         }
-        
+
         /// <summary>Called when the user clicks on the "Load config..." button under the configuration tab.
         /// Should load the selected configuration in the lstConfigurations list from a file.</summary>
         private void BtnLoadConfig_Click(object sender, RoutedEventArgs e)

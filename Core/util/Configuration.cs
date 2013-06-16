@@ -1,31 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.IO;
-using System.Collections.ObjectModel;
-using System.Reflection;
-using MBC.Core;
+using System.Linq;
 
 namespace MBC.Core.Util
 {
     /// <summary>
     /// Configuration deals with a single configuration file and parses each key/value pair.
-    /// 
+    ///
     /// The Configuration class must be initialized by calling the static method InitializeConfiguration(). Provide
     /// the path where the config files will be saved through this method.
-    /// 
+    ///
     /// Use the static variable Configuration.Global to access a configuration that represents the entirety
     /// of the application. This global configuration is loaded through the file named "config.ini" in the initialized
     /// config directory.
-    /// 
+    ///
     /// Use the static variable Configuration.Default to access a Configuration that represents all default
     /// values of the application. This values should be utilized before using the default Configuration.
     /// The default values should not be changed after startup. Avoid using static constructors to set default
     /// values as the values may not be set before using the default object, which results in errors. Use
     /// LoadConfigurationDefaults() to invoke all the static methods named "SetConfigDefaults()" in each class,
     /// where the default Configuration should be loaded.
-    /// 
+    ///
     /// Usage of the Configuration class is simple. Use two/three methods to get and set configuration values:
     /// <list type="bullet">
     ///     <item>
@@ -39,15 +35,15 @@ namespace MBC.Core.Util
     ///     </item>
     /// </list>
     /// A list of Configurations stored into files can be known by using the GetAvailableConfigs() class member.
-    /// 
+    ///
     /// When constructing a new Configuration object, the Configuration will be loaded with either default values,
     /// or values that have been stored in the correspondingly named file.
-    /// 
+    ///
     /// Note that configuration files are not automatically saved. Invoke the method SaveConfigFile() to
     /// save Configuration objects to files.
-    /// 
-    /// 
-    /// 
+    ///
+    ///
+    ///
     /// <remarks>
     ///     To set default values for the application, implement the following method in the class to have it
     ///     invoked when LoadConfigurationDefaults() is called.
@@ -58,35 +54,35 @@ namespace MBC.Core.Util
     ///         //Set Configuration defaults here.
     ///         Configuration.Default.SetValue<string>("config_key", "config_value");
     ///         Configuration.Default.SetValue<int>("number_of_init_hits", 50);
-    ///         
+    ///
     ///         //Example of setting an array/list using CSV:
     ///         Configuration.Default.SetValue<string>("ships_array", "3,3,4,5,5,6");
     ///     }
     /// </code>
     /// As a convention, use underscores to separate words in the key string as shown above.
-    /// 
+    ///
     /// <remarks>Here is an example of a typical use of the global configuration:</remarks>
     /// <code>
     ///     {
     ///         int initHits = Configuration.Global.GetValue<int>("number_of_init_hits");
-    ///          
+    ///
     ///         //Getting the ships_array list as set above.
     ///         List<int> shipArray = Configuration.Global.GetList<int>("ships_array");
     ///     }
     /// </code>
-    /// 
+    ///
     /// <remarks>More advanced uses of the Configuration file can be seen below:</remarks>
     /// <code>
     ///     {
     ///         Configuration conf = new Configuration("newconfig"); //Uses default values initially.
     ///         conf.SetValue<int>("rounds_temp_value", 40); //Overwrites default value (if exists), or creates new key with the value.
-    ///          
+    ///
     ///         conf.SaveConfigFile(); //Saves to newconfig.ini
-    ///          
+    ///
     ///         conf.Rename("newconfig245");
-    ///          
+    ///
     ///         conf.SaveConfigFile(); //Saves to newconfig245.ini
-    ///          
+    ///
     ///         conf = new Configuration("newconfig"); //Loading back the saved newconfig.ini configuration file.
     ///     }
     /// </code>
@@ -321,7 +317,7 @@ namespace MBC.Core.Util
         {
             try
             {
-                var writer = new StreamWriter(configsPath +"\\"+ configName + ".ini", false);
+                var writer = new StreamWriter(configsPath + "\\" + configName + ".ini", false);
                 foreach (var entry in simpleConfig)
                 {
                     writer.WriteLine(entry.Key + " = " + entry.Value.ToString());
@@ -346,7 +342,7 @@ namespace MBC.Core.Util
             var errorLineNum = 0;
             try
             {
-                var reader = new StreamReader(configsPath +"\\"+ configName + ".ini");
+                var reader = new StreamReader(configsPath + "\\" + configName + ".ini");
                 do
                 {
                     var line = reader.ReadLine();

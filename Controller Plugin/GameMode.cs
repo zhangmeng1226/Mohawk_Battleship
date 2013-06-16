@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace MBC.Shared
+﻿namespace MBC.Shared
 {
     /// <summary>
     /// The GameMode enumeration identifies the type of game logic that will be used in a battleship round.
@@ -14,7 +9,7 @@ namespace MBC.Shared
         /// A classic game of battleship.
         /// </summary>
         Classic = 1,
-        
+
         /// <summary>
         /// A game of battleship where controllers may make as many shots as they have remaining ships in
         /// their turn.

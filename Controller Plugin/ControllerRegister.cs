@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace MBC.Shared
 {
@@ -28,17 +26,20 @@ namespace MBC.Shared
         }
 
         public MatchInfo Match { get; set; }
+
         public int Score { get; set; }
 
         public ShipList Ships { get; set; }
+
         public ShotList Shots { get; set; }
 
         public ControllerID ID { get; set; }
+
         public List<ControllerID> Opponents { get; set; }
 
         public override string ToString()
         {
-            return "["+ID+"]"+Match.Players[ID];
+            return "[" + ID + "]" + Match.Players[ID];
         }
 
         public bool Equals(ControllerRegister register)

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MBC.Core;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,7 +12,6 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using MBC.Core;
 
 namespace MBC.App.WPF
 {
@@ -37,10 +37,10 @@ namespace MBC.App.WPF
             ControllerColorProperty = DependencyProperty.Register("ControllerColor", typeof(Color), typeof(FieldControl));
         }
 
-        int controller; //The controller index this FieldControl displays information for.
-        Field battlefield; //The Field object this FieldControl gets the information from.
-        Dictionary<int, List<Rectangle>> ships; //A Dictionary containing graphics information for the sizes of ships.
-        List<Ellipse> opponentShots; //A List of ellipses drawn on the display.
+        private int controller; //The controller index this FieldControl displays information for.
+        private Field battlefield; //The Field object this FieldControl gets the information from.
+        private Dictionary<int, List<Rectangle>> ships; //A Dictionary containing graphics information for the sizes of ships.
+        private List<Ellipse> opponentShots; //A List of ellipses drawn on the display.
 
         /// <summary>
         /// Constructs a FieldControl. Does not do anything special besides initialize WPF components.
@@ -131,7 +131,7 @@ namespace MBC.App.WPF
                 var r = new Rectangle
                 {
                     Width = fieldGrid.ActualWidth / fieldGrid.ColumnDefinitions.Count / 1.05,
-                    Height = (fieldGrid.ActualHeight / fieldGrid.RowDefinitions.Count / 1.05)* size,
+                    Height = (fieldGrid.ActualHeight / fieldGrid.RowDefinitions.Count / 1.05) * size,
                     Fill = new SolidColorBrush(ControllerColor),
                     Stroke = new SolidColorBrush(Colors.Black),
                     StrokeThickness = 1,
@@ -214,32 +214,29 @@ namespace MBC.App.WPF
             }
         }
 
-        
         /// <summary>Sets the controller that this FieldControl displays through the internally presented Field.</summary>
         /// <param name="ibc">The index of the battleship controller in the Field to switch to. Refer to the
         /// constants available in the Controller class.</param>
         /// <seealso cref="Field"/>
-         
+
         public void SetController(int ibc)
         {
             controller = ibc;
         }
 
-        
-        /// <summary>Makes this FieldControl update its display to reflect the 
+        /// <summary>Makes this FieldControl update its display to reflect the
         /// current state of the internal Field.</summary>
-         
+
         public void UpdateFieldDisplay()
         {
             LayShips();
             LayShots();
         }
 
-        
         /// <summary>Sets the Field this FieldControl will present.</summary>
         /// <param name="field">The Field object to display.</param>
         /// <seealso cref="Field"/>
-         
+
         public void SetField(Field field)
         {
             battlefield = field;

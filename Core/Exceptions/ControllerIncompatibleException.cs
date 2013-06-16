@@ -1,8 +1,5 @@
 ﻿using MBC.Shared;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace MBC.Core
 {
@@ -12,7 +9,7 @@ namespace MBC.Core
         private GameMode mode;
 
         public ControllerIncompatibleException(ControllerInformation incompatibleController, GameMode mode)
-            : base(incompatibleController+" cannot be played with the "+Enum.GetName(typeof(GameMode), mode)+" game mode.")
+            : base(incompatibleController + " cannot be played with the " + Enum.GetName(typeof(GameMode), mode) + " game mode.")
         {
             this.incompatible = incompatibleController;
             this.mode = mode;

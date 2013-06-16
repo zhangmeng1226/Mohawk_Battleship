@@ -2,14 +2,11 @@
 using MBC.Shared;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace MBC.Core
 {
     public abstract class ControlledRound : Round
     {
-
         private List<ControllerUser> controllers;
 
         public ControlledRound(MatchInfo matchInfo, List<ControllerUser> controllers)

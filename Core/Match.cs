@@ -1,10 +1,8 @@
 ﻿using MBC.Core.Events;
 using MBC.Core.Util;
 using MBC.Shared;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 
 namespace MBC.Core
@@ -14,7 +12,7 @@ namespace MBC.Core
     /// <summary>
     /// Provides information about a matchup of controllers. The Match class sets and uses the following
     /// Configuration keys:
-    /// <list type="bullet">    
+    /// <list type="bullet">
     ///     <item><b>mbc_match_rounds_mode</b> - "all", "play to", or "best of".
     ///     <list type="bullet">
     ///         <item><b>all</b> - Runs N number of Rounds.</item>
@@ -30,7 +28,6 @@ namespace MBC.Core
     [Configuration("mbc_match_rounds", 100)]
     public class Match
     {
-
         private MatchInfo info;
         private PlayMode roundPlay;
 
@@ -57,7 +54,9 @@ namespace MBC.Core
         }
 
         public event MBCMatchEventHandler MatchEvent;
+
         public event MBCRoundEventHandler RoundEvent;
+
         public event MBCControllerEventHandler ControllerEvent;
 
         /// <summary>
@@ -239,9 +238,11 @@ namespace MBC.Core
                 case "all":
                     roundPlay = PlayMode.AllRounds;
                     break;
+
                 case "first to":
                     roundPlay = PlayMode.FirstTo;
                     break;
+
                 default:
                     conf.SetValue("mbc_match_rounds_mode", "all");
                     break;

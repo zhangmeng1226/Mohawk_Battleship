@@ -1,29 +1,28 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using MBC.Shared;
+﻿using MBC.Shared;
 using MBC.Shared.Attributes;
+using System;
 
 namespace MBC.Controllers
 {
     /// <summary>
     /// This is a controller that uses a pseudo-random number generator to make all of its decisions. This
     /// controller is highly documented and gives a good idea of how to develop a controller for use in MBC.
-    /// 
+    ///
     /// Every controller must implement the IBattleshipController interface from the shared framework in
     /// order to be detected by the MBC core. See <see cref="Controller"/> for information about
     /// when each of the methods are called during a competition.
-    /// 
+    ///
     /// Then, each controller must use at least three attributes to describe itself, which are the NameAttribute
     /// VersionAttribute, and CapabilitiesAttribute. They are simple to use; look at the attributes set to the RandomBot below to
     /// get an idea of how to set attributes. You can see which attributes are available by looking in the
     /// "Controller Plugin" project and opening the "Attributes" folder. Note that you do not need to
     /// type out the word "Attribute" after the attribute you wish to use.
-    /// 
+    ///
     /// Note that each controller has a time limit before they lose the round, defined in the <see cref="MatchInfo"/>
     /// that is given at the beginning of a match. There is even a second time limit that aborts the call
     /// to a controller if they take much longer.
     /// </summary>
-    /// 
+    ///
 
     //Here, a NameAttribute is defined, stating the name of this controller.
     [Name("RandomBot")]
@@ -54,13 +53,13 @@ namespace MBC.Controllers
         /// This is a Random object that this controller will be using through each match to generate
         /// random numbers.
         /// </summary>
-        Random rand;
+        private Random rand;
 
         /// <summary>
         /// This is a list of shots that this controller has against another controller or controllers.
         /// It will start out being filled with every possible shot made.
         /// </summary>
-        ShotList shotQueue;
+        private ShotList shotQueue;
 
         /// <summary>
         /// This method is called from the competition whenever this controller is being involved in a new
@@ -163,7 +162,7 @@ namespace MBC.Controllers
         {
             //First generate a random X coordinate. Note that rand.Next() gets a random number that is
             //always less than the given value; we add one to get the full range of the field.
-            var xCoord = rand.Next(Register.Match.FieldSize.X+1);
+            var xCoord = rand.Next(Register.Match.FieldSize.X + 1);
 
             //Then generate a random Y coordinate.
             var yCoord = rand.Next(Register.Match.FieldSize.Y + 1);

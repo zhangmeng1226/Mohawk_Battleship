@@ -2,9 +2,7 @@
 using MBC.Core.Util;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace MBC.App.BattleshipConsole
 {
@@ -12,9 +10,9 @@ namespace MBC.App.BattleshipConsole
 
     public static class Input
     {
-        private static List<ControllerInformation> availableControllers;
-        private static SortedDictionary<string, MBCShellCommandHandler> availableCommands;
         private static SortedDictionary<string, string> availableCommandDescriptions;
+        private static SortedDictionary<string, MBCShellCommandHandler> availableCommands;
+        private static List<ControllerInformation> availableControllers;
         private static bool inputRunning = false;
 
         static Input()
@@ -94,16 +92,16 @@ namespace MBC.App.BattleshipConsole
                 MBCShellCommandHandler invoke;
                 if (availableCommands.TryGetValue(cmdFind.ToString(), out invoke))
                 {
-                    string[] parameters = new string[input.Length - i - 1];
+                    var parameters = new List<string>();
                     while (++i < input.Length)
                     {
                         if (input[i] == "|")
                         {
                             break;
                         }
-                        parameters[parameters.Length - i] = input[i];
+                        parameters.Add(input[i]);
                     }
-                    invoke(0, parameters);
+                    invoke(0, parameters.ToArray());
                     if (i == input.Length)
                     {
                         return true;
@@ -121,12 +119,7 @@ namespace MBC.App.BattleshipConsole
             return RunCommand(input.Split(' '));
         }
 
-        private static void Stop(int idx, params string[] param)
-        {
-            inputRunning = false;
-        }
-
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             Console.Title = "MBC console";
             Console.CancelKeyPress += (a, b) =>
@@ -163,6 +156,11 @@ namespace MBC.App.BattleshipConsole
                     Console.WriteLine("Invalid command specified.");
                 }
             }
+        }
+
+        private static void Stop(int idx, params string[] param)
+        {
+            inputRunning = false;
         }
     }
 }

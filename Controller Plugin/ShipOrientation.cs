@@ -1,8 +1,7 @@
 ﻿namespace MBC.Shared
 {
-    
     /// <summary>A ShipOrientaton defines the orientation of a Ship.
-    /// 
+    ///
     /// Horizontal - Left to Right
     /// Vertical - Bottom to Top
     /// </summary>

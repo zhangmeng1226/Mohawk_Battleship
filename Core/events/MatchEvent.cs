@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace MBC.Core.Events
+﻿namespace MBC.Core.Events
 {
     public class MatchEvent : Event
     {
@@ -11,7 +6,6 @@ namespace MBC.Core.Events
 
         public MatchEvent(Match match)
         {
-
         }
 
         public Match Match

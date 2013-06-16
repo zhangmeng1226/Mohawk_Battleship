@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Linq.Expressions;
-using System.Diagnostics;
-using MBC.Core.Accolades;
+﻿using MBC.Core.Accolades;
 using MBC.Core.Events;
 using MBC.Shared;
+using System;
+using System.Collections.Generic;
 
 namespace MBC.Core
 {
-
     /// <summary>
     /// A Round class is the base class for a battleship round that processes game logic based on
     /// decisions made by controllers. A Round can support any number of Controller objects.<br /><br />
@@ -23,7 +18,6 @@ namespace MBC.Core
     /// </summary>
     public abstract class Round
     {
-
         protected ControllerRegister currentTurn;
 
         protected List<ControllerRegister> registers;
@@ -199,9 +193,11 @@ namespace MBC.Core
                 case State.Begin:
                     Begin();
                     break;
+
                 case State.ShipPlacement:
                     ShipPlacement();
                     break;
+
                 case State.Main:
                     DoMainLogic();
                     break;

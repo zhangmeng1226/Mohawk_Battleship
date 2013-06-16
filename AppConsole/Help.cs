@@ -1,14 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MBC.App.BattleshipConsole
 {
     public static class Help
     {
-
         public static void Display(int idx, params string[] param)
         {
             var largestLength = 0;
@@ -46,7 +41,7 @@ namespace MBC.App.BattleshipConsole
                     Console.Write(' ');
                     Console.Write(descSplit[descIdx]);
                 }
-                Console.WriteLine("\n");
+                Console.WriteLine();
             }
         }
     }

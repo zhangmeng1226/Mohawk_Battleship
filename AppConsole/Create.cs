@@ -2,19 +2,14 @@
 using MBC.Core.Util;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MBC.App.BattleshipConsole
 {
     [Configuration("mbc_console_create_events", true)]
     public static class Create
     {
-
         public static void Config(int idx, params string[] param)
         {
-
         }
 
         public static void Match(int idx, params string[] param)

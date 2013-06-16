@@ -2,13 +2,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace MBC.Shared
 {
     /// <summary>
     /// A ShotList object contains a list of Shot objects and provides various functions to operate
-    /// on them. 
+    /// on them.
     /// </summary>
     public class ShotList : ICollection<Shot>
     {
@@ -381,7 +380,9 @@ namespace MBC.Shared
                 currentIdx = -1;
             }
 
-            void IDisposable.Dispose() { }
+            void IDisposable.Dispose()
+            {
+            }
 
             public Shot Current
             {

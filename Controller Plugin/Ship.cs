@@ -2,8 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Drawing;
-    using System.Linq;
 
     /// <summary>A Ship contains information about the placement of a ship, and provides various
     /// methods to assist with determining various states of the game.

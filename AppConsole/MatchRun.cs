@@ -1,12 +1,6 @@
 ﻿using MBC.Core;
-using MBC.Core.Events;
 using MBC.Core.Util;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MBC.App.BattleshipConsole
 {
@@ -14,6 +8,7 @@ namespace MBC.App.BattleshipConsole
     public static class MatchRun
     {
         public static Match CurrentMatch { get; set; }
+
         public static bool Running { get; set; }
 
         public static void Step(int idx, params string[] param)

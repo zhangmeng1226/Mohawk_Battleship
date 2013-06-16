@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Text;
 
 namespace MBC.Core.Events
 {
     public class RoundBeginEvent : RoundEvent
     {
-        public RoundBeginEvent(Round round) : base(round)
+        public RoundBeginEvent(Round round)
+            : base(round)
         {
             var roundControllers = round.Registers;
 
@@ -20,7 +19,7 @@ namespace MBC.Core.Events
                 {
                     msg.Append(", ");
                 }
-                else if(controller == roundControllers.Last())
+                else if (controller == roundControllers.Last())
                 {
                     msg.Append(" and ");
                 }

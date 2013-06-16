@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 
 namespace MBC.Core
 {
@@ -157,7 +156,7 @@ namespace MBC.Core
         }
 
         /// <summary>
-        /// Loads all of the .dll files located in a given directory and stores information about all 
+        /// Loads all of the .dll files located in a given directory and stores information about all
         /// of the controller classes implementing the IBattleshipController interface for future use.
         /// </summary>
         /// <param name="path">The absolute path name to a folder containing DLL files.</param>
@@ -181,7 +180,7 @@ namespace MBC.Core
                     foreach (Type cont in types)
                     {
                         //Iterating through each class in this assembly.
-                        if (cont.IsSubclassOf(typeof(Controller))) 
+                        if (cont.IsSubclassOf(typeof(Controller)))
                         {
                             NameAttribute nameAttrib = (NameAttribute)cont.GetCustomAttributes(typeof(NameAttribute), false)[0];
                             VersionAttribute verAttrib = (VersionAttribute)cont.GetCustomAttributes(typeof(VersionAttribute), false)[0];
