@@ -11,17 +11,8 @@ namespace MBC.App.BattleshipConsole
     public static class Input
     {
         private static List<ControllerInformation> availableControllers;
-        private static Configuration currentConfig;
 
-        public static bool Running { get; set; }
-
-        public static Configuration Configuration
-        {
-            get
-            {
-                return currentConfig;
-            }
-        }
+        public static bool InputRunning { get; set; }
 
         public static List<ControllerInformation> Controllers
         {
@@ -44,7 +35,7 @@ namespace MBC.App.BattleshipConsole
                             Show.Parse(commandParams, ref cmdIdx);
                             break;
                         case "exit":
-                            Running = false;
+                            InputRunning = false;
                             break;
                         case "match":
                             MatchRun.Parse(commandParams, ref cmdIdx);
@@ -74,23 +65,13 @@ namespace MBC.App.BattleshipConsole
             }
         }
 
-        private static void HandleCancelKey(object sender, ConsoleCancelEventArgs e)
-        {
-            if (MatchRun.Running)
-            {
-                MatchRun.Running = false;
-            }
-            else
-            {
-                Running = false;
-                Console.WriteLine();
-            }
-        }
-
         static void Main(string[] args)
         {
             Console.Title = "MBC console";
-            Console.CancelKeyPress += HandleCancelKey;
+            Console.CancelKeyPress += (a, b) =>
+            {
+                MatchRun.Running = false;
+            };
 
             Environment.CurrentDirectory = Environment.CurrentDirectory + "\\..";
 
@@ -98,7 +79,6 @@ namespace MBC.App.BattleshipConsole
             ControllerInformation.LoadControllerFolder(Environment.CurrentDirectory + "\\bots");
 
             availableControllers = ControllerInformation.AvailableControllers;
-            currentConfig = Configuration.Global;
 
             if (args.Length != 0)
             {
@@ -108,8 +88,8 @@ namespace MBC.App.BattleshipConsole
 
             Console.WriteLine("Type \"help\" for usage.");
 
-            Running = true;
-            while (Running)
+            InputRunning = true;
+            while (InputRunning)
             {
                 Console.Write("\n> ");
 

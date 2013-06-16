@@ -15,7 +15,7 @@ namespace MBC.App.BattleshipConsole
             var key = commandParams[idx++];
             var valueUnparsed = commandParams[idx++];
 
-            if (!Input.Configuration.SetValue(key, valueUnparsed))
+            if (!Configuration.Global.SetValue(key, valueUnparsed))
             {
                 Console.WriteLine("The given value is invalid for the given key.");
             }

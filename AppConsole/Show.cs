@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MBC.Core.Util;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,7 +13,7 @@ namespace MBC.App.BattleshipConsole
         public static void Config()
         {
             Console.WriteLine("[Key] = [Value]");
-            foreach (var pair in Input.Configuration.GetPairs())
+            foreach (var pair in Configuration.Global.GetPairs())
             {
                 Console.Write(pair.Key);
                 Console.Write(" = ");

@@ -97,7 +97,7 @@ namespace MBC.Core.Util
         private static Configuration globalInstance;
         private static Configuration defaultInstance;
 
-        private Dictionary<string, object> simpleConfig;
+        private SortedDictionary<string, object> simpleConfig;
         private string configName;
 
         /// <summary>
@@ -106,7 +106,7 @@ namespace MBC.Core.Util
         /// </summary>
         public Configuration(string name)
         {
-            simpleConfig = new Dictionary<string, object>();
+            simpleConfig = new SortedDictionary<string, object>();
             configName = name;
             if (name != "default")
             {
@@ -120,6 +120,13 @@ namespace MBC.Core.Util
         public static Configuration Global
         {
             get { return globalInstance; }
+            set
+            {
+                if (value != null)
+                {
+                    globalInstance = value;
+                }
+            }
         }
 
         /// <summary>
@@ -326,6 +333,11 @@ namespace MBC.Core.Util
             {
                 //Could not open file for writing (already open?)
             }
+        }
+
+        public bool FileExists()
+        {
+            return File.Exists(configsPath + "\\" + configName + ".ini");
         }
 
         /// <summary>Loads a configuration file from the configuration folder.</summary>

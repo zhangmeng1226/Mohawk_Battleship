@@ -9,7 +9,8 @@ using System.Threading.Tasks;
 
 namespace MBC.App.BattleshipConsole
 {
-    [Configuration("mbc_console_start_show_events", true)]
+    [Configuration("mbc_console_match_show_events", true)]
+    [Configuration("", "")]
     public static class MatchRun
     {
         public static Match CurrentMatch { get; set; }
@@ -70,9 +71,9 @@ namespace MBC.App.BattleshipConsole
             }
             try
             {
-                CurrentMatch = new Match(Input.Configuration, playControllers.ToArray());
+                CurrentMatch = new Match(Configuration.Global, playControllers.ToArray());
 
-                if (Input.Configuration.GetValue<bool>("mbc_console_start_show_events"))
+                if (Configuration.Global.GetValue<bool>("mbc_console_match_show_events"))
                 {
                     CurrentMatch.RoundEvent += (ev) =>
                         {

@@ -31,7 +31,7 @@ namespace MBC.Core
     /// <seealso cref="ClassInfo"/>
     public class ControllerInformation
     {
-        private static Dictionary<NameVersionPair, ControllerInformation> loadedInformation;
+        private static List<ControllerInformation> loadedInformation;
 
         private NameAttribute nameAttrib;
         private VersionAttribute verAttrib;
@@ -41,7 +41,7 @@ namespace MBC.Core
         private AcademicInfoAttribute academicAttrib;
 
         private string dllFile;
-        private Type typeInterface;
+        private Type controllerInterface;
 
         /// <summary>
         /// Constructs a ClassInfo object with the given values.
@@ -61,12 +61,12 @@ namespace MBC.Core
             this.academicAttrib = academic;
             this.capableAttrib = capabilities;
             this.dllFile = dll;
-            this.typeInterface = inter;
+            this.controllerInterface = inter;
         }
 
         public static List<ControllerInformation> AvailableControllers
         {
-            get { return loadedInformation.Values.ToList(); }
+            get { return new List<ControllerInformation>(loadedInformation); }
         }
 
         /// <summary>
@@ -152,7 +152,7 @@ namespace MBC.Core
         {
             get
             {
-                return typeInterface;
+                return controllerInterface;
             }
         }
 
@@ -198,7 +198,7 @@ namespace MBC.Core
                                     capAttrib,
                                     pathSplit[pathSplit.Count() - 1],
                                     cont);
-                                loadedInformation[new NameVersionPair(nameAttrib.Name, verAttrib.Version)] = info;
+                                loadedInformation.Add(info);
                             }
                             break;
                         }
@@ -220,24 +220,9 @@ namespace MBC.Core
         /// <exception cref="DirectoryNotFoundException">The given directory was not found or was a relative path.</exception>
         public static void LoadControllerFolder(string path)
         {
-            loadedInformation = new Dictionary<NameVersionPair, ControllerInformation>();
+            loadedInformation = new List<ControllerInformation>();
 
             AddControllerFolder(path);
-        }
-
-        /// <summary>
-        /// Gets a ClassInfo object from the given name and version parameters. This returns null if no such
-        /// controller with the given information exists.
-        /// </summary>
-        /// <param name="name">A string of the name of the controller to get.</param>
-        /// <param name="ver">The Version of the controller to get.</param>
-        /// <returns>A ClassInfo object of the resulting controller. null if there was no such controller
-        /// found.</returns>
-        public static ControllerInformation GetController(string name, Version ver)
-        {
-            ControllerInformation result;
-            loadedInformation.TryGetValue(new NameVersionPair(name, ver), out result);
-            return result;
         }
 
         /// <summary>
@@ -246,72 +231,6 @@ namespace MBC.Core
         public override string ToString()
         {
             return Name + " v(" + Version.ToString() + ")";
-        }
-
-        /// <summary>
-        /// A NameVersionPair object identifies a unique controller type. There can exist controllers
-        /// with the same name or with the same version, but not both. NameVersionPair objects
-        /// are used as keys for the internally used dictionary to store Controller ClassInfo objects.
-        /// </summary>
-        private class NameVersionPair : IEquatable<NameVersionPair>
-        {
-            private string name;
-            private Version version;
-
-            /// <summary>
-            /// Initializes this NameVersionPair with the given values.
-            /// </summary>
-            /// <param name="name">The name of the controller.</param>
-            /// <param name="version">The version number of the controller.</param>
-            public NameVersionPair(string name, Version version)
-            {
-                this.name = name;
-                this.version = version;
-            }
-
-            /// <summary>
-            /// Gets the string representation of the name of a controller.
-            /// </summary>
-            public string Name
-            {
-                get
-                {
-                    return name;
-                }
-            }
-
-            /// <summary>
-            /// Gets the Version object that identifies the version associated with this controller.
-            /// </summary>
-            public Version Version
-            {
-                get
-                {
-                    return version;
-                }
-            }
-
-            /// <summary>
-            /// Returns a value that indicates whether or not this NameVersionPair is equal to another given
-            /// NameVersionPair.
-            /// </summary>
-            /// <param name="obj">The NameVersionPair to compare to.</param>
-            /// <returns>true if the values of this NameVersionPair is the same as the other. false otherwise.</returns>
-            public bool Equals(NameVersionPair obj)
-            {
-                return obj.name == name && version.Equals(obj.version);
-            }
-
-            /// <summary>
-            /// Returns a value that indicates whether or not this NameVersionPair is equal to another given
-            /// object.
-            /// </summary>
-            /// <param name="obj">The object. to compare to.</param>
-            /// <returns>true if the values of this NameVersionPair is the same as the given object. false otherwise.</returns>
-            public override bool Equals(object obj)
-            {
-                return Equals(obj as NameVersionPair);
-            }
         }
     }
 }
