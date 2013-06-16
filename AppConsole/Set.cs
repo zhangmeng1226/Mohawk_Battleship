@@ -17,7 +17,7 @@ namespace MBC.App.BattleshipConsole
 
             if (!Input.Configuration.SetValue(key, valueUnparsed))
             {
-                Console.WriteLine("The given value type differs from the required type of "+Configuration.ParseString(valueUnparsed).GetType().ToString());
+                Console.WriteLine("The given value is invalid for the given key.");
             }
             else
             {

@@ -246,7 +246,7 @@ namespace MBC.Core.Util
                 return false;
             }
 
-            simpleConfig[key] = val;
+            simpleConfig[key] = newValue;
             return true;
         }
 
@@ -342,27 +342,8 @@ namespace MBC.Core.Util
                     tLine[0] = tLine[0].Trim();
                     tLine[1] = tLine[1].Trim();
 
-                    long longVal = 0;
-                    double doubVal = 0d;
+                    SetValue(tLine[0], tLine[1]);
 
-                    if (long.TryParse(tLine[1], out longVal) || double.TryParse(tLine[1], out doubVal))
-                    {
-                        if (longVal == doubVal)
-                        {
-                            //Must be integer (no decimal point)
-                            simpleConfig.Add(tLine[0], longVal);
-                        }
-                        else
-                        {
-                            //Must be double (has decimal point)
-                            simpleConfig.Add(tLine[0], doubVal);
-                        }
-                    }
-                    else
-                    {
-                        //Must be string (not a number)
-                        simpleConfig.Add(tLine[0], tLine[1]);
-                    }
                     errorLineNum++;
                 } while (reader.Peek() != -1);
                 reader.Close();

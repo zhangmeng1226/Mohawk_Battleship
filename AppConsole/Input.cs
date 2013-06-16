@@ -109,12 +109,12 @@ namespace MBC.App.BattleshipConsole
             Console.WriteLine("Type \"help\" for usage.");
 
             Running = true;
-
             while (Running)
             {
                 Console.Write("\n> ");
 
                 var consoleInput = Console.ReadLine();
+                Console.WriteLine(consoleInput);
                 if (consoleInput != null)
                 {
                     var inputSplit = consoleInput.Split(' ');
