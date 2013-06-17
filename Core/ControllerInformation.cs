@@ -9,46 +9,41 @@ using System.Reflection;
 namespace MBC.Core
 {
     /// <summary>
-    /// The Controller class manages the controller Type objects which are classes that implement the
-    /// IBattleshipController interface. Statically, it handles loading these classes and provides the name
-    /// and version of these classes through a list of generated controller classes that are used to
-    /// determine the available controllers.<br/>
-    /// Use the following methods in this order to load and retrieve information for controllers:
-    /// <list type="number">
-    ///     <item>LoadControllerFolder() or AddControllerFolder() - Populates the list of ClassInfo objects that contain the Type objects required to create controller interfaces.</item>
-    ///     <item>GetControllerList() - Gets the list of ClassInfo objects that have been constructed.</item>
-    ///     <item>GetControllersFromName() - Gets a list of ClassInfo objects from a name.</item>
-    ///     <item>GetController() - Gets a ClassInfo object from a name and version number.</item>
-    /// </list>
-    /// Configuration keys:
-    /// <list type="bullet">
-    ///     <item><b>mbc_controller_thread_timeout</b> - The time to wait before aborting a called method in a controller interface.
-    ///     This value must be greater than the mbc_match_timeout value.
-    ///     </item>
-    /// </list>
+    /// Provides various information about a <see cref="Controller"/> that is loaded from an external library via
+    /// <see cref="ControllerInformation.AddControllerFolder(string)"/>. Contains the <see cref="Type"/>
+    /// that represents a constructable <see cref="Controller"/>.
     /// </summary>
     /// <seealso cref="ClassInfo"/>
     public class ControllerInformation
     {
         private static List<ControllerInformation> loadedInformation;
 
+        private AcademicInfoAttribute academicAttrib;
+        private AuthorAttribute authorAttrib;
+        private CapabilitiesAttribute capableAttrib;
+        private Type controllerInterface;
+        private DescriptionAttribute descAttrib;
+        private string dllFile;
         private NameAttribute nameAttrib;
         private VersionAttribute verAttrib;
-        private CapabilitiesAttribute capableAttrib;
-        private DescriptionAttribute descAttrib;
-        private AuthorAttribute authorAttrib;
-        private AcademicInfoAttribute academicAttrib;
-
-        private string dllFile;
-        private Type controllerInterface;
+        static ControllerInformation()
+        {
+            loadedInformation = new List<ControllerInformation>();
+        }
 
         /// <summary>
-        /// Constructs a ClassInfo object with the given values.
+        /// Copies the given parameters to the internal members.
         /// </summary>
-        /// <param name="name">The name of the controller.</param>
-        /// <param name="ver">The version number of the controller.</param>
-        /// <param name="dll">The file name of the DLL that this controller was loaded in.</param>
-        /// <param name="inter">The class implementing the IBattleshipInterface (un-constructed state).</param>
+        /// <param name="name">The <see cref="NameAttribute"/> set on a <see cref="Controller"/>.</param>
+        /// <param name="ver">The <see cref="VersionAttribute"/> se on a <see cref="Controller"/>.</param>
+        /// <param name="desc">The <see cref="DescriptionAttribute"/> set on a <see cref="Controller"/>.</param>
+        /// <param name="auth">The <see cref="AuthorAttribute"/> set on a <see cref="Controller"/>.</param>
+        /// <param name="academic">The <see cref="AcademicInfoAttribute"/> set on a <see cref="Controller"/>.</param>
+        /// <param name="capabilities">The <see cref="CapabilitiesAttribute"/> set on a
+        /// <see cref="Controller"/>.</param>
+        /// <param name="dll">A string of the absolute path to the library file the <see cref="Controller"/>
+        /// was loaded from.</param>
+        /// <param name="inter">The <see cref="Type"/> that is used to construct <see cref="Controller"/>s</param>.
         public ControllerInformation(NameAttribute name, VersionAttribute ver, DescriptionAttribute desc,
             AuthorAttribute auth, AcademicInfoAttribute academic, CapabilitiesAttribute capabilities,
             string dll, Type inter)
@@ -63,66 +58,17 @@ namespace MBC.Core
             this.controllerInterface = inter;
         }
 
-        public static List<ControllerInformation> AvailableControllers
-        {
-            get { return new List<ControllerInformation>(loadedInformation); }
-        }
-
         /// <summary>
-        /// Gets the name of this controller.
+        /// Gets the <see cref="ControllerInformation"/> objects generated through 
+        /// <see cref="ControllerInformation.AddControllerFolder(string)"/>.
         /// </summary>
-        public string Name
+        public static IEnumerable<ControllerInformation> AvailableControllers
         {
-            get
-            {
-                return nameAttrib.Name;
-            }
+            get { return loadedInformation; }
         }
 
         /// <summary>
-        /// Gets the version number of this controller.
-        /// </summary>
-        public Version Version
-        {
-            get
-            {
-                return verAttrib.Version;
-            }
-        }
-
-        /// <summary>
-        /// Gets a string describing this controller.
-        /// </summary>
-        public string Description
-        {
-            get
-            {
-                return descAttrib.Description;
-            }
-        }
-
-        /// <summary>
-        /// Gets an AuthorAttribute class that contains information about the author.
-        /// </summary>
-        /// <seealso cref="AuthorAttribute"/>
-        public AuthorAttribute AuthorInfo
-        {
-            get
-            {
-                return authorAttrib;
-            }
-        }
-
-        public CapabilitiesAttribute Capabilities
-        {
-            get
-            {
-                return capableAttrib;
-            }
-        }
-
-        /// <summary>
-        /// Gets an AcademicInfoAttribute class that contains information about the author's academics.
+        /// Gets the <see cref="AcademicInfoAttribute"/>.
         /// </summary>
         /// <seealso cref="AcademicInfoAttribute"/>
         public AcademicInfoAttribute AcademicInfo
@@ -134,18 +80,30 @@ namespace MBC.Core
         }
 
         /// <summary>
-        /// Gets the file name of the dll that this controller originates from.
+        /// Gets the <see cref="AuthorAttribute"/>.
         /// </summary>
-        public string DLLFileName
+        /// <seealso cref="AuthorAttribute"/>
+        public AuthorAttribute AuthorInfo
         {
             get
             {
-                return dllFile;
+                return authorAttrib;
             }
         }
 
         /// <summary>
-        /// Gets the type class for this controller.
+        /// Gets the <see cref="CapabilitiesAttribute"/>.
+        /// </summary>
+        public CapabilitiesAttribute Capabilities
+        {
+            get
+            {
+                return capableAttrib;
+            }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="Type"/> that is used to create the <see cref="Controller"/>.
         /// </summary>
         public Type Controller
         {
@@ -156,8 +114,52 @@ namespace MBC.Core
         }
 
         /// <summary>
-        /// Loads all of the .dll files located in a given directory and stores information about all
-        /// of the controller classes implementing the IBattleshipController interface for future use.
+        /// Gets a string containing the description.
+        /// </summary>
+        public string Description
+        {
+            get
+            {
+                return descAttrib.Description;
+            }
+        }
+
+        /// <summary>
+        /// Gets the absolute path to the originating library file.
+        /// </summary>
+        public string DLLFileName
+        {
+            get
+            {
+                return dllFile;
+            }
+        }
+
+        /// <summary>
+        /// Gets a string representing the name.
+        /// </summary>
+        public string Name
+        {
+            get
+            {
+                return nameAttrib.Name;
+            }
+        }
+
+        /// <summary>
+        /// Gets the version.
+        /// </summary>
+        public Version Version
+        {
+            get
+            {
+                return verAttrib.Version;
+            }
+        }
+        /// <summary>
+        /// Searches a given folder for dynamic-loaded libraries (.dll) and attempts to load <see cref="Controller"/>s
+        /// from them. Creates <see cref="ControllerInformation"/> objects for each unique <see cref="Controller"/>
+        /// and stores them into the <see cref="ControllerInformation.AvailableControllers"/>.
         /// </summary>
         /// <param name="path">The absolute path name to a folder containing DLL files.</param>
         /// <exception cref="DirectoryNotFoundException">The given directory was not found or was a relative path.</exception>
@@ -211,21 +213,7 @@ namespace MBC.Core
         }
 
         /// <summary>
-        /// Clears the currently loaded controllers from the internal list, loads all of the .dll files
-        /// located in a given directory, and stores information about all of the controller classes
-        /// implementing the IBattleshipController interface for future use.
-        /// </summary>
-        /// <param name="path">The absolute path name to a folder containing DLL files.</param>
-        /// <exception cref="DirectoryNotFoundException">The given directory was not found or was a relative path.</exception>
-        public static void LoadControllerFolder(string path)
-        {
-            loadedInformation = new List<ControllerInformation>();
-
-            AddControllerFolder(path);
-        }
-
-        /// <summary>
-        /// Generates and returns a string representation for this controller.
+        /// Generates a string that may be used as a display name, from the name and version.
         /// </summary>
         public override string ToString()
         {
