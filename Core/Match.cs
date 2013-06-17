@@ -15,11 +15,16 @@ namespace MBC.Core
     public delegate void MBCMatchEventHandler(MatchEvent ev);
 
     /// <summary>
+    /// <para>
     /// A match is the basic requirement of a game, in this case, a battleship game. Each Match contains
     /// a number of <see cref="Round"/>s and <see cref="ControllerRegister"/>s. The Match provides functions
     /// on starting, playing, stopping, and ending the progress of the game. The Match has multi-threading
     /// functionality integrated when running a Match in a separate thread is required. The Match fires
     /// its own <see cref="MatchEvent"/>s during Match progression.
+    /// </para>
+    /// <para>
+    /// On the application side, there is never a need for references to <see cref="ControllerUser"/>s.
+    /// </para>
     /// </summary>
     /// <seealso cref="MatchBeginEvent"/>
     /// <seealso cref="MatchPlayEvent"/>
@@ -157,6 +162,7 @@ namespace MBC.Core
         /// <summary>
         /// Gets the list of <see cref="Round"/>s created.
         /// </summary>
+        /// <seealso cref="Round"/>
         public IEnumerable<Round> Rounds
         {
             get
@@ -168,6 +174,7 @@ namespace MBC.Core
         /// <summary>
         /// Gets the <see cref="Round"/> currently being progressed.
         /// </summary>
+        /// <seealso cref="Round"/>
         public Round CurrentRound
         {
             get
@@ -190,6 +197,7 @@ namespace MBC.Core
         /// <summary>
         /// Gets the <see cref="ControllerRegister"/>s involved.
         /// </summary>
+        /// <seealso cref="ControllerRegister"/>
         public IEnumerable<ControllerRegister> Registers
         {
             get
@@ -242,6 +250,7 @@ namespace MBC.Core
         /// and continuously makes calls to <see cref="Match.Step()"/> until that method returns false. If the
         /// match is running, does nothing.
         /// </summary>
+        /// <seealso cref="Thread"/>
         public void Play()
         {
             if (isRunning)
@@ -258,6 +267,7 @@ namespace MBC.Core
         /// If the match is running in a separate thread, stops the thread and creates a new <see cref="MatchStopEvent"/>,
         /// otherwise, does nothing.
         /// </summary>
+        /// <seealso cref="Thread"/>
         public void Stop()
         {
             if (isRunning)
@@ -272,6 +282,8 @@ namespace MBC.Core
         /// <see cref="Match.Stop()"/>s the match, ends the currently running <see cref="Round"/>, creates
         /// a <see cref="MatchEndEvent"/>, and prevents further progression of the match.
         /// </summary>
+        /// <seealso cref="MatchEvent"/>
+        /// <seealso cref="Match.InProgress"/>
         public void End()
         {
             Stop();
