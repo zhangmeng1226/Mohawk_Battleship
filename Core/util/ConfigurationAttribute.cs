@@ -29,5 +29,7 @@ namespace MBC.Core.Util
                 return value;
             }
         }
+
+        public string Description { get; set; }
     }
 }

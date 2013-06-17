@@ -28,13 +28,11 @@ namespace MBC.Core
         /// </summary>
         /// <param name="targetControllerInfo">The ClassInfo to create the object from.</param>
         /// <param name="matchInfo">The MatchInfo to set the behaviour of this Controller for.</param>
-        public ControllerUser(ControllerInformation targetControllerInfo, ControllerRegister register)
+        public ControllerUser(ControllerInformation targetControllerInfo)
         {
             this.controllerInfo = targetControllerInfo;
             this.timeElapsed = new Stopwatch();
             this.maxTimeout = Configuration.Global.GetValue<int>("mbc_controller_thread_timeout");
-
-            this.register = register;
 
             controller = (Controller)Activator.CreateInstance(targetControllerInfo.Controller);
             controller.ControllerMessageEvent += ReceiveMessage;
@@ -139,8 +137,9 @@ namespace MBC.Core
         /// <param name="fieldSize">The size of the battlefield.</param>
         /// <param name="methodTime">The time limit given for this Controller.</param>
         /// <param name="initShips">The ships that a match will play with.</param>
-        public void NewMatch()
+        public void NewMatch(ControllerRegister registerInstance)
         {
+            register = registerInstance;
             Register.Score = 0;
             controller.Register = new ControllerRegister(Register);
 

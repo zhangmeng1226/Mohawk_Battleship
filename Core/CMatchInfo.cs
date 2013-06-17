@@ -74,7 +74,6 @@ namespace MBC.Core
                     case "classic":
                         gameMode |= GameMode.Classic;
                         break;
-
                     case "salvo":
                         gameMode |= GameMode.Salvo;
                         throw new NotImplementedException("Salvo game mode does not exist yet.");
@@ -84,7 +83,6 @@ namespace MBC.Core
                     case "multi":
                         gameMode |= GameMode.Multi;
                         break;
-
                     case "teams":
                         gameMode |= GameMode.Teams;
                         throw new NotImplementedException("Teams game mode does not exist yet.");

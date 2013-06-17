@@ -5,6 +5,7 @@
     /// </summary>
     /// <param name="ev">The Event.</param>
     /// <param name="round">The Round the Event originated from.</param>
+    /// <seealso cref="Event"/>
     public delegate void MBCEventHandler(Event ev);
 
     /// <summary>
