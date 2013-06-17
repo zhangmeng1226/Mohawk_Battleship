@@ -6,22 +6,7 @@ using System.Collections.Generic;
 namespace MBC.Core
 {
     /// <summary>
-    /// Contains information about the behaviour of the game logic that will be played in a Round.
-    /// CMatchInfo objects use a Configuration object to set the game settings. The available options are the
-    /// following:
-    /// <list type="bullet">
-    ///     <item><b>mbc_field_width</b> and <b>mbc_field_height</b> - Sets the boundaries of the field.</item>
-    ///     <item><b>mbc_ship_sizes</b> - CSV of the sizes of ships that will be available.</item>
-    ///     <item><b>mbc_timeout</b> - The time in milliseconds of the maximum amount of time a method call from a controller interface will have
-    ///     before they lose the Round.
-    ///     </item>
-    ///     <item><b>mbc_game_mode</b> - "classic", "salvo", or "powered", followed with a space, "multi" or "teams"
-    ///     determines the game logic. eg, "salvo multi teams" or "classic multi".
-    ///     </item>
-    /// </list>
-    /// This class is an extension of the MatchInfo class, which cannot be constructed. This class provides
-    /// a constructor to the MatchInfo class so it can have its values initialized. The reason for this is to
-    /// prevent the need to place the Configuration class into the plugin DLL.
+    /// Derives a <see cref="MatchInfo"/> for the sole purpose of initializing its field members.
     /// </summary>
     /// <seealso cref="MatchInfo"/>
     [Configuration("mbc_field_width", 10)]
@@ -31,6 +16,15 @@ namespace MBC.Core
     [Configuration("mbc_game_mode", "classic")]
     public class CMatchInfo : MatchInfo
     {
+        /// <summary>
+        /// Initializes the underlying <see cref="MatchInfo"/> with values provided by a <see cref="Configuration"/>
+        /// and associates the <see cref="MatchInfo"/> with the given <see cref="ControllerInformation"/>.
+        /// </summary>
+        /// <param name="config">The <see cref="Configuration"/> to load settings from.</param>
+        /// <param name="controllerInfos">A variable number of <see cref="ControllerInformation"/>
+        /// to associate with.</param>
+        /// <exception cref="ControllerIncompatibleException">A controller is not designed for the
+        /// configured <see cref="GameMode"/>.</exception>
         public CMatchInfo(Configuration config, params ControllerInformation[] controllerInfos)
         {
             //Get the game mode from the Configuration.
@@ -74,6 +68,7 @@ namespace MBC.Core
                     case "classic":
                         gameMode |= GameMode.Classic;
                         break;
+
                     case "salvo":
                         gameMode |= GameMode.Salvo;
                         throw new NotImplementedException("Salvo game mode does not exist yet.");
@@ -83,6 +78,7 @@ namespace MBC.Core
                     case "multi":
                         gameMode |= GameMode.Multi;
                         break;
+
                     case "teams":
                         gameMode |= GameMode.Teams;
                         throw new NotImplementedException("Teams game mode does not exist yet.");
