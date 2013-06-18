@@ -19,7 +19,7 @@ namespace MBC.Core
             if (currentTurn == null)
             {
                 //There is a winner (or every controller is a loser).
-                foreach (var controller in RemainingRegisters)
+                foreach (var controller in remainingRegisters)
                 {
                     MakeEvent(new ControllerWonEvent(controller));
                 }
@@ -47,7 +47,7 @@ namespace MBC.Core
 
             try
             {
-                Shot shot = Controllers[currentTurn.ID].MakeShot();
+                Shot shot = controllers[currentTurn.ID].MakeShot();
                 MakeEvent(new ControllerShotEvent(currentTurn, shot));
 
                 if (shot == null || ShotOutOfBounds(shot) || ShotSuicidal(shot) || ShotRepeated(shot) || ShotDestroyed(shot))
@@ -70,7 +70,7 @@ namespace MBC.Core
 
                     MakeEvent(new ControllerHitShipEvent(currentTurn, receiver, shot));
                     bool sunk = shotShip.IsSunk(currentTurn.Shots.ShotsToReceiver(shot.Receiver));
-                    Controllers[currentTurn.ID].NotifyShotHit(shot, sunk);
+                    controllers[currentTurn.ID].NotifyShotHit(shot, sunk);
                     if (sunk)
                     {
                         //The last shot sunk a receiver's ship.
@@ -86,14 +86,14 @@ namespace MBC.Core
                 }
                 else
                 {
-                    Controllers[currentTurn.ID].NotifyShotMiss(shot);
+                    controllers[currentTurn.ID].NotifyShotMiss(shot);
                 }
 
-                if (RemainingRegisters.Contains(receiver))
+                if (remainingRegisters.Contains(receiver))
                 {
                     //The receiver is still in the round.
 
-                    Controllers[receiver.ID].NotifyOpponentShot(shot);
+                    controllers[receiver.ID].NotifyOpponentShot(shot);
                 }
             }
             catch (ControllerTimeoutException ex)
@@ -125,7 +125,7 @@ namespace MBC.Core
 
         private bool ShotDestroyed(Shot shot)
         {
-            return !RemainingRegisters.Contains(registers[shot.Receiver]);
+            return !remainingRegisters.Contains(registers[shot.Receiver]);
         }
     }
 }

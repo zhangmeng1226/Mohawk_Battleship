@@ -171,11 +171,13 @@ namespace MBC.Core
         }
 
         /// <summary>
-        /// Removes the subscriptions made to <see cref="Round.RoundEvent"/> and <see cref="Round.ControllerEvent"/>
+        /// Creates a new <see cref="RoundEndEvent"/>,
+        /// removes the subscriptions made to <see cref="Round.RoundEvent"/> and <see cref="Round.ControllerEvent"/>,
         /// and sets the <see cref="Round.CurrentState"/> to <see cref="State.End"/>.
         /// </summary>
         public virtual void End()
         {
+            MakeEvent(new RoundEndEvent(this));
             RoundEvent = null;
             ControllerEvent = null;
             currentState = State.End;
