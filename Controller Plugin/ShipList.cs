@@ -1,24 +1,24 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 
 namespace MBC.Shared
 {
     /// <summary>
-    /// A ShipList is a specialized collection of Ship objects.
+    /// Contains a number of <see cref="Ship"/>s and provides a number of functions to operate on all
+    /// of them.
     /// </summary>
     public class ShipList : ICollection<Ship>
     {
-        private List<Ship> shipList;
         private int maxLength;
         private int minLength;
+        private List<Ship> shipList;
 
         /// <summary>
-        /// Copies a ShipList and its containing Ship objects.
+        /// Copies a <see cref="ShipList"/> while making copies of its <see cref="Ship"/>s.
         /// </summary>
-        /// <param name="copyList"></param>
+        /// <param name="copyList">The <see cref="ShipList"/> to make a deep copy of.</param>
         public ShipList(ShipList copyList)
         {
             shipList = new List<Ship>();
@@ -34,9 +34,10 @@ namespace MBC.Shared
         }
 
         /// <summary>
-        /// Contructs a new ShipList with existing Ship objects contained in a collection.
+        /// Stores the <paramref name="ships"/> and calculates the mininum and maximum lengths of the
+        /// <paramref name="ships"/>.
         /// </summary>
-        /// <param name="ships">The collection of Ship objects to store in this ShipList.</param>
+        /// <param name="ships">The <see cref="Ship"/>s to store.</param>
         public ShipList(IEnumerable<Ship> ships)
         {
             minLength = ships.First().Length;
@@ -48,9 +49,11 @@ namespace MBC.Shared
         }
 
         /// <summary>
-        /// Initializes a new ShipList object with unplaced Ship objects according to the given ship lengths.
+        /// Stores the <paramref name="shipLengths"/> as new unplaced <see cref="Ship"/>s according to the
+        /// lengths specified in the <paramref name="shipLengths"/>.
         /// </summary>
-        /// <param name="shipLengths"></param>
+        /// <param name="shipLengths">A variable array of integers representing the <see cref="Ship.Length"/>
+        /// of each <see cref="Ship"/>.</param>
         public ShipList(params int[] shipLengths)
         {
             shipList = new List<Ship>();
@@ -63,139 +66,13 @@ namespace MBC.Shared
         }
 
         /// <summary>
-        /// Initializes an empty ShipList.
+        /// Creates an empty list of <see cref="Ship"/>s.
         /// </summary>
         public ShipList()
         {
             shipList = new List<Ship>();
             minLength = int.MaxValue;
             maxLength = int.MinValue;
-        }
-
-        /// <summary>
-        /// Adds a Ship object to this ShipList.
-        /// </summary>
-        /// <param name="ship">The Ship to add.</param>
-        public void Add(Ship ship)
-        {
-            shipList.Add(ship);
-            if (ship.Length < minLength)
-            {
-                minLength = ship.Length;
-            }
-            if (ship.Length > maxLength)
-            {
-                maxLength = ship.Length;
-            }
-        }
-
-        /// <summary>
-        /// Adds the contents of the given ShipList to this ShipList.
-        /// </summary>
-        /// <param name="list">The ShipList to get the Ship objects from.</param>
-        public void Add(ShipList list)
-        {
-            foreach (var ship in list)
-            {
-                shipList.Add(ship);
-            }
-        }
-
-        /// <summary>
-        /// Determines whether or not this ShipList contains a Ship.
-        /// </summary>
-        /// <param name="ship">The Ship to find.</param>
-        /// <returns></returns>
-        public bool Contains(Ship ship)
-        {
-            return shipList.Contains(ship);
-        }
-
-        /// <summary>
-        /// Removes a Ship from this ShipList. Note that the Ship being removed is not necessarily the object itself, but
-        /// a Ship object that is equivalent to a Ship object in this ShipList.
-        /// </summary>
-        /// <param name="ship">The Ship to remove.</param>
-        /// <returns></returns>
-        public bool Remove(Ship ship)
-        {
-            return shipList.Remove(ship);
-        }
-
-        /// <summary>
-        /// Removes all of the contained Ship objects in this ShipList.
-        /// </summary>
-        public void Clear()
-        {
-            shipList.Clear();
-        }
-
-        /// <summary>
-        /// Gets the enumerator for this ShipList.
-        /// </summary>
-        /// <returns>The ShipListEnumerator.</returns>
-        public IEnumerator<Ship> GetEnumerator()
-        {
-            return new ShipListEnumerator(this);
-        }
-
-        /// <summary>
-        /// Copies the contents of this ShipList to the given Ship array, starting at the specified index within
-        /// that array.
-        /// </summary>
-        /// <param name="array">The array to copy to.</param>
-        /// <param name="arrayIndex">The index of the array to start copying to.</param>
-        public void CopyTo(Ship[] array, int arrayIndex)
-        {
-            if (array == null)
-            {
-                throw new ArgumentNullException("array is null.");
-            }
-            if (arrayIndex < 0)
-            {
-                throw new ArgumentOutOfRangeException("arrayIndex is less than 0.");
-            }
-            if (Count > array.Length - arrayIndex)
-            {
-                throw new ArgumentException("The number of elements in the source ShipList is greater than the available space from arrayIndex to the end of the destination array.");
-            }
-            for (var i = 0; i < Count; i++)
-            {
-                array[i + arrayIndex] = shipList[i];
-            }
-        }
-
-        /// <summary>
-        /// Generates a ReadOnlyCollection of the Ship objects that are contained in this ShipList.
-        /// </summary>
-        /// <returns>A ReadOnlyCollection of Ship objects contained in this ShipList.</returns>
-        public ReadOnlyCollection<Ship> ToReadOnlyCollection()
-        {
-            return new ReadOnlyCollection<Ship>(shipList);
-        }
-
-        /// <summary>
-        /// ShipList is not read only, so IsReadOnly is always false.
-        /// </summary>
-        public bool IsReadOnly
-        {
-            get
-            {
-                return false;
-            }
-        }
-
-        /// <summary>
-        /// Overloaded index operator on this class used to retrieve the Ship objects contained in this ShipList.
-        /// </summary>
-        /// <param name="index">The index of the internal list to get the Ship at.</param>
-        /// <returns>A Ship object.</returns>
-        public Ship this[int index]
-        {
-            get
-            {
-                return shipList[index];
-            }
         }
 
         /// <summary>
@@ -210,20 +87,13 @@ namespace MBC.Shared
         }
 
         /// <summary>
-        /// Gets a boolean value that determines if all ships in this list has been placed or not.
+        /// ShipList is not read only, so IsReadOnly is always false.
         /// </summary>
-        public bool ShipsPlaced
+        public bool IsReadOnly
         {
             get
             {
-                foreach (var ship in shipList)
-                {
-                    if (!ship.IsPlaced)
-                    {
-                        return false;
-                    }
-                }
-                return true;
+                return false;
             }
         }
 
@@ -252,7 +122,7 @@ namespace MBC.Shared
         /// <summary>
         /// Returns a new List of Ship objects contained in this ShipList.
         /// </summary>
-        public List<Ship> Ships
+        public IEnumerable<Ship> Ships
         {
             get
             {
@@ -261,29 +131,137 @@ namespace MBC.Shared
         }
 
         /// <summary>
-        /// Gets the Ship at the given Coordinates, if it exists.
+        /// Gets a boolean value that determines if all ships in this list has been placed or not.
         /// </summary>
-        /// <param name="coord">The Coordinates to search a Ship at for.</param>
-        /// <returns>A Ship object that exists at the given Coordinates. null if no ship was found.</returns>
-        public Ship ShipAt(Coordinates coord)
+        public bool ShipsPlaced
         {
-            foreach (var ship in shipList)
+            get
             {
-                if (ship.IsAt(coord))
+                foreach (var ship in shipList)
                 {
-                    return ship;
+                    if (!ship.IsPlaced)
+                    {
+                        return false;
+                    }
                 }
+                return true;
             }
-            return null;
         }
 
         /// <summary>
-        /// Generates a ShipList object containing a list of Ship objects that have been sunk according
-        /// to the given ShotList.
+        /// Overloaded index operator on this class used to retrieve the Ship objects contained in this ShipList.
         /// </summary>
-        /// <param name="shots">The ShotList containing shots made by a single controller.</param>
-        /// <returns>A ShipList of Ship objects whos Coordinates are completely occupied by the given
-        /// ShotList.</returns>
+        /// <param name="index">The index of the internal list to get the Ship at.</param>
+        /// <returns>A Ship object.</returns>
+        public Ship this[int index]
+        {
+            get
+            {
+                return shipList[index];
+            }
+        }
+
+        /// <summary>
+        /// Adds a <see cref="Ship"/> and ensures consistency with the <see cref="ShipList.MaxLength"/> and
+        /// <see cref="ShipList.MinLength"/>.
+        /// </summary>
+        /// <param name="ship">The <see cref="Ship"/> to add</param>
+        public void Add(Ship ship)
+        {
+            shipList.Add(ship);
+            if (ship.Length < minLength)
+            {
+                minLength = ship.Length;
+            }
+            if (ship.Length > maxLength)
+            {
+                maxLength = ship.Length;
+            }
+        }
+
+        /// <summary>
+        /// Adds the <see cref="Ship"/>s contained in the <paramref name="list"/>.
+        /// </summary>
+        /// <param name="list">A <see cref="ShipList"/> to add <see cref="Ship"/>s from.</param>
+        public void Add(ShipList list)
+        {
+            foreach (var ship in list)
+            {
+                shipList.Add(ship);
+            }
+        }
+
+        /// <summary>
+        /// Removes all of the <see cref="Ship"/>s contained.
+        /// </summary>
+        public void Clear()
+        {
+            shipList.Clear();
+        }
+
+        /// <summary>
+        /// Indicates the presence of a <paramref name="ship"/>.
+        /// </summary>
+        /// <param name="ship">The <see cref="Ship"/> to search for.</param>
+        /// <returns>A value indicating the presence of an equivalent <see cref="Ship"/>.</returns>
+        public bool Contains(Ship ship)
+        {
+            return shipList.Contains(ship);
+        }
+
+        /// <summary>
+        /// Copies the entire contents to a <see cref="Ship"/> <paramref name="array"/>, beginning at the
+        /// <paramref name="arrayIndex"/> of the <paramref name="array"/>.
+        /// </summary>
+        /// <param name="array">The <see cref="Ship"/> array to copy to.</param>
+        /// <param name="arrayIndex">The begin index of the <paramref name="array"/>.</param>
+        public void CopyTo(Ship[] array, int arrayIndex)
+        {
+            if (array == null)
+            {
+                throw new ArgumentNullException("array is null.");
+            }
+            if (arrayIndex < 0)
+            {
+                throw new ArgumentOutOfRangeException("arrayIndex is less than 0.");
+            }
+            if (Count > array.Length - arrayIndex)
+            {
+                throw new ArgumentException("The number of elements in the source ShipList is greater than the available space from arrayIndex to the end of the destination array.");
+            }
+            for (var i = 0; i < Count; i++)
+            {
+                array[i + arrayIndex] = shipList[i];
+            }
+        }
+
+        /// <summary>
+        /// Generates a <see cref="ShipList"/> of <see cref="Ship"/>s that conflict with one another.
+        /// </summary>
+        /// <returns>A <see cref="ShipList"/> of conflicting <see cref="Ship"/>s.</returns>
+        public ShipList GetConflictingShips()
+        {
+            ShipList conflictingShips = new ShipList();
+            foreach (var ship in shipList)
+            {
+                foreach (var shipCompare in shipList)
+                {
+                    if (ship != shipCompare && ship.ConflictsWith(shipCompare))
+                    {
+                        conflictingShips.Add(ship);
+                    }
+                }
+            }
+            return conflictingShips;
+        }
+        /// <summary>
+        /// Generates a <see cref="ShipList"/> containing <see cref="Ship"/>s that have been sunk according
+        /// to the <paramref name="shots"/>.
+        /// </summary>
+        /// <param name="shots">The <see cref="ShotList"/> containing <see cref="Shot"/>s made against
+        /// the containing <see cref="Ship"/>s.</param>
+        /// <returns>A <see cref="ShipList"/> of <see cref="Ship"/>s that completely occupy the spaces
+        /// given by the <paramref name="shots"/>.</returns>
         public ShipList GetSunkShips(ShotList shots)
         {
             var newList = new ShipList();
@@ -307,41 +285,36 @@ namespace MBC.Shared
         }
 
         /// <summary>
-        /// Generates a ShipList object containing a list of Ship objects that are conflicting with each
-        /// other.
+        /// Gets the enumerator.
         /// </summary>
-        /// <returns>A ShipList object of conflicting ships.</returns>
-        public ShipList GetConflictingShips()
+        /// <returns>An IEnumerator of <see cref="Ship"/>s.</returns>
+        public IEnumerator<Ship> GetEnumerator()
         {
-            ShipList conflictingShips = new ShipList();
-            foreach (var ship in shipList)
-            {
-                foreach (var shipCompare in shipList)
-                {
-                    if (ship != shipCompare && ship.ConflictsWith(shipCompare))
-                    {
-                        conflictingShips.Add(ship);
-                        break;
-                    }
-                }
-            }
-            return conflictingShips;
+            return new ShipListEnumerator(this);
         }
 
         /// <summary>
-        /// Places a Ship in this ShipList at the specified Coordinates with the specified ShipOrientation.
-        /// The method will iterate through the ShipList in the order of ship lengths starting from lowest to
-        /// highest length to attempt placement at the Coordinates. This will ignore boundaries.
+        /// Gets the enumerator for this <see cref="ShipList"/>.
         /// </summary>
-        /// <param name="coord">The Coordinates to place a Ship at.</param>
-        /// <param name="orientation">The ShipOrientation to make the Ship.</param>
-        /// <returns>true if a Ship was placed. false if there was no ship that was able to fit at the specific
-        /// Coordinates or if all ships have been placed.</returns>
-        public bool PlaceShip(Coordinates coord, ShipOrientation orientation, Coordinates maxCoords)
+        /// <returns>An IEnumerator.</returns>
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return new ShipListEnumerator(this);
+        }
+
+        /// <summary>
+        /// Attempts to place an unplaced <see cref="Ship"/> at the <paramref name="coords"/> with the
+        /// <paramref name="orientation"/>. Checks boundaries using the <paramref name="maxCoords"/>.
+        /// </summary>
+        /// <param name="coords"><see cref="Coordinates"/> to place a <see cref="Ship"/>.</param>
+        /// <param name="orientation">The <see cref="ShipOrientation"/> to orient a <see cref="Ship"/>.</param>
+        /// <param name="maxCoords">The maximum size of a field in a match from <see cref="Coordinates"/>.</param>
+        /// <returns></returns>
+        public bool PlaceShip(Coordinates coords, ShipOrientation orientation, Coordinates maxCoords)
         {
             //First determine the largest possible length here...
             int targetLength = 0;
-            Coordinates searchCoord = coord;
+            Coordinates searchCoord = coords;
             Coordinates addCoord;
             if (orientation == ShipOrientation.Horizontal)
             {
@@ -371,7 +344,7 @@ namespace MBC.Shared
             {
                 if (!ship.IsPlaced && ship.Length <= targetLength)
                 {
-                    ship.Place(coord, orientation);
+                    ship.Place(coords, orientation);
                     return true;
                 }
             }
@@ -379,12 +352,50 @@ namespace MBC.Shared
         }
 
         /// <summary>
-        /// Gets the enumerator for this ShipList.
+        /// Removes an equivalent <paramref name="ship"/>.
         /// </summary>
-        /// <returns>The ShipListEnumerator.</returns>
-        IEnumerator IEnumerable.GetEnumerator()
+        /// <param name="ship">The <see cref="Ship"/> to remove.</param>
+        /// <returns>A value indicating the success of the removal of the <paramref name="ship"/>.</returns>
+        public bool Remove(Ship ship)
         {
-            return new ShipListEnumerator(this);
+            bool result = shipList.Remove(ship);
+            if (ship.Length == maxLength || ship.Length == minLength)
+            {
+                CheckShipLengths();
+            }
+            return shipList.Remove(ship);
+        }
+        /// <summary>
+        /// Searches for a <see cref="Ship"/> located at the <paramref name="coord"/>.
+        /// </summary>
+        /// <param name="coord">The <see cref="Coordinates"/> of a <see cref="Ship"/> to search for.</param>
+        /// <returns>A <see cref="Ship"/> at the <paramref name="coord"/>. null if no <see cref="Ship"/>
+        /// occupies the provided space.</returns>
+        public Ship ShipAt(Coordinates coord)
+        {
+            foreach (var ship in shipList)
+            {
+                if (ship.IsAt(coord))
+                {
+                    return ship;
+                }
+            }
+            return null;
+        }
+
+        private void CheckShipLengths()
+        {
+            foreach (var ship in shipList)
+            {
+                if (ship.Length < minLength)
+                {
+                    minLength = ship.Length;
+                }
+                if (ship.Length > maxLength)
+                {
+                    maxLength = ship.Length;
+                }
+            }
         }
 
         /// <summary>
@@ -417,6 +428,10 @@ namespace MBC.Shared
                 }
             }
 
+            void IDisposable.Dispose()
+            {
+            }
+
             public bool MoveNext()
             {
                 return (++currentIdx >= collection.Count);
@@ -425,10 +440,6 @@ namespace MBC.Shared
             public void Reset()
             {
                 currentIdx = -1;
-            }
-
-            void IDisposable.Dispose()
-            {
             }
         }
     }

@@ -39,10 +39,10 @@ namespace MBC.Core
                 }
             }
 
-            this.playerNames = new List<string>();
+            this.controllerNames = new List<string>();
             foreach (var controllerInfo in controllerInfos)
             {
-                this.playerNames.Add(controllerInfo.ToString());
+                this.controllerNames.Add(controllerInfo.ToString());
             }
 
             //Configuration setting for a list of ships that the controllers start with.

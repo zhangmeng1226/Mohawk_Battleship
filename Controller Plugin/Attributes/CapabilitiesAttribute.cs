@@ -3,13 +3,18 @@
 namespace MBC.Shared.Attributes
 {
     /// <summary>
-    /// Provides the game modes that a class has been designed for.
+    /// Provides information about the various <see cref="GameMode"/>s that a <see cref="Controller"/> has been
+    /// designed for. Causes a <see cref="Controller"/> to be loaded only in the given <see cref="GameMode"/>s.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class)]
     public class CapabilitiesAttribute : Attribute
     {
         private readonly GameMode Capabilities;
 
+        /// <summary>
+        /// Sets the <see cref="GameMode"/>s compatible to the <paramref name="modes"/> provided.
+        /// </summary>
+        /// <param name="modes">A variable number of <see cref="GameMode"/>s.</param>
         public CapabilitiesAttribute(params GameMode[] modes)
         {
             foreach (var mode in modes)
@@ -19,10 +24,10 @@ namespace MBC.Shared.Attributes
         }
 
         /// <summary>
-        /// Checks whether the given GameMode is compatible with a controller.
+        /// Checks if the <see cref="Controller"/> is compatible with the <paramref name="mode"/>
         /// </summary>
-        /// <param name="mode">The GameMode to check</param>
-        /// <returns>true if the GameMode is compatible, false otherwise.</returns>
+        /// <param name="mode">The <see cref="GameMode"/> to check.</param>
+        /// <returns>A value that indicates if a <see cref="Controller"/> is capable with the <paramref name="mode"/>.</returns>
         public bool CompatibleWith(GameMode mode)
         {
             foreach (var gameMode in Enum.GetValues(typeof(GameMode)))

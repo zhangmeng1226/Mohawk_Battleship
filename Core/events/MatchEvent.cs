@@ -1,6 +1,13 @@
 ﻿namespace MBC.Core.Events
 {
     /// <summary>
+    /// Defines a method that retrieves and handles a <see cref="MatchEvent"/>.
+    /// </summary>
+    /// <param name="ev">The generated <see cref="MatchEvent"/>.</param>
+    /// <seealso cref="MatchEvent"/>
+    public delegate void MBCMatchEventHandler(MatchEvent ev);
+
+    /// <summary>
     /// The base class for a series of <see cref="Event"/>s that are related to a <see cref="Match"/>.
     /// </summary>
     public abstract class MatchEvent : Event

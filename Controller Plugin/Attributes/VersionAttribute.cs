@@ -3,35 +3,38 @@
 namespace MBC.Shared.Attributes
 {
     /// <summary>
-    /// Provides version information for a class implementing an IBattleshipController interface.
-    /// This attribute is mandatory for a controller to be loaded.
+    /// Provides the version of a <see cref="Controller"/>.
     /// </summary>
     /// <seealso cref="System.Version"/>
     [AttributeUsage(AttributeTargets.Class)]
     public class VersionAttribute : Attribute
     {
+        /// <summary>
+        /// Gets the <see cref="System.Version"/> number of the <see cref="Controller"/>.
+        /// </summary>
         public readonly Version Version;
 
         /// <summary>
-        /// Initializes this VersionAttribute with an existing Version object.
+        /// Sets the <see cref="System.Version"/> of the <see cref="Controller"/> to <paramref name="version"/>.
         /// </summary>
-        /// <param name="ver">The Version object to set to.</param>
-        public VersionAttribute(Version ver)
+        /// <param name="version">The <see cref="System.Version"/> of the <see cref="Controller"/>.</param>
+        public VersionAttribute(Version version)
         {
-            Version = ver;
+            Version = version;
         }
 
         /// <summary>
-        /// Initializes this VersionAttribute with the specified string.
+        /// Sets the <see cref="System.Version"/> of the <see cref="Controller"/> from the <paramref name="verStr"/>.
         /// </summary>
-        /// <param name="ver">A string representing the version.</param>
-        public VersionAttribute(string ver)
+        /// <param name="verStr">A string representation of a <see cref="System.Version"/>.</param>
+        public VersionAttribute(string verStr)
         {
-            Version = new Version(ver);
+            Version = new Version(verStr);
         }
 
         /// <summary>
-        /// Initializes this VersionAttribute with the specified major and minor values.
+        /// Sets the <see cref="System.Version"/> of the <see cref="Controller"/> with the
+        /// <paramref name="major"/> and <paramref name="minor"/> version numbers.
         /// </summary>
         /// <param name="major">The major number.</param>
         /// <param name="minor">The minior number.</param>
@@ -41,7 +44,8 @@ namespace MBC.Shared.Attributes
         }
 
         /// <summary>
-        /// Initializes this VersionAttribute with the specified major, minor, and build values.
+        /// Sets the <see cref="System.Version"/> of the <see cref="Controller"/> from the <paramref name="major"/>,
+        /// <paramref name="minor"/>, and <paramref name="build"/> numbers.
         /// </summary>
         /// <param name="major">The major number.</param>
         /// <param name="minor">The minor number.</param>
@@ -52,7 +56,7 @@ namespace MBC.Shared.Attributes
         }
 
         /// <summary>
-        /// Initializes this VersionAttribute with the specified major, minor, build, and revision numbers.
+        /// Sets the <see cref="System.Version"/> of the <see cref="Controller"/> to the given parameters.
         /// </summary>
         /// <param name="major">The major number.</param>
         /// <param name="minor">The minor number.</param>

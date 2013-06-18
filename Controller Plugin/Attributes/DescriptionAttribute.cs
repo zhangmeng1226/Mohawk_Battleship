@@ -3,20 +3,23 @@
 namespace MBC.Shared.Attributes
 {
     /// <summary>
-    /// Provides description information for a class implementing the IBattleshipController interface.
+    /// Provides a description of a <see cref="Controller"/>.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class)]
     public class DescriptionAttribute : Attribute
     {
+        /// <summary>
+        /// Gets a string that describes the <see cref="Controller"/>.
+        /// </summary>
         public readonly string Description;
 
         /// <summary>
-        /// Initializes this DescriptionAttribute with the given string.
+        /// Stores the <paramref name="description"/>.
         /// </summary>
-        /// <param name="desc">A string used to describe a controller.</param>
-        public DescriptionAttribute(string desc)
+        /// <param name="description">A string used to describe a <see cref="Controller"/></param>
+        public DescriptionAttribute(string description)
         {
-            Description = desc;
+            Description = description;
         }
     }
 }

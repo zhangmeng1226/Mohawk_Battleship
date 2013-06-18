@@ -3,111 +3,132 @@
 namespace MBC.Shared
 {
     /// <summary>
-    /// A delegate defining a method that receives a string.
+    /// Defines a method that receives a string.
     /// </summary>
-    /// <param name="message">The message that the controller wants to output.</param>
+    /// <param name="message">A string containing the message being passed.</param>
     public delegate void StringOutputHandler(string message);
 
-    /// <summary>This interface is to be implemented by any class that is to participate in a classic or salvo
-    /// match of battleship (see <see cref="GameMode"/>).
-    ///
-    /// The various methods in this class are called at times during the battleship game. Read over the
-    /// documentation for each method to understand when these methods are invoked.
+    /// <summary>
+    /// <para>
+    /// Provides a number of overrideable methods that are invoked during a match, and is provided with
+    /// a copy of a <see cref="ControllerRegister"/> for use.
+    /// </para>
+    /// <para>
+    /// At a minimum, certain attributes must be set to a deriving class, which are the <see cref="Attributes.NameAttribute"/>,
+    /// <see cref="Attributes.VersionAttribute"/>, and <see cref="Attributes.CapabilitiesAttribute"/>. These
+    /// are required to be defined in order for a deriving class to be loaded into the MBC core framework.
+    /// </para>
     /// </summary>
     [SecurityPermission(SecurityAction.PermitOnly, SerializationFormatter = true)]
     public abstract class Controller
     {
         /// <summary>
-        /// This event should be invoked when the controller interface wants to output a message.
+        /// Occurs whenever a string message is generated.
         /// </summary>
         public event StringOutputHandler ControllerMessageEvent;
 
+        /// <summary>
+        /// Gets or sets the <see cref="ControllerRegister"/> that is available for manipulation.
+        /// </summary>
         public ControllerRegister Register { get; set; }
 
-        public void SendMessage(string message)
+        /// <summary>
+        /// Called when required to create and return a <see cref="Shot"/>. Refer to the rules of the
+        /// <see cref="MatchInfo.GameMode"/> in the <see cref="Controller.Register"/> when creating the
+        /// <see cref="Shot"/>.
+        /// </summary>
+        /// <returns>A <see cref="Shot"/> to be processed by the MBC core framework.</returns>
+        public abstract Shot MakeShot();
+
+        /// <summary>
+        /// Called when the match against other <see cref="Controller"/>s is over.
+        /// </summary>
+        public virtual void MatchOver()
         {
-            ControllerMessageEvent(message);
         }
 
-        /// <summary>Called when this controller is being placed in a match.</summary>
-        /// <param name="matchInfo">Information about the match this controller is being placed in.</param>
-        /// <seealso cref="MatchInfo"/>
+        /// <summary>
+        /// Called when entered in a new match. The <see cref="Controller.Register"/> will have
+        /// been updated with new information.
+        /// </summary>
         public virtual void NewMatch()
         {
         }
 
-        /// <summary>Called when a new round in the match is commencing.</summary>
+        /// <summary>
+        /// Called when entered in a new round. The <see cref="Controller.Register"/> <see cref="ControllerRegister.Ships"/>
+        /// will be reset to an unplaced state.
+        /// </summary>
         public virtual void NewRound()
         {
         }
 
-        /// <summary>Called when this controller must place their ships. Utilize the Ship objects in the
-        /// given collection to place ships. Do not provide invalid ship placements (overlapping, bad coords, etc.)</summary>
-        /// <param name="ships">A collection of ships to place.</param>
-        public virtual void PlaceShips()
-        {
-        }
-
         /// <summary>
-        /// Called when this controller has the opportunity to make a shot in their turn. The given
-        /// Shot object must have its properties modified to whatever is desired, keeping in mind the rules
-        /// of a round.
+        /// Called when an opposing <see cref="Controller"/> has had all of their <see cref="Ship"/>s destroyed,
+        /// lost the round, and has been removed from the active <see cref="Controller"/>s in the round.
         /// </summary>
-        /// <param name="shot">The Shot given to this controller to modify.</param>
-        /// <seealso cref="Shot"/>
-        public virtual Shot MakeShot()
-        {
-            return null;
-        }
-
-        /// <summary>Called when this controller is being shot at by another controller.</summary>
-        /// <param name="shot">The shot the opponent has made against this controller</param>
-        /// <seealso cref="Shot"/>
-        public virtual void OpponentShot(Shot shot)
-        {
-        }
-
-        /// <summary>Called when this controller has hit an opposing Ship from the Shot given by a previous
-        /// call to MakeShot().</summary>
-        /// <param name="shot">The Shot that made a ship hit on a controller.</param>
-        /// <param name="sunk">True if the shot had sunk an opposing ship.</param>
-        /// <seealso cref="Shot"/>
-        public virtual void ShotHit(Shot shot, bool sunk)
-        {
-        }
-
-        /// <summary>Called when this controller did not hit an opposing ship from the Shot given by a previous
-        /// call to MakeShot().</summary>
-        /// <param name="shot">The Shot that missed.</param>
-        /// <seealso cref="Shot"/>
-        public virtual void ShotMiss(Shot shot)
-        {
-        }
-
-        /// <summary>
-        /// Called when an opposing controller has been removed from the round and has lost.
-        /// </summary>
-        /// <param name="destroyedID">The ControllerID of the controller that lost.</param>
-        /// <seealso cref="ControllerID"/>
+        /// <param name="destroyedID">The <see cref="ControllerID"/> of the <see cref="Controller"/> that
+        /// is no longer an opponent.</param>
         public virtual void OpponentDestroyed(ControllerID destroyedID)
         {
         }
 
         /// <summary>
-        /// Called when a round is over. In this case, this controller has won the round.
+        /// Called when an opposing <see cref="Controller"/> in the same match has created a
+        /// <see cref="Shot"/> against this <see cref="Controller"/>.
+        /// </summary>
+        /// <param name="shot">The <see cref="Shot"/> made by an opposing <see cref="Controller"/></param>
+        public virtual void OpponentShot(Shot shot)
+        {
+        }
+
+        /// <summary>
+        /// Called when the <see cref="ControllerRegister.Ships"/> in the <see cref="Controller.Register"/> must
+        /// be placed. Refer to the rules of the <see cref="MatchInfo.GameMode"/> in the <see cref="Controller.Register"/>.
+        /// </summary>
+        public abstract void PlaceShips();
+
+        /// <summary>
+        /// Called when the round has been lost.
+        /// </summary>
+        public virtual void RoundLost()
+        {
+        }
+
+        /// <summary>
+        /// Called when the round has been won.
         /// </summary>
         public virtual void RoundWon()
         {
         }
 
-        /// <summary>Called when a round is over. In this case, this controller has lost the round.</summary>
-        public virtual void RoundLost()
+        /// <summary>
+        /// Called when a <paramref name="shot"/> created earlier hit an opposing <see cref="Controller"/>'s
+        /// <see cref="Ship"/>. Indicates via <paramref name="sunk"/> whether or not the <paramref name="shot"/>
+        /// destroyed the <see cref="Ship"/>.
+        /// </summary>
+        /// <param name="shot">The <see cref="Shot"/> made earlier.</param>
+        /// <param name="sunk">Indicates whether or not the <paramref name="shot"/> destroyed a ship.</param>
+        public virtual void ShotHit(Shot shot, bool sunk)
         {
         }
 
-        /// <summary>Called when a matchup has ended.</summary>
-        public virtual void MatchOver()
+        /// <summary>
+        /// Called when a <paramref name="shot"/> created earlier did not hit an opposing <see cref="Controller"/>'s
+        /// <see cref="Ship"/>.
+        /// </summary>
+        /// <param name="shot">The <see cref="Shot"/> created earlier.</param>
+        public virtual void ShotMiss(Shot shot)
         {
+        }
+
+        /// <summary>
+        /// Used to output a <paramref name="message"/>.
+        /// </summary>
+        /// <param name="message">The string to output to the MBC core framework.</param>
+        protected void SendMessage(string message)
+        {
+            ControllerMessageEvent(message);
         }
     }
 }

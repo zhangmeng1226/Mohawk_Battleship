@@ -25,9 +25,9 @@ namespace MBC.Core.Events
             if (shot != null)
             {
                 msg.Append(" shot ");
-                if (shot.Receiver < register.Match.Players.Count && shot.Receiver >= 0)
+                if (shot.Receiver < register.Match.ControllerNames.Count && shot.Receiver >= 0)
                 {
-                    msg.Append(register.Match.Players[shot.Receiver]);
+                    msg.Append(register.Match.ControllerNames[shot.Receiver]);
                 }
                 else
                 {

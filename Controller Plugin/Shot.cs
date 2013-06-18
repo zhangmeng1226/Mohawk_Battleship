@@ -3,19 +3,19 @@
 namespace MBC.Shared
 {
     /// <summary>
-    /// A Shot is used to identify the ControllerID of the receiver of the Shot, and provide
-    /// the location of the Shot via Coordinates.
+    /// Provides information about a primary component of a battleship game match; the shot. Contains
+    /// the <see cref="Coordinates"/> used to target a <see cref="Ship"/> of a <see cref="Controller"/> associated
+    /// with a certain <see cref="ControllerID"/>.
     /// </summary>
-    /// <seealso cref="ControllerID"/>
     public class Shot : IEquatable<Shot>, IComparable<Shot>
     {
         private Coordinates coords;
         private ControllerID receiver;
 
         /// <summary>
-        /// Contructs a new Shot with the same field values as another Shot.
+        /// Copies an existing <see cref="Shot"/>.
         /// </summary>
-        /// <param name="copyShot">The Shot to copy.</param>
+        /// <param name="copyShot">The <see cref="Shot"/> to copy.</param>
         public Shot(Shot copyShot)
         {
             coords = copyShot.coords;
@@ -23,11 +23,9 @@ namespace MBC.Shared
         }
 
         /// <summary>
-        /// Constructs a new Shot with Coordinates (-1, -1) and sets the sender and receiver ControllerIDs to
-        /// the ones given.
+        /// Initializes the <see cref="Shot.Coordinates"/> to (-1, -1) and stores the <paramref name="receiver"/>.
         /// </summary>
-        /// <param name="sender">The ControllerID of the sender.</param>
-        /// <param name="receiver">The ControllerID of the receiver.</param>
+        /// <param name="receiver">The receiving <see cref="ControllerRegister"/> of this <see cref="Shot"/>.</param>
         public Shot(ControllerID receiver)
         {
             this.coords = new Coordinates(-1, -1);
@@ -35,7 +33,8 @@ namespace MBC.Shared
         }
 
         /// <summary>
-        /// Gets or sets the ControllerID of this Shot that represents the receiver.
+        /// Gets or sets the <see cref="ControllerID"/> that identifies the <see cref="ControllerRegister"/>
+        /// receiving this <see cref="Shot"/>.
         /// </summary>
         public ControllerID Receiver
         {
@@ -50,7 +49,7 @@ namespace MBC.Shared
         }
 
         /// <summary>
-        /// Gets or sets the Coordinates of this Shot.
+        /// Gets or sets the <see cref="Coordinates"/>.
         /// </summary>
         public Coordinates Coordinates
         {
@@ -65,11 +64,11 @@ namespace MBC.Shared
         }
 
         /// <summary>
-        /// Compares the field values of two Shot objects.
+        /// Compares the field values of two <see cref="Shot"/>s.
         /// </summary>
-        /// <param name="shot1">A Shot.</param>
-        /// <param name="shot2">A Shot.</param>
-        /// <returns>true if all of the fields in both Shot objects are equal.</returns>
+        /// <param name="shot1">A <see cref="Shot"/>.</param>
+        /// <param name="shot2">A <see cref="Shot"/>.</param>
+        /// <returns>true if all of the fields in both <see cref="Shot"/>s are equal.</returns>
         public static bool operator ==(Shot shot1, Shot shot2)
         {
             if (Object.ReferenceEquals(shot1, shot2))
@@ -84,18 +83,21 @@ namespace MBC.Shared
         }
 
         /// <summary>
-        /// Does the inverse of the equality operator.
+        /// Compares the field values of two <see cref="Shot"/>s.
         /// </summary>
+        /// <param name="shot1">A <see cref="Shot"/>.</param>
+        /// <param name="shot2">A <see cref="Shot"/>.</param>
+        /// <returns>true if one or more of the fields in both <see cref="Shot"/>s are inequal.</returns>
         public static bool operator !=(Shot shot1, Shot shot2)
         {
             return !(shot1 == shot2);
         }
 
         /// <summary>
-        /// Determines the order between this Shot and another Shot.
+        /// Determines the order between this <see cref="Shot"/> and another <see cref="Shot"/>.
         /// </summary>
-        /// <param name="shot">The Shot to compare to.</param>
-        /// <returns>1 if this Shot is ordered higher, 0 if they are the same, -1 if this one preceeds the other.</returns>
+        /// <param name="shot">The <see cref="Shot"/> to compare to.</param>
+        /// <returns>1 if this <see cref="Shot"/> is ordered higher, 0 if they are the same, -1 if this one preceeds the other.</returns>
         public int CompareTo(Shot shot)
         {
             if (shot == null)
@@ -107,36 +109,36 @@ namespace MBC.Shared
         }
 
         /// <summary>
-        /// Compares the equality of this Shot with another Shot.
+        /// Compares the equality of this <see cref="Shot"/> with another <see cref="Shot"/>.
         /// </summary>
-        /// <param name="shot">The Shot to compare to.</param>
-        /// <returns>true if all of the fields in both Shot objects are equal.</returns>
+        /// <param name="shot">The <see cref="Shot"/> to compare to.</param>
+        /// <returns>true if all of the fields in both <see cref="Shot"/>s are equal.</returns>
         public bool Equals(Shot shot)
         {
             return this == shot;
         }
 
         /// <summary>
-        /// Generates a string representation of this Shot.
+        /// Generates a string representation of this <see cref="Shot"/>.
         /// </summary>
-        /// <returns>A string representing this shot.</returns>
+        /// <returns>A string representing this <see cref="Shot"/>.</returns>
         public override string ToString()
         {
             return Coordinates.ToString() + "=>[" + Receiver + "]";
         }
 
         /// <summary>
-        /// Compares the equality of this Shot with an object.
+        /// Compares the equality of this <see cref="Shot"/> with an object.
         /// </summary>
-        /// <param name="shot">The object to compare to.</param>
-        /// <returns>true if the object is a Shot and is equal to this Shot.</returns>
+        /// <param name="obj">The object to compare to.</param>
+        /// <returns>true if the object is a <see cref="Shot"/> and is equal to this <see cref="Shot"/>.</returns>
         public override bool Equals(object obj)
         {
             return Equals(obj as Shot);
         }
 
         /// <summary>
-        /// Gets the has code for this Shot based on its fields.
+        /// Gets the has code for this <see cref="Shot"/> based on its fields.
         /// </summary>
         /// <returns>A hash code.</returns>
         public override int GetHashCode()

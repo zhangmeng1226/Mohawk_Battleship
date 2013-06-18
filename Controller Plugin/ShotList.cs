@@ -6,8 +6,8 @@ using System.Linq;
 namespace MBC.Shared
 {
     /// <summary>
-    /// A ShotList object contains a list of Shot objects and provides various functions to operate
-    /// on them.
+    /// Contains a collection of <see cref="Shot"/>s and provides a number of functions that allow operation
+    /// on the collection.
     /// </summary>
     public class ShotList : ICollection<Shot>
     {
