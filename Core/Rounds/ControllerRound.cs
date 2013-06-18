@@ -13,6 +13,11 @@ namespace MBC.Core
     internal abstract class ControlledRound : Round
     {
         /// <summary>
+        /// A list of <see cref="ControllerUser"/>s involved in influencing generated <see cref="Event"/>s.
+        /// </summary>
+        protected List<ControllerUser> controllers;
+
+        /// <summary>
         /// The <see cref="ControllerUser"/> that has the current turn.
         /// </summary>
         protected ControllerRegister currentTurn;
@@ -21,11 +26,6 @@ namespace MBC.Core
         /// The <see cref="ControllerUser"/>s that have not been defeated.
         /// </summary>
         protected List<ControllerRegister> remainingRegisters;
-
-        /// <summary>
-        /// A list of <see cref="ControllerUser"/>s involved in influencing generated <see cref="Event"/>s.
-        /// </summary>
-        protected List<ControllerUser> controllers;
 
         /// <summary>
         /// Attaches the <see cref="MatchInfo"/> provided by a <see cref="Match"/> and retrieves the list of
@@ -72,7 +72,7 @@ namespace MBC.Core
         }
 
         /// <summary>
-        /// Indicates whether the current state of a given <see cref="ControllerRegister"/> has <see cref="Ship"/>s
+        /// Indicates whether or not the current state of a given <see cref="ControllerRegister"/> has <see cref="Ship"/>s
         /// that are valid, checking the following:
         /// <list type="bullet">
         /// <item>The <see cref="ShipList"/> is not null</item>
@@ -85,6 +85,23 @@ namespace MBC.Core
         protected bool ControllerShipsValid(ControllerRegister register)
         {
             return register.Ships != null && register.Ships.ShipsPlaced && register.Ships.GetConflictingShips().Count == 0;
+        }
+
+        /// <summary>
+        /// Indicates whether or not a <see cref="Shot"/> made by a <see cref="ControllerUser"/> violates the
+        /// standard rules for making a <see cref="Shot"/>.
+        /// </summary>
+        /// <param name="register">The <see cref="ControllerUser"/> making a <see cref="Shot"/>.</param>
+        /// <param name="shot">The <see cref="Shot"/> made by the given <see cref="ControllerUser"/>.</param>
+        /// <returns>A value indicating if the <see cref="Shot"/> made was invalid.</returns>
+        protected bool ControllerShotInvalid(ControllerRegister register, Shot shot)
+        {
+            return shot == null ||
+                (shot.Coordinates > MatchInfo.FieldSize) ||
+                    (shot.Coordinates < new Coordinates(0, 0)) ||
+                    register.ID == shot.Receiver ||
+                    register.Shots.Contains(shot) ||
+                    !remainingRegisters.Contains(registers[shot.Receiver]);
         }
 
         /// <summary>

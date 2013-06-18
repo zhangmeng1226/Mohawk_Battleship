@@ -5,14 +5,18 @@ using System.Collections.Generic;
 
 namespace MBC.Core
 {
-    public class ClassicRound : ControlledRound
+    /// <summary>
+    /// A derivative of the <see cref="ControlledRound"/> which provides a turn-by-turn based game of
+    /// battleship.
+    /// </summary>
+    internal class ClassicRound : ControlledRound
     {
         public ClassicRound(MatchInfo info, List<ControllerUser> controllers)
             : base(info, controllers) { }
 
         /// <summary>
-        /// Ends the Round. Fires ControllerWonEvent and ControllerLostEvent depending on the existance of remaning
-        /// Player objects.
+        /// Creates a new <see cref="ControllerWonEvent"/> for the <see cref="ControllerUser"/>(s) that won
+        /// and calls the base class <see cref="Round.End()"/>.
         /// </summary>
         public override void End()
         {
@@ -28,10 +32,9 @@ namespace MBC.Core
         }
 
         /// <summary>
-        /// Does the game logic for the current Player turn. Iterates to the next Player in the remaining
-        /// list of Player objects. Ends the game when only one Player remains.
+        /// Performs a step in the game logic for the battleship game.
         /// </summary>
-        protected internal override void Main()
+        protected override void Main()
         {
             var next = NextRemaining();
             if (currentTurn == null || next == null)
@@ -50,7 +53,7 @@ namespace MBC.Core
                 Shot shot = controllers[currentTurn.ID].MakeShot();
                 MakeEvent(new ControllerShotEvent(currentTurn, shot));
 
-                if (shot == null || ShotOutOfBounds(shot) || ShotSuicidal(shot) || ShotRepeated(shot) || ShotDestroyed(shot))
+                if (ControllerShotInvalid(currentTurn, shot))
                 {
                     //The current controller violated one of the rules of the round.
 
@@ -105,27 +108,6 @@ namespace MBC.Core
             }
 
             NextTurn();
-        }
-
-        private bool ShotOutOfBounds(Shot shot)
-        {
-            return (shot.Coordinates > MatchInfo.FieldSize) ||
-                    (shot.Coordinates < new Coordinates(0, 0));
-        }
-
-        private bool ShotSuicidal(Shot shot)
-        {
-            return currentTurn.ID == shot.Receiver;
-        }
-
-        private bool ShotRepeated(Shot shot)
-        {
-            return registers[currentTurn.ID].Shots.Contains(shot);
-        }
-
-        private bool ShotDestroyed(Shot shot)
-        {
-            return !remainingRegisters.Contains(registers[shot.Receiver]);
         }
     }
 }
