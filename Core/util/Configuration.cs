@@ -6,99 +6,27 @@ using System.Linq;
 namespace MBC.Core.Util
 {
     /// <summary>
-    /// Configuration deals with a single configuration file and parses each key/value pair.
-    ///
-    /// The Configuration class must be initialized by calling the static method InitializeConfiguration(). Provide
-    /// the path where the config files will be saved through this method.
-    ///
-    /// Use the static variable Configuration.Global to access a configuration that represents the entirety
-    /// of the application. This global configuration is loaded through the file named "config.ini" in the initialized
-    /// config directory.
-    ///
-    /// Use the static variable Configuration.Default to access a Configuration that represents all default
-    /// values of the application. This values should be utilized before using the default Configuration.
-    /// The default values should not be changed after startup. Avoid using static constructors to set default
-    /// values as the values may not be set before using the default object, which results in errors. Use
-    /// LoadConfigurationDefaults() to invoke all the static methods named "SetConfigDefaults()" in each class,
-    /// where the default Configuration should be loaded.
-    ///
-    /// Usage of the Configuration class is simple. Use two/three methods to get and set configuration values:
-    /// <list type="bullet">
-    ///     <item>
-    ///         SetValue() - Sets the key value with the given value.
-    ///     </item>
-    ///     <item>
-    ///         GetValue() - Returns the value at the given key string.
-    ///     </item>
-    ///     <item>
-    ///         GetList() - Returns a list of the given type from the given key. Use when setting comma-separated values.
-    ///     </item>
-    /// </list>
-    /// A list of Configurations stored into files can be known by using the GetAvailableConfigs() class member.
-    ///
-    /// When constructing a new Configuration object, the Configuration will be loaded with either default values,
-    /// or values that have been stored in the correspondingly named file.
-    ///
-    /// Note that configuration files are not automatically saved. Invoke the method SaveConfigFile() to
-    /// save Configuration objects to files.
-    ///
-    ///
-    ///
-    /// <remarks>
-    ///     To set default values for the application, implement the following method in the class to have it
-    ///     invoked when LoadConfigurationDefaults() is called.
-    /// </remarks>
-    /// <code>
-    ///     public static void SetConfigDefaults()
-    ///     {
-    ///         //Set Configuration defaults here.
-    ///         Configuration.Default.SetValue<string>("config_key", "config_value");
-    ///         Configuration.Default.SetValue<int>("number_of_init_hits", 50);
-    ///
-    ///         //Example of setting an array/list using CSV:
-    ///         Configuration.Default.SetValue<string>("ships_array", "3,3,4,5,5,6");
-    ///     }
-    /// </code>
-    /// As a convention, use underscores to separate words in the key string as shown above.
-    ///
-    /// <remarks>Here is an example of a typical use of the global configuration:</remarks>
-    /// <code>
-    ///     {
-    ///         int initHits = Configuration.Global.GetValue<int>("number_of_init_hits");
-    ///
-    ///         //Getting the ships_array list as set above.
-    ///         List<int> shipArray = Configuration.Global.GetList<int>("ships_array");
-    ///     }
-    /// </code>
-    ///
-    /// <remarks>More advanced uses of the Configuration file can be seen below:</remarks>
-    /// <code>
-    ///     {
-    ///         Configuration conf = new Configuration("newconfig"); //Uses default values initially.
-    ///         conf.SetValue<int>("rounds_temp_value", 40); //Overwrites default value (if exists), or creates new key with the value.
-    ///
-    ///         conf.SaveConfigFile(); //Saves to newconfig.ini
-    ///
-    ///         conf.Rename("newconfig245");
-    ///
-    ///         conf.SaveConfigFile(); //Saves to newconfig245.ini
-    ///
-    ///         conf = new Configuration("newconfig"); //Loading back the saved newconfig.ini configuration file.
-    ///     }
-    /// </code>
+    /// Stores <c>bool</c>s, <c>long</c>s, <c>double</c>s, and <c>string</c>s each identified by a unique
+    /// string. Provides a <see cref="Configuration.Default"/> instance that indicates the values set
+    /// compile-time via <see cref="ConfigurationAttribute"/>s present in the application assembly. The
+    /// types of the values set at compile time cannot be changed. Provides functionality for loading
+    /// and saving the keys and values to a file with the same name as given to the constructor. Values
+    /// that differ from <see cref="Configuration.Default"/> are not initially entered. Values that
+    /// do not exist will then be checked in the <see cref="Configuration.Default"/> configuration.
+    /// The static functionality of the configuration must be initialized before being used with a
+    /// call to <see cref="Configuration.InitializeConfiguration(string)"/>; this provides the folder path
+    /// where configuration files are kept and initializes the static usage of a Configuration.
     /// </summary>
     public class Configuration
     {
         private static string configsPath;
-        private static Configuration globalInstance;
         private static Configuration defaultInstance;
-
-        private SortedDictionary<string, object> simpleConfig;
+        private static Configuration globalInstance;
         private string configName;
+        private SortedDictionary<string, object> simpleConfig;
 
         /// <summary>
-        /// Initializes this Configuration by loading from a configuration file named by the given string. If it does not
-        /// exist, then getting values from this Configuration will get the Configuration.Default values as needed.
+        /// Initializes with the given name and attempts to load a file with the same name.
         /// </summary>
         public Configuration(string name)
         {
@@ -111,7 +39,16 @@ namespace MBC.Core.Util
         }
 
         /// <summary>
-        /// Gets a common Configuration object for use.
+        /// Gets a <see cref="Configuration"/> that contains the default values set at compile-time
+        /// </summary>
+        public static Configuration Default
+        {
+            get { return defaultInstance; }
+        }
+
+        /// <summary>
+        /// Gets or sets a <see cref="Configuration"/> that may be accessed statically throughout an
+        /// application. Attempting to set to null will cause nothing to change.
         /// </summary>
         public static Configuration Global
         {
@@ -126,16 +63,38 @@ namespace MBC.Core.Util
         }
 
         /// <summary>
-        /// Gets the default Configuration instance for this application.
+        /// Gets or sets the name that is used to save or load from a config file.
         /// </summary>
-        public static Configuration Default
+        public string Name
         {
-            get { return defaultInstance; }
+            get
+            {
+                return configName;
+            }
         }
 
         /// <summary>
-        /// Initializes the Configuration system with the given path. Creates the directory of the path if it
-        /// does not exist.
+        /// Generates a List of strings containing the names of the files that are contained
+        /// in the defined configuration folder.
+        /// </summary>
+        /// <returns>
+        /// The names of existing configuration files.
+        /// </returns>
+        public static IEnumerable<string> GetAvailableConfigs()
+        {
+            string[] absFiles = Directory.GetFiles(configsPath, "*.ini");
+            var res = new List<string>();
+            foreach (var f in absFiles)
+            {
+                string[] spl = f.Split('\\');
+                res.Add(spl[spl.Length].Split('.')[0]);
+            }
+            return res;
+        }
+
+        /// <summary>
+        /// Initializes the static functionality of the <see cref="Configuration"/> with the path
+        /// to where configuration files are to be stored. Must be called before using <see cref="Configuration"/>.
         /// </summary>
         /// <param name="confPath">A string to the absolute path of the directory to save config files in.</param>
         public static void InitializeConfiguration(string confPath)
@@ -150,109 +109,17 @@ namespace MBC.Core.Util
         }
 
         /// <summary>
-        /// Call at the beginning of an application to invoke all the static methods that match
-        /// the name "SetConfigDefaults". This will allow classes to set the default configuration values
-        /// into the default Configuration object at startup.
+        /// Converts a string into an integral type that may be placed into a <see cref="Configuration"/>.
+        /// Attempts to convert to these values in this order:
+        /// <list type="number">
+        /// <item>bool</item>
+        /// <item>long</item>
+        /// <item>double</item>
+        /// </list>
+        /// After unsuccessfully parsing to one of the aforementioned types, it will simply store the string.
         /// </summary>
-        private static void LoadConfigurationDefaults()
-        {
-            var assemblies = AppDomain.CurrentDomain.GetAssemblies();
-            foreach (var thisAssembly in assemblies)
-            {
-                foreach (var classType in thisAssembly.GetTypes())
-                {
-                    object[] attribs = classType.GetCustomAttributes(typeof(ConfigurationAttribute), false);
-                    foreach (ConfigurationAttribute defaultPair in attribs)
-                    {
-                        defaultInstance.simpleConfig[defaultPair.Key] = defaultPair.Value;
-                    }
-                }
-            }
-        }
-
-        /// <summary>
-        /// Generates a List of strings containing the names of the files that are contained
-        /// in the configuration folder.
-        /// </summary>
-        /// <returns>
-        /// The names of existing configuration files
-        /// </returns>
-        public static List<string> GetAvailableConfigs()
-        {
-            string[] absFiles = Directory.GetFiles(configsPath, "*.ini");
-            var res = new List<string>();
-            foreach (var f in absFiles)
-            {
-                string[] spl = f.Split('\\');
-                res.Add(spl[spl.Length].Split('.')[0]);
-            }
-            return res;
-        }
-
-        /// <summary>
-        /// Gets all of the KeyValuePair objects that make up this Configuration.
-        /// </summary>
-        /// <returns>A List of KeyValuePair objects.</returns>
-        public List<KeyValuePair<string, object>> GetPairs()
-        {
-            var mergedConfigs = new Dictionary<string, object>(defaultInstance.simpleConfig);
-            foreach (var configPairs in simpleConfig)
-            {
-                mergedConfigs[configPairs.Key] = configPairs.Value;
-            }
-            return mergedConfigs.ToList();
-        }
-
-        /// <summary>
-        /// Renames this Configuration object; effectively changing the name of the file this
-        /// Configuration will be changed to.
-        /// </summary>
-        public void Rename(string newName)
-        {
-            configName = newName;
-        }
-
-        /// <summary>Gets a value from the configuration</summary>
-        /// <param name="key">The key to get the value from</param>
-        /// <returns>The value loaded from the configuration, otherwise, the default value.</returns>
-        /// <exception cref="KeyNotFoundException">The given key has no value set.</exception>
-        /// <exception cref="InvalidCastException">The generic type specified was not the type set in the Configuration.</exception>
-        public T GetValue<T>(string key)
-        {
-            if (simpleConfig.ContainsKey(key))
-            {
-                return (T)simpleConfig[key];
-            }
-            else if (configName != "default")
-            {
-                return Default.GetValue<T>(key);
-            }
-            else
-            {
-                throw new KeyNotFoundException("The following Configuration key was not set: " + key);
-            }
-        }
-
-        /// <summary>
-        /// Sets a value in the configuration using the provided key and value.
-        /// To store lists, provide comma-separated values as a string for the value. Overwrites the
-        /// previous value identified by the given key.
-        /// </summary>
-        /// <param name="key">The key that identifies this value.</param>
-        /// <param name="val">The value linked to the given key, as a string.</param>
-        public bool SetValue(string key, string val)
-        {
-            object newValue = ParseString(val);
-
-            if (defaultInstance.simpleConfig.Keys.Contains(key) && newValue.GetType() != defaultInstance.simpleConfig[key].GetType())
-            {
-                return false;
-            }
-
-            simpleConfig[key] = newValue;
-            return true;
-        }
-
+        /// <param name="value">The string to parse.</param>
+        /// <returns>An object as described in the summary.</returns>
         public static object ParseString(string value)
         {
             bool boolVal;
@@ -273,18 +140,45 @@ namespace MBC.Core.Util
             return value;
         }
 
+        /// <summary>Gets a single value stored as the given <paramref name="key"/> with the specified type. If the
+        /// <paramref name="key"/> does not exist, the <see cref="Configuration.Default"/> will be checked for the given
+        /// <paramref name="key"/>.</summary>
+        /// <param name="key">The key that a sought value is associated with.</param>
+        /// <typeparam name="T">The type of value to cast the object value as.</typeparam>
+        /// <returns>A value associated with the given <paramref name="key"/>.</returns>
+        /// <exception cref="KeyNotFoundException">The given <paramref name="key"/> has no value set.</exception>
+        /// <exception cref="InvalidCastException">The generic type specified was not the type set at compile-time.</exception>
+        public T GetValue<T>(string key)
+        {
+            if (simpleConfig.ContainsKey(key))
+            {
+                return (T)simpleConfig[key];
+            }
+            else if (configName != "default")
+            {
+                return Default.GetValue<T>(key);
+            }
+            else
+            {
+                throw new KeyNotFoundException("The following Configuration key was not set: " + key);
+            }
+        }
+
         /// <summary>
-        /// Gets a comma-delimited array (list) from the configuration. This value must be formatted
-        /// as comma-separated values, as a string in the Configuration.
+        /// Attempts to parse a string containing commas to a <see cref="List"/> of values. If no
+        /// commas are present, this <see cref="List"/> will contain only one element.
         /// </summary>
         /// <param name="key">The key to get the value from</param>
-        /// <returns>The list loaded from the configuration, otherwise, the default value</returns>
+        /// <typeparam name="T">The type of <see cref="List"/> to create and attempt to parse
+        /// the string for.</typeparam>
+        /// <returns>The parsed list of a given type.</returns>
         /// <example>
-        /// For a list of ints;      1,5,6,6,15545,6445,9<br/>
-        /// For a list of strings;   hello,goodbye,thank you,whenever it is time.,null<br/>
-        /// For a list of doubles;   15.5,14.2,0.000096<br/>
-        /// etc.<br/>
-        /// Be sure that the values themselves do not contain commas, as they will be split in the process.
+        /// <para>For a list of ints;      1,5,6,6,15545,6445,9</para>
+        /// <para>For a list of strings;   hello,goodbye,thank you,whenever it is time.,null</para>
+        /// <para>For a list of doubles;   15.5,14.2,0.000096</para>
+        /// <para>etc.</para>
+        /// <remarks>Be aware that because commas are used to separate the values. If a list of
+        /// strings are used, this may cause problems if the commas are stored in the strings.</remarks>
         /// </example>
         public List<T> GetList<T>(string key)
         {
@@ -304,42 +198,91 @@ namespace MBC.Core.Util
             return vals;
         }
 
+        /// <summary>
+        /// Parses a given value from a string through <see cref="Configuration.ParseString(string)"/> and
+        /// ensures the type is consistent with the <see cref="Configuration.Default"/> if it exists. Sets
+        /// the value to the given key if successful.
+        /// </summary>
+        /// <param name="key">The key associated with the value.</param>
+        /// <param name="val">The string representation of a value.</param>
+        public bool SetValue(string key, string val)
+        {
+            object newValue = ParseString(val);
+
+            if (defaultInstance.simpleConfig.Keys.Contains(key) && newValue.GetType() != defaultInstance.simpleConfig[key].GetType())
+            {
+                return false;
+            }
+
+            simpleConfig[key] = newValue;
+            return true;
+        }
+
+        /// <summary>
+        /// Checks if a file with the same name exists in the configuration folder.
+        /// </summary>
+        /// <returns>A value indicating whether the path exists or not.</returns>
+        public bool FileExists()
+        {
+            return File.Exists(configsPath + "\\" + configName + ".ini");
+        }
+
         /// <seealso cref="GetList"/>
         [Obsolete("GetConfigValueArray() has been renamed to GetList(), as it is much shorter to write.")]
         public List<T> GetConfigValueArray<T>(string key)
         {
             return GetList<T>(key);
         }
-
-        /// <summary>Saves the current configuration to a file.</summary>
+        /// <summary>
+        /// Returns a copies list all of the <see cref="KeyValuePair"/>s in the <see cref="Dictionary"/>.
+        /// Does not include <see cref="Configuration.Default"/> keys and values.
+        /// </summary>
+        /// <returns>A copies list of <see cref="KeyValuePair"/>s.</returns>
+        public List<KeyValuePair<string, object>> GetPairs()
+        {
+            var mergedConfigs = new Dictionary<string, object>(defaultInstance.simpleConfig);
+            foreach (var configPairs in simpleConfig)
+            {
+                mergedConfigs[configPairs.Key] = configPairs.Value;
+            }
+            return mergedConfigs.ToList();
+        }
+        /// <summary>Saves the keys and values that differ from <see cref="Configuration.Default"/>
+        /// into a file in the configuration folder as <see cref="Configuration.Name"/>.ini.</summary>
         /// <exception cref="IOException">The file could not be written to.</exception>
         public void SaveConfigFile()
         {
-            try
+            var writer = new StreamWriter(configsPath + "\\" + configName + ".ini", false);
+            foreach (var entry in simpleConfig)
             {
-                var writer = new StreamWriter(configsPath + "\\" + configName + ".ini", false);
-                foreach (var entry in simpleConfig)
-                {
-                    writer.WriteLine(entry.Key + " = " + entry.Value.ToString());
-                }
-                writer.Flush();
-                writer.Close();
+                writer.WriteLine(entry.Key + " = " + entry.Value.ToString());
             }
-            catch
-            {
-                //Could not open file for writing (already open?)
-            }
+            writer.Flush();
+            writer.Close();
         }
-
-        public bool FileExists()
+        /// <summary>
+        /// Searches all application assemblies for <see cref="ConfigurationAttribute"/>s and initializes
+        /// the <see cref="Configuration.Default"/> instance with those keys and values found.
+        /// </summary>
+        private static void LoadConfigurationDefaults()
         {
-            return File.Exists(configsPath + "\\" + configName + ".ini");
+            var assemblies = AppDomain.CurrentDomain.GetAssemblies();
+            foreach (var thisAssembly in assemblies)
+            {
+                foreach (var classType in thisAssembly.GetTypes())
+                {
+                    object[] attribs = classType.GetCustomAttributes(typeof(ConfigurationAttribute), false);
+                    foreach (ConfigurationAttribute defaultPair in attribs)
+                    {
+                        defaultInstance.simpleConfig[defaultPair.Key] = defaultPair.Value;
+                    }
+                }
+            }
         }
 
         /// <summary>Loads a configuration file from the configuration folder.</summary>
         private void LoadConfigFile()
         {
-            var errorLineNum = 0;
             try
             {
                 var reader = new StreamReader(configsPath + "\\" + configName + ".ini");
@@ -351,18 +294,12 @@ namespace MBC.Core.Util
                     tLine[1] = tLine[1].Trim();
 
                     SetValue(tLine[0], tLine[1]);
-
-                    errorLineNum++;
                 } while (reader.Peek() != -1);
                 reader.Close();
             }
-            catch (IOException)
-            {
-                //Failed to read the file (probably does not exist).
-            }
             catch
             {
-                //Failed to parse. (error with file).
+                //We don't care, use default values from now on.
             }
         }
     }
