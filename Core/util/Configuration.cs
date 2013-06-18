@@ -165,11 +165,11 @@ namespace MBC.Core.Util
         }
 
         /// <summary>
-        /// Attempts to parse a string containing commas to a <see cref="List"/> of values. If no
-        /// commas are present, this <see cref="List"/> will contain only one element.
+        /// Attempts to parse a string containing commas to a list of values. If no
+        /// commas are present, this list will contain only one element.
         /// </summary>
         /// <param name="key">The key to get the value from</param>
-        /// <typeparam name="T">The type of <see cref="List"/> to create and attempt to parse
+        /// <typeparam name="T">The type of list to create and attempt to parse
         /// the string for.</typeparam>
         /// <returns>The parsed list of a given type.</returns>
         /// <example>
@@ -234,10 +234,10 @@ namespace MBC.Core.Util
             return GetList<T>(key);
         }
         /// <summary>
-        /// Returns a copies list all of the <see cref="KeyValuePair"/>s in the <see cref="Dictionary"/>.
+        /// Returns a copied list all of the KeyValuePairs stored.
         /// Does not include <see cref="Configuration.Default"/> keys and values.
         /// </summary>
-        /// <returns>A copies list of <see cref="KeyValuePair"/>s.</returns>
+        /// <returns>A copied list of KeyValuePairs.</returns>
         public List<KeyValuePair<string, object>> GetPairs()
         {
             var mergedConfigs = new Dictionary<string, object>(defaultInstance.simpleConfig);

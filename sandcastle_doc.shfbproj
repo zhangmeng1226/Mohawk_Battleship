@@ -42,11 +42,13 @@
     </DocumentationSources>
     <NamespaceSummaries>
       <NamespaceSummaryItem name="MBC.Core" isDocumented="True" xmlns="">A library that contains the basis of the MBC framework. Provides functionality for creating, saving, and loading battleship games using third-party controllers as the basis of game decision making.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="MBC.Core.Accolades" isDocumented="True" xmlns="">Provides compiled summaries of analytical data that is generated throughout a game of battleship.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="MBC.Core.Events" isDocumented="True" xmlns="">Provides a number of events that are generated throughout a battleship game.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="MBC.Core.Util" isDocumented="True" xmlns="">Provides utilities that make development easier.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="MBC.Shared" isDocumented="True" xmlns="">A part of the framework that provides information and functionality for the core framework, the application, and the controllers that are loaded into a battleship game.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="MBC.Shared.Attributes" isDocumented="True" xmlns="">Provides attributes that describe and identify a controller used in a battleship game.</NamespaceSummaryItem></NamespaceSummaries>
+      <NamespaceSummaryItem name="MBC.Core.Accolades" isDocumented="True" xmlns="">Provides compiled summaries of analytical data that is generated throughout a game of battleship.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="MBC.Core.Events" isDocumented="True" xmlns="">Provides a number of events that are generated throughout a battleship game.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="MBC.Core.Util" isDocumented="True" xmlns="">Provides utilities that make development easier.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="MBC.Shared" isDocumented="True" xmlns="">A part of the framework that provides information and functionality for the core framework, the application, and the controllers that are loaded into a battleship game.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="MBC.Shared.Attributes" isDocumented="True" xmlns="">Provides attributes that describe and identify a controller used in a battleship game.</NamespaceSummaryItem>
+    </NamespaceSummaries>
+    <VisibleItems>Attributes, InheritedMembers, Protected</VisibleItems>
   </PropertyGroup>
   <!-- There are no properties for these groups.  AnyCPU needs to appear in
        order for Visual Studio to perform the build.  The others are optional

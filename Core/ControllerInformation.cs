@@ -13,7 +13,6 @@ namespace MBC.Core
     /// <see cref="ControllerInformation.AddControllerFolder(string)"/>. Contains the <see cref="Type"/>
     /// that represents a constructable <see cref="Controller"/>.
     /// </summary>
-    /// <seealso cref="ClassInfo"/>
     public class ControllerInformation
     {
         private static List<ControllerInformation> loadedInformation;

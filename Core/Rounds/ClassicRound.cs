@@ -31,7 +31,7 @@ namespace MBC.Core
         /// Does the game logic for the current Player turn. Iterates to the next Player in the remaining
         /// list of Player objects. Ends the game when only one Player remains.
         /// </summary>
-        protected override void DoMainLogic()
+        protected override void Main()
         {
             var next = NextRemaining();
             if (currentTurn == null || next == null)
