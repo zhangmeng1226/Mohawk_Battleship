@@ -57,7 +57,7 @@ namespace MBC.Core
             base.End();
         }
 
-        protected override void Begin()
+        protected internal override void Begin()
         {
             MakeEvent(new RoundBeginEvent(this));
 

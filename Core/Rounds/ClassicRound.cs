@@ -31,7 +31,7 @@ namespace MBC.Core
         /// Does the game logic for the current Player turn. Iterates to the next Player in the remaining
         /// list of Player objects. Ends the game when only one Player remains.
         /// </summary>
-        protected override void Main()
+        protected internal override void Main()
         {
             var next = NextRemaining();
             if (currentTurn == null || next == null)
@@ -61,7 +61,7 @@ namespace MBC.Core
                 currentTurn.Shots.Add(shot);
 
                 //Get the actual receiver of the shot
-                receiver = Registers[shot.Receiver];
+                receiver = registers[shot.Receiver];
 
                 Ship shotShip = receiver.Ships.ShipAt(shot.Coordinates);
                 if (shotShip != null)
@@ -120,12 +120,12 @@ namespace MBC.Core
 
         private bool ShotRepeated(Shot shot)
         {
-            return Registers[currentTurn.ID].Shots.Contains(shot);
+            return registers[currentTurn.ID].Shots.Contains(shot);
         }
 
         private bool ShotDestroyed(Shot shot)
         {
-            return !RemainingRegisters.Contains(Registers[shot.Receiver]);
+            return !RemainingRegisters.Contains(registers[shot.Receiver]);
         }
     }
 }
