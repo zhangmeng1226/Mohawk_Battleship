@@ -47,9 +47,9 @@ namespace MBC.Core
         /// <summary>
         /// Fires the <see cref="RoundBeginEvent"/> and invokes <see cref="ControllerUser.NewRound()"/> on all
         /// <see cref="ControllerUser"/>s. Picks a random <see cref="ControllerUser"/> to have the
-        /// <see cref="ControllerRound.currentTurn"/>.
+        /// current turn.
         /// </summary>
-        protected override void Begin()
+        protected internal override void Begin()
         {
             MakeEvent(new RoundBeginEvent(this));
 
@@ -107,7 +107,7 @@ namespace MBC.Core
         /// <summary>
         /// For a given <see cref="ControllerRegister"/>, fires the <see cref="ControllerLostEvent"/>,
         /// calls the <see cref="ControllerUser.RoundLost()"/> method in the <see cref="ControllerUser"/>,
-        /// and removes the <see cref="ControllerUser"/> from the <see cref="ControllerRound.remainingRegisters"/>.
+        /// and removes the <see cref="ControllerUser"/> from the remaining <see cref="ControllerRegister"/>s.
         /// </summary>
         /// <param name="loser">The <see cref="ControllerUser"/> that lost the round.</param>
         protected void MakeLoser(ControllerRegister loser)
@@ -125,9 +125,9 @@ namespace MBC.Core
         }
 
         /// <summary>
-        /// Finds the next <see cref="ControllerUser"/> in line from the <see cref="ControllerRound.currentTurn"/>.
+        /// Finds the next <see cref="ControllerUser"/> in line from the currentTurn.
         /// </summary>
-        /// <returns>The next <see cref="ControllerUser"/> after <see cref="ControllerRound.currentTurn"/>
+        /// <returns>The next <see cref="ControllerUser"/> after currentTurn
         /// that remains.</returns>
         protected ControllerRegister NextRemaining()
         {
@@ -152,7 +152,7 @@ namespace MBC.Core
         }
 
         /// <summary>
-        /// Changes the <see cref="ControllerRound.currentTurn"/> to the <see cref="ControllerRound.NextRemaining()"/>.
+        /// Changes the currentTurn to the next remaining <see cref="ControllerRegister"/>.
         /// </summary>
         protected void NextTurn()
         {

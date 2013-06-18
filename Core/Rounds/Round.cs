@@ -35,7 +35,7 @@ namespace MBC.Core
         /// <summary>
         /// Attaches the <see cref="MatchInfo"/> from a <see cref="Match"/> and attaches the
         /// <see cref="ControllerRegister"/>s given. Initializes an empty list of <see cref="Round.Events"/>
-        /// and <see cref="Round.accolades"/>.
+        /// and <see cref="Round.Accolades"/>.
         /// </summary>
         /// <param name="inputRegisters">A variable number of controllers that are involved in this Round.</param>
         /// <param name="matchInfo">Information about the match that determines Round behaviour.</param>

@@ -72,6 +72,7 @@ namespace MBC.Core
         /// Creates a new Match using a specific <see cref="Configuration"/> and a number of
         /// controllers specified in the given <see cref="ControllerInformation"/>s to use.
         /// </summary>
+        /// <param name="conf">The <see cref="Configuration"/> to utilize.</param>
         /// <param name="controllers">A variable number of controllers to load from the given
         /// <see cref="ControllerInformation"/>s.
         /// </param>

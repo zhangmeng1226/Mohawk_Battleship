@@ -3,10 +3,20 @@ using System.Text;
 
 namespace MBC.Core.Events
 {
+    /// <summary>
+    /// Provides information about a <see cref="ControllerRegister"/>'s <see cref="ShipList"/> that had
+    /// been requested to be modified.
+    /// </summary>
     public class ControllerShipsPlacedEvent : ControllerEvent
     {
         private ShipList shipsPlaced;
 
+        /// <summary>
+        /// Passes the <paramref name="register"/> to the base constructor, stores the rest of the parameters,
+        /// and generates a message based on the state of the given <see cref="ShipList"/>.
+        /// </summary>
+        /// <param name="register">A <see cref="ControllerRegister"/>.</param>
+        /// <param name="ships">The <see cref="ShipList"/> associated with the <see cref="ControllerRegister"/></param>
         public ControllerShipsPlacedEvent(ControllerRegister register, ShipList ships)
             : base(register)
         {
@@ -52,6 +62,17 @@ namespace MBC.Core.Events
             }
             msg.Append(".");
             message = msg.ToString();
+        }
+
+        /// <summary>
+        /// Gets the <see cref="ShipList"/> of the <see cref="Controller.Register"/>.
+        /// </summary>
+        public ShipList Ships
+        {
+            get
+            {
+                return shipsPlaced;
+            }
         }
     }
 }

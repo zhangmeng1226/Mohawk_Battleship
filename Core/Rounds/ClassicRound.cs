@@ -11,6 +11,11 @@ namespace MBC.Core
     /// </summary>
     internal class ClassicRound : ControlledRound
     {
+        /// <summary>
+        /// Passes parameters to the base constructor.
+        /// </summary>
+        /// <param name="info">The <see cref="MatchInfo"/> from a round to associate with.</param>
+        /// <param name="controllers">The <see cref="ControllerUser"/>s to utilize.</param>
         public ClassicRound(MatchInfo info, List<ControllerUser> controllers)
             : base(info, controllers) { }
 
@@ -34,7 +39,7 @@ namespace MBC.Core
         /// <summary>
         /// Performs a step in the game logic for the battleship game.
         /// </summary>
-        protected override void Main()
+        protected internal override void Main()
         {
             var next = NextRemaining();
             if (currentTurn == null || next == null)

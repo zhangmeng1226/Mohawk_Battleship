@@ -3,8 +3,16 @@ using System.Text;
 
 namespace MBC.Core.Events
 {
+    /// <summary>
+    /// Provides information about a <see cref="Round"/> that has begun.
+    /// </summary>
     public class RoundBeginEvent : RoundEvent
     {
+        /// <summary>
+        /// Passes the <paramref name="round"/> to the base constructor and generates a <see cref="Event.Message"/>
+        /// based on the <see cref="MBC.Shared.ControllerRegister"/>s that are involved in it.
+        /// </summary>
+        /// <param name="round">The associated <see cref="Round"/>.</param>
         public RoundBeginEvent(Round round)
             : base(round)
         {
