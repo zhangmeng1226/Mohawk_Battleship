@@ -24,8 +24,8 @@ namespace MBC.Shared
             shipList = new List<Ship>();
             if (copyList != null)
             {
-                minLength = copyList.shipList[0].Length;
-                maxLength = copyList.shipList[0].Length;
+                minLength = int.MaxValue;
+                maxLength = int.MinValue;
                 foreach (var ship in copyList.shipList)
                 {
                     Add(new Ship(ship));
@@ -40,8 +40,8 @@ namespace MBC.Shared
         /// <param name="ships">The <see cref="Ship"/>s to store.</param>
         public ShipList(IEnumerable<Ship> ships)
         {
-            minLength = ships.First().Length;
-            maxLength = minLength;
+            minLength = int.MaxValue;
+            maxLength = int.MinValue;
             foreach (var ship in ships)
             {
                 Add(ship);
@@ -349,6 +349,37 @@ namespace MBC.Shared
                 }
             }
             return false;
+        }
+
+        /// <summary>
+        /// Determines whether or not the <paramref name="ships"/> have an equal amount of <see cref="Ship"/>s and identical <see cref="Ship.Length"/>s
+        /// as in this <see cref="ShipList"/>.
+        /// </summary>
+        /// <param name="ships">A <see cref="ShipList"/> to compare.</param>
+        /// <returns>A value indicating the same <see cref="Ship"/> configuration of the two <see cref="ShipList"/>s.</returns>
+        public bool EqualLengthsAs(ShipList ships)
+        {
+            if (ships.Count != Count)
+            {
+                return false;
+            }
+            var lengthsThis = new List<int>();
+            for (var i = 0; i < Count; i++)
+            {
+                lengthsThis.Add(shipList[i].Length);
+            }
+            foreach (var ship in ships)
+            {
+                if (lengthsThis.Contains(ship.Length))
+                {
+                    lengthsThis.Remove(ship.Length);
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            return true;
         }
 
         /// <summary>

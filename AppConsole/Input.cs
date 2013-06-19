@@ -130,9 +130,9 @@ namespace MBC.App.BattleshipConsole
             Environment.CurrentDirectory = Environment.CurrentDirectory + "\\..";
 
             Configuration.InitializeConfiguration(Environment.CurrentDirectory + "\\configs");
-            ControllerInformation.LoadControllerFolder(Environment.CurrentDirectory + "\\bots");
+            ControllerInformation.AddControllerFolder(Environment.CurrentDirectory + "\\bots");
 
-            availableControllers = ControllerInformation.AvailableControllers;
+            availableControllers = new List<ControllerInformation>(ControllerInformation.AvailableControllers);
 
             if (args.Length != 0)
             {

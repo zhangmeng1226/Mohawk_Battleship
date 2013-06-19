@@ -31,7 +31,7 @@ namespace MBC.Core
                 foreach (var controller in remainingRegisters)
                 {
                     MakeEvent(new ControllerWonEvent(controller));
-                }
+               } 
             }
             base.End();
         }

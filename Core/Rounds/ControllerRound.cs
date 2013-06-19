@@ -76,6 +76,7 @@ namespace MBC.Core
         /// that are valid, checking the following:
         /// <list type="bullet">
         /// <item>The <see cref="ShipList"/> is not null</item>
+        /// <item>The <see cref="ShipList"/> has the same <see cref="Ship.Length"/>s as the in the <see cref="MatchInfo.StartingShips"/></item>
         /// <item>All <see cref="Ship"/>s in the <see cref="ShipList"/> have been placed</item>
         /// <item>None of the <see cref="Ship"/>s in the <see cref="ShipList"/> are conflicting</item>
         /// </list>
@@ -84,7 +85,7 @@ namespace MBC.Core
         /// <returns>A value indicating if all aforementioned conditions are true.</returns>
         protected bool ControllerShipsValid(ControllerRegister register)
         {
-            return register.Ships != null && register.Ships.ShipsPlaced && register.Ships.GetConflictingShips().Count == 0;
+            return register.Ships != null && register.Ships.EqualLengthsAs(MatchInfo.StartingShips) && register.Ships.ShipsPlaced && register.Ships.GetConflictingShips().Count == 0;
         }
 
         /// <summary>

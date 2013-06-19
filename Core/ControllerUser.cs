@@ -124,6 +124,7 @@ namespace MBC.Core
         {
             Register.Shots = new ShotList();
             Register.Ships = new ShipList(Register.Match.StartingShips);
+            controller.Register = new ControllerRegister(Register);
 
             var thread = new Thread(() => controller.NewRound());
 
