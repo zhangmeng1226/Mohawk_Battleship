@@ -76,7 +76,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="Main.xaml">
+    <Page Include="Elements\ShotCell.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="FieldControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MainWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -88,13 +96,19 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Controls\AnimatedPanel.cs" />
-    <Compile Include="Controls\TableTopPanel.cs" />
-    <Compile Include="Main.xaml.cs">
-      <DependentUpon>Main.xaml</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Elements\ShotCell.xaml.cs">
+      <DependentUpon>ShotCell.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="FieldControl.xaml.cs">
+      <DependentUpon>FieldControl.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

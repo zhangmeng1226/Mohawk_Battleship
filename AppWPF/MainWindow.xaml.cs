@@ -1,19 +1,11 @@
 ﻿using MBC.Core;
+using MBC.Core.Util;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Linq;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace MBC.App.WPF
 {
@@ -31,7 +23,8 @@ namespace MBC.App.WPF
         /// </summary>
         public MainWindow()
         {
-            Configuration.LoadConfigurationDefaults();
+            Environment.CurrentDirectory = Environment.CurrentDirectory + "\\..";
+            Configuration.InitializeConfiguration(Environment.CurrentDirectory+"\\configs");
             InitializeComponent();
             centerConsoleBorder.Visibility = System.Windows.Visibility.Collapsed;
             advTabs.Visibility = System.Windows.Visibility.Collapsed;
@@ -39,6 +32,7 @@ namespace MBC.App.WPF
             config = Configuration.Global;
         }
 
+        /*
         /// <summary>
         /// Adds a RoundActivity to the display that shows information about the current RoundLog.
         /// </summary>
@@ -75,7 +69,7 @@ namespace MBC.App.WPF
 
                 entry.Accolades.Children.Add(img);
             }
-        }
+        }*/
 
         /// <summary>
         /// Provides information to the WPF ListView control that displays the current round's RoundLog.

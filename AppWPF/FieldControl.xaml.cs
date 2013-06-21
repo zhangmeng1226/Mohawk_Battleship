@@ -38,7 +38,7 @@ namespace MBC.App.WPF
         }
 
         private int controller; //The controller index this FieldControl displays information for.
-        private Field battlefield; //The Field object this FieldControl gets the information from.
+        //private Field battlefield; //The Field object this FieldControl gets the information from.
         private Dictionary<int, List<Rectangle>> ships; //A Dictionary containing graphics information for the sizes of ships.
         private List<Ellipse> opponentShots; //A List of ellipses drawn on the display.
 
@@ -124,6 +124,7 @@ namespace MBC.App.WPF
         /// </summary>
         private void CreateShips()
         {
+            /*
             ships.Clear();
             foreach (int size in battlefield.shipSizes)
             {
@@ -147,6 +148,7 @@ namespace MBC.App.WPF
                 }
                 shipList.Add(r);
             }
+             * */
         }
 
         /// <summary>
@@ -154,6 +156,7 @@ namespace MBC.App.WPF
         /// </summary>
         private void LayShips()
         {
+            /*
             var used = new List<Rectangle>();
             foreach (Ship ship in battlefield[controller].ships)
             {
@@ -180,7 +183,7 @@ namespace MBC.App.WPF
                     used.Add(rect);
                     break;
                 }
-            }
+            }*/
         }
 
         /// <summary>
@@ -189,6 +192,7 @@ namespace MBC.App.WPF
         /// </summary>
         private void LayShots()
         {
+            /*
             foreach (Ellipse e in opponentShots)
             {
                 fieldGrid.Children.Remove(e);
@@ -211,7 +215,7 @@ namespace MBC.App.WPF
                 Grid.SetZIndex(circle, 99999);
 
                 fieldGrid.Children.Add(circle);
-            }
+            }*/
         }
 
         /// <summary>Sets the controller that this FieldControl displays through the internally presented Field.</summary>
@@ -237,6 +241,7 @@ namespace MBC.App.WPF
         /// <param name="field">The Field object to display.</param>
         /// <seealso cref="Field"/>
 
+        /*
         public void SetField(Field field)
         {
             battlefield = field;
@@ -245,7 +250,7 @@ namespace MBC.App.WPF
             CreateShips();
             LayShips();
             LayShots();
-        }
+        }*/
 
         /// <summary>
         /// Invoked when the FieldControl has been loaded into the WPF interface.
