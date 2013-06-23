@@ -26,7 +26,9 @@ namespace MBC.Core
     /// <seealso cref="MatchEndEvent"/>
     /// <seealso cref="Round"/>
     /// <seealso cref="ControllerRegister"/>
-    [Configuration("mbc_match_rounds_mode", "all")]
+    [Configuration("mbc_match_rounds_mode", "all", 
+        Description="Determines the ending behaviour of a match based on a given number of rounds.",
+        DisplayName="Match Rounds Mode")]
     [Configuration("mbc_match_rounds", 100)]
     public class Match
     {

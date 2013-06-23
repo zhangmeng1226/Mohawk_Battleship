@@ -19,31 +19,31 @@ namespace MBC.Core.Util
     /// </summary>
     public class Configuration
     {
-        private static string configsPath;
-        private static Configuration defaultInstance;
+        private static SortedDictionary<ConfigurationKey, ConfigurationAttribute> compiledConfiguration;
         private static Configuration globalInstance;
         private string configName;
-        private SortedDictionary<string, object> simpleConfig;
+        private SortedDictionary<ConfigurationKey, ConfigurationValue> simpleConfig;
+
+        static Configuration()
+        {
+            compiledConfiguration = new SortedDictionary<ConfigurationKey, ConfigurationAttribute>();
+            LoadConfigurationDefaults();
+
+            if (!Directory.Exists(GetPath()))
+            {
+                Directory.CreateDirectory(GetPath());
+            }
+            globalInstance = new Configuration("config");
+        }
 
         /// <summary>
         /// Initializes with the given name and attempts to load a file with the same name.
         /// </summary>
         public Configuration(string name)
         {
-            simpleConfig = new SortedDictionary<string, object>();
+            simpleConfig = new SortedDictionary<ConfigurationKey, ConfigurationValue>();
             configName = name;
-            if (name != "default")
-            {
-                LoadConfigFile();
-            }
-        }
-
-        /// <summary>
-        /// Gets a <see cref="Configuration"/> that contains the default values set at compile-time
-        /// </summary>
-        public static Configuration Default
-        {
-            get { return defaultInstance; }
+            LoadConfigFile();
         }
 
         /// <summary>
@@ -82,7 +82,7 @@ namespace MBC.Core.Util
         /// </returns>
         public static IEnumerable<string> GetAvailableConfigs()
         {
-            string[] absFiles = Directory.GetFiles(configsPath, "*.ini");
+            string[] absFiles = Directory.GetFiles(GetPath(), "*.ini");
             var res = new List<string>();
             foreach (var f in absFiles)
             {
@@ -93,19 +93,13 @@ namespace MBC.Core.Util
         }
 
         /// <summary>
-        /// Initializes the static functionality of the <see cref="Configuration"/> with the path
-        /// to where configuration files are to be stored. Must be called before using <see cref="Configuration"/>.
+        /// Generates a string representation of the absolute path of the folder that contains the
+        /// saved <see cref="Configuration"/> files. Will include an extra "\" character at the end.
         /// </summary>
-        /// <param name="confPath">A string to the absolute path of the directory to save config files in.</param>
-        public static void InitializeConfiguration(string confPath)
+        /// <returns>Absolute path string to the config folder.</returns>
+        public static string GetPath()
         {
-            //Initializes some global Configuration properties.
-            configsPath = confPath;
-            if (!Directory.Exists(configsPath))
-                Directory.CreateDirectory(configsPath);
-            defaultInstance = new Configuration("default");
-            globalInstance = new Configuration("config");
-            LoadConfigurationDefaults();
+            return (string)compiledConfiguration["app_data_root"].Value + "\\config\\";
         }
 
         /// <summary>
@@ -140,28 +134,20 @@ namespace MBC.Core.Util
             return value;
         }
 
-        /// <summary>Gets a single value stored as the given <paramref name="key"/> with the specified type. If the
-        /// <paramref name="key"/> does not exist, the <see cref="Configuration.Default"/> will be checked for the given
-        /// <paramref name="key"/>.</summary>
-        /// <param name="key">The key that a sought value is associated with.</param>
-        /// <typeparam name="T">The type of value to cast the object value as.</typeparam>
-        /// <returns>A value associated with the given <paramref name="key"/>.</returns>
-        /// <exception cref="KeyNotFoundException">The given <paramref name="key"/> has no value set.</exception>
-        /// <exception cref="InvalidCastException">The generic type specified was not the type set at compile-time.</exception>
-        public T GetValue<T>(string key)
+        /// <summary>
+        /// Checks if a file with the same name exists in the configuration folder.
+        /// </summary>
+        /// <returns>A value indicating whether the path exists or not.</returns>
+        public bool FileExists()
         {
-            if (simpleConfig.ContainsKey(key))
-            {
-                return (T)simpleConfig[key];
-            }
-            else if (configName != "default")
-            {
-                return Default.GetValue<T>(key);
-            }
-            else
-            {
-                throw new KeyNotFoundException("The following Configuration key was not set: " + key);
-            }
+            return File.Exists(GetPath() + configName + ".ini");
+        }
+
+        /// <seealso cref="GetList"/>
+        [Obsolete("GetConfigValueArray() has been renamed to GetList(), as it is much shorter to write.")]
+        public List<T> GetConfigValueArray<T>(ConfigurationKey key)
+        {
+            return GetList<T>(key);
         }
 
         /// <summary>
@@ -180,7 +166,7 @@ namespace MBC.Core.Util
         /// <remarks>Be aware that because commas are used to separate the values. If a list of
         /// strings are used, this may cause problems if the commas are stored in the strings.</remarks>
         /// </example>
-        public List<T> GetList<T>(string key)
+        public List<T> GetList<T>(ConfigurationKey key)
         {
             var vals = new List<T>();
             var value = GetValue<object>(key);
@@ -199,17 +185,65 @@ namespace MBC.Core.Util
         }
 
         /// <summary>
+        /// Returns a copied list all of the KeyValuePairs stored.
+        /// Does not include <see cref="Configuration.Default"/> keys and values.
+        /// </summary>
+        /// <returns>A copied list of KeyValuePairs.</returns>
+        public List<KeyValuePair<ConfigurationKey, ConfigurationValue>> GetPairs()
+        {
+            return simpleConfig.ToList();
+        }
+
+        /// <summary>Gets a single value stored as the given <paramref name="key"/> with the specified type. If the
+        /// <paramref name="key"/> does not exist, the default value will be given.
+        /// <param name="key">The key that a sought value is associated with.</param>
+        /// <typeparam name="T">The type of value to cast the object value as.</typeparam>
+        /// <returns>A value associated with the given <paramref name="key"/>.</returns>
+        /// <exception cref="KeyNotFoundException">The given <paramref name="key"/> has no value set.</exception>
+        /// <exception cref="InvalidCastException">Type mismatch between the requested value and actual value.</exception>
+        public T GetValue<T>(ConfigurationKey key)
+        {
+            if (simpleConfig.ContainsKey(key))
+            {
+                return (T)simpleConfig[key];
+            }
+            else if (compiledConfiguration.ContainsKey(key))
+            {
+                return (T)compiledConfiguration[key].Value;
+            }
+            else
+            {
+                throw new KeyNotFoundException("The following Configuration key was not set: " + key);
+            }
+        }
+
+        /// <summary>Saves the keys and values that differ from <see cref="Configuration.Default"/>
+        /// into a file in the configuration folder as <see cref="Configuration.Name"/>.ini.</summary>
+        /// <exception cref="IOException">The file could not be written to.</exception>
+        public void SaveConfigFile()
+        {
+            var writer = new StreamWriter(GetPath() + configName + ".ini", false);
+            foreach (var entry in simpleConfig)
+            {
+                writer.WriteLine(entry.Key + " = " + entry.Value.ToString());
+            }
+            writer.Flush();
+            writer.Close();
+        }
+
+        /// <summary>
         /// Parses a given value from a string through <see cref="Configuration.ParseString(string)"/> and
-        /// ensures the type is consistent with the <see cref="Configuration.Default"/> if it exists. Sets
+        /// ensures the type is consistent with the default value if it exists. Sets
         /// the value to the given key if successful.
         /// </summary>
         /// <param name="key">The key associated with the value.</param>
         /// <param name="val">The string representation of a value.</param>
-        public bool SetValue(string key, string val)
+        /// <returns>A value indicating whether or not the value was entered and had the same default value.</returns>
+        public bool SetValue(ConfigurationKey key, string val)
         {
             object newValue = ParseString(val);
 
-            if (defaultInstance.simpleConfig.Keys.Contains(key) && newValue.GetType() != defaultInstance.simpleConfig[key].GetType())
+            if (compiledConfiguration.ContainsKey(key) && newValue.GetType() != compiledConfiguration[key].Value.GetType())
             {
                 return false;
             }
@@ -219,50 +253,8 @@ namespace MBC.Core.Util
         }
 
         /// <summary>
-        /// Checks if a file with the same name exists in the configuration folder.
-        /// </summary>
-        /// <returns>A value indicating whether the path exists or not.</returns>
-        public bool FileExists()
-        {
-            return File.Exists(configsPath + "\\" + configName + ".ini");
-        }
-
-        /// <seealso cref="GetList"/>
-        [Obsolete("GetConfigValueArray() has been renamed to GetList(), as it is much shorter to write.")]
-        public List<T> GetConfigValueArray<T>(string key)
-        {
-            return GetList<T>(key);
-        }
-        /// <summary>
-        /// Returns a copied list all of the KeyValuePairs stored.
-        /// Does not include <see cref="Configuration.Default"/> keys and values.
-        /// </summary>
-        /// <returns>A copied list of KeyValuePairs.</returns>
-        public List<KeyValuePair<string, object>> GetPairs()
-        {
-            var mergedConfigs = new Dictionary<string, object>(defaultInstance.simpleConfig);
-            foreach (var configPairs in simpleConfig)
-            {
-                mergedConfigs[configPairs.Key] = configPairs.Value;
-            }
-            return mergedConfigs.ToList();
-        }
-        /// <summary>Saves the keys and values that differ from <see cref="Configuration.Default"/>
-        /// into a file in the configuration folder as <see cref="Configuration.Name"/>.ini.</summary>
-        /// <exception cref="IOException">The file could not be written to.</exception>
-        public void SaveConfigFile()
-        {
-            var writer = new StreamWriter(configsPath + "\\" + configName + ".ini", false);
-            foreach (var entry in simpleConfig)
-            {
-                writer.WriteLine(entry.Key + " = " + entry.Value.ToString());
-            }
-            writer.Flush();
-            writer.Close();
-        }
-        /// <summary>
-        /// Searches all application assemblies for <see cref="ConfigurationAttribute"/>s and initializes
-        /// the <see cref="Configuration.Default"/> instance with those keys and values found.
+        /// Searches all application assemblies for <see cref="ConfigurationAttribute"/>s and fills the
+        /// internal compiled attributes table with them.
         /// </summary>
         private static void LoadConfigurationDefaults()
         {
@@ -274,7 +266,7 @@ namespace MBC.Core.Util
                     object[] attribs = classType.GetCustomAttributes(typeof(ConfigurationAttribute), false);
                     foreach (ConfigurationAttribute defaultPair in attribs)
                     {
-                        defaultInstance.simpleConfig[defaultPair.Key] = defaultPair.Value;
+                        compiledConfiguration.Add(defaultPair.Key, defaultPair);
                     }
                 }
             }
@@ -285,7 +277,7 @@ namespace MBC.Core.Util
         {
             try
             {
-                var reader = new StreamReader(configsPath + "\\" + configName + ".ini");
+                var reader = new StreamReader(GetPath() + configName + ".ini");
                 do
                 {
                     var line = reader.ReadLine();

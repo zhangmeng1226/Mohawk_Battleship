@@ -80,6 +80,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Elements\TransMenuItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="FieldControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -88,10 +92,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ResourceDictionary.xaml">
+    <Resource Include="ResourceDictionary.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
+    </Resource>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -100,6 +104,9 @@
   <ItemGroup>
     <Compile Include="Elements\ShotCell.xaml.cs">
       <DependentUpon>ShotCell.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Elements\TransMenuItem.xaml.cs">
+      <DependentUpon>TransMenuItem.xaml</DependentUpon>
     </Compile>
     <Compile Include="FieldControl.xaml.cs">
       <DependentUpon>FieldControl.xaml</DependentUpon>

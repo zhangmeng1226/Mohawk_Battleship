@@ -11,7 +11,7 @@ namespace MBC.Core.Util
     [AttributeUsage(AttributeTargets.All, AllowMultiple = true)]
     public class ConfigurationAttribute : Attribute
     {
-        private string key;
+        private ConfigurationKey key;
         private object value;
 
         /// <summary>
@@ -19,7 +19,7 @@ namespace MBC.Core.Util
         /// </summary>
         /// <param name="key">The key to set.</param>
         /// <param name="value">The value to set the key.</param>
-        public ConfigurationAttribute(string key, object value)
+        public ConfigurationAttribute(ConfigurationKey key, object value)
         {
             this.key = key;
             this.value = value;
@@ -28,7 +28,7 @@ namespace MBC.Core.Util
         /// <summary>
         /// Gets the unique identifier.
         /// </summary>
-        public string Key
+        public ConfigurationKey Key
         {
             get
             {
@@ -51,5 +51,10 @@ namespace MBC.Core.Util
         /// Gets or sets the description of the key and value pair.
         /// </summary>
         public string Description { get; set; }
+
+        /// <summary>
+        /// Gets or sets the string that will be used to display the key to the user.
+        /// </summary>
+        public string DisplayName { get; set; }
     }
 }

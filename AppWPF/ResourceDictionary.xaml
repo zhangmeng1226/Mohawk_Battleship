@@ -11,6 +11,11 @@
         <GradientStop Color="#CC00EE00" Offset="0.52" />
         <GradientStop Color="#CC004400" Offset="1.0" />
     </LinearGradientBrush>
+    
+    <LinearGradientBrush x:Key="brushButton" SpreadMethod="Reflect" StartPoint="0.5,0.5" EndPoint="0.5,1.0">
+        <GradientStop Color="#88009900" Offset="0.5"/>
+        <GradientStop Color="#88008900" Offset="1.0"/>
+    </LinearGradientBrush>
 
     <!--
         Images

@@ -7,7 +7,8 @@ using System.Text;
 namespace MBC.App.BattleshipConsole
 {
     public delegate void MBCShellCommandHandler(int idx, params string[] param);
-
+    
+    [Configuration("app_data_root", Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)+"\\MBC Data")]
     public static class Input
     {
         private static SortedDictionary<string, string> availableCommandDescriptions;
@@ -129,7 +130,6 @@ namespace MBC.App.BattleshipConsole
 
             Environment.CurrentDirectory = Environment.CurrentDirectory + "\\..";
 
-            Configuration.InitializeConfiguration(Environment.CurrentDirectory + "\\configs");
             ControllerInformation.AddControllerFolder(Environment.CurrentDirectory + "\\bots");
 
             availableControllers = new List<ControllerInformation>(ControllerInformation.AvailableControllers);
