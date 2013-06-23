@@ -34,6 +34,24 @@ namespace MBC.Core.Util
             rootAttrib.DisplayName = "Data Root";
             rootAttrib.Description = "The absolute folder path of the root directory that will contain saved files.";
             compiledConfiguration.Add(rootAttrib.Key, rootAttrib);
+
+            //Constructing the global instance.
+            globalInstance = new Configuration();
+            var defPath = (string)compiledConfiguration["app_data_root"].Value + "\\config\\";
+            if (!Directory.Exists(defPath))
+            {
+                Directory.CreateDirectory(defPath);
+            }
+            globalInstance.LoadConfigFile();
+        }
+
+        /// <summary>
+        /// Initializes and sets the name to "global" without loading from a file.
+        /// </summary>
+        private Configuration()
+        {
+            simpleConfig = new SortedDictionary<string, object>();
+            configName = "global";
         }
 
         /// <summary>
@@ -52,16 +70,8 @@ namespace MBC.Core.Util
         /// </summary>
         public static Configuration Global
         {
-            get {
-                if (globalInstance == null)
-                {
-                    var defPath = (string)compiledConfiguration["app_data_root"].Value + "\\config\\";
-                    if (!Directory.Exists(defPath))
-                    {
-                        Directory.CreateDirectory(defPath);
-                    }
-                    globalInstance = new Configuration("config");
-                }
+            get
+            {
                 return globalInstance;
             }
             set
@@ -107,7 +117,7 @@ namespace MBC.Core.Util
         /// </returns>
         public static IEnumerable<string> GetAvailableConfigs()
         {
-            string[] absFiles = Directory.GetFiles(Global.GetValue<string>("app_data_root")+"\\config\\", "*.ini");
+            string[] absFiles = Directory.GetFiles(Global.GetValue<string>("app_data_root") + "\\config\\", "*.ini");
             var res = new List<string>();
             foreach (var f in absFiles)
             {
@@ -185,7 +195,7 @@ namespace MBC.Core.Util
         /// <returns>A value indicating whether the path exists or not.</returns>
         public bool FileExists()
         {
-            return File.Exists(GetValue<string>("app_data_root")+"\\config\\" + configName + ".ini");
+            return File.Exists(GetValue<string>("app_data_root") + "\\config\\" + configName + ".ini");
         }
 
         /// <seealso cref="GetList"/>
@@ -267,7 +277,7 @@ namespace MBC.Core.Util
         /// <exception cref="IOException">The file could not be written to.</exception>
         public void SaveConfigFile()
         {
-            var writer = new StreamWriter(GetValue<string>("app_data_root")+"\\config\\" + configName + ".ini", false);
+            var writer = new StreamWriter(GetValue<string>("app_data_root") + "\\config\\" + configName + ".ini", false);
             foreach (var entry in simpleConfig)
             {
                 writer.WriteLine(entry.Key + " = " + entry.Value.ToString());
@@ -322,7 +332,7 @@ namespace MBC.Core.Util
         {
             try
             {
-                var reader = new StreamReader(Global.GetValue<string>("app_data_root")+ "\\config\\" + configName + ".ini");
+                var reader = new StreamReader(Global.GetValue<string>("app_data_root") + "\\config\\" + configName + ".ini");
                 do
                 {
                     var line = reader.ReadLine();
