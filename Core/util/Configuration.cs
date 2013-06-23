@@ -19,21 +19,22 @@ namespace MBC.Core.Util
     /// </summary>
     public class Configuration
     {
-        private static SortedDictionary<ConfigurationKey, ConfigurationAttribute> compiledConfiguration;
+        private static SortedDictionary<string, ConfigurationAttribute> compiledConfiguration;
         private static Configuration globalInstance;
         private string configName;
-        private SortedDictionary<ConfigurationKey, ConfigurationValue> simpleConfig;
+        private SortedDictionary<string, object> simpleConfig;
 
         static Configuration()
         {
-            compiledConfiguration = new SortedDictionary<ConfigurationKey, ConfigurationAttribute>();
+            compiledConfiguration = new SortedDictionary<string, ConfigurationAttribute>();
             LoadConfigurationDefaults();
 
-            if (!Directory.Exists(GetPath()))
-            {
-                Directory.CreateDirectory(GetPath());
-            }
-            globalInstance = new Configuration("config");
+            //Special case needs to be made for this certain default value (must be created at runtime).
+            var rootAttrib = new ConfigurationAttribute("app_data_root", Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments));
+            rootAttrib.DisplayName = "Data Root";
+            rootAttrib.Description = "The absolute folder path of the root directory that will contain saved files.";
+            compiledConfiguration.Add(rootAttrib.Key, rootAttrib);
+            
         }
 
         /// <summary>
@@ -41,7 +42,7 @@ namespace MBC.Core.Util
         /// </summary>
         public Configuration(string name)
         {
-            simpleConfig = new SortedDictionary<ConfigurationKey, ConfigurationValue>();
+            simpleConfig = new SortedDictionary<string, object>();
             configName = name;
             LoadConfigFile();
         }
@@ -52,7 +53,17 @@ namespace MBC.Core.Util
         /// </summary>
         public static Configuration Global
         {
-            get { return globalInstance; }
+            get {
+                if (globalInstance == null)
+                {
+                    if (!Directory.Exists(GetPath()))
+                    {
+                        Directory.CreateDirectory(GetPath());
+                    }
+                    globalInstance = new Configuration("config");
+                }
+                return globalInstance;
+            }
             set
             {
                 if (value != null)
@@ -74,6 +85,20 @@ namespace MBC.Core.Util
         }
 
         /// <summary>
+        /// Generates a list of <see cref="ConfigurationKey"/>s that have been defined by the application.
+        /// </summary>
+        /// <returns>A list of <see cref="ConfigurationKey"/>s.</returns>
+        public static List<string> GetAllKnownKeys()
+        {
+            var keys = new List<string>();
+            foreach (var configs in compiledConfiguration)
+            {
+                keys.Add(configs.Key);
+            }
+            return keys;
+        }
+
+        /// <summary>
         /// Generates a List of strings containing the names of the files that are contained
         /// in the defined configuration folder.
         /// </summary>
@@ -90,6 +115,36 @@ namespace MBC.Core.Util
                 res.Add(spl[spl.Length].Split('.')[0]);
             }
             return res;
+        }
+
+        /// <summary>
+        /// Gets the string from a <see cref="ConfigurationAttribute"/> associated with the <paramref name="key"/> that provides
+        /// a description.
+        /// </summary>
+        /// <param name="key">The <see cref="ConfigurationKey"/> to look up</param>
+        /// <returns>A string. If <paramref name="key"/> was not found, null.</returns>
+        public static string GetDescription(string key)
+        {
+            if (compiledConfiguration.ContainsKey(key))
+            {
+                return compiledConfiguration[key].Description;
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Gets the string from a <see cref="ConfigurationAttribute"/> associated with the <paramref name="key"/> that provides
+        /// the name used to show the user.
+        /// </summary>
+        /// <param name="key">The <see cref="ConfigurationKey"/> to look up</param>
+        /// <returns>A string. If <paramref name="key"/> was not found, null.</returns>
+        public static string GetDisplayName(string key)
+        {
+            if (compiledConfiguration.ContainsKey(key))
+            {
+                return compiledConfiguration[key].DisplayName;
+            }
+            return null;
         }
 
         /// <summary>
@@ -145,7 +200,7 @@ namespace MBC.Core.Util
 
         /// <seealso cref="GetList"/>
         [Obsolete("GetConfigValueArray() has been renamed to GetList(), as it is much shorter to write.")]
-        public List<T> GetConfigValueArray<T>(ConfigurationKey key)
+        public List<T> GetConfigValueArray<T>(string key)
         {
             return GetList<T>(key);
         }
@@ -166,7 +221,7 @@ namespace MBC.Core.Util
         /// <remarks>Be aware that because commas are used to separate the values. If a list of
         /// strings are used, this may cause problems if the commas are stored in the strings.</remarks>
         /// </example>
-        public List<T> GetList<T>(ConfigurationKey key)
+        public List<T> GetList<T>(string key)
         {
             var vals = new List<T>();
             var value = GetValue<object>(key);
@@ -189,7 +244,7 @@ namespace MBC.Core.Util
         /// Does not include <see cref="Configuration.Default"/> keys and values.
         /// </summary>
         /// <returns>A copied list of KeyValuePairs.</returns>
-        public List<KeyValuePair<ConfigurationKey, ConfigurationValue>> GetPairs()
+        public List<KeyValuePair<string, object>> GetPairs()
         {
             return simpleConfig.ToList();
         }
@@ -201,7 +256,7 @@ namespace MBC.Core.Util
         /// <returns>A value associated with the given <paramref name="key"/>.</returns>
         /// <exception cref="KeyNotFoundException">The given <paramref name="key"/> has no value set.</exception>
         /// <exception cref="InvalidCastException">Type mismatch between the requested value and actual value.</exception>
-        public T GetValue<T>(ConfigurationKey key)
+        public T GetValue<T>(string key)
         {
             if (simpleConfig.ContainsKey(key))
             {
@@ -239,7 +294,7 @@ namespace MBC.Core.Util
         /// <param name="key">The key associated with the value.</param>
         /// <param name="val">The string representation of a value.</param>
         /// <returns>A value indicating whether or not the value was entered and had the same default value.</returns>
-        public bool SetValue(ConfigurationKey key, string val)
+        public bool SetValue(string key, string val)
         {
             object newValue = ParseString(val);
 

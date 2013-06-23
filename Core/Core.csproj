@@ -74,6 +74,7 @@
     <Compile Include="Rounds\Round.cs" />
     <Compile Include="Util\Configuration.cs" />
     <Compile Include="Util\ConfigurationAttribute.cs" />
+    <Compile Include="Util\ConfigurationKey.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Controller Plugin\Controller Plugin.csproj">

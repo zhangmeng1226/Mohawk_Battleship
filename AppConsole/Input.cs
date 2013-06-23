@@ -8,7 +8,6 @@ namespace MBC.App.BattleshipConsole
 {
     public delegate void MBCShellCommandHandler(int idx, params string[] param);
     
-    [Configuration("app_data_root", Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)+"\\MBC Data")]
     public static class Input
     {
         private static SortedDictionary<string, string> availableCommandDescriptions;
