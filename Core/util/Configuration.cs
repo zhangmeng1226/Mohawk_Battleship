@@ -34,7 +34,6 @@ namespace MBC.Core.Util
             rootAttrib.DisplayName = "Data Root";
             rootAttrib.Description = "The absolute folder path of the root directory that will contain saved files.";
             compiledConfiguration.Add(rootAttrib.Key, rootAttrib);
-            
         }
 
         /// <summary>
@@ -56,9 +55,10 @@ namespace MBC.Core.Util
             get {
                 if (globalInstance == null)
                 {
-                    if (!Directory.Exists(GetPath()))
+                    var defPath = (string)compiledConfiguration["app_data_root"].Value + "\\config\\";
+                    if (!Directory.Exists(defPath))
                     {
-                        Directory.CreateDirectory(GetPath());
+                        Directory.CreateDirectory(defPath);
                     }
                     globalInstance = new Configuration("config");
                 }
@@ -107,7 +107,7 @@ namespace MBC.Core.Util
         /// </returns>
         public static IEnumerable<string> GetAvailableConfigs()
         {
-            string[] absFiles = Directory.GetFiles(GetPath(), "*.ini");
+            string[] absFiles = Directory.GetFiles(Global.GetValue<string>("app_data_root")+"\\config\\", "*.ini");
             var res = new List<string>();
             foreach (var f in absFiles)
             {
@@ -148,16 +148,6 @@ namespace MBC.Core.Util
         }
 
         /// <summary>
-        /// Generates a string representation of the absolute path of the folder that contains the
-        /// saved <see cref="Configuration"/> files. Will include an extra "\" character at the end.
-        /// </summary>
-        /// <returns>Absolute path string to the config folder.</returns>
-        public static string GetPath()
-        {
-            return (string)compiledConfiguration["app_data_root"].Value + "\\config\\";
-        }
-
-        /// <summary>
         /// Converts a string into an integral type that may be placed into a <see cref="Configuration"/>.
         /// Attempts to convert to these values in this order:
         /// <list type="number">
@@ -195,7 +185,7 @@ namespace MBC.Core.Util
         /// <returns>A value indicating whether the path exists or not.</returns>
         public bool FileExists()
         {
-            return File.Exists(GetPath() + configName + ".ini");
+            return File.Exists(GetValue<string>("app_data_root")+"\\config\\" + configName + ".ini");
         }
 
         /// <seealso cref="GetList"/>
@@ -277,7 +267,7 @@ namespace MBC.Core.Util
         /// <exception cref="IOException">The file could not be written to.</exception>
         public void SaveConfigFile()
         {
-            var writer = new StreamWriter(GetPath() + configName + ".ini", false);
+            var writer = new StreamWriter(GetValue<string>("app_data_root")+"\\config\\" + configName + ".ini", false);
             foreach (var entry in simpleConfig)
             {
                 writer.WriteLine(entry.Key + " = " + entry.Value.ToString());
@@ -332,7 +322,7 @@ namespace MBC.Core.Util
         {
             try
             {
-                var reader = new StreamReader(GetPath() + configName + ".ini");
+                var reader = new StreamReader(Global.GetValue<string>("app_data_root")+ "\\config\\" + configName + ".ini");
                 do
                 {
                     var line = reader.ReadLine();
