@@ -1,4 +1,0 @@
-<map id="MBC.Core.util.Logger.Log" name="MBC.Core.util.Logger.Log">
-<area shape="rect" id="node2" href="$class_m_b_c_1_1_core_1_1util_1_1_log_message.html#a118fce73f3b41f40305c7e7efc687620" title="Translates a prefix string into the corresponding LogMessage Level. The string specified will be made..." alt="" coords="225,5,410,46"/>
-<area shape="rect" id="node3" href="$class_m_b_c_1_1_core_1_1util_1_1_log_message.html#a5826ddb8de3dbc2c294d5ea98756c911" title="Translates a name string into the corresponding LogMessage Level." alt="" coords="225,70,410,111"/>
-</map>

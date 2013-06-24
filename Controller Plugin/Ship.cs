@@ -1,29 +1,42 @@
-﻿namespace MBC.Core
-{
-    using System;
-    using System.Collections.Generic;
-    using System.Drawing;
-    using System.Linq;
+﻿using System;
+using System.Collections.Generic;
 
-    /**
-     * <summary>A Ship contains information about ship placement and provides various
-     * methods to assist with determining various states of the game.
-     * </summary>
-     */
-    public sealed class Ship
+namespace MBC.Shared
+{
+    /// <summary>
+    /// Provides information about a primary component of a battleship game used by <see cref="Controller"/>s;
+    /// the ship. Provides various functions to assist a <see cref="Controller"/> in determining ship
+    /// placement, validity, and <see cref="Shot"/> hits made against it.
+    /// </summary>
+    public class Ship : IEquatable<Ship>
     {
         private bool isPlaced = false;
-        private Point location;
-        private ShipOrientation orientation;
         private int length;
+        private Coordinates location;
+        private ShipOrientation orientation;
 
-        /**
-         * <summary>Constructs a Ship with the specified length</summary>
-         * <param name="length">The length of this Ship, in number of cells.</param>
-         */
+        /// <summary>
+        /// Copies an existing <see cref="Ship"/>.
+        /// </summary>
+        /// <param name="shipCopy"></param>
+        public Ship(Ship shipCopy)
+        {
+            isPlaced = shipCopy.isPlaced;
+            location = shipCopy.location;
+            orientation = shipCopy.orientation;
+            length = shipCopy.length;
+        }
+
+        /// <summary>
+        /// Sets the length of the <see cref="Ship"/> to <paramref name="length"/>. The <paramref name="length"/>
+        /// must be at least 1.
+        /// </summary>
+        /// <param name="length">The number of cells the <see cref="Ship"/> occupies.</param>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown when the <paramref name="length"/> is less
+        /// than 1.</exception>
         public Ship(int length)
         {
-            if (length <= 1)
+            if (length < 1)
             {
                 throw new ArgumentOutOfRangeException("length");
             }
@@ -31,9 +44,9 @@
             this.length = length;
         }
 
-        /**
-         * <summary>Gets a bool that indicates whether this ship has been placed.</summary>
-         */
+        /// <summary>
+        /// Gets a bool that indicates whether or not this <see cref="Ship"/> has been placed.
+        /// </summary>
         public bool IsPlaced
         {
             get
@@ -42,10 +55,22 @@
             }
         }
 
-        /**
-         * <summary>Gets a Point that indicates the start of the bottom/left of this Ship.</summary>
-         */
-        public Point Location
+        /// <summary>
+        /// Gets the length by number of cells occupied.
+        /// </summary>
+        public int Length
+        {
+            get
+            {
+                return this.length;
+            }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="Coordinates"/> of placement.
+        /// </summary>
+        /// <exception cref="InvalidOperationException">Thrown if this <see cref="Ship"/> has not been placed.</exception>
+        public Coordinates Location
         {
             get
             {
@@ -58,9 +83,9 @@
             }
         }
 
-        /**
-         * <summary>Gets the ShipOrientation of this Ship.</summary>
-         */
+        /// <summary>
+        /// Gets the <see cref="ShipOrientation"/>.
+        /// </summary>
         public ShipOrientation Orientation
         {
             get
@@ -74,104 +99,11 @@
             }
         }
 
-        /**
-         * <summary>Gets the length of this ship in number of cells on the field.</summary>
-         */
-        public int Length
-        {
-            get
-            {
-                return this.length;
-            }
-        }
-
-        /**
-         * <summary>Used when placing this Ship on the field.</summary>
-         * <param name="location">The coordinates of the bottom/left most part of this ship.</param>
-         * <param name="orientation">The orientation of this Ship.</param>
-         */
-        public void Place(Point location, ShipOrientation orientation)
-        {
-            this.location = location;
-            this.orientation = orientation;
-            this.isPlaced = true;
-        }
-
-        /**
-         * <summary>Used to check whether the placement of this ship is valid or not.</summary>
-         * <param name="boardSize">The size of the field grid to check boundaries for.</param>
-         */
-        public bool IsValid(Size boardSize)
-        {
-            if (!this.isPlaced)
-            {
-                return false;
-            }
-
-            if (this.location.X < 0 || this.location.Y < 0)
-            {
-                return false;
-            }
-
-            if (this.orientation == ShipOrientation.Horizontal)
-            {
-                if (this.location.Y >= boardSize.Height || this.location.X + this.length > boardSize.Width)
-                {
-                    return false;
-                }
-            }
-            else
-            {
-                if (this.location.X >= boardSize.Width || this.location.Y + this.length > boardSize.Height)
-                {
-                    return false;
-                }
-            }
-
-            return true;
-        }
-
-        /**
-         * <summary>Used to check whether this Ship takes up space in the cell located at the specified location.</summary>
-         * <param name="location">The cell on the field.</param>
-         */
-        public bool IsAt(Point location)
-        {
-            if (this.Orientation == ShipOrientation.Horizontal)
-            {
-                return (this.location.Y == location.Y) && (this.location.X <= location.X) && (this.location.X + this.length > location.X);
-            }
-            else
-            {
-                return (this.location.X == location.X) && (this.location.Y <= location.Y) && (this.location.Y + this.length > location.Y);
-            }
-        }
-
-        /**
-         * <summary>Gets a list of Points that represents the cells this Ship occupies.</summary>
-         */
-        public IEnumerable<Point> GetAllLocations()
-        {
-            if (this.Orientation == ShipOrientation.Horizontal)
-            {
-                for (int i = 0; i < this.length; i++)
-                {
-                    yield return new Point(this.location.X + i, this.location.Y);
-                }
-            }
-            else
-            {
-                for (int i = 0; i < this.length; i++)
-                {
-                    yield return new Point(this.location.X, this.location.Y + i);
-                }
-            }
-        }
-
-        /**
-         * <summary>Used to check whether this Ship occupies any cell that another Ship occupies.</summary>
-         * <param name="otherShip">The other ship to compare with.</param>
-         */
+        /// <summary>
+        /// Checks if another <see cref="Ship"/> occupies any cells that this <see cref="Ship"/> occupies.
+        /// </summary>
+        /// <param name="otherShip">The <see cref="Ship"/> to check for confliction with.</param>
+        /// <returns>A value indicating the state of conflicting with the <paramref name="otherShip"/>.</returns>
         public bool ConflictsWith(Ship otherShip)
         {
             foreach (var otherShipLocation in otherShip.GetAllLocations())
@@ -185,23 +117,164 @@
             return false;
         }
 
-        /**
-         * <summary>Checks if the given list of Points completely occupy the cells this Ship occupies. This
-         * is used to determine if shots have sunk this Ship.</summary>
-         * <param name="shots">A list of Point objects that represent shots made.</param>
-         * <returns>True if the given Points completely occupy the same cells this Ship occupies. False if otherwise.</returns>
-         */
-        public bool IsSunk(IEnumerable<Point> shots)
+        /// <summary>
+        /// Determines whether or not this <see cref="Ship"/> is equal to another <paramref name="ship"/> in
+        /// both of the values in their fields.
+        /// </summary>
+        /// <param name="ship">The <see cref="Ship"/> to compare to.</param>
+        /// <returns>A value indicating whether or not a <see cref="Ship"/> is equivalent.</returns>
+        public bool Equals(Ship ship)
         {
-            foreach (Point location in this.GetAllLocations())
+            if (ship == null)
             {
-                if (!shots.Where(s => s.X == location.X && s.Y == location.Y).Any())
+                return false;
+            }
+            return isPlaced == ship.isPlaced &&
+                location == ship.location &&
+                orientation == ship.orientation &&
+                length == ship.length;
+        }
+
+        /// <summary>
+        /// Determines whether or not this <see cref="Ship"/> is equal to another object.
+        /// </summary>
+        /// <param name="obj">The object to compare to.</param>
+        public override bool Equals(object obj)
+        {
+            return Equals(obj as Ship);
+        }
+
+        /// <summary>
+        /// Gets a list of <see cref="Coordinates"/> that contains all of the locations occupied.
+        /// </summary>
+        /// <returns>An enumerable collection of <see cref="Coordinates"/>.</returns>
+        public IEnumerable<Coordinates> GetAllLocations()
+        {
+            if (this.Orientation == ShipOrientation.Horizontal)
+            {
+                for (int i = 0; i < this.length; i++)
+                {
+                    yield return new Coordinates(this.location.X + i, this.location.Y);
+                }
+            }
+            else
+            {
+                for (int i = 0; i < this.length; i++)
+                {
+                    yield return new Coordinates(this.location.X, this.location.Y + i);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Generates a hash code of this <see cref="Ship"/> based on its fields.
+        /// </summary>
+        /// <returns>A hash code.</returns>
+        public override int GetHashCode()
+        {
+            int hash = 23;
+            hash = hash * 37 + isPlaced.GetHashCode();
+            hash = hash * 37 + location.GetHashCode();
+            hash = hash * 37 + orientation.GetHashCode();
+            hash = hash * 37 + length.GetHashCode();
+            return hash;
+        }
+
+        /// <summary>
+        /// Indicates whether or not a <paramref name="location"/> is an occupied cell.
+        /// </summary>
+        /// <param name="location">The <see cref="Coordinates"/> of the location to check.</param>
+        /// <returns>A value indicating the presence of this <see cref="Ship"/> at the <paramref name="location"/>.</returns>
+        public bool IsAt(Coordinates location)
+        {
+            if (!this.isPlaced)
+            {
+                return false;
+            }
+            if (this.Orientation == ShipOrientation.Horizontal)
+            {
+                return (this.location.Y == location.Y) && (this.location.X <= location.X) && (this.location.X + this.length > location.X);
+            }
+            else
+            {
+                return (this.location.X == location.X) && (this.location.Y <= location.Y) && (this.location.Y + this.length > location.Y);
+            }
+        }
+
+        /// <summary>Checks if the given list of Coordinates completely occupy the cells this Ship occupies. This
+        /// is used to determine if shots have sunk this Ship.</summary>
+        /// <param name="shots">A list of Coordinates that represent shots made.</param>
+        /// <returns>True if the Coordinates in the given ShotList completely occupy the same cells this Ship occupies. False if otherwise.</returns>
+        public bool IsSunk(ShotList shots)
+        {
+            foreach (var location in GetAllLocations())
+            {
+                if (!shots.Contains(location))
                 {
                     return false;
                 }
             }
 
             return true;
+        }
+
+        /// <summary>
+        /// Indicated whether or not placement of this <see cref="Ship"/> is valid.
+        /// </summary>
+        /// <param name="boardSize">The maximum size of a field in the <see cref="Coordinates.X"/>
+        /// and <see cref="Coordinates.Y"/> components.</param>
+        /// <returns>A value indicating valid <see cref="Ship"/> placement.</returns>
+        public bool IsValid(Coordinates boardSize)
+        {
+            if (!this.isPlaced)
+            {
+                return false;
+            }
+
+            if (this.location.X < 0 || this.location.Y < 0)
+            {
+                return false;
+            }
+
+            if (this.orientation == ShipOrientation.Horizontal)
+            {
+                if (this.location.Y >= boardSize.Y || this.location.X + this.length > boardSize.X)
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                if (this.location.X >= boardSize.X || this.location.Y + this.length > boardSize.Y)
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Places this <see cref="Ship"/> with the <paramref name="location"/> and <paramref name="orientation"/>.
+        /// Sets the state of being placed to true.
+        /// </summary>
+        /// <param name="location">The <see cref="Coordinates"/> of the bottom-most/left-most part of
+        /// the <see cref="Ship"/>.</param>
+        /// <param name="orientation">The <see cref="ShipOrientation"/> to set.</param>
+        public void Place(Coordinates location, ShipOrientation orientation)
+        {
+            this.location = location;
+            this.orientation = orientation;
+            this.isPlaced = true;
+        }
+
+        /// <summary>
+        /// Provides a string representation.
+        /// </summary>
+        /// <returns>A string representation of this <see cref="Ship"/>.</returns>
+        public override string ToString()
+        {
+            return location + " L" + length + " " + Enum.GetName(typeof(ShipOrientation), orientation);
         }
     }
 }

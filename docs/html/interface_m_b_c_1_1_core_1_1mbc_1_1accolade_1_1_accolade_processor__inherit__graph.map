@@ -1,8 +1,0 @@
-<map id="MBC.Core.mbc.accolade.AccoladeProcessor" name="MBC.Core.mbc.accolade.AccoladeProcessor">
-<area shape="rect" id="node2" href="$class_m_b_c_1_1_core_1_1mbc_1_1accolade_1_1_comeback.html" title="MBC.Core.mbc.accolade.Comeback" alt="" coords="282,5,515,32"/>
-<area shape="rect" id="node3" href="$class_m_b_c_1_1_core_1_1mbc_1_1accolade_1_1_domination.html" title="MBC.Core.mbc.accolade.Domination" alt="" coords="281,56,517,83"/>
-<area shape="rect" id="node4" href="$class_m_b_c_1_1_core_1_1mbc_1_1accolade_1_1_fast.html" title="MBC.Core.mbc.accolade.Fast" alt="" coords="300,107,497,133"/>
-<area shape="rect" id="node5" href="$class_m_b_c_1_1_core_1_1mbc_1_1accolade_1_1_head_to_head.html" title="MBC.Core.mbc.accolade.Head\lToHead" alt="" coords="298,158,499,199"/>
-<area shape="rect" id="node6" href="$class_m_b_c_1_1_core_1_1mbc_1_1accolade_1_1_intense.html" title="MBC.Core.mbc.accolade.Intense" alt="" coords="292,224,505,251"/>
-<area shape="rect" id="node7" href="$class_m_b_c_1_1_core_1_1mbc_1_1accolade_1_1_slow.html" title="MBC.Core.mbc.accolade.Slow" alt="" coords="299,275,498,301"/>
-</map>

@@ -1,8 +1,0 @@
-<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$class_m_b_c_1_1_app_1_1_terminal_1_1_controls_1_1_user_control.html" title="The UserControl class is used as a base for a user control located on the terminal window..." alt="" coords="5,135,192,177"/>
-<area shape="rect" id="node2" href="$class_m_b_c_1_1_app_1_1_terminal_1_1_controls_1_1_button_control.html" title="A ButtonControl is a UserControl that fires an event when the enter key has been pressed while this B..." alt="" coords="240,5,427,46"/>
-<area shape="rect" id="node3" href="$class_m_b_c_1_1_app_1_1_terminal_1_1_controls_1_1_checkbox_control.html" title="MBC.App.Terminal.Controls.\lCheckboxControl" alt="" coords="240,70,427,111"/>
-<area shape="rect" id="node4" href="$class_m_b_c_1_1_app_1_1_terminal_1_1_controls_1_1_numeric_control.html" title="MBC.App.Terminal.Controls.\lNumericControl" alt="" coords="240,135,427,177"/>
-<area shape="rect" id="node5" href="$class_m_b_c_1_1_app_1_1_terminal_1_1_controls_1_1_radio_button_control.html" title="MBC.App.Terminal.Controls.\lRadioButtonControl" alt="" coords="240,201,427,242"/>
-<area shape="rect" id="node6" href="$class_m_b_c_1_1_app_1_1_terminal_1_1_controls_1_1_string_input_control.html" title="MBC.App.Terminal.Controls.\lStringInputControl" alt="" coords="240,266,427,307"/>
-</map>
