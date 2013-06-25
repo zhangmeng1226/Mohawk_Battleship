@@ -23,6 +23,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
+    <DocumentationFile>..\bin\ctrlplugin.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -43,7 +44,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IBattleshipController.cs" />
+    <Compile Include="Attributes\AcademicInfoAttribute.cs" />
+    <Compile Include="Attributes\AuthorAttribute.cs" />
+    <Compile Include="Attributes\CapabilitiesAttribute.cs" />
+    <Compile Include="Attributes\DescriptionAttribute.cs" />
+    <Compile Include="Attributes\NameAttribute.cs" />
+    <Compile Include="Attributes\VersionAttribute.cs" />
+    <Compile Include="ControllerID.cs" />
+    <Compile Include="ControllerRegister.cs" />
+    <Compile Include="MatchInfo.cs" />
+    <Compile Include="GameMode.cs" />
+    <Compile Include="ShipList.cs" />
+    <Compile Include="Shot.cs" />
+    <Compile Include="ShotList.cs" />
+    <Compile Include="Coordinates.cs" />
+    <Compile Include="Controller.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Ship.cs" />
     <Compile Include="ShipOrientation.cs" />

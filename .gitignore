@@ -1,12 +1,16 @@
 /config.ini
 
 /TODO.txt
+/doxygen_*
+/sandcastle_doc.shfbproj_*
 
 /bots
 /bin
 /configs
+/docs
+/work on later
 
-/AppTerminal/obj
+/AppConsole/obj
 /Core/obj
 /Controller Plugin/obj
 /Controllers/obj
