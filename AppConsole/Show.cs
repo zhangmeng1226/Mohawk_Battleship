@@ -3,8 +3,17 @@ using System;
 
 namespace MBC.App.BattleshipConsole
 {
+    /// <summary>
+    /// Contains functions for showing various information loaded in the application.
+    /// </summary>
     public static class Show
     {
+        /// <summary>
+        /// Shows the <see cref="Configuration"/> settings that are available and
+        /// their current values to the console.
+        /// </summary>
+        /// <param name="idx">The current index of the parameter stream.</param>
+        /// <param name="param">The string of parameters made by the user.</param>
         public static void Config(int idx, params string[] param)
         {
             Console.WriteLine("[Key] = [Value]");
@@ -16,6 +25,11 @@ namespace MBC.App.BattleshipConsole
             }
         }
 
+        /// <summary>
+        /// Shows the <see cref="ControllerInformation"/> that has been loaded into <see cref="Input"/>
+        /// </summary>
+        /// <param name="idx">The current index of the parameter stream.</param>
+        /// <param name="param">The string of parameters made by the user.</param>
         public static void Controllers(int idx, params string[] param)
         {
             if (Input.Controllers.Count == 0)
@@ -33,6 +47,12 @@ namespace MBC.App.BattleshipConsole
             }
         }
 
+        /// <summary>
+        /// Writes a string of text in the console indented at <paramref name="cursorLeft"/>
+        /// with no breaks in each word that is in the <paramref name="txt"/>.
+        /// </summary>
+        /// <param name="cursorLeft">The column on the console to write to.</param>
+        /// <param name="txt">A string of text that is to be written.</param>
         public static void ProperLine(int cursorLeft, string txt)
         {
             var txtSplit = txt.Split(' ');

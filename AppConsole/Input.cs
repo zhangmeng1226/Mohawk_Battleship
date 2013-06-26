@@ -9,9 +9,11 @@ namespace MBC.App.BattleshipConsole
     public delegate void MBCShellCommandHandler(int idx, params string[] param);
     
     /// <summary>
-    /// The main part of the AppConsole that stores command strings that are associated
+    /// <para>The main part of the AppConsole that stores command strings that are associated
     /// with <see cref="MBCShellCommandHandler"/>s, which perform specific tasks. The
-    /// strings that are input are then parsed to invoke the stored commands.
+    /// strings that are input are then parsed to invoke the stored commands.</para>
+    /// <para>The commands modify the internal state of this particular class,
+    /// specifically storing the controllers that are available.</para>
     /// </summary>
     public static class Input
     {
