@@ -12,7 +12,7 @@ namespace MBC.Core.Util
     /// not equal to the first object type will be ignored, but can effectively set the <see cref="Configuration"/>
     /// key to allow a list of objects.
     /// </summary>
-    [AttributeUsage(AttributeTargets.All, AllowMultiple = true)]
+    [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
     public class ConfigurationAttribute : Attribute
     {
         private string key;

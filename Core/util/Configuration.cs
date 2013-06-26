@@ -8,16 +8,19 @@ using System.Text;
 namespace MBC.Core.Util
 {
     /// <summary>
-    /// Stores <c>bool</c>s, <c>long</c>s, <c>double</c>s, and <c>string</c>s each identified by a unique
-    /// string. Provides a <see cref="Configuration.Default"/> instance that indicates the values set
-    /// compile-time via <see cref="ConfigurationAttribute"/>s present in the application assembly. The
-    /// types of the values set at compile time cannot be changed. Provides functionality for loading
-    /// and saving the keys and values to a file with the same name as given to the constructor. Values
-    /// that differ from <see cref="Configuration.Default"/> are not initially entered. Values that
-    /// do not exist will then be checked in the <see cref="Configuration.Default"/> configuration.
-    /// The static functionality of the configuration must be initialized before being used with a
-    /// call to <see cref="Configuration.InitializeConfiguration(string)"/>; this provides the folder path
-    /// where configuration files are kept and initializes the static usage of a Configuration.
+    /// <para>Stores a number of objects that are associated with a string. All objects that have a TypeConverter
+    /// may be used, including but not limited to, <b>bool</b>s, <b>int</b>s <b>string</b>s <b>Enum</b>s etc.
+    /// Features special support for arrays of any type of object through comma-separated-values in string
+    /// values.
+    /// </para>
+    /// <para>Note that the values that are stored are restricted by the default value type from a given
+    /// key. The type that has been made as default cannot be changed.</para>
+    /// <para>
+    /// All default values are loaded by reading in the <see cref="ConfigurationAttribute"/> metadata that is
+    /// given for a class. This is done via a call to <see cref="Configuration.Initialize(string)"/>.</para>
+    /// <para>
+    /// The system must be initialized by a call to <see cref="Configuration.Initialize(string)"/> before
+    /// any part of the system may be used.</para>
     /// </summary>
     public class Configuration
     {
@@ -37,7 +40,8 @@ namespace MBC.Core.Util
         }
 
         /// <summary>
-        /// Creates an empty, unloaded <see cref="Configuration"/>.
+        /// Creates an empty, unloaded <see cref="Configuration"/>. Used in
+        /// <see cref="Configuration.Initialize(string)"/>.
         /// </summary>
         private Configuration()
         {
@@ -101,9 +105,9 @@ namespace MBC.Core.Util
         }
 
         /// <summary>
-        /// Generates a list of <see cref="ConfigurationKey"/>s that have been defined by the application.
+        /// Generates a list of strings that represents keys that have been defined by the application.
         /// </summary>
-        /// <returns>A list of <see cref="ConfigurationKey"/>s.</returns>
+        /// <returns>A list of strings.</returns>
         public static List<string> GetAllKnownKeys()
         {
             var keys = new List<string>();
@@ -149,7 +153,7 @@ namespace MBC.Core.Util
         /// Gets the string from a <see cref="ConfigurationAttribute"/> associated with the <paramref name="key"/> that provides
         /// a description.
         /// </summary>
-        /// <param name="key">The <see cref="ConfigurationKey"/> to look up</param>
+        /// <param name="key">The string key to look up</param>
         /// <returns>A string. If <paramref name="key"/> was not found, null.</returns>
         public static string GetDescription(string key)
         {
@@ -164,7 +168,7 @@ namespace MBC.Core.Util
         /// Gets the string from a <see cref="ConfigurationAttribute"/> associated with the <paramref name="key"/> that provides
         /// the name used to show the user.
         /// </summary>
-        /// <param name="key">The <see cref="ConfigurationKey"/> to look up</param>
+        /// <param name="key">The key string to look up</param>
         /// <returns>A string. If <paramref name="key"/> was not found, null.</returns>
         public static string GetDisplayName(string key)
         {
@@ -245,8 +249,8 @@ namespace MBC.Core.Util
         }
 
         /// <summary>
-        /// Returns a copied list all of the KeyValuePairs stored.
-        /// Does not include <see cref="Configuration.Default"/> keys and values.
+        /// Returns a copied list all of the KeyValuePairs of keys and values differing from the
+        /// default values.
         /// </summary>
         /// <returns>A copied list of KeyValuePairs.</returns>
         public List<KeyValuePair<string, object>> GetPairs()
@@ -270,6 +274,11 @@ namespace MBC.Core.Util
             return (T)compiledConfiguration[key].Value;
         }
 
+        /// <summary>
+        /// Generates a string representation of the value in the given <paramref name="key"/>.
+        /// </summary>
+        /// <param name="key">The string of the key to look up.</param>
+        /// <returns>The string representation of the value associated with <paramref name="key"/>.</returns>
         public string GetValueString(string key)
         {
             object result = GetValue<object>(key);
@@ -288,7 +297,7 @@ namespace MBC.Core.Util
             return result.ToString();
         }
 
-        /// <summary>Saves the keys and values that differ from <see cref="Configuration.Default"/>
+        /// <summary>Saves the keys and values that differ from default values
         /// into a file in the configuration folder as <see cref="Configuration.Name"/>.ini.</summary>
         /// <exception cref="IOException">The file could not be written to.</exception>
         public void SaveConfigFile()
@@ -304,18 +313,13 @@ namespace MBC.Core.Util
         }
 
         /// <summary>
-        /// Converts a string into an integral type that may be placed into a <see cref="Configuration"/>.
-        /// Attempts to convert to these values in this order:
-        /// <list type="number">
-        /// <item>bool</item>
-        /// <item>long</item>
-        /// <item>double</item>
-        /// </list>
-        /// After unsuccessfully parsing to one of the aforementioned types, it will simply store the string.
+        /// Converts a <paramref name="value"/> string to the value of the type <paramref name="valueType"/> using
+        /// its TypeConverter.
         /// </summary>
-        /// <param name="key"></param>
-        /// <param name="value">The string to parse.</param>
-        /// <returns>An object as described in the summary.</returns>
+        /// <param name="valueType">The Type of the object to convert the <paramref name="value"/> to.</param>
+        /// <param name="value">The string representation of a value to parse.</param>
+        /// <returns>A non-null object.</returns>
+        /// <exception cref="Exception">Thrown if the conversion failed.</exception>
         public static object ParseString(Type valueType, string value)
         {
             var converter = TypeDescriptor.GetConverter(valueType);
@@ -323,7 +327,7 @@ namespace MBC.Core.Util
         }
 
         /// <summary>
-        /// Parses a given value from a string through <see cref="Configuration.ParseString(string)"/> and
+        /// Parses a given value from a string through <see cref="Configuration.ParseString(Type, string)"/> and
         /// ensures the type is consistent with the default value if it exists. Sets
         /// the value to the given key if successful.
         /// </summary>

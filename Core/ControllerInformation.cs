@@ -143,11 +143,12 @@ namespace MBC.Core
         }
         /// <summary>
         /// Searches a given folder for dynamic-loaded libraries (.dll) and attempts to load <see cref="Controller"/>s
-        /// from them. Creates <see cref="ControllerInformation"/> objects for each unique <see cref="Controller"/>
-        /// and stores them into the <see cref="ControllerInformation.AvailableControllers"/>.
+        /// from them. Creates <see cref="ControllerInformation"/> objects for each unique <see cref="Controller"/>.
         /// </summary>
         /// <param name="path">The absolute path name to a folder containing DLL files.</param>
         /// <exception cref="DirectoryNotFoundException">The given directory was not found or was a relative path.</exception>
+        /// <returns>A list of <see cref="ControllerInformation"/> objects that have been created from
+        /// findings.</returns>
         public static List<ControllerInformation> LoadControllerFolder(string path)
         {
             var results = new List<ControllerInformation>();
