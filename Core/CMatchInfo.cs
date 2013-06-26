@@ -13,7 +13,7 @@ namespace MBC.Core
     [Configuration("mbc_field_height", 10)]
     [Configuration("mbc_ship_sizes", 2, 3, 3, 4, 5)]
     [Configuration("mbc_timeout", 200)]
-    [Configuration("mbc_game_mode", "classic")]
+    [Configuration("mbc_game_mode", GameMode.Classic, null)]
     public class CMatchInfo : MatchInfo
     {
         /// <summary>
@@ -59,29 +59,13 @@ namespace MBC.Core
 
         private void DetermineGameMode(Configuration config)
         {
-            string[] gameModeSplit = config.GetValue<string>("mbc_game_mode").Split(' ');
             gameMode = 0;
-            foreach (var gmStr in gameModeSplit)
+            foreach (var gmStr in config.GetValue<List<GameMode>>("mbc_game_mode"))
             {
-                switch (gmStr)
+                gameMode |= gmStr;
+                if (gmStr == GameMode.Salvo || gmStr == GameMode.Powered || gmStr == GameMode.Teams)
                 {
-                    case "classic":
-                        gameMode |= GameMode.Classic;
-                        break;
-
-                    case "salvo":
-                        gameMode |= GameMode.Salvo;
-                        throw new NotImplementedException("Salvo game mode does not exist yet.");
-                    case "powered":
-                        gameMode |= GameMode.Powered;
-                        throw new NotImplementedException("Powered game mode does not exist yet.");
-                    case "multi":
-                        gameMode |= GameMode.Multi;
-                        break;
-
-                    case "teams":
-                        gameMode |= GameMode.Teams;
-                        throw new NotImplementedException("Teams game mode does not exist yet.");
+                    throw new NotImplementedException("The "+gmStr.ToString()+" game mode is not supported.");
                 }
             }
         }

@@ -8,7 +8,9 @@ namespace MBC.Core.Util
     /// <see cref="Configuration.Initialize(string)"/>.
     /// Optionally provides a <see cref="ConfigurationAttribute.Description"/> that explains the purpose
     /// of the existence of the key and value pair. If the values have the possibility to be an array,
-    /// the <see cref="ConfigurationAttribute.IsList"/> property must be set accordingly.
+    /// more than one value must be given in the constructor handling many objects. Values that are
+    /// not equal to the first object type will be ignored, but can effectively set the <see cref="Configuration"/>
+    /// key to allow a list of objects.
     /// </summary>
     [AttributeUsage(AttributeTargets.All, AllowMultiple = true)]
     public class ConfigurationAttribute : Attribute
@@ -17,8 +19,7 @@ namespace MBC.Core.Util
         private object value;
 
         /// <summary>
-        /// Stores a single <paramref name="value"/> as <paramref name="key"/>. This sets
-        /// <see cref="ConfigurationAttribute.IsList"/> to false.
+        /// Stores a single <paramref name="value"/> as <paramref name="key"/>.
         /// </summary>
         /// <param name="key">The string that represents the <paramref name="value"/></param>
         /// <param name="value">The value to be stored to the <paramref name="key"/></param>
@@ -29,8 +30,8 @@ namespace MBC.Core.Util
         }
 
         /// <summary>
-        /// Stores the <paramref name="values"/> as a list in the <paramref name="key"/>. This sets
-        /// <see cref="ConfigurationAttribute.IsList"/> to true.
+        /// Stores the <paramref name="values"/> as a list in the <paramref name="key"/>. Ignores
+        /// objects with types different from the first.
         /// </summary>
         /// <param name="key">The key to set.</param>
         /// <param name="values">The value(s) to set the key.</param>
@@ -43,7 +44,14 @@ namespace MBC.Core.Util
             this.key = key;
 
             var list = new List<object>();
-            list.AddRange(values);
+            var firstType = values[0].GetType();
+            foreach (var valObj in values)
+            {
+                if (valObj.GetType() == firstType)
+                {
+                    list.Add(valObj);
+                }
+            }
             this.value = list;
         }
 
