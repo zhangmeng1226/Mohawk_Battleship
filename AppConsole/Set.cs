@@ -1,26 +1,27 @@
 ﻿using MBC.Core.Util;
 using System;
+using System.Collections.Generic;
 
 namespace MBC.App.BattleshipConsole
 {
     public static class Set
     {
-        public static void Config(string[] commandParams, ref int idx)
+        public static void Config(int idx, params string[] param)
         {
-            var key = commandParams[idx++];
-            var valueUnparsed = commandParams[idx++];
-
-            if (!Configuration.Global.SetValue(key, valueUnparsed))
+            var key = param[idx++];
+            var valueUnparsed = param[idx++];
+            try
             {
-                Console.WriteLine("The given value is invalid for the given key.");
-            }
-            else
-            {
+                Configuration.Global.SetValue(key, valueUnparsed);
                 Console.Write("Configuration key \"");
                 Console.Write(key);
                 Console.Write("\" set to \"");
                 Console.Write(valueUnparsed);
                 Console.WriteLine("\"");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(key+" was not set to "+valueUnparsed+".");
             }
         }
     }

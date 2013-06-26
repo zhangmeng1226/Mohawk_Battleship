@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Text;
 
 namespace MBC.Core.Util
 {
@@ -24,36 +26,6 @@ namespace MBC.Core.Util
         private string configName;
         private SortedDictionary<string, object> simpleConfig;
 
-        static Configuration()
-        {
-            compiledConfiguration = new SortedDictionary<string, ConfigurationAttribute>();
-            LoadConfigurationDefaults();
-
-            //Special case needs to be made for this certain default value (must be created at runtime).
-            var rootAttrib = new ConfigurationAttribute("app_data_root", Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments));
-            rootAttrib.DisplayName = "Data Root";
-            rootAttrib.Description = "The absolute folder path of the root directory that will contain saved files.";
-            compiledConfiguration.Add(rootAttrib.Key, rootAttrib);
-
-            //Constructing the global instance.
-            globalInstance = new Configuration();
-            var defPath = (string)compiledConfiguration["app_data_root"].Value + "\\config\\";
-            if (!Directory.Exists(defPath))
-            {
-                Directory.CreateDirectory(defPath);
-            }
-            globalInstance.LoadConfigFile();
-        }
-
-        /// <summary>
-        /// Initializes and sets the name to "global" without loading from a file.
-        /// </summary>
-        private Configuration()
-        {
-            simpleConfig = new SortedDictionary<string, object>();
-            configName = "global";
-        }
-
         /// <summary>
         /// Initializes with the given name and attempts to load a file with the same name.
         /// </summary>
@@ -65,6 +37,14 @@ namespace MBC.Core.Util
         }
 
         /// <summary>
+        /// Creates an empty, unloaded <see cref="Configuration"/>.
+        /// </summary>
+        private Configuration()
+        {
+            simpleConfig = new SortedDictionary<string, object>();
+        }
+
+        /// <summary>
         /// Gets or sets a <see cref="Configuration"/> that may be accessed statically throughout an
         /// application. Attempting to set to null will cause nothing to change.
         /// </summary>
@@ -72,6 +52,10 @@ namespace MBC.Core.Util
         {
             get
             {
+                if (globalInstance == null)
+                {
+                    throw new InvalidOperationException("Configuration has not been initialized.");
+                }
                 return globalInstance;
             }
             set
@@ -92,6 +76,28 @@ namespace MBC.Core.Util
             {
                 return configName;
             }
+            set
+            {
+                configName = value;
+            }
+        }
+
+        /// <summary>
+        /// Adds a the <paramref name="defAttrib"/> as a default value in the <see cref="Configuration"/> system.
+        /// </summary>
+        /// <param name="defAttrib">The <see cref="ConfigurationAttribute"/> to add to the default collection.</param>
+        /// <returns>A value indicating whether or not the <paramref name="defAttrib"/> was entered.
+        /// true is returned if the key of the <paramref name="defAttrib"/> previously did not exist,
+        /// and was added. false if the key did exist, and the <paramref name="defAttrib"/>
+        /// was not added.</returns>
+        public static bool AddDefault(ConfigurationAttribute defAttrib)
+        {
+            if (compiledConfiguration.ContainsKey(defAttrib.Key))
+            {
+                return false;
+            }
+            compiledConfiguration[defAttrib.Key] = defAttrib;
+            return true;
         }
 
         /// <summary>
@@ -117,7 +123,8 @@ namespace MBC.Core.Util
         /// </returns>
         public static IEnumerable<string> GetAvailableConfigs()
         {
-            string[] absFiles = Directory.GetFiles(Global.GetValue<string>("app_data_root") + "\\config\\", "*.ini");
+            string[] absFiles = Directory.GetFiles(Global.GetValue<string>("app_data_root") +
+                "config\\", "*.ini");
             var res = new List<string>();
             foreach (var f in absFiles)
             {
@@ -125,6 +132,17 @@ namespace MBC.Core.Util
                 res.Add(spl[spl.Length].Split('.')[0]);
             }
             return res;
+        }
+
+        /// <summary>
+        /// Gets the default value from a <paramref name="key"/> in the <see cref="Configuration"/> system.
+        /// </summary>
+        /// <typeparam name="T">The expected type of the default value.</typeparam>
+        /// <param name="key">A string that identifies the key of the value.</param>
+        /// <returns>The default value.</returns>
+        public static T GetDefaultValue<T>(string key)
+        {
+            return (T)compiledConfiguration[key].Value;
         }
 
         /// <summary>
@@ -158,44 +176,38 @@ namespace MBC.Core.Util
         }
 
         /// <summary>
-        /// Converts a string into an integral type that may be placed into a <see cref="Configuration"/>.
-        /// Attempts to convert to these values in this order:
-        /// <list type="number">
-        /// <item>bool</item>
-        /// <item>long</item>
-        /// <item>double</item>
-        /// </list>
-        /// After unsuccessfully parsing to one of the aforementioned types, it will simply store the string.
+        /// Initializes the <see cref="Configuration"/> system by reading <see cref="ConfigurationAttribute"/>
+        /// meta-data in all assemblies. Sets the default application data path to <paramref name="appDataPath"/>.
         /// </summary>
-        /// <param name="value">The string to parse.</param>
-        /// <returns>An object as described in the summary.</returns>
-        public static object ParseString(string value)
+        /// <param name="appDataPath">The absolute path to the desired application path.</param>
+        public static void Initialize(string appDataPath)
         {
-            bool boolVal;
-            long integerVal;
-            double decimalVal;
-            if (bool.TryParse(value, out boolVal))
-            {
-                return boolVal;
-            }
-            else if (long.TryParse(value, out integerVal))
-            {
-                return integerVal;
-            }
-            else if (double.TryParse(value, out decimalVal))
-            {
-                return decimalVal;
-            }
-            return value;
-        }
+            compiledConfiguration = new SortedDictionary<string, ConfigurationAttribute>();
+            LoadConfigurationDefaults();
 
+            if (appDataPath.Last() != '\\')
+            {
+                appDataPath += '\\';
+            }
+
+            //Special case needs to be made for this certain default value (must be created at runtime).
+            var rootAttrib = new ConfigurationAttribute("app_data_root", appDataPath);
+            rootAttrib.DisplayName = "Data Root";
+            rootAttrib.Description = "The absolute folder path of the root directory that will contain saved files.";
+            compiledConfiguration.Add(rootAttrib.Key, rootAttrib);
+
+            //Constructing the global instance.
+            globalInstance = new Configuration();
+            globalInstance.Name = "global";
+            globalInstance.LoadConfigFile();
+        }
         /// <summary>
         /// Checks if a file with the same name exists in the configuration folder.
         /// </summary>
         /// <returns>A value indicating whether the path exists or not.</returns>
         public bool FileExists()
         {
-            return File.Exists(GetValue<string>("app_data_root") + "\\config\\" + configName + ".ini");
+            return File.Exists(GetValue<string>("app_data_root") + "config\\" + configName + ".ini");
         }
 
         /// <seealso cref="GetList"/>
@@ -223,20 +235,13 @@ namespace MBC.Core.Util
         /// </example>
         public List<T> GetList<T>(string key)
         {
-            var vals = new List<T>();
-            var value = GetValue<object>(key);
-            if (value.GetType() != typeof(string))
+            var getValues = new List<T>();
+            var configValues = GetValue<List<object>>(key);
+            foreach (var val in configValues)
             {
-                vals.Add((T)value);
+                getValues.Add((T)val);
             }
-            else
-            {
-                foreach (var csvToken in ((string)value).Split(','))
-                {
-                    vals.Add((T)Convert.ChangeType(csvToken.Trim(), typeof(T)));
-                }
-            }
-            return vals;
+            return getValues;
         }
 
         /// <summary>
@@ -250,7 +255,7 @@ namespace MBC.Core.Util
         }
 
         /// <summary>Gets a single value stored as the given <paramref name="key"/> with the specified type. If the
-        /// <paramref name="key"/> does not exist, the default value will be given.
+        /// <paramref name="key"/> does not exist, the default value will be given.</summary>
         /// <param name="key">The key that a sought value is associated with.</param>
         /// <typeparam name="T">The type of value to cast the object value as.</typeparam>
         /// <returns>A value associated with the given <paramref name="key"/>.</returns>
@@ -262,14 +267,25 @@ namespace MBC.Core.Util
             {
                 return (T)simpleConfig[key];
             }
-            else if (compiledConfiguration.ContainsKey(key))
+            return (T)compiledConfiguration[key].Value;
+        }
+
+        public string GetValueString(string key)
+        {
+            object result = GetValue<object>(key);
+            if (result.GetType() == typeof(List<object>))
             {
-                return (T)compiledConfiguration[key].Value;
+                StringBuilder str = new StringBuilder();
+                var objList = (List<object>)result;
+                str.Append(objList[0].ToString());
+                for (var i = 1; i < objList.Count; i++)
+                {
+                    str.Append(',');
+                    str.Append(objList[i]);
+                }
+                return str.ToString();
             }
-            else
-            {
-                throw new KeyNotFoundException("The following Configuration key was not set: " + key);
-            }
+            return result.ToString();
         }
 
         /// <summary>Saves the keys and values that differ from <see cref="Configuration.Default"/>
@@ -277,7 +293,8 @@ namespace MBC.Core.Util
         /// <exception cref="IOException">The file could not be written to.</exception>
         public void SaveConfigFile()
         {
-            var writer = new StreamWriter(GetValue<string>("app_data_root") + "\\config\\" + configName + ".ini", false);
+            var writer = new StreamWriter(GetValue<string>("app_data_root") + "config\\"
+                + configName + ".ini", false);
             foreach (var entry in simpleConfig)
             {
                 writer.WriteLine(entry.Key + " = " + entry.Value.ToString());
@@ -287,24 +304,56 @@ namespace MBC.Core.Util
         }
 
         /// <summary>
+        /// Converts a string into an integral type that may be placed into a <see cref="Configuration"/>.
+        /// Attempts to convert to these values in this order:
+        /// <list type="number">
+        /// <item>bool</item>
+        /// <item>long</item>
+        /// <item>double</item>
+        /// </list>
+        /// After unsuccessfully parsing to one of the aforementioned types, it will simply store the string.
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="value">The string to parse.</param>
+        /// <returns>An object as described in the summary.</returns>
+        public static object ParseString(Type valueType, string value)
+        {
+            var converter = TypeDescriptor.GetConverter(valueType);
+            return converter.ConvertFromString(value);
+        }
+
+        /// <summary>
         /// Parses a given value from a string through <see cref="Configuration.ParseString(string)"/> and
         /// ensures the type is consistent with the default value if it exists. Sets
         /// the value to the given key if successful.
         /// </summary>
         /// <param name="key">The key associated with the value.</param>
         /// <param name="val">The string representation of a value.</param>
-        /// <returns>A value indicating whether or not the value was entered and had the same default value.</returns>
-        public bool SetValue(string key, string val)
+        /// <exception cref="Exception">Thrown if the given string value type did not match the default
+        /// value type.</exception>
+        public void SetValue(string key, string val)
         {
-            object newValue = ParseString(val);
-
-            if (compiledConfiguration.ContainsKey(key) && newValue.GetType() != compiledConfiguration[key].Value.GetType())
+            var compiledType = compiledConfiguration[key].Value.GetType();
+            if (compiledType == typeof(List<object>))
             {
-                return false;
+                compiledType = ((List<object>)compiledConfiguration[key].Value)[0].GetType();
+                var newList = new List<object>();
+                var valSplit = val.Split(',');
+                foreach (var valToken in valSplit)
+                {
+                    object parsedToken = ParseString(compiledType, valToken.Trim());
+                    if (parsedToken.GetType() != compiledType)
+                    {
+                        throw new InvalidDataException("A value in the parsed string list did not have a matched type.");
+                    }
+                    newList.Add(parsedToken);
+                }
+                simpleConfig[key] = newList;
             }
-
-            simpleConfig[key] = newValue;
-            return true;
+            else
+            {
+                simpleConfig[key] = ParseString(compiledType, val);
+            }
         }
 
         /// <summary>
@@ -319,20 +368,28 @@ namespace MBC.Core.Util
                 foreach (var classType in thisAssembly.GetTypes())
                 {
                     object[] attribs = classType.GetCustomAttributes(typeof(ConfigurationAttribute), false);
-                    foreach (ConfigurationAttribute defaultPair in attribs)
+                    foreach (ConfigurationAttribute defaultAttrib in attribs)
                     {
-                        compiledConfiguration.Add(defaultPair.Key, defaultPair);
+                        AddDefault(defaultAttrib);
                     }
                 }
             }
         }
 
-        /// <summary>Loads a configuration file from the configuration folder.</summary>
+        /// <summary>
+        /// Loads a configuration file from the "app_data_root" + "app_config_root" values.
+        /// Creates a directory if the path does not exist.
+        /// </summary>
         private void LoadConfigFile()
         {
+            var configRootPath = Global.GetValue<string>("app_data_root") + "config\\";
+            if (!Directory.Exists(configRootPath))
+            {
+                Directory.CreateDirectory(configRootPath);
+            }
             try
             {
-                var reader = new StreamReader(Global.GetValue<string>("app_data_root") + "\\config\\" + configName + ".ini");
+                var reader = new StreamReader(configRootPath + configName + ".ini");
                 do
                 {
                     var line = reader.ReadLine();

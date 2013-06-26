@@ -8,11 +8,11 @@ namespace MBC.App.BattleshipConsole
         public static void Config(int idx, params string[] param)
         {
             Console.WriteLine("[Key] = [Value]");
-            foreach (var pair in Configuration.Global.GetPairs())
+            foreach (var key in Configuration.GetAllKnownKeys())
             {
-                Console.Write(pair.Key);
+                Console.Write(key);
                 Console.Write(" = ");
-                Console.WriteLine(pair.Value);
+                Console.WriteLine(Configuration.Global.GetValueString(key));
             }
         }
 
@@ -30,6 +30,23 @@ namespace MBC.App.BattleshipConsole
                 Console.Write(i);
                 Console.Write("]: ");
                 Console.WriteLine(Input.Controllers[i]);
+            }
+        }
+
+        public static void ProperLine(int cursorLeft, string txt)
+        {
+            var txtSplit = txt.Split(' ');
+            var targetWidth = Console.WindowWidth - cursorLeft;
+            var currentWidth = 0;
+            for (var txtIdx = 0; txtIdx < txtSplit.Length; txtIdx++)
+            {
+                currentWidth += txtSplit[txtIdx].Length + 1;
+                if (currentWidth > targetWidth)
+                {
+                    Console.WriteLine();
+                    Console.SetCursorPosition(cursorLeft, Console.CursorTop);
+                    currentWidth = txtSplit[txtIdx].Length + 1;
+                }
             }
         }
     }

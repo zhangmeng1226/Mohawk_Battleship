@@ -36,8 +36,10 @@ namespace MBC.App.BattleshipConsole
             AddCommand(MatchRun.Start, "match", "start", "Plays through a match until it ends.");
             AddCommand(MatchRun.Start, "match", "stop", "Ends the current match.");
 
-            AddCommand(EventOutput.Enable, "event", "enable", "[\"match/\"controller\"/\"round\"] Enables console display of the specified event.");
-            AddCommand(EventOutput.Disable, "event", "disable", "[\"match/\"controller\"/\"round\"] Disables console display of the specified event.");
+            AddCommand(Set.Config, "set", "config", "[key] [value] Sets a configuration key value to the one specified.");
+
+            AddCommand(EventOutput.Enable, "event", "enable", "[\"match\"/\"controller\"/\"round\"] Enables console display of the specified event.");
+            AddCommand(EventOutput.Disable, "event", "disable", "[\"match\"/\"controller\"/\"round\"] Disables console display of the specified event.");
 
             AddCommand(Help.Display, "help", "Shows this help display.");
 
@@ -116,22 +118,45 @@ namespace MBC.App.BattleshipConsole
 
         public static bool RunCommand(string input)
         {
-            return RunCommand(input.Split(' '));
+            var quoteSplits = input.Split('\"');
+            var compiledSplitsList = new List<string>();
+            for (var i = 0; i < quoteSplits.Length; i++)
+            {
+                if (i % 2 == 0)
+                {
+                    compiledSplitsList.AddRange(quoteSplits[i].Trim().Split(' '));
+                }
+                else
+                {
+                    compiledSplitsList.Add(quoteSplits[i]);
+                }
+            }
+            foreach (var tk in compiledSplitsList)
+            {
+                Console.WriteLine(tk);
+            }
+            return RunCommand(compiledSplitsList.ToArray());
         }
 
+        /// <summary>
+        /// AppConsole entry point
+        /// </summary>
+        /// <param name="args">Arguments to be specified for running commands as batch mode.</param>
         private static void Main(string[] args)
         {
+            //Set up the console
             Console.Title = "MBC console";
             Console.CancelKeyPress += (a, b) =>
             {
                 MatchRun.Running = false;
             };
+            Configuration.Initialize(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)+"\\MBC Data");
 
-            Environment.CurrentDirectory = Environment.CurrentDirectory + "\\..";
-
-            ControllerInformation.AddControllerFolder(Environment.CurrentDirectory + "\\bots");
-
-            availableControllers = new List<ControllerInformation>(ControllerInformation.AvailableControllers);
+            //Load controllers from the application data directory.
+            availableControllers = ControllerInformation.LoadControllerFolder(
+                Configuration.Global.GetValue<string>("app_data_root") + "controllers");
+            //Load controllers from the running application root directory.
+            availableControllers.AddRange(ControllerInformation.LoadControllerFolder(Environment.CurrentDirectory + "\\..\\bots"));
 
             if (args.Length != 0)
             {

@@ -11,7 +11,7 @@ namespace MBC.Core
     /// <seealso cref="MatchInfo"/>
     [Configuration("mbc_field_width", 10)]
     [Configuration("mbc_field_height", 10)]
-    [Configuration("mbc_ship_sizes", "2,3,3,4,5")]
+    [Configuration("mbc_ship_sizes", 2, 3, 3, 4, 5)]
     [Configuration("mbc_timeout", 200)]
     [Configuration("mbc_game_mode", "classic")]
     public class CMatchInfo : MatchInfo
