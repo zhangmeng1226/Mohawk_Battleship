@@ -8,6 +8,11 @@ namespace MBC.App.BattleshipConsole
 {
     public delegate void MBCShellCommandHandler(int idx, params string[] param);
     
+    /// <summary>
+    /// The main part of the AppConsole that stores command strings that are associated
+    /// with <see cref="MBCShellCommandHandler"/>s, which perform specific tasks. The
+    /// strings that are input are then parsed to invoke the stored commands.
+    /// </summary>
     public static class Input
     {
         private static SortedDictionary<string, string> availableCommandDescriptions;
@@ -46,6 +51,9 @@ namespace MBC.App.BattleshipConsole
             AddCommand(Stop, "exit", "Exits the console application.");
         }
 
+        /// <summary>
+        /// Gets the dictionary of command strings associated with a description.
+        /// </summary>
         public static SortedDictionary<string, string> CommandDescriptions
         {
             get
@@ -54,6 +62,9 @@ namespace MBC.App.BattleshipConsole
             }
         }
 
+        /// <summary>
+        /// Gets a list of <see cref="ControllerInformation"/> loaded by commands.
+        /// </summary>
         public static List<ControllerInformation> Controllers
         {
             get
@@ -62,6 +73,11 @@ namespace MBC.App.BattleshipConsole
             }
         }
 
+        /// <summary>
+        /// Associates a number of <paramref name="newCmd"/>s to a <paramref name="handler"/>.
+        /// </summary>
+        /// <param name="handler">The method to invoke from <paramref name="newCmd"/></param>
+        /// <param name="newCmd">The strings that invoke the <paramref name="handler"/>.</param>
         public static void AddCommand(MBCShellCommandHandler handler, params string[] newCmd)
         {
             if (newCmd.Length < 2)
@@ -80,6 +96,14 @@ namespace MBC.App.BattleshipConsole
             availableCommandDescriptions.Add(concatCmd.ToString(), newCmd[newCmd.Length - 1]);
         }
 
+        /// <summary>
+        /// Runs a command, or a series of commands separated by a pipe "|" and passes the
+        /// current index of the array of strings to the command handler to parse parameters
+        /// when needed.
+        /// </summary>
+        /// <param name="input">The array of strings that make up commands.</param>
+        /// <returns>A value indicating the successful completion of the
+        /// command(s).</returns>
         public static bool RunCommand(params string[] input)
         {
             if (input == null || input.Length == 0)
@@ -116,6 +140,14 @@ namespace MBC.App.BattleshipConsole
             return false;
         }
 
+        /// <summary>
+        /// Splits a string by whitespaces without splitting the strings encapsulated with
+        /// double-quotes. Runs the <see cref="Input.RunCommand(string[])"/> method with
+        /// the parsed <paramref name="input"/>.
+        /// </summary>
+        /// <param name="input">A string of input.</param>
+        /// <returns>A value indicating whether or not the command(s) entered were
+        /// successfully completed.</returns>
         public static bool RunCommand(string input)
         {
             var quoteSplits = input.Split('\"');
@@ -130,10 +162,6 @@ namespace MBC.App.BattleshipConsole
                 {
                     compiledSplitsList.Add(quoteSplits[i]);
                 }
-            }
-            foreach (var tk in compiledSplitsList)
-            {
-                Console.WriteLine(tk);
             }
             return RunCommand(compiledSplitsList.ToArray());
         }
@@ -182,6 +210,11 @@ namespace MBC.App.BattleshipConsole
             }
         }
 
+        /// <summary>
+        /// Stops input.
+        /// </summary>
+        /// <param name="idx"></param>
+        /// <param name="param"></param>
         private static void Stop(int idx, params string[] param)
         {
             inputRunning = false;
