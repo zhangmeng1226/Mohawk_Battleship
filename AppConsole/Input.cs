@@ -6,6 +6,11 @@ using System.Text;
 
 namespace MBC.App.BattleshipConsole
 {
+    /// <summary>
+    /// Defines a method that is given the current <paramref name="idx"/> in the <paramref name="param"/> stream.
+    /// </summary>
+    /// <param name="idx">The current index in the <paramref name="param"/> array.</param>
+    /// <param name="param">An array of strings that make up a command.</param>
     public delegate void MBCShellCommandHandler(int idx, params string[] param);
     
     /// <summary>
@@ -48,7 +53,7 @@ namespace MBC.App.BattleshipConsole
             AddCommand(EventOutput.Enable, "event", "enable", "[\"match\"/\"controller\"/\"round\"] Enables console display of the specified event.");
             AddCommand(EventOutput.Disable, "event", "disable", "[\"match\"/\"controller\"/\"round\"] Disables console display of the specified event.");
 
-            AddCommand(Help.Display, "help", "Shows this help display.");
+            AddCommand(Help.Commands, "help", "Shows this help display.");
 
             AddCommand(Stop, "exit", "Exits the console application.");
         }
