@@ -1,6 +1,4 @@
-﻿using MBC.Core.Events;
-using MBC.Shared;
-using System;
+﻿using MBC.Shared;
 using System.Collections.Generic;
 
 namespace MBC.Core.Rounds
@@ -24,6 +22,14 @@ namespace MBC.Core.Rounds
             currentState = LogicState.Begin;
         }
 
+        private enum LogicState
+        {
+            Begin,
+            PlaceShips,
+            Turn,
+            End
+        }
+
         /// <summary>
         /// Performs a step in the game logic for the battleship game.
         /// </summary>
@@ -35,10 +41,12 @@ namespace MBC.Core.Rounds
                     Begin();
                     currentState = LogicState.PlaceShips;
                     break;
+
                 case LogicState.PlaceShips:
                     StandardShipPlacement();
                     currentState = LogicState.Turn;
                     break;
+
                 case LogicState.Turn:
                     StandardPlaceShot();
                     if (Remaining.Count <= 1)
@@ -52,14 +60,6 @@ namespace MBC.Core.Rounds
                     }
                     break;
             }
-        }
-
-        private enum LogicState
-        {
-            Begin,
-            PlaceShips,
-            Turn,
-            End
         }
     }
 }

@@ -64,6 +64,7 @@ namespace MBC.Core
                 return (int)timeElapsed.ElapsedMilliseconds;
             }
         }
+
         /// <summary>
         /// Uses the <see cref="Controller"/>'s <see cref="Controller.MakeShot()"/> method to get a <see cref="Shot"/>.
         /// </summary>

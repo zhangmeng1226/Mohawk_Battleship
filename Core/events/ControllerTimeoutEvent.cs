@@ -20,13 +20,14 @@ namespace MBC.Core.Events
             Init(exception.Register, exception.TimeTaken, exception.MethodName);
         }
 
-        private void Init(ControllerRegister register, int time, string method)
+        /// <summary>
+        /// Gets a string identifying the method call made to a <see cref="Controller"/> through the
+        /// associated <see cref="ControllerEvent.Register"/>.
+        /// </summary>
+        public string Method
         {
-            TimeTaken = time;
-            Method = method;
-
-            Message = register + " went over the time limit of " + register.Match.TimeLimit +
-                "ms by " + (time - register.Match.TimeLimit) + "ms on the invoke of " + method + ".";
+            get;
+            private set;
         }
 
         /// <summary>
@@ -38,14 +39,13 @@ namespace MBC.Core.Events
             private set;
         }
 
-        /// <summary>
-        /// Gets a string identifying the method call made to a <see cref="Controller"/> through the
-        /// associated <see cref="ControllerEvent.Register"/>.
-        /// </summary>
-        public string Method
+        private void Init(ControllerRegister register, int time, string method)
         {
-            get;
-            private set;
+            TimeTaken = time;
+            Method = method;
+
+            Message = register + " went over the time limit of " + register.Match.TimeLimit +
+                "ms by " + (time - register.Match.TimeLimit) + "ms on the invoke of " + method + ".";
         }
     }
 }

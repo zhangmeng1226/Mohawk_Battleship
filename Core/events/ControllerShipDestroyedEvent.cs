@@ -33,14 +33,14 @@ namespace MBC.Core.Events
             private set;
         }
 
-        internal override void ProcForward()
-        {
-            Round.Registers[RegisterID].ShipsLeft.Remove(DestroyedShip);
-        }
-
         internal override void ProcBackward()
         {
             Round.Registers[RegisterID].ShipsLeft.Add(DestroyedShip);
+        }
+
+        internal override void ProcForward()
+        {
+            Round.Registers[RegisterID].ShipsLeft.Remove(DestroyedShip);
         }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using MBC.Core.Events;
 using MBC.Shared;
-using System;
 using System.Collections.Generic;
 
 namespace MBC.Core.Rounds
@@ -29,6 +28,22 @@ namespace MBC.Core.Rounds
             Controllers = controllers;
         }
 
+        public override void End()
+        {
+            foreach (var rID in Remaining)
+            {
+                try
+                {
+                    Controllers[rID].RoundWon();
+                }
+                catch (ControllerTimeoutException ex)
+                {
+                    MakeEvent(new ControllerTimeoutEvent(this, ex));
+                }
+            }
+            base.End();
+        }
+
         /// <summary>
         /// Fires the <see cref="RoundBeginEvent"/> and invokes <see cref="ControllerUser.NewRound()"/> on all
         /// <see cref="ControllerUser"/>s. Picks a random <see cref="ControllerUser"/> to have the
@@ -53,22 +68,6 @@ namespace MBC.Core.Rounds
                     MakeEvent(new ControllerTimeoutEvent(this, ex));
                 }
             }
-        }
-
-        public override void End()
-        {
-            foreach (var rID in Remaining)
-            {
-                try
-                {
-                    Controllers[rID].RoundWon();
-                }
-                catch (ControllerTimeoutException ex)
-                {
-                    MakeEvent(new ControllerTimeoutEvent(this, ex));
-                }
-            }
-            base.End();
         }
 
         /// <summary>
@@ -145,32 +144,6 @@ namespace MBC.Core.Rounds
             MakeEvent(new RoundTurnChangeEvent(this, CurrentTurn, NextRemaining()));
         }
 
-        /// <summary>
-        /// Calls <see cref="ControllerUser.PlaceShips()"/> on every <see cref="ControllerUser"/> and
-        /// creates <see cref="ControllerShipsPlacedEvent"/>s for each. Changes the <see cref="Round.CurrentState"/>
-        /// to <see cref="Round.State.Main"/>.
-        /// </summary>
-        protected void StandardShipPlacement()
-        {
-            foreach (var rID in Remaining)
-            {
-                try
-                {
-                    MakeEvent(new ControllerShipsPlacedEvent(this, rID, Registers[rID].Ships, Controllers[rID].PlaceShips()));
-
-                    if (!ControllerShipsValid(rID))
-                    {
-                        MakeLoser(rID);
-                    }
-                }
-                catch (ControllerTimeoutException ex)
-                {
-                    MakeEvent(new ControllerTimeoutEvent(this, ex));
-                    MakeLoser(rID);
-                }
-            }
-        }
-
         protected void StandardPlaceShot()
         {
             try
@@ -212,6 +185,32 @@ namespace MBC.Core.Rounds
                 MakeLoser(ex.Register.ID);
             }
             NextTurn();
+        }
+
+        /// <summary>
+        /// Calls <see cref="ControllerUser.PlaceShips()"/> on every <see cref="ControllerUser"/> and
+        /// creates <see cref="ControllerShipsPlacedEvent"/>s for each. Changes the <see cref="Round.CurrentState"/>
+        /// to <see cref="Round.State.Main"/>.
+        /// </summary>
+        protected void StandardShipPlacement()
+        {
+            foreach (var rID in Remaining)
+            {
+                try
+                {
+                    MakeEvent(new ControllerShipsPlacedEvent(this, rID, Registers[rID].Ships, Controllers[rID].PlaceShips()));
+
+                    if (!ControllerShipsValid(rID))
+                    {
+                        MakeLoser(rID);
+                    }
+                }
+                catch (ControllerTimeoutException ex)
+                {
+                    MakeEvent(new ControllerTimeoutEvent(this, ex));
+                    MakeLoser(rID);
+                }
+            }
         }
 
         private static List<ControllerRegister> RegistersFromControllers(List<ControllerUser> controllers)

@@ -67,11 +67,6 @@ namespace MBC.Core.Rounds
             }
         }
 
-        public virtual void End()
-        {
-            MakeEvent(new RoundEndEvent(this));
-        }
-
         /// <summary>
         /// The <see cref="ControllerUser"/> that has the current turn.
         /// </summary>
@@ -126,6 +121,11 @@ namespace MBC.Core.Rounds
         {
             generatedAccolades.Add(accolade);
             MakeEvent(new RoundAccoladeEvent(this, accolade));
+        }
+
+        public virtual void End()
+        {
+            MakeEvent(new RoundEndEvent(this));
         }
 
         public bool StepBackward()

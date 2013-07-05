@@ -1,10 +1,7 @@
 ﻿using MBC.Core.Rounds;
 using MBC.Core.Util;
 using MBC.Shared;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace MBC.Core.Matches
 {
@@ -15,6 +12,7 @@ namespace MBC.Core.Matches
     public abstract class RoundIterator
     {
         protected bool roundsReached;
+
         public RoundIterator(Match match)
         {
             MonitoringMatch = match;
@@ -89,6 +87,7 @@ namespace MBC.Core.Matches
             get;
             private set;
         }
+
         public static RoundIterator CreateRoundIteratorFor(Match match)
         {
             RoundIterator iterator = null;
@@ -97,11 +96,31 @@ namespace MBC.Core.Matches
                 case Mode.AllRounds:
                     iterator = new PlayAllRoundIterator(match);
                     break;
+
                 case Mode.FirstTo:
                     iterator = new FirstToRoundIterator(match);
                     break;
             }
             return iterator;
+        }
+
+        internal bool NextRound()
+        {
+            if (CurrentRoundIdx + 1 < RoundList.Count)
+            {
+                CurrentRound = RoundList[++CurrentRoundIdx];
+                return false;
+            }
+            else if (!TargetReached)
+            {
+                Round newRound = MonitoringMatch.CreateNewRound();
+                RoundList.Add(newRound);
+                CurrentRound = newRound;
+                CurrentRoundIdx++;
+                roundsReached = IsRoundsReached();
+                return false;
+            }
+            return true;
         }
 
         internal bool PrevRound()
@@ -114,30 +133,14 @@ namespace MBC.Core.Matches
             return true;
         }
 
-        internal bool NextRound()
-        {
-            if (CurrentRoundIdx + 1 < RoundList.Count)
-            {
-                CurrentRound = RoundList[++CurrentRoundIdx];
-                return false;
-            }
-            else if(!TargetReached)
-            {
-                Round newRound = MonitoringMatch.CreateNewRound();
-                RoundList.Add(newRound);
-                CurrentRound = newRound;
-                CurrentRoundIdx++;
-                roundsReached = IsRoundsReached();
-                return false;
-            }
-            return true;
-        }
-
         protected abstract bool IsRoundsReached();
 
         private class FirstToRoundIterator : RoundIterator
         {
-            public FirstToRoundIterator(Match match) : base(match) { }
+            public FirstToRoundIterator(Match match)
+                : base(match)
+            {
+            }
 
             protected override bool IsRoundsReached()
             {
@@ -154,7 +157,11 @@ namespace MBC.Core.Matches
 
         private class PlayAllRoundIterator : RoundIterator
         {
-            public PlayAllRoundIterator(Match match) : base(match) { }
+            public PlayAllRoundIterator(Match match)
+                : base(match)
+            {
+            }
+
             protected override bool IsRoundsReached()
             {
                 return CurrentRoundIdx + 1 >= TargetRounds;

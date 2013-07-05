@@ -18,14 +18,14 @@ namespace MBC.Core.Events
             Message = Round.Registers[controller] + " has lost the round.";
         }
 
-        internal override void ProcForward()
-        {
-            Round.Remaining.Remove(RegisterID);
-        }
-
         internal override void ProcBackward()
         {
             Round.Remaining.Add(RegisterID);
+        }
+
+        internal override void ProcForward()
+        {
+            Round.Remaining.Remove(RegisterID);
         }
     }
 }

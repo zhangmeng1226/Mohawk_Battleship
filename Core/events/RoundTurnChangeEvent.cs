@@ -1,9 +1,5 @@
 ﻿using MBC.Core.Rounds;
 using MBC.Shared;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace MBC.Core.Events
 {
@@ -28,14 +24,14 @@ namespace MBC.Core.Events
             private set;
         }
 
-        internal override void ProcForward()
-        {
-            Round.CurrentTurn = NextTurn;
-        }
-
         internal override void ProcBackward()
         {
             Round.CurrentTurn = PreviousTurn;
+        }
+
+        internal override void ProcForward()
+        {
+            Round.CurrentTurn = NextTurn;
         }
     }
 }

@@ -33,14 +33,12 @@
             return Message;
         }
 
-        internal virtual void ProcForward()
-        {
-
-        }
-
         internal virtual void ProcBackward()
         {
+        }
 
+        internal virtual void ProcForward()
+        {
         }
     }
 }

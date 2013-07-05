@@ -16,7 +16,7 @@ namespace MBC.Core.Events
         /// </summary>
         /// <param name="register"></param>
         public ControllerEvent(Round rnd, ControllerID registerID)
-            : base (rnd)
+            : base(rnd)
         {
             RegisterID = registerID;
         }

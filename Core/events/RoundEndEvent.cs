@@ -1,4 +1,5 @@
 ﻿using MBC.Core.Rounds;
+
 namespace MBC.Core.Events
 {
     /// <summary>
@@ -16,14 +17,14 @@ namespace MBC.Core.Events
             Message = "This round has ended.";
         }
 
-        internal override void ProcForward()
-        {
-            Round.Ended = true;
-        }
-
         internal override void ProcBackward()
         {
             Round.Ended = false;
+        }
+
+        internal override void ProcForward()
+        {
+            Round.Ended = true;
         }
     }
 }

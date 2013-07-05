@@ -1,5 +1,4 @@
-﻿using MBC.Core.Util;
-using MBC.Shared;
+﻿using MBC.Shared;
 using MBC.Shared.Attributes;
 using System;
 using System.Collections.Generic;
@@ -141,29 +140,6 @@ namespace MBC.Core
                 return verAttrib.Version;
             }
         }
-        /// <summary>
-        /// Searches a given folder for dynamic-loaded libraries (.dll) and attempts to load <see cref="Controller"/>s
-        /// from them. Creates <see cref="ControllerInformation"/> objects for each unique <see cref="Controller"/>.
-        /// </summary>
-        /// <param name="path">The absolute path name to a folder containing DLL files.</param>
-        /// <exception cref="DirectoryNotFoundException">The given directory was not found or was a relative path.</exception>
-        /// <returns>A list of <see cref="ControllerInformation"/> objects that have been created from
-        /// findings.</returns>
-        public static List<ControllerInformation> LoadControllerFolder(string path)
-        {
-            var results = new List<ControllerInformation>();
-            try
-            {
-                var filePaths = new List<string>(Directory.GetFiles(path, "*.dll"));
-
-                foreach (var file in filePaths)
-                {
-                    results.AddRange(LoadControllerDLL(file));
-                }
-            }
-            catch { }
-            return results;
-        }
 
         /// <summary>
         /// Loads a list of <see cref="ControllerInformation"/> from a single .DLL file.
@@ -208,6 +184,30 @@ namespace MBC.Core
             {
                 //Unable to load a .DLL file; we don't care about this assembly.
             }
+            return results;
+        }
+
+        /// <summary>
+        /// Searches a given folder for dynamic-loaded libraries (.dll) and attempts to load <see cref="Controller"/>s
+        /// from them. Creates <see cref="ControllerInformation"/> objects for each unique <see cref="Controller"/>.
+        /// </summary>
+        /// <param name="path">The absolute path name to a folder containing DLL files.</param>
+        /// <exception cref="DirectoryNotFoundException">The given directory was not found or was a relative path.</exception>
+        /// <returns>A list of <see cref="ControllerInformation"/> objects that have been created from
+        /// findings.</returns>
+        public static List<ControllerInformation> LoadControllerFolder(string path)
+        {
+            var results = new List<ControllerInformation>();
+            try
+            {
+                var filePaths = new List<string>(Directory.GetFiles(path, "*.dll"));
+
+                foreach (var file in filePaths)
+                {
+                    results.AddRange(LoadControllerDLL(file));
+                }
+            }
+            catch { }
             return results;
         }
 

@@ -3,13 +3,9 @@ using MBC.Core.Rounds;
 using MBC.Core.Util;
 using MBC.Shared;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Xml.Serialization;
 
 namespace MBC.Core.Matches
 {
-
     /// <summary>
     /// <para>
     /// A match is the basic requirement of a game, in this case, a battleship game. Each Match contains
@@ -40,6 +36,12 @@ namespace MBC.Core.Matches
 
         public event MBCEventHandler Event;
 
+        public Configuration Config
+        {
+            get;
+            protected set;
+        }
+
         public MatchControls Controls
         {
             get;
@@ -68,12 +70,6 @@ namespace MBC.Core.Matches
             private set;
         }
 
-        public Configuration Config
-        {
-            get;
-            protected set;
-        }
-
         private EventIterator Events
         {
             get;
@@ -94,8 +90,6 @@ namespace MBC.Core.Matches
             Rounds.TargetRounds = Rounds.RoundList.Count;
         }
 
-        internal abstract Round CreateNewRound();
-
         /// <summary>
         /// Saves the current progress of this <see cref="Match"/> to a file. All generated <see cref="Event"/>s
         /// and <see cref="ControllerRegister"/>s are saved for later use. Match-specific <see cref="Configuration"/>
@@ -104,7 +98,6 @@ namespace MBC.Core.Matches
         /// <param name="filePath"></param>
         public void SaveToFile(string filePath)
         {
-
         }
 
         public bool StepBackward()
@@ -124,6 +117,8 @@ namespace MBC.Core.Matches
             }
             return false;
         }
+
+        internal abstract Round CreateNewRound();
 
         private void MakeEvent(Event ev)
         {

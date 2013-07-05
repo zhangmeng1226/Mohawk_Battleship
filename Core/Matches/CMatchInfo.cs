@@ -57,7 +57,7 @@ namespace MBC.Core.Matches
                 gameMode |= gmStr;
                 if (gmStr == GameMode.Salvo || gmStr == GameMode.Powered || gmStr == GameMode.Teams)
                 {
-                    throw new NotImplementedException("The "+gmStr.ToString()+" game mode is not supported.");
+                    throw new NotImplementedException("The " + gmStr.ToString() + " game mode is not supported.");
                 }
             }
         }

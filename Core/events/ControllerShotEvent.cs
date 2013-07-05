@@ -53,16 +53,16 @@ namespace MBC.Core.Events
             private set;
         }
 
-        internal override void ProcForward()
-        {
-            Round.Registers[RegisterID].Shots.Add(Shot);
-            Round.Registers[Shot.Receiver].ShotsAgainst.Add(Shot);
-        }
-
         internal override void ProcBackward()
         {
             Round.Registers[RegisterID].Shots.Remove(Shot);
             Round.Registers[Shot.Receiver].ShotsAgainst.Remove(Shot);
+        }
+
+        internal override void ProcForward()
+        {
+            Round.Registers[RegisterID].Shots.Add(Shot);
+            Round.Registers[Shot.Receiver].ShotsAgainst.Add(Shot);
         }
     }
 }

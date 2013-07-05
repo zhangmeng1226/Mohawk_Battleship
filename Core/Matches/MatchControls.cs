@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
+﻿using System.Threading;
 
 namespace MBC.Core.Matches
 {
@@ -18,24 +14,6 @@ namespace MBC.Core.Matches
             Delay = 0;
             Thread = new Thread(PlayLoop);
             SleepHandle = new AutoResetEvent(false);
-        }
-
-        public bool IsRunning
-        {
-            get;
-            private set;
-        }
-
-        private Thread Thread
-        {
-            get;
-            set;
-        }
-
-        private AutoResetEvent SleepHandle
-        {
-            get;
-            set;
         }
 
         public int Delay
@@ -54,6 +32,35 @@ namespace MBC.Core.Matches
             }
         }
 
+        public bool IsRunning
+        {
+            get;
+            private set;
+        }
+
+        private AutoResetEvent SleepHandle
+        {
+            get;
+            set;
+        }
+
+        private Thread Thread
+        {
+            get;
+            set;
+        }
+
+        public void Play()
+        {
+            if (IsRunning)
+            {
+                return;
+            }
+            IsRunning = true;
+            SleepHandle.Reset();
+            Thread.Start();
+        }
+
         public void PlayLoop()
         {
             while (IsRunning)
@@ -68,17 +75,6 @@ namespace MBC.Core.Matches
                 }
             }
             IsRunning = false;
-        }
-
-        public void Play()
-        {
-            if (IsRunning)
-            {
-                return;
-            }
-            IsRunning = true;
-            SleepHandle.Reset();
-            Thread.Start();
         }
 
         public void Stop()

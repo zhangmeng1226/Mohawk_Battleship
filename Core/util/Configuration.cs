@@ -205,6 +205,21 @@ namespace MBC.Core.Util
             globalInstance.Name = "global";
             globalInstance.LoadConfigFile();
         }
+
+        /// <summary>
+        /// Converts a <paramref name="value"/> string to the value of the type <paramref name="valueType"/> using
+        /// its TypeConverter.
+        /// </summary>
+        /// <param name="valueType">The Type of the object to convert the <paramref name="value"/> to.</param>
+        /// <param name="value">The string representation of a value to parse.</param>
+        /// <returns>A non-null object.</returns>
+        /// <exception cref="Exception">Thrown if the conversion failed.</exception>
+        public static object ParseString(Type valueType, string value)
+        {
+            var converter = TypeDescriptor.GetConverter(valueType);
+            return converter.ConvertFromString(value);
+        }
+
         /// <summary>
         /// Checks if a file with the same name exists in the configuration folder.
         /// </summary>
@@ -310,20 +325,6 @@ namespace MBC.Core.Util
             }
             writer.Flush();
             writer.Close();
-        }
-
-        /// <summary>
-        /// Converts a <paramref name="value"/> string to the value of the type <paramref name="valueType"/> using
-        /// its TypeConverter.
-        /// </summary>
-        /// <param name="valueType">The Type of the object to convert the <paramref name="value"/> to.</param>
-        /// <param name="value">The string representation of a value to parse.</param>
-        /// <returns>A non-null object.</returns>
-        /// <exception cref="Exception">Thrown if the conversion failed.</exception>
-        public static object ParseString(Type valueType, string value)
-        {
-            var converter = TypeDescriptor.GetConverter(valueType);
-            return converter.ConvertFromString(value);
         }
 
         /// <summary>

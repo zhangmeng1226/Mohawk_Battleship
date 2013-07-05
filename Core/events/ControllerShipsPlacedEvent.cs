@@ -64,6 +64,12 @@ namespace MBC.Core.Events
             Message = msg.ToString();
         }
 
+        public ShipList PrevShips
+        {
+            get;
+            private set;
+        }
+
         /// <summary>
         /// Gets the <see cref="ShipList"/> of the <see cref="Controller.Register"/>.
         /// </summary>
@@ -73,20 +79,14 @@ namespace MBC.Core.Events
             private set;
         }
 
-        public ShipList PrevShips
+        internal override void ProcBackward()
         {
-            get;
-            private set;
+            Round.Registers[RegisterID].Ships = PrevShips;
         }
 
         internal override void ProcForward()
         {
             Round.Registers[RegisterID].Ships = Ships;
-        }
-
-        internal override void ProcBackward()
-        {
-            Round.Registers[RegisterID].Ships = PrevShips;
         }
     }
 }
