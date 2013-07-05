@@ -1,5 +1,10 @@
 ﻿namespace MBC.Core.Events
 {
+    /// <summary>
+    /// Defines a method that retrieves and handles an <see cref="Event"/>.
+    /// </summary>
+    /// <param name="ev">The generated <see cref="Event"/></param>
+    public delegate void MBCEventHandler(Event ev, bool backward);
 
     /// <summary>
     /// The base class for any event created in the MBC core framework. Provides a message string that
@@ -11,19 +16,12 @@
     public abstract class Event
     {
         /// <summary>
-        /// The message describing the occurrence.
-        /// </summary>
-        protected string message;
-
-        /// <summary>
         /// Gets a string representation of the message generated.
         /// </summary>
         public string Message
         {
-            get
-            {
-                return message;
-            }
+            get;
+            protected set;
         }
 
         /// <summary>
@@ -33,6 +31,16 @@
         public override string ToString()
         {
             return Message;
+        }
+
+        internal virtual void ProcForward()
+        {
+
+        }
+
+        internal virtual void ProcBackward()
+        {
+
         }
     }
 }

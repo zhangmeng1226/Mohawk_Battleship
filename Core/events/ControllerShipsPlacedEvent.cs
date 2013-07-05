@@ -1,4 +1,5 @@
-﻿using MBC.Shared;
+﻿using MBC.Core.Rounds;
+using MBC.Shared;
 using System.Text;
 
 namespace MBC.Core.Events
@@ -9,23 +10,22 @@ namespace MBC.Core.Events
     /// </summary>
     public class ControllerShipsPlacedEvent : ControllerEvent
     {
-        private ShipList shipsPlaced;
-
         /// <summary>
         /// Passes the <paramref name="register"/> to the base constructor, stores the rest of the parameters,
         /// and generates a message based on the state of the given <see cref="ShipList"/>.
         /// </summary>
         /// <param name="register">A <see cref="ControllerRegister"/>.</param>
-        /// <param name="ships">The <see cref="ShipList"/> associated with the <see cref="ControllerRegister"/></param>
-        public ControllerShipsPlacedEvent(ControllerRegister register, ShipList ships)
-            : base(register)
+        /// <param name="newShips">The <see cref="ShipList"/> associated with the <see cref="ControllerRegister"/></param>
+        public ControllerShipsPlacedEvent(Round rnd, ControllerID register, ShipList oldShips, ShipList newShips)
+            : base(rnd, register)
         {
-            shipsPlaced = ships;
+            Ships = newShips;
+            PrevShips = oldShips;
 
             StringBuilder msg = new StringBuilder();
-            msg.Append(register);
+            msg.Append(Round.Registers[register]);
             int placedCount = 0;
-            foreach (var ship in shipsPlaced.Ships)
+            foreach (var ship in Ships.Ships)
             {
                 if (ship.IsPlaced)
                 {
@@ -40,15 +40,15 @@ namespace MBC.Core.Events
                     msg.Append(ship);
                 }
             }
-            if (placedCount > 0 && !shipsPlaced.ShipsPlaced)
+            if (placedCount > 0 && !Ships.ShipsPlaced)
             {
                 msg.Append(" and ");
             }
-            if (!shipsPlaced.ShipsPlaced)
+            if (!Ships.ShipsPlaced)
             {
                 placedCount = 0;
                 msg.Append(" did not place ");
-                foreach (var ship in shipsPlaced.Ships)
+                foreach (var ship in Ships.Ships)
                 {
                     if (!ship.IsPlaced)
                     {
@@ -61,7 +61,7 @@ namespace MBC.Core.Events
                 }
             }
             msg.Append(".");
-            message = msg.ToString();
+            Message = msg.ToString();
         }
 
         /// <summary>
@@ -69,10 +69,24 @@ namespace MBC.Core.Events
         /// </summary>
         public ShipList Ships
         {
-            get
-            {
-                return shipsPlaced;
-            }
+            get;
+            private set;
+        }
+
+        public ShipList PrevShips
+        {
+            get;
+            private set;
+        }
+
+        internal override void ProcForward()
+        {
+            Round.Registers[RegisterID].Ships = Ships;
+        }
+
+        internal override void ProcBackward()
+        {
+            Round.Registers[RegisterID].Ships = PrevShips;
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using MBC.Shared;
+﻿using MBC.Core.Rounds;
+using MBC.Shared;
 
 namespace MBC.Core.Events
 {
@@ -6,11 +7,8 @@ namespace MBC.Core.Events
     /// Provides information about a <see cref="ControllerRegister"/>'s <see cref="Ship"/> that has
     /// been destroyed by another <see cref="ControllerRegister"/>.
     /// </summary>
-    public class ControllerDestroyedShipEvent : ControllerEvent
+    public class ControllerShipDestroyedEvent : ControllerEvent
     {
-        private Ship destroyed;
-        private ControllerRegister owner;
-
         /// <summary>
         /// Passes the <paramref name="register"/> to the base constructor, stores the other parameters,
         /// and generates a <see cref="Event.Message"/>.
@@ -18,13 +16,12 @@ namespace MBC.Core.Events
         /// <param name="register">The <see cref="ControllerRegister"/> that destroyed the <see cref="Ship"/>.</param>
         /// <param name="shipOwner">The <see cref="ControllerRegister"/> that owns the destroyed <see cref="Ship"/></param>
         /// <param name="destroyedShip">The destroyed <see cref="Ship"/>.</param>
-        public ControllerDestroyedShipEvent(ControllerRegister register, ControllerRegister shipOwner, Ship destroyedShip)
-            : base(register)
+        public ControllerShipDestroyedEvent(Round rnd, ControllerID register, Ship destroyedShip)
+            : base(rnd, register)
         {
-            this.destroyed = destroyedShip;
-            this.owner = shipOwner;
+            DestroyedShip = destroyedShip;
 
-            message = register + " destroyed a ship at " + destroyedShip + " from " + shipOwner + ".";
+            Message = Round.Registers[register] + " has had their ship at " + DestroyedShip + "destroyed.";
         }
 
         /// <summary>
@@ -32,21 +29,18 @@ namespace MBC.Core.Events
         /// </summary>
         public Ship DestroyedShip
         {
-            get
-            {
-                return destroyed;
-            }
+            get;
+            private set;
         }
 
-        /// <summary>
-        /// Gets the <see cref="ControllerRegister"/> owning the destroyed <see cref="Ship"/>.
-        /// </summary>
-        public ControllerRegister ShipOwner
+        internal override void ProcForward()
         {
-            get
-            {
-                return owner;
-            }
+            Round.Registers[RegisterID].ShipsLeft.Remove(DestroyedShip);
+        }
+
+        internal override void ProcBackward()
+        {
+            Round.Registers[RegisterID].ShipsLeft.Add(DestroyedShip);
         }
     }
 }

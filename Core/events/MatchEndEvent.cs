@@ -1,4 +1,5 @@
-﻿namespace MBC.Core.Events
+﻿using MBC.Core.Matches;
+namespace MBC.Core.Events
 {
     /// <summary>
     /// Provides information about a <see cref="Match"/> that has ended.
@@ -12,7 +13,7 @@
         public MatchEndEvent(Match match)
             : base(match)
         {
-            message = "The match has ended.";
+            Message = "The match has ended.";
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using MBC.Core.Rounds;
+using System.Linq;
 using System.Text;
 
 namespace MBC.Core.Events
@@ -35,7 +36,7 @@ namespace MBC.Core.Events
             }
             msg.Append('.');
 
-            this.message = msg.ToString();
+            this.Message = msg.ToString();
         }
     }
 }

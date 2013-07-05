@@ -1,4 +1,5 @@
-﻿namespace MBC.Core.Events
+﻿using MBC.Core.Rounds;
+namespace MBC.Core.Events
 {
     /// <summary>
     /// Provides information about a <see cref="Round"/> that has ended.
@@ -12,7 +13,17 @@
         public RoundEndEvent(Round round)
             : base(round)
         {
-            message = "This round has ended.";
+            Message = "This round has ended.";
+        }
+
+        internal override void ProcForward()
+        {
+            Round.Ended = true;
+        }
+
+        internal override void ProcBackward()
+        {
+            Round.Ended = false;
         }
     }
 }

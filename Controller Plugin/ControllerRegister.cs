@@ -56,10 +56,14 @@ namespace MBC.Shared
         /// </summary>
         public ShipList Ships { get; set; }
 
+        public ShipList ShipsLeft { get; set; }
+
         /// <summary>
         /// Gets or sets the <see cref="ShotList"/>.
         /// </summary>
         public ShotList Shots { get; set; }
+
+        public ShotList ShotsAgainst { get; set; }
 
         /// <summary>
         /// Gets or sets the <see cref="ControllerID"/>.

@@ -343,7 +343,6 @@ namespace MBC.Shared
                 shotsByReceiver[receiverPair.Key] = invertedShots;
                 totalList.AddRange(invertedShots);
             }
-
             //Replace the entire shot contents of this ShotList with the inverted one.
             shotHistory = totalList;
         }

@@ -122,8 +122,6 @@ namespace MBC.Core
         /// in the <see cref="MatchInfo"/> located in the <see cref="ControllerRegister"/>.</exception>
         public void NewRound()
         {
-            Register.Shots = new ShotList();
-            Register.Ships = new ShipList(Register.Match.StartingShips);
             controller.Register = new ControllerRegister(Register);
 
             var thread = new Thread(() => controller.NewRound());
@@ -179,12 +177,12 @@ namespace MBC.Core
         /// </summary>
         /// <exception cref="ControllerTimeoutException">Thrown if the controller exceeded the time limit specified
         /// in the <see cref="MatchInfo"/> located in the <see cref="ControllerRegister"/>.</exception>
-        public void PlaceShips()
+        public ShipList PlaceShips()
         {
             var thread = new Thread(() => controller.PlaceShips());
 
             HandleThread(thread, "PlaceShips");
-            Register.Ships = new ShipList(controller.Register.Ships);
+            return controller.Register.Ships;
         }
 
         /// <summary>

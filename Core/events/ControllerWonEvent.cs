@@ -1,4 +1,5 @@
-﻿using MBC.Shared;
+﻿using MBC.Core.Rounds;
+using MBC.Shared;
 
 namespace MBC.Core.Events
 {
@@ -11,10 +12,10 @@ namespace MBC.Core.Events
         /// Passes the <paramref name="register"/> to the base constructor and generates a <see cref="Event.Message"/>.
         /// </summary>
         /// <param name="register">The <see cref="ControllerRegister"/> winning a <see cref="Round"/>.</param>
-        public ControllerWonEvent(ControllerRegister register)
-            : base(register)
+        public ControllerWonEvent(Round rnd, ControllerID register)
+            : base(rnd, register)
         {
-            message = register + " has won the round.";
+            Message = register + " has won the round.";
         }
     }
 }

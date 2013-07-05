@@ -1,4 +1,5 @@
-﻿using MBC.Shared;
+﻿using MBC.Core.Rounds;
+using MBC.Shared;
 
 namespace MBC.Core.Events
 {
@@ -8,9 +9,6 @@ namespace MBC.Core.Events
     /// </summary>
     public class ControllerHitShipEvent : ControllerEvent
     {
-        private Shot coords;
-        private ControllerRegister opponent;
-
         /// <summary>
         /// Passes the <paramref name="register"/> to the base constructor, stores the parameters, and
         /// generates a <see cref="Event.Message"/>.
@@ -18,13 +16,12 @@ namespace MBC.Core.Events
         /// <param name="register">The <see cref="ControllerRegister"/> creating the <see cref="Shot"/></param>
         /// <param name="opposer">The receiving <see cref="ControllerRegister"/> of the <see cref="Shot"/>.</param>
         /// <param name="shot">The <see cref="Shot"/> created.</param>
-        public ControllerHitShipEvent(ControllerRegister register, ControllerRegister opposer, Shot shot)
-            : base(register)
+        public ControllerHitShipEvent(Round rnd, ControllerID sender, Shot shot)
+            : base(rnd, sender)
         {
-            this.coords = shot;
-            this.opponent = opposer;
+            HitShot = shot;
 
-            message = register + " hit a " + opposer + " ship at " + shot.Coordinates;
+            Message = Round.Registers[sender] + " hit a " + Round.Registers[shot.Receiver] + " ship at " + shot.Coordinates;
         }
 
         /// <summary>
@@ -32,21 +29,8 @@ namespace MBC.Core.Events
         /// </summary>
         public Shot HitShot
         {
-            get
-            {
-                return coords;
-            }
-        }
-
-        /// <summary>
-        /// Gets the receiving <see cref="ControllerRegister"/> of the <see cref="ControllerHitShipEvent.HitShot"/>;
-        /// </summary>
-        public ControllerRegister Opponent
-        {
-            get
-            {
-                return opponent;
-            }
+            get;
+            private set;
         }
     }
 }

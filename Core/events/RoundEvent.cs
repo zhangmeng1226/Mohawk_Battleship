@@ -1,11 +1,6 @@
-﻿namespace MBC.Core.Events
+﻿using MBC.Core.Rounds;
+namespace MBC.Core.Events
 {
-    /// <summary>
-    /// Defines a method that retrieves and handles a <see cref="RoundEvent"/>.
-    /// </summary>
-    /// <param name="ev">The generated <see cref="RoundEvent"/></param>
-    public delegate void MBCRoundEventHandler(RoundEvent ev);
-
     /// <summary>
     /// The base class for a series of <see cref="Event"/>s that relate to changes in a <see cref="Round"/>.
     /// </summary>

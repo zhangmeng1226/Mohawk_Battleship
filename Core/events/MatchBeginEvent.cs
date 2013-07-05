@@ -1,4 +1,5 @@
-﻿namespace MBC.Core.Events
+﻿using MBC.Core.Matches;
+namespace MBC.Core.Events
 {
     /// <summary>
     /// Provides information about a <see cref="Match"/> that has begun.
@@ -12,7 +13,7 @@
         public MatchBeginEvent(Match match)
             : base(match)
         {
-            message = "The match has begun.";
+            Message = "The match has begun.";
         }
     }
 }
