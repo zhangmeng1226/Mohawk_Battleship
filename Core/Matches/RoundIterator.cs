@@ -17,7 +17,7 @@ namespace MBC.Core.Matches
         {
             MonitoringMatch = match;
             TargetRounds = MonitoringMatch.Config.GetValue<int>("mbc_match_rounds");
-            CurrentRoundIdx = -1;
+            CurrentRoundIdx = 0;
             RoundList = new List<Round>();
             roundsReached = false;
         }
@@ -106,7 +106,13 @@ namespace MBC.Core.Matches
 
         internal bool NextRound()
         {
-            if (CurrentRoundIdx + 1 < RoundList.Count)
+            if (CurrentRound == null)
+            {
+                CurrentRound = MonitoringMatch.CreateNewRound();
+                CurrentRound.Event += MonitoringMatch.RoundEventGenerated;
+                return false;
+            }
+            else if (CurrentRoundIdx + 1 < RoundList.Count)
             {
                 CurrentRound = RoundList[++CurrentRoundIdx];
                 return false;
@@ -114,6 +120,7 @@ namespace MBC.Core.Matches
             else if (!TargetReached)
             {
                 Round newRound = MonitoringMatch.CreateNewRound();
+                newRound.Event += MonitoringMatch.RoundEventGenerated;
                 RoundList.Add(newRound);
                 CurrentRound = newRound;
                 CurrentRoundIdx++;

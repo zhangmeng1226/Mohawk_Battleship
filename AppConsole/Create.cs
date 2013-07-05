@@ -1,4 +1,5 @@
 ﻿using MBC.Core;
+using MBC.Core.Matches;
 using MBC.Core.Util;
 using System;
 using System.Collections.Generic;
@@ -51,7 +52,7 @@ namespace MBC.App.BattleshipConsole
             }
             try
             {
-                MatchRun.CurrentMatch = new Match(Configuration.Global, playControllers.ToArray());
+                MatchRun.CurrentMatch = new ControlledMatch(Configuration.Global, playControllers.ToArray());
 
                 if (Configuration.Global.GetValue<bool>("mbc_console_create_events"))
                 {

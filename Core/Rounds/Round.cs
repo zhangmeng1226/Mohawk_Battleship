@@ -29,28 +29,23 @@ namespace MBC.Core.Rounds
         /// </summary>
         /// <param name="inputRegisters">A variable number of controllers that are involved in this Round.</param>
         /// <param name="matchInfo">Information about the match that determines Round behaviour.</param>
-        public Round(MatchInfo matchInfo, List<ControllerRegister> inputRegisters)
+        public Round(MatchInfo matchInfo, List<Register> inputRegisters)
         {
             MatchInfo = matchInfo;
 
             events = new EventIterator();
-            Registers = new List<ControllerRegister>();
+            Registers = new List<Register>();
             Remaining = new List<ControllerID>();
             generatedAccolades = new List<Accolade>();
             accoladeGenerator = new AccoladeGenerator(this);
 
-            var idRandomizeList = new List<ControllerID>();
-            var idRandom = new Random();
+            var newRandom = new Random();
             foreach (var register in inputRegisters)
             {
                 Registers.Add(register);
-                idRandomizeList.Add(register.ID);
+                Remaining.Add(register.ID);
             }
-            while (idRandomizeList.Count > 0)
-            {
-                Remaining.Add(idRandomizeList[idRandom.Next(idRandomizeList.Count)]);
-            }
-            CurrentTurn = Remaining[0];
+            CurrentTurn = Remaining[newRandom.Next(Remaining.Count)];
         }
 
         public event MBCEventHandler Event;
@@ -98,7 +93,7 @@ namespace MBC.Core.Rounds
         /// <summary>
         /// Gets a list of <see cref="ControllerRegister"/>s involved.
         /// </summary>
-        public List<ControllerRegister> Registers
+        public List<Register> Registers
         {
             get;
             internal set;
@@ -169,7 +164,10 @@ namespace MBC.Core.Rounds
         {
             events.AddEvent(ev);
             ev.ProcForward();
-            Event(ev, false);
+            if (Event != null)
+            {
+                Event(ev, false);
+            }
         }
     }
 }

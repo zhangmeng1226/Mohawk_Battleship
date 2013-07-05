@@ -86,7 +86,7 @@ namespace MBC.Shared
         /// Called when the <see cref="ControllerRegister.Ships"/> in the <see cref="Controller.Register"/> must
         /// be placed. Refer to the rules of the <see cref="MatchInfo.GameMode"/> in the <see cref="Controller.Register"/>.
         /// </summary>
-        public abstract void PlaceShips();
+        public abstract ShipList PlaceShips(ShipList initialShips);
 
         /// <summary>
         /// Called when the round has been lost.

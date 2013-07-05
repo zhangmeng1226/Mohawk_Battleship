@@ -52,7 +52,7 @@ namespace MBC.Core.Matches
         private void DetermineGameMode(Configuration config)
         {
             gameMode = 0;
-            foreach (var gmStr in config.GetValue<List<GameMode>>("mbc_game_mode"))
+            foreach (var gmStr in config.GetList<GameMode>("mbc_game_mode"))
             {
                 gameMode |= gmStr;
                 if (gmStr == GameMode.Salvo || gmStr == GameMode.Powered || gmStr == GameMode.Teams)

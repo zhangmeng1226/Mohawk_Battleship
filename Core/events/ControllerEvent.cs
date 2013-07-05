@@ -24,6 +24,7 @@ namespace MBC.Core.Events
         /// <summary>
         /// Gets the <see cref="ControllerRegister"/> that caused this event to occur.
         /// </summary>
+        /// ..0
         public ControllerID RegisterID
         {
             get;

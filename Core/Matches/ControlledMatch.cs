@@ -1,6 +1,7 @@
 ﻿using MBC.Core.Rounds;
 using MBC.Core.Util;
 using MBC.Shared;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -42,11 +43,12 @@ namespace MBC.Core.Matches
 
         private void CreateRegisters()
         {
-            Registers = new List<ControllerRegister>();
+            Registers = new List<Register>();
+            var info = (CMatchInfo)Info;
             for (var id = 0; id < controllers.Count; id++)
             {
-                Registers.Add(new ControllerRegister(Info, id));
-                ((CMatchInfo)Info).AddControllerName(Registers[id].ToString());
+                Registers.Add(new Register(Info, id));
+                info.AddControllerName(controllers[id].ToString());
             }
         }
 
@@ -80,6 +82,10 @@ namespace MBC.Core.Matches
             GenerateControllers(controllerInfoLst);
             CreateRegisters();
             FormOpponents();
+            foreach (var register in Registers)
+            {
+                controllers[register.ID].NewMatch(register);
+            }
 
             Rounds.NextRound();
         }

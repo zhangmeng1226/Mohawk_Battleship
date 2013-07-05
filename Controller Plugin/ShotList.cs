@@ -335,7 +335,6 @@ namespace MBC.Shared
                 //Subtract the inverted shots list for a certain receiver to get the inverted list.
                 foreach (var receiverShot in receiverPair.Value)
                 {
-                    Console.WriteLine(receiverShot);
                     invertedShots.Remove(receiverShot);
                 }
 

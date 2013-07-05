@@ -21,8 +21,6 @@ namespace MBC.Shared
             {
                 Match = copy.Match;
                 Score = copy.Score;
-                Ships = new ShipList(copy.Ships);
-                Shots = new ShotList(copy.Shots);
                 ID = copy.ID;
                 Opponents = new List<ControllerID>(copy.Opponents);
             }
@@ -50,20 +48,6 @@ namespace MBC.Shared
         /// Gets or sets the current score.
         /// </summary>
         public int Score { get; set; }
-
-        /// <summary>
-        /// Gets or sets the <see cref="ShipList"/>.
-        /// </summary>
-        public ShipList Ships { get; set; }
-
-        public ShipList ShipsLeft { get; set; }
-
-        /// <summary>
-        /// Gets or sets the <see cref="ShotList"/>.
-        /// </summary>
-        public ShotList Shots { get; set; }
-
-        public ShotList ShotsAgainst { get; set; }
 
         /// <summary>
         /// Gets or sets the <see cref="ControllerID"/>.

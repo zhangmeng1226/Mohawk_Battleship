@@ -33,8 +33,6 @@ namespace MBC.Core.Events
                     msg.Append("nobody");
                 }
                 msg.Append(" at ");
-                msg.Append(Round.Registers[shot.Receiver]);
-                msg.Append(" at ");
                 msg.Append(shot.Coordinates);
             }
             else

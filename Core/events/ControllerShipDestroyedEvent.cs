@@ -21,7 +21,7 @@ namespace MBC.Core.Events
         {
             DestroyedShip = destroyedShip;
 
-            Message = Round.Registers[register] + " has had their ship at " + DestroyedShip + "destroyed.";
+            Message = Round.Registers[register] + " has had their ship at " + DestroyedShip + " destroyed.";
         }
 
         /// <summary>

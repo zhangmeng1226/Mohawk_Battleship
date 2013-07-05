@@ -58,7 +58,7 @@ namespace MBC.Core.Matches
         /// Gets the <see cref="ControllerRegister"/>s involved.
         /// </summary>
         /// <seealso cref="ControllerRegister"/>
-        public List<ControllerRegister> Registers
+        public List<Register> Registers
         {
             get;
             protected set;
@@ -126,6 +126,14 @@ namespace MBC.Core.Matches
             if (Event != null)
             {
                 Event(ev, false);
+            }
+        }
+
+        internal void RoundEventGenerated(Event ev, bool backward)
+        {
+            if (Event != null)
+            {
+                Event(ev, backward);
             }
         }
     }

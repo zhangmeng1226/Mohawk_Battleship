@@ -47,7 +47,7 @@ namespace MBC.Core.Util
             var firstType = values[0].GetType();
             foreach (var valObj in values)
             {
-                if (valObj.GetType() == firstType)
+                if (valObj != null && valObj.GetType() == firstType)
                 {
                     list.Add(valObj);
                 }

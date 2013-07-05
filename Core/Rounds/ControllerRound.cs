@@ -1,5 +1,6 @@
 ﻿using MBC.Core.Events;
 using MBC.Shared;
+using System;
 using System.Collections.Generic;
 
 namespace MBC.Core.Rounds
@@ -56,7 +57,6 @@ namespace MBC.Core.Rounds
             foreach (var register in Registers)
             {
                 register.Ships = new ShipList(MatchInfo.StartingShips);
-                register.ShipsLeft = new ShipList(register.Ships.Ships);
                 register.Shots = new ShotList();
                 register.ShotsAgainst = new ShotList();
                 try
@@ -149,12 +149,14 @@ namespace MBC.Core.Rounds
             try
             {
                 Shot shotMade = Controllers[CurrentTurn].MakeShot();
-                MakeEvent(new ControllerShotEvent(this, CurrentTurn, shotMade));
 
                 if (ControllerShotInvalid(CurrentTurn, shotMade))
                 {
+                    MakeEvent(new ControllerShotEvent(this, CurrentTurn, shotMade));
                     MakeLoser(CurrentTurn);
+                    return;
                 }
+                MakeEvent(new ControllerShotEvent(this, CurrentTurn, shotMade));
                 Controllers[shotMade.Receiver].NotifyOpponentShot(shotMade);
 
                 var shipHit = Registers[shotMade.Receiver].Ships.ShipAt(shotMade.Coordinates);
@@ -184,7 +186,6 @@ namespace MBC.Core.Rounds
                 MakeEvent(new ControllerTimeoutEvent(this, ex));
                 MakeLoser(ex.Register.ID);
             }
-            NextTurn();
         }
 
         /// <summary>
@@ -213,9 +214,9 @@ namespace MBC.Core.Rounds
             }
         }
 
-        private static List<ControllerRegister> RegistersFromControllers(List<ControllerUser> controllers)
+        private static List<Register> RegistersFromControllers(List<ControllerUser> controllers)
         {
-            var registers = new List<ControllerRegister>();
+            var registers = new List<Register>();
             foreach (var controller in controllers)
             {
                 registers.Add(controller.Register);

@@ -1,4 +1,5 @@
 ﻿using MBC.Core;
+using MBC.Core.Matches;
 using MBC.Core.Util;
 using System;
 
@@ -33,7 +34,7 @@ namespace MBC.App.BattleshipConsole
                 return;
             }
 
-            if (!CurrentMatch.Step())
+            if (CurrentMatch.StepForward())
             {
                 Console.WriteLine("The match is over.");
             }
@@ -53,7 +54,7 @@ namespace MBC.App.BattleshipConsole
                 return;
             }
             Running = true;
-            while (Running && CurrentMatch.Step()) ;
+            while (Running && !CurrentMatch.StepForward());
             Console.WriteLine("The match has stopped.");
         }
 

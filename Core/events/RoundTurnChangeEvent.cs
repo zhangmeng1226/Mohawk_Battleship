@@ -10,6 +10,7 @@ namespace MBC.Core.Events
         {
             NextTurn = next;
             PreviousTurn = last;
+            Message = "Turn switch from "+Round.Registers[last]+" to "+Round.Registers[next];
         }
 
         public ControllerID NextTurn

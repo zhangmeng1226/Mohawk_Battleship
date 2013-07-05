@@ -50,6 +50,7 @@
     <Compile Include="Matches\FileMatch.cs" />
     <Compile Include="Matches\MatchControls.cs" />
     <Compile Include="Matches\RoundIterator.cs" />
+    <Compile Include="Register.cs" />
     <Compile Include="Rounds\ClassicRound.cs" />
     <Compile Include="ControllerInformation.cs" />
     <Compile Include="Rounds\ControllerRound.cs" />

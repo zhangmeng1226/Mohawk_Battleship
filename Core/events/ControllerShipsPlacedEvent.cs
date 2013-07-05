@@ -82,11 +82,13 @@ namespace MBC.Core.Events
         internal override void ProcBackward()
         {
             Round.Registers[RegisterID].Ships = PrevShips;
+            Round.Registers[RegisterID].ShipsLeft = new ShipList(PrevShips.Ships);
         }
 
         internal override void ProcForward()
         {
             Round.Registers[RegisterID].Ships = Ships;
+            Round.Registers[RegisterID].ShipsLeft = new ShipList(Ships.Ships);
         }
     }
 }
