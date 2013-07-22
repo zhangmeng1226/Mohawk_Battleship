@@ -15,16 +15,16 @@ namespace MBC.Core.Events
         /// Copies the <see cref="ControllerRegister"/> object reference.
         /// </summary>
         /// <param name="register"></param>
-        public ControllerEvent(Round rnd, ControllerID registerID)
-            : base(rnd)
+        public ControllerEvent(ControllerID registerID)
         {
             RegisterID = registerID;
         }
 
+        private ControllerEvent() { }
+
         /// <summary>
         /// Gets the <see cref="ControllerRegister"/> that caused this event to occur.
         /// </summary>
-        /// ..0
         public ControllerID RegisterID
         {
             get;

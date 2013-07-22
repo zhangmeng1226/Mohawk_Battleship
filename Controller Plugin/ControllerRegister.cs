@@ -26,6 +26,8 @@ namespace MBC.Shared
             }
         }
 
+        protected ControllerRegister() { }
+
         /// <summary>
         /// Stores the <paramref name="match"/> and <paramref name="id"/> and sets the score to zero.
         /// </summary>

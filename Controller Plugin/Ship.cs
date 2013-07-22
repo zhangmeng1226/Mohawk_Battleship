@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Xml.Serialization;
 
 namespace MBC.Shared
 {
@@ -10,6 +11,15 @@ namespace MBC.Shared
     /// </summary>
     public class Ship : IEquatable<Ship>
     {
+
+        private bool isPlaced;
+
+        private int length;
+
+        private Coordinates location;
+
+        private ShipOrientation orientation;
+
         /// <summary>
         /// Copies an existing <see cref="Ship"/>.
         /// </summary>
@@ -39,22 +49,38 @@ namespace MBC.Shared
             Length = length;
         }
 
+        private Ship() { }
+
         /// <summary>
         /// Gets a bool that indicates whether or not this <see cref="Ship"/> has been placed.
         /// </summary>
+        [XmlIgnore]
         public bool IsPlaced
         {
-            get;
-            private set;
+            get
+            {
+                return isPlaced;
+            }
+            private set
+            {
+                isPlaced = value;
+            }
         }
 
         /// <summary>
         /// Gets the length by number of cells occupied.
         /// </summary>
+        [XmlIgnore]
         public int Length
         {
-            get;
-            private set;
+            get
+            {
+                return length;
+            }
+            set
+            {
+                length = value;
+            }
         }
 
         /// <summary>
@@ -63,8 +89,15 @@ namespace MBC.Shared
         /// <exception cref="InvalidOperationException">Thrown if this <see cref="Ship"/> has not been placed.</exception>
         public Coordinates Location
         {
-            get;
-            private set;
+            get
+            {
+                return location;
+            }
+            set
+            {
+                location = value;
+
+            }
         }
 
         /// <summary>
@@ -72,8 +105,14 @@ namespace MBC.Shared
         /// </summary>
         public ShipOrientation Orientation
         {
-            get;
-            private set;
+            get
+            {
+                return orientation;
+            }
+            set
+            {
+                orientation = value;
+            }
         }
 
         /// <summary>

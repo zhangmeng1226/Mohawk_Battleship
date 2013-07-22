@@ -2,6 +2,7 @@
 using MBC.Shared;
 using System;
 using System.Collections.Generic;
+using System.Xml.Serialization;
 
 namespace MBC.Core.Rounds
 {
@@ -15,6 +16,7 @@ namespace MBC.Core.Rounds
         /// <summary>
         /// A list of <see cref="ControllerUser"/>s involved in influencing generated <see cref="Event"/>s.
         /// </summary>
+        [XmlIgnore]
         protected List<ControllerUser> Controllers;
 
         /// <summary>
@@ -39,7 +41,7 @@ namespace MBC.Core.Rounds
                 }
                 catch (ControllerTimeoutException ex)
                 {
-                    MakeEvent(new ControllerTimeoutEvent(this, ex));
+                    MakeEvent(new ControllerTimeoutEvent(ex));
                 }
             }
             base.End();
@@ -52,7 +54,7 @@ namespace MBC.Core.Rounds
         /// </summary>
         protected void Begin()
         {
-            MakeEvent(new RoundBeginEvent(this));
+            MakeEvent(new RoundBeginEvent(Registers));
 
             foreach (var register in Registers)
             {
@@ -65,7 +67,7 @@ namespace MBC.Core.Rounds
                 }
                 catch (ControllerTimeoutException ex)
                 {
-                    MakeEvent(new ControllerTimeoutEvent(this, ex));
+                    MakeEvent(new ControllerTimeoutEvent(ex));
                 }
             }
         }
@@ -115,14 +117,14 @@ namespace MBC.Core.Rounds
         /// <param name="rID">The <see cref="ControllerUser"/> that lost the round.</param>
         protected void MakeLoser(ControllerID rID)
         {
-            MakeEvent(new ControllerLostEvent(this, rID));
+            MakeEvent(new ControllerLostEvent(rID));
             try
             {
                 Controllers[rID].RoundLost();
             }
             catch (ControllerTimeoutException ex)
             {
-                MakeEvent(new ControllerTimeoutEvent(this, ex));
+                MakeEvent(new ControllerTimeoutEvent(ex));
             }
         }
 
@@ -141,7 +143,7 @@ namespace MBC.Core.Rounds
         /// </summary>
         protected void NextTurn()
         {
-            MakeEvent(new RoundTurnChangeEvent(this, CurrentTurn, NextRemaining()));
+            MakeEvent(new RoundTurnChangeEvent(CurrentTurn, NextRemaining()));
         }
 
         protected void StandardPlaceShot()
@@ -152,11 +154,11 @@ namespace MBC.Core.Rounds
 
                 if (ControllerShotInvalid(CurrentTurn, shotMade))
                 {
-                    MakeEvent(new ControllerShotEvent(this, CurrentTurn, shotMade));
+                    MakeEvent(new ControllerShotEvent(CurrentTurn, shotMade));
                     MakeLoser(CurrentTurn);
                     return;
                 }
-                MakeEvent(new ControllerShotEvent(this, CurrentTurn, shotMade));
+                MakeEvent(new ControllerShotEvent(CurrentTurn, shotMade));
                 Controllers[shotMade.Receiver].NotifyOpponentShot(shotMade);
 
                 var shipHit = Registers[shotMade.Receiver].Ships.ShipAt(shotMade.Coordinates);
@@ -165,11 +167,11 @@ namespace MBC.Core.Rounds
                 {
                     var shipSunk = shipHit.IsSunk(Registers[shotMade.Receiver].ShotsAgainst);
 
-                    MakeEvent(new ControllerHitShipEvent(this, CurrentTurn, shotMade));
+                    MakeEvent(new ControllerHitShipEvent(CurrentTurn, shotMade));
                     Controllers[CurrentTurn].NotifyShotHit(shotMade, shipSunk);
                     if (shipSunk)
                     {
-                        MakeEvent(new ControllerShipDestroyedEvent(this, shotMade.Receiver, shipHit));
+                        MakeEvent(new ControllerShipDestroyedEvent(shotMade.Receiver, shipHit));
                         if (Registers[shotMade.Receiver].ShipsLeft.Count == 0)
                         {
                             MakeLoser(shotMade.Receiver);
@@ -183,7 +185,7 @@ namespace MBC.Core.Rounds
             }
             catch (ControllerTimeoutException ex)
             {
-                MakeEvent(new ControllerTimeoutEvent(this, ex));
+                MakeEvent(new ControllerTimeoutEvent(ex));
                 MakeLoser(ex.Register.ID);
             }
         }
@@ -199,7 +201,7 @@ namespace MBC.Core.Rounds
             {
                 try
                 {
-                    MakeEvent(new ControllerShipsPlacedEvent(this, rID, Registers[rID].Ships, Controllers[rID].PlaceShips()));
+                    MakeEvent(new ControllerShipsPlacedEvent(rID, Registers[rID].Ships, Controllers[rID].PlaceShips()));
 
                     if (!ControllerShipsValid(rID))
                     {
@@ -208,7 +210,7 @@ namespace MBC.Core.Rounds
                 }
                 catch (ControllerTimeoutException ex)
                 {
-                    MakeEvent(new ControllerTimeoutEvent(this, ex));
+                    MakeEvent(new ControllerTimeoutEvent(ex));
                     MakeLoser(rID);
                 }
             }

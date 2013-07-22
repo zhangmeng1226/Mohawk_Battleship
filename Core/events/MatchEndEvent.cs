@@ -1,4 +1,5 @@
 ﻿using MBC.Core.Matches;
+using System;
 
 namespace MBC.Core.Events
 {
@@ -7,12 +8,7 @@ namespace MBC.Core.Events
     /// </summary>
     public class MatchEndEvent : MatchEvent
     {
-        /// <summary>
-        /// Passes the <paramref name="match"/> to the base constructor and generates a <see cref="Event.Message"/>.
-        /// </summary>
-        /// <param name="match">The <see cref="Match"/> that has ended.</param>
-        public MatchEndEvent(Match match)
-            : base(match)
+        protected internal override void GenerateMessage()
         {
             Message = "The match has ended.";
         }

@@ -1,16 +1,15 @@
 ﻿using MBC.Core.Rounds;
 using MBC.Shared;
+using System;
 
 namespace MBC.Core.Events
 {
     public class RoundTurnChangeEvent : RoundEvent
     {
-        public RoundTurnChangeEvent(Round rnd, ControllerID last, ControllerID next) :
-            base(rnd)
+        public RoundTurnChangeEvent(ControllerID last, ControllerID next)
         {
             NextTurn = next;
             PreviousTurn = last;
-            Message = "Turn switch from "+Round.Registers[last]+" to "+Round.Registers[next];
         }
 
         public ControllerID NextTurn
@@ -24,15 +23,19 @@ namespace MBC.Core.Events
             get;
             private set;
         }
-
-        internal override void ProcBackward()
+        protected internal override void GenerateMessage()
         {
-            Round.CurrentTurn = PreviousTurn;
+            Message = "Turn switch from " + PreviousTurn + " to " + NextTurn;
         }
 
-        internal override void ProcForward()
+        internal override void ProcBackward(Round round)
         {
-            Round.CurrentTurn = NextTurn;
+            round.CurrentTurn = PreviousTurn;
+        }
+
+        internal override void ProcForward(Round round)
+        {
+            round.CurrentTurn = NextTurn;
         }
     }
 }

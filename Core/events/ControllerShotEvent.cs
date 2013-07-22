@@ -1,5 +1,6 @@
 ﻿using MBC.Core.Rounds;
 using MBC.Shared;
+using System;
 using System.Text;
 
 namespace MBC.Core.Events
@@ -15,25 +16,22 @@ namespace MBC.Core.Events
         /// </summary>
         /// <param name="register">A <see cref="ControllerRegister"/> making the <paramref name="shot"/></param>
         /// <param name="shot">The <see cref="Shot"/> made by the <paramref name="register"/>.</param>
-        public ControllerShotEvent(Round rnd, ControllerID register, Shot shot)
-            : base(rnd, register)
+        public ControllerShotEvent(ControllerID register, Shot shot)
+            : base(register)
         {
             Shot = shot;
+        }
+
+        protected internal override void GenerateMessage()
+        {
             StringBuilder msg = new StringBuilder();
-            msg.Append(Round.Registers[register]);
-            if (shot != null)
+            msg.Append(RegisterID);
+            if (Shot != null)
             {
                 msg.Append(" shot ");
-                if (shot.Receiver < Round.MatchInfo.ControllerNames.Count && shot.Receiver >= 0)
-                {
-                    msg.Append(Round.Registers[Shot.Receiver]);
-                }
-                else
-                {
-                    msg.Append("nobody");
-                }
+                msg.Append(Shot.Receiver);
                 msg.Append(" at ");
-                msg.Append(shot.Coordinates);
+                msg.Append(Shot.Coordinates);
             }
             else
             {
@@ -51,16 +49,16 @@ namespace MBC.Core.Events
             private set;
         }
 
-        internal override void ProcBackward()
+        internal override void ProcBackward(Round round)
         {
-            Round.Registers[RegisterID].Shots.Remove(Shot);
-            Round.Registers[Shot.Receiver].ShotsAgainst.Remove(Shot);
+            round.Registers[RegisterID].Shots.Remove(Shot);
+            round.Registers[Shot.Receiver].ShotsAgainst.Remove(Shot);
         }
 
-        internal override void ProcForward()
+        internal override void ProcForward(Round round)
         {
-            Round.Registers[RegisterID].Shots.Add(Shot);
-            Round.Registers[Shot.Receiver].ShotsAgainst.Add(Shot);
+            round.Registers[RegisterID].Shots.Add(Shot);
+            round.Registers[Shot.Receiver].ShotsAgainst.Add(Shot);
         }
     }
 }

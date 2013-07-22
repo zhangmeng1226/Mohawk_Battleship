@@ -1,11 +1,15 @@
 ﻿using MBC.Core.Events;
+using System;
 using System.Collections.Generic;
+using System.Xml.Serialization;
 
 namespace MBC.Core.Matches
 {
     public class EventIterator
     {
+        [XmlIgnore]
         private int currentEventIdx;
+
         private List<Event> generatedEvents;
 
         public EventIterator()
@@ -14,6 +18,7 @@ namespace MBC.Core.Matches
             currentEventIdx = -1;
         }
 
+        [XmlIgnore]
         public Event CurrentEvent
         {
             get

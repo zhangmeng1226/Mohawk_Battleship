@@ -1,4 +1,6 @@
 ﻿using MBC.Core.Rounds;
+using System;
+using System.Xml.Serialization;
 
 namespace MBC.Core.Events
 {
@@ -7,26 +9,15 @@ namespace MBC.Core.Events
     /// </summary>
     public abstract class RoundEvent : Event
     {
-        private Round round;
 
-        /// <summary>
-        /// Stores the <paramref name="round"/>.
-        /// </summary>
-        /// <param name="round">The <see cref="Round"/> to store.</param>
-        public RoundEvent(Round round)
+        internal virtual void ProcForward(Round round)
         {
-            this.round = round;
+
         }
 
-        /// <summary>
-        /// Gets the <see cref="Round"/> associated with this <see cref="Event"/>.
-        /// </summary>
-        public Round Round
+        internal virtual void ProcBackward(Round round)
         {
-            get
-            {
-                return round;
-            }
+
         }
     }
 }

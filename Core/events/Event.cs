@@ -1,4 +1,6 @@
-﻿namespace MBC.Core.Events
+﻿using System;
+using System.Xml.Serialization;
+namespace MBC.Core.Events
 {
     /// <summary>
     /// Defines a method that retrieves and handles an <see cref="Event"/>.
@@ -15,14 +17,30 @@
     /// <seealso cref="ControllerEvent"/>
     public abstract class Event
     {
+        [XmlIgnore]
+        private string curMessage = null;
+
         /// <summary>
         /// Gets a string representation of the message generated.
         /// </summary>
+        [XmlIgnore]
         public string Message
         {
-            get;
-            protected set;
+            get
+            {
+                if (curMessage == null)
+                {
+                    GenerateMessage();
+                }
+                return curMessage;
+            }
+            protected set
+            {
+                curMessage = value;
+            }
         }
+
+        protected internal abstract void GenerateMessage();
 
         /// <summary>
         /// Provides a string representation.
@@ -31,14 +49,6 @@
         public override string ToString()
         {
             return Message;
-        }
-
-        internal virtual void ProcBackward()
-        {
-        }
-
-        internal virtual void ProcForward()
-        {
         }
     }
 }

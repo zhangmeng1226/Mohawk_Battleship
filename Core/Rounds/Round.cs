@@ -4,6 +4,7 @@ using MBC.Core.Matches;
 using MBC.Shared;
 using System;
 using System.Collections.Generic;
+using System.Xml.Serialization;
 
 namespace MBC.Core.Rounds
 {
@@ -16,6 +17,7 @@ namespace MBC.Core.Rounds
     /// </summary>
     public abstract class Round
     {
+        [XmlIgnore]
         private AccoladeGenerator accoladeGenerator;
 
         private EventIterator events;
@@ -75,6 +77,7 @@ namespace MBC.Core.Rounds
         /// Gets (or internally sets) a value indicating that this <see cref="Round"/> has ended and there can
         /// be no more <see cref="Event"/>s added.
         /// </summary>
+        [XmlIgnore]
         public bool Ended
         {
             get;
@@ -84,6 +87,7 @@ namespace MBC.Core.Rounds
         /// <summary>
         /// Gets the <see cref="MatchInfo"/> associated.
         /// </summary>
+        [XmlIgnore]
         public MatchInfo MatchInfo
         {
             get;
@@ -93,6 +97,7 @@ namespace MBC.Core.Rounds
         /// <summary>
         /// Gets a list of <see cref="ControllerRegister"/>s involved.
         /// </summary>
+        [XmlIgnore]
         public List<Register> Registers
         {
             get;
@@ -102,6 +107,7 @@ namespace MBC.Core.Rounds
         /// <summary>
         /// The <see cref="ControllerUser"/>s that have not been defeated.
         /// </summary>
+        [XmlIgnore]
         public List<ControllerID> Remaining
         {
             get;
@@ -115,17 +121,20 @@ namespace MBC.Core.Rounds
         public void AddAccolade(Accolade accolade)
         {
             generatedAccolades.Add(accolade);
-            MakeEvent(new RoundAccoladeEvent(this, accolade));
+            MakeEvent(new RoundAccoladeEvent(accolade));
         }
 
         public virtual void End()
         {
-            MakeEvent(new RoundEndEvent(this));
+            MakeEvent(new RoundEndEvent());
         }
 
         public bool StepBackward()
         {
-            events.CurrentEvent.ProcBackward();
+            if (events.CurrentEvent is RoundEvent)
+            {
+                ((RoundEvent)events.CurrentEvent).ProcBackward(this);
+            }
             Event(events.CurrentEvent, true);
             return events.StepBackward();
         }
@@ -143,7 +152,10 @@ namespace MBC.Core.Rounds
             }
             else
             {
-                events.CurrentEvent.ProcForward();
+                if (events.CurrentEvent is RoundEvent)
+                {
+                    ((RoundEvent)events.CurrentEvent).ProcForward(this);
+                }
                 Event(events.CurrentEvent, false);
             }
             return Ended;
@@ -163,7 +175,10 @@ namespace MBC.Core.Rounds
         protected void MakeEvent(Event ev)
         {
             events.AddEvent(ev);
-            ev.ProcForward();
+            if (ev is RoundEvent)
+            {
+                ((RoundEvent)ev).ProcForward(this);
+            }
             if (Event != null)
             {
                 Event(ev, false);

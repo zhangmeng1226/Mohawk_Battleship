@@ -1,4 +1,6 @@
 ﻿using MBC.Core.Rounds;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
@@ -14,11 +16,8 @@ namespace MBC.Core.Events
         /// based on the <see cref="MBC.Shared.ControllerRegister"/>s that are involved in it.
         /// </summary>
         /// <param name="round">The associated <see cref="Round"/>.</param>
-        public RoundBeginEvent(Round round)
-            : base(round)
+        public RoundBeginEvent(IEnumerable<Register> roundControllers)
         {
-            var roundControllers = round.Registers;
-
             StringBuilder msg = new StringBuilder();
             msg.Append("A round has begun with ");
             int controllerCount = 0;
@@ -37,6 +36,11 @@ namespace MBC.Core.Events
             msg.Append('.');
 
             this.Message = msg.ToString();
+        }
+
+        protected internal override void GenerateMessage()
+        {
+
         }
     }
 }

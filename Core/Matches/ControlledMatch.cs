@@ -4,9 +4,11 @@ using MBC.Shared;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml.Serialization;
 
 namespace MBC.Core.Matches
 {
+    [XmlRoot("Match")]
     public class ControlledMatch : Match
     {
         private List<ControllerUser> controllers;
@@ -22,6 +24,8 @@ namespace MBC.Core.Matches
         {
             Init(controllerInfos);
         }
+
+        private ControlledMatch() : base() { }
 
         internal override Round CreateNewRound()
         {

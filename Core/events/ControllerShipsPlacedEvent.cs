@@ -1,5 +1,6 @@
 ﻿using MBC.Core.Rounds;
 using MBC.Shared;
+using System;
 using System.Text;
 
 namespace MBC.Core.Events
@@ -16,14 +17,18 @@ namespace MBC.Core.Events
         /// </summary>
         /// <param name="register">A <see cref="ControllerRegister"/>.</param>
         /// <param name="newShips">The <see cref="ShipList"/> associated with the <see cref="ControllerRegister"/></param>
-        public ControllerShipsPlacedEvent(Round rnd, ControllerID register, ShipList oldShips, ShipList newShips)
-            : base(rnd, register)
+        public ControllerShipsPlacedEvent(ControllerID register, ShipList oldShips, ShipList newShips)
+            : base(register)
         {
             Ships = newShips;
             PrevShips = oldShips;
+        }
+
+        protected internal override void GenerateMessage()
+        {
 
             StringBuilder msg = new StringBuilder();
-            msg.Append(Round.Registers[register]);
+            msg.Append(RegisterID);
             int placedCount = 0;
             foreach (var ship in Ships.Ships)
             {
@@ -79,16 +84,16 @@ namespace MBC.Core.Events
             private set;
         }
 
-        internal override void ProcBackward()
+        internal override void ProcBackward(Round round)
         {
-            Round.Registers[RegisterID].Ships = PrevShips;
-            Round.Registers[RegisterID].ShipsLeft = new ShipList(PrevShips.Ships);
+            round.Registers[RegisterID].Ships = PrevShips;
+            round.Registers[RegisterID].ShipsLeft = new ShipList(PrevShips.Ships);
         }
 
-        internal override void ProcForward()
+        internal override void ProcForward(Round round)
         {
-            Round.Registers[RegisterID].Ships = Ships;
-            Round.Registers[RegisterID].ShipsLeft = new ShipList(Ships.Ships);
+            round.Registers[RegisterID].Ships = Ships;
+            round.Registers[RegisterID].ShipsLeft = new ShipList(Ships.Ships);
         }
     }
 }

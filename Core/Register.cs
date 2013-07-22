@@ -19,10 +19,9 @@ namespace MBC.Core
             }
         }
         public Register(MatchInfo match, ControllerID id)
-            : base(match, id)
-        {
+            : base(match, id) { }
 
-        }
+        private Register() { }
 
         /// <summary>
         /// Gets or sets the <see cref="ShipList"/>.

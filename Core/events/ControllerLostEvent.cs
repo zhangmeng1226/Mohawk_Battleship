@@ -1,5 +1,6 @@
 ﻿using MBC.Core.Rounds;
 using MBC.Shared;
+using System;
 
 namespace MBC.Core.Events
 {
@@ -8,24 +9,21 @@ namespace MBC.Core.Events
     /// </summary>
     public class ControllerLostEvent : ControllerEvent
     {
-        /// <summary>
-        /// Passes the <paramref name="controller"/> to the base constructor and generates a <see cref="Event.Message"/>.
-        /// </summary>
-        /// <param name="controller"></param>
-        public ControllerLostEvent(Round rnd, ControllerID controller)
-            : base(rnd, controller)
+        public ControllerLostEvent(ControllerID register) : base(register) { }
+
+        protected internal override void GenerateMessage()
         {
-            Message = Round.Registers[controller] + " has lost the round.";
+            Message = RegisterID + " has lost the round.";
         }
 
-        internal override void ProcBackward()
+        internal override void ProcBackward(Round round)
         {
-            Round.Remaining.Add(RegisterID);
+            round.Remaining.Add(RegisterID);
         }
 
-        internal override void ProcForward()
+        internal override void ProcForward(Round round)
         {
-            Round.Remaining.Remove(RegisterID);
+            round.Remaining.Remove(RegisterID);
         }
     }
 }

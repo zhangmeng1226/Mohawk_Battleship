@@ -119,30 +119,37 @@ namespace MBC.App.BattleshipConsole
             }
             var cmdFind = new StringBuilder();
 
-            for (var i = 0; i < input.Length; i++)
+            try
             {
-                cmdFind.Append(input[i]);
-                MBCShellCommandHandler invoke;
-                if (availableCommands.TryGetValue(cmdFind.ToString(), out invoke))
+                for (var i = 0; i < input.Length; i++)
                 {
-                    var parameters = new List<string>();
-                    while (++i < input.Length)
+                    cmdFind.Append(input[i]);
+                    MBCShellCommandHandler invoke;
+                    if (availableCommands.TryGetValue(cmdFind.ToString(), out invoke))
                     {
-                        if (input[i] == "|")
+                        var parameters = new List<string>();
+                        while (++i < input.Length)
                         {
-                            break;
+                            if (input[i] == "|")
+                            {
+                                break;
+                            }
+                            parameters.Add(input[i]);
                         }
-                        parameters.Add(input[i]);
+                        invoke(0, parameters.ToArray());
+                        if (i == input.Length)
+                        {
+                            return true;
+                        }
+                        cmdFind.Clear();
+                        continue;
                     }
-                    invoke(0, parameters.ToArray());
-                    if (i == input.Length)
-                    {
-                        return true;
-                    }
-                    cmdFind.Clear();
-                    continue;
+                    cmdFind.Append(' ');
                 }
-                cmdFind.Append(' ');
+            }
+            catch (IndexOutOfRangeException)
+            {
+                Console.WriteLine("Invalid command(s) specified.");
             }
             return false;
         }

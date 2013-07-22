@@ -1,5 +1,6 @@
 ﻿using MBC.Core.Rounds;
 using MBC.Shared;
+using System;
 
 namespace MBC.Core.Events
 {
@@ -16,12 +17,15 @@ namespace MBC.Core.Events
         /// <param name="register">The <see cref="ControllerRegister"/> that destroyed the <see cref="Ship"/>.</param>
         /// <param name="shipOwner">The <see cref="ControllerRegister"/> that owns the destroyed <see cref="Ship"/></param>
         /// <param name="destroyedShip">The destroyed <see cref="Ship"/>.</param>
-        public ControllerShipDestroyedEvent(Round rnd, ControllerID register, Ship destroyedShip)
-            : base(rnd, register)
+        public ControllerShipDestroyedEvent(ControllerID register, Ship destroyedShip)
+            : base(register)
         {
             DestroyedShip = destroyedShip;
+        }
 
-            Message = Round.Registers[register] + " has had their ship at " + DestroyedShip + " destroyed.";
+        protected internal override void GenerateMessage()
+        {
+            Message = RegisterID + " has had their ship at " + DestroyedShip + " destroyed.";
         }
 
         /// <summary>
@@ -33,14 +37,14 @@ namespace MBC.Core.Events
             private set;
         }
 
-        internal override void ProcBackward()
+        internal override void ProcBackward(Round round)
         {
-            Round.Registers[RegisterID].ShipsLeft.Add(DestroyedShip);
+            round.Registers[RegisterID].ShipsLeft.Add(DestroyedShip);
         }
 
-        internal override void ProcForward()
+        internal override void ProcForward(Round round)
         {
-            Round.Registers[RegisterID].ShipsLeft.Remove(DestroyedShip);
+            round.Registers[RegisterID].ShipsLeft.Remove(DestroyedShip);
         }
     }
 }

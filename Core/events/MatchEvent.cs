@@ -1,4 +1,6 @@
 ﻿using MBC.Core.Matches;
+using System;
+using System.Xml.Serialization;
 
 namespace MBC.Core.Events
 {
@@ -7,22 +9,5 @@ namespace MBC.Core.Events
     /// </summary>
     public abstract class MatchEvent : Event
     {
-        /// <summary>
-        /// Stores a <see cref="Match"/>.
-        /// </summary>
-        /// <param name="match">The <see cref="Match"/> to store.</param>
-        public MatchEvent(Match match)
-        {
-            Match = match;
-        }
-
-        /// <summary>
-        /// Gets the <see cref="Match"/> associated with this <see cref="Event"/>.
-        /// </summary>
-        public Match Match
-        {
-            get;
-            private set;
-        }
     }
 }

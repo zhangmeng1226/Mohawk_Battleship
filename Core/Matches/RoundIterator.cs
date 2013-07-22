@@ -1,7 +1,9 @@
 ﻿using MBC.Core.Rounds;
 using MBC.Core.Util;
 using MBC.Shared;
+using System;
 using System.Collections.Generic;
+using System.Xml.Serialization;
 
 namespace MBC.Core.Matches
 {
@@ -11,6 +13,7 @@ namespace MBC.Core.Matches
     [Configuration("mbc_match_rounds", 100)]
     public abstract class RoundIterator
     {
+        [XmlIgnore]
         protected bool roundsReached;
 
         public RoundIterator(Match match)
@@ -20,6 +23,10 @@ namespace MBC.Core.Matches
             CurrentRoundIdx = 0;
             RoundList = new List<Round>();
             roundsReached = false;
+        }
+
+        private RoundIterator()
+        {
         }
 
         /// <summary>
@@ -44,12 +51,14 @@ namespace MBC.Core.Matches
             FirstTo
         }
 
+        [XmlIgnore]
         public Round CurrentRound
         {
             get;
             protected set;
         }
 
+        [XmlIgnore]
         public int CurrentRoundIdx
         {
             get;
@@ -68,6 +77,7 @@ namespace MBC.Core.Matches
             private set;
         }
 
+        [XmlIgnore]
         public bool TargetReached
         {
             get
@@ -82,6 +92,7 @@ namespace MBC.Core.Matches
             internal set;
         }
 
+        [XmlIgnore]
         protected Match MonitoringMatch
         {
             get;
@@ -149,6 +160,8 @@ namespace MBC.Core.Matches
             {
             }
 
+            private FirstToRoundIterator() { }
+
             protected override bool IsRoundsReached()
             {
                 foreach (var register in MonitoringMatch.Registers)
@@ -168,6 +181,8 @@ namespace MBC.Core.Matches
                 : base(match)
             {
             }
+
+            private PlayAllRoundIterator() { }
 
             protected override bool IsRoundsReached()
             {

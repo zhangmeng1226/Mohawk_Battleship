@@ -1,5 +1,6 @@
 ﻿using MBC.Core.Rounds;
 using MBC.Shared;
+using System;
 
 namespace MBC.Core.Events
 {
@@ -16,12 +17,15 @@ namespace MBC.Core.Events
         /// <param name="register">The <see cref="ControllerRegister"/> creating the <see cref="Shot"/></param>
         /// <param name="opposer">The receiving <see cref="ControllerRegister"/> of the <see cref="Shot"/>.</param>
         /// <param name="shot">The <see cref="Shot"/> created.</param>
-        public ControllerHitShipEvent(Round rnd, ControllerID sender, Shot shot)
-            : base(rnd, sender)
+        public ControllerHitShipEvent(ControllerID sender, Shot shot)
+            : base(sender)
         {
             HitShot = shot;
+        }
 
-            Message = Round.Registers[sender] + " hit a " + Round.Registers[shot.Receiver] + " ship at " + shot.Coordinates;
+        protected internal override void GenerateMessage()
+        {
+            Message = RegisterID + " hit a " + HitShot.Receiver + " ship at " + HitShot.Coordinates;
         }
 
         /// <summary>

@@ -1,6 +1,7 @@
 ﻿using MBC.Shared;
 using System;
 using System.Collections.Generic;
+using System.Xml.Serialization;
 
 namespace MBC.Core.Rounds
 {
@@ -10,6 +11,7 @@ namespace MBC.Core.Rounds
     /// </summary>
     internal class ClassicRound : ControlledRound
     {
+        [XmlIgnore]
         private LogicState currentState;
 
         /// <summary>

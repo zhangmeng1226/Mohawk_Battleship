@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Xml.Serialization;
 
 namespace MBC.Core.Util
 {
@@ -52,6 +53,7 @@ namespace MBC.Core.Util
         /// Gets or sets a <see cref="Configuration"/> that may be accessed statically throughout an
         /// application. Attempting to set to null will cause nothing to change.
         /// </summary>
+        [XmlIgnore]
         public static Configuration Global
         {
             get
