@@ -16,6 +16,8 @@ namespace MBC.Core.Matches
     [Configuration("mbc_game_mode", GameMode.Classic, null)]
     public class CMatchInfo : MatchInfo
     {
+
+        protected CMatchInfo() { }
         /// <summary>
         /// Initializes the underlying <see cref="MatchInfo"/> with values provided by a <see cref="Configuration"/>
         /// and associates the <see cref="MatchInfo"/> with the given <see cref="ControllerInformation"/>.

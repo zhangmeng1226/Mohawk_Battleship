@@ -176,7 +176,7 @@ namespace MBC.Shared
         /// <returns>true if these <see cref="Coordinates"/> are equal to the object.</returns>
         public override bool Equals(object obj)
         {
-            return obj is Coordinates && Equals(obj);
+            return obj is Coordinates && Equals((Coordinates) obj);
         }
 
         /// <summary>

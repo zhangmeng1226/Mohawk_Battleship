@@ -8,7 +8,7 @@ using System.Xml.Serialization;
 
 namespace MBC.Core.Matches
 {
-    [XmlRoot("Match")]
+    //[XmlRoot("Match")]
     public class ControlledMatch : Match
     {
         private List<ControllerUser> controllers;
@@ -47,7 +47,7 @@ namespace MBC.Core.Matches
 
         private void CreateRegisters()
         {
-            Registers = new List<Register>();
+            registers = new List<Register>();
             var info = (CMatchInfo)Info;
             for (var id = 0; id < controllers.Count; id++)
             {
