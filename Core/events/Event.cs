@@ -1,5 +1,12 @@
-﻿namespace MBC.Core.Events
+﻿using System;
+using System.Xml.Serialization;
+namespace MBC.Core.Events
 {
+    /// <summary>
+    /// Defines a method that retrieves and handles an <see cref="Event"/>.
+    /// </summary>
+    /// <param name="ev">The generated <see cref="Event"/></param>
+    public delegate void MBCEventHandler(Event ev, bool backward);
 
     /// <summary>
     /// The base class for any event created in the MBC core framework. Provides a message string that
@@ -10,21 +17,30 @@
     /// <seealso cref="ControllerEvent"/>
     public abstract class Event
     {
-        /// <summary>
-        /// The message describing the occurrence.
-        /// </summary>
-        protected string message;
+        [XmlIgnore]
+        private string curMessage = null;
 
         /// <summary>
         /// Gets a string representation of the message generated.
         /// </summary>
+        [XmlIgnore]
         public string Message
         {
             get
             {
-                return message;
+                if (curMessage == null)
+                {
+                    GenerateMessage();
+                }
+                return curMessage;
+            }
+            protected set
+            {
+                curMessage = value;
             }
         }
+
+        protected internal abstract void GenerateMessage();
 
         /// <summary>
         /// Provides a string representation.

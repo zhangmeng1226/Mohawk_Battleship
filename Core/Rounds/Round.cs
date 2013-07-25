@@ -1,9 +1,12 @@
 ﻿using MBC.Core.Accolades;
 using MBC.Core.Events;
+using MBC.Core.Matches;
 using MBC.Shared;
+using System;
 using System.Collections.Generic;
+using System.Xml.Serialization;
 
-namespace MBC.Core
+namespace MBC.Core.Rounds
 {
     /// <summary>
     /// Manipulates the information in provided <see cref="ControllerRegister"/>s to reflect the state of a
@@ -14,23 +17,12 @@ namespace MBC.Core
     /// </summary>
     public abstract class Round
     {
-        /// <summary>
-        /// The current <see cref="State"/> of game logic.
-        /// </summary>
-        protected internal State currentState;
-
-        /// <summary>
-        /// Registers to be manipulated.
-        /// </summary>
-        protected internal List<ControllerRegister> registers;
-
+        [XmlIgnore]
         private AccoladeGenerator accoladeGenerator;
 
+        private EventIterator events;
+
         private List<Accolade> generatedAccolades;
-
-        private List<Event> generatedEvents;
-
-        private MatchInfo matchInfo;
 
         /// <summary>
         /// Attaches the <see cref="MatchInfo"/> from a <see cref="Match"/> and attaches the
@@ -39,59 +31,26 @@ namespace MBC.Core
         /// </summary>
         /// <param name="inputRegisters">A variable number of controllers that are involved in this Round.</param>
         /// <param name="matchInfo">Information about the match that determines Round behaviour.</param>
-        public Round(MatchInfo matchInfo, List<ControllerRegister> inputRegisters)
+        public Round(MatchInfo matchInfo, List<Register> inputRegisters)
         {
-            this.matchInfo = matchInfo;
+            MatchInfo = matchInfo;
 
-            generatedEvents = new List<Event>();
-            registers = new List<ControllerRegister>();
+            events = new EventIterator();
+            Registers = new List<Register>();
+            Remaining = new List<ControllerID>();
+            generatedAccolades = new List<Accolade>();
             accoladeGenerator = new AccoladeGenerator(this);
 
-            generatedAccolades = new List<Accolade>();
-
-            currentState = State.Begin;
-
+            var newRandom = new Random();
             foreach (var register in inputRegisters)
             {
-                registers.Add(register);
+                Registers.Add(register);
+                Remaining.Add(register.ID);
             }
+            CurrentTurn = Remaining[newRandom.Next(Remaining.Count)];
         }
 
-        /// <summary>
-        /// Occurs when a controller-specific event is created.
-        /// </summary>
-        public event MBCControllerEventHandler ControllerEvent;
-
-        /// <summary>
-        /// Occurs when a round-specific event is created.
-        /// </summary>
-        public event MBCRoundEventHandler RoundEvent;
-
-        /// <summary>
-        /// Identifies various moments in the battleship game.
-        /// </summary>
-        public enum State
-        {
-            /// <summary>
-            /// The beginning of the round (no events)
-            /// </summary>
-            Begin,
-
-            /// <summary>
-            /// The <see cref="Ship"/>s are to be placed.
-            /// </summary>
-            ShipPlacement,
-
-            /// <summary>
-            /// <see cref="Shot"/>s are made.
-            /// </summary>
-            Main,
-
-            /// <summary>
-            /// The end of the round (cessation of events).
-            /// </summary>
-            End
-        }
+        public event MBCEventHandler Event;
 
         /// <summary>
         /// A list of <see cref="Accolade"/>s that have been generated based on the currently generated
@@ -106,58 +65,53 @@ namespace MBC.Core
         }
 
         /// <summary>
-        /// Gets the current <see cref="State"/>.
+        /// The <see cref="ControllerUser"/> that has the current turn.
         /// </summary>
-        public State CurrentState
+        public ControllerID CurrentTurn
         {
-            get
-            {
-                return currentState;
-            }
+            get;
+            internal set;
         }
 
         /// <summary>
-        /// Gets a list of <see cref="Event"/>s generated.
+        /// Gets (or internally sets) a value indicating that this <see cref="Round"/> has ended and there can
+        /// be no more <see cref="Event"/>s added.
         /// </summary>
-        public IEnumerable<Event> Events
+        [XmlIgnore]
+        public bool Ended
         {
-            get
-            {
-                return generatedEvents;
-            }
+            get;
+            internal set;
         }
 
         /// <summary>
         /// Gets the <see cref="MatchInfo"/> associated.
         /// </summary>
+        [XmlIgnore]
         public MatchInfo MatchInfo
         {
-            get
-            {
-                return matchInfo;
-            }
-        }
-
-        /// <summary>
-        /// Gets the number of <see cref="ControllerRegister"/>s involved.
-        /// </summary>
-        public int RegisterCount
-        {
-            get
-            {
-                return registers.Count;
-            }
+            get;
+            private set;
         }
 
         /// <summary>
         /// Gets a list of <see cref="ControllerRegister"/>s involved.
         /// </summary>
-        public IEnumerable<ControllerRegister> Registers
+        [XmlIgnore]
+        public List<Register> Registers
         {
-            get
-            {
-                return registers;
-            }
+            get;
+            internal set;
+        }
+
+        /// <summary>
+        /// The <see cref="ControllerUser"/>s that have not been defeated.
+        /// </summary>
+        [XmlIgnore]
+        public List<ControllerID> Remaining
+        {
+            get;
+            private set;
         }
 
         /// <summary>
@@ -167,91 +121,68 @@ namespace MBC.Core
         public void AddAccolade(Accolade accolade)
         {
             generatedAccolades.Add(accolade);
-            MakeEvent(new RoundAccoladeEvent(this, accolade));
+            MakeEvent(new RoundAccoladeEvent(accolade));
         }
 
-        /// <summary>
-        /// Creates a new <see cref="RoundEndEvent"/>,
-        /// removes the subscriptions made to <see cref="Round.RoundEvent"/> and <see cref="Round.ControllerEvent"/>,
-        /// and sets the <see cref="Round.CurrentState"/> to <see cref="State.End"/>.
-        /// </summary>
         public virtual void End()
         {
-            MakeEvent(new RoundEndEvent(this));
-            RoundEvent = null;
-            ControllerEvent = null;
-            currentState = State.End;
+            MakeEvent(new RoundEndEvent());
         }
 
-        /// <summary>
-        /// Moves forward through game logic, generating <see cref="Event"/>s and updating the <see cref="ControllerRegister"/>s
-        /// to reflect the <see cref="Event"/>s.
-        /// </summary>
-        /// <returns>A value indicating whether or not the <see cref="Round.CurrentState"/> is not
-        /// equal to <see cref="State.End"/>.</returns>
-        public bool Progress()
+        public bool StepBackward()
         {
-            switch (currentState)
+            if (events.CurrentEvent is RoundEvent)
             {
-                case State.Begin:
-                    Begin();
-                    break;
-
-                case State.ShipPlacement:
-                    ShipPlacement();
-                    break;
-
-                case State.Main:
-                    Main();
-                    break;
+                ((RoundEvent)events.CurrentEvent).ProcBackward(this);
             }
-            return currentState != State.End;
+            Event(events.CurrentEvent, true);
+            return events.StepBackward();
         }
 
-        /// <summary>
-        /// Called when the <see cref="Round.CurrentState"/> is <see cref="State.Begin"/>. Should reset the
-        /// <see cref="ControllerRegister"/>s and change the <see cref="Round.CurrentState"/> to <see cref="State.ShipPlacement"/>.
-        /// </summary>
-        protected internal abstract void Begin();
+        public bool StepForward()
+        {
+            if (Ended)
+            {
+                return true;
+            }
+
+            if (events.StepForward())
+            {
+                GameLogicStep();
+            }
+            else
+            {
+                if (events.CurrentEvent is RoundEvent)
+                {
+                    ((RoundEvent)events.CurrentEvent).ProcForward(this);
+                }
+                Event(events.CurrentEvent, false);
+            }
+            return Ended;
+        }
 
         /// <summary>
         /// Called when the <see cref="Round.CurrentState"/> is <see cref="State.Main"/>. Should continuously
         /// generate events until the game logic has determined that the <see cref="Round.CurrentState"/> should
         /// be changed to <see cref="State.End"/>.
         /// </summary>
-        protected internal abstract void Main();
-
-        /// <summary>
-        /// Creates a <see cref="ControllerEvent"/> and invokes the class's <see cref="Round.ControllerEvent"/>.
-        /// </summary>
-        /// <param name="ev">The <see cref="ControllerEvent"/> created.</param>
-        protected void MakeEvent(ControllerEvent ev)
-        {
-            if (RoundEvent != null)
-            {
-                ControllerEvent(ev);
-            }
-            generatedEvents.Add(ev);
-        }
+        protected internal abstract void GameLogicStep();
 
         /// <summary>
         /// Creates a <see cref="RoundEvent"/> and invokes the class's <see cref="Round.RoundEvent"/>.
         /// </summary>
         /// <param name="ev">The <see cref="RoundEvent"/> created.</param>
-        protected void MakeEvent(RoundEvent ev)
+        protected void MakeEvent(Event ev)
         {
-            if (RoundEvent != null)
+            events.AddEvent(ev);
+            if (ev is RoundEvent)
             {
-                RoundEvent(ev);
+                ((RoundEvent)ev).ProcForward(this);
             }
-            generatedEvents.Add(ev);
+            if (Event != null)
+            {
+                Event(ev, false);
+            }
         }
-
-        /// <summary>
-        /// Called when the <see cref="Round.CurrentState"/> is <see cref="State.ShipPlacement"/>. Should
-        /// modify the <see cref="ControllerRegister"/>s to contain ships that have been placed.
-        /// <see cref="Round.CurrentState"/> should then be changed to <see cref="State.Main"/>.
-        /// </summary>
-        protected abstract void ShipPlacement();
     }
 }

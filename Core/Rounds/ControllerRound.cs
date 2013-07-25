@@ -2,8 +2,9 @@
 using MBC.Shared;
 using System;
 using System.Collections.Generic;
+using System.Xml.Serialization;
 
-namespace MBC.Core
+namespace MBC.Core.Rounds
 {
     /// <summary>
     /// The base class for a class deriving from a <see cref="Round"/> that utilizes <see cref="ControllerUser"/>s
@@ -15,17 +16,8 @@ namespace MBC.Core
         /// <summary>
         /// A list of <see cref="ControllerUser"/>s involved in influencing generated <see cref="Event"/>s.
         /// </summary>
-        protected List<ControllerUser> controllers;
-
-        /// <summary>
-        /// The <see cref="ControllerUser"/> that has the current turn.
-        /// </summary>
-        protected ControllerRegister currentTurn;
-
-        /// <summary>
-        /// The <see cref="ControllerUser"/>s that have not been defeated.
-        /// </summary>
-        protected List<ControllerRegister> remainingRegisters;
+        [XmlIgnore]
+        protected List<ControllerUser> Controllers;
 
         /// <summary>
         /// Attaches the <see cref="MatchInfo"/> provided by a <see cref="Match"/> and retrieves the list of
@@ -36,12 +28,23 @@ namespace MBC.Core
         public ControlledRound(MatchInfo matchInfo, List<ControllerUser> controllers)
             : base(matchInfo, RegistersFromControllers(controllers))
         {
-            this.controllers = controllers;
-            remainingRegisters = new List<ControllerRegister>();
-            foreach (var register in registers)
+            Controllers = controllers;
+        }
+
+        public override void End()
+        {
+            foreach (var rID in Remaining)
             {
-                remainingRegisters.Add(register);
+                try
+                {
+                    Controllers[rID].RoundWon();
+                }
+                catch (ControllerTimeoutException ex)
+                {
+                    MakeEvent(new ControllerTimeoutEvent(ex));
+                }
             }
+            base.End();
         }
 
         /// <summary>
@@ -49,26 +52,24 @@ namespace MBC.Core
         /// <see cref="ControllerUser"/>s. Picks a random <see cref="ControllerUser"/> to have the
         /// current turn.
         /// </summary>
-        protected internal override void Begin()
+        protected void Begin()
         {
-            MakeEvent(new RoundBeginEvent(this));
+            MakeEvent(new RoundBeginEvent(Registers));
 
-            foreach (var controller in controllers)
+            foreach (var register in Registers)
             {
+                register.Ships = new ShipList(MatchInfo.StartingShips);
+                register.Shots = new ShotList();
+                register.ShotsAgainst = new ShotList();
                 try
                 {
-                    controller.NewRound();
+                    Controllers[register.ID].NewRound();
                 }
                 catch (ControllerTimeoutException ex)
                 {
                     MakeEvent(new ControllerTimeoutEvent(ex));
                 }
             }
-
-            var randomTurnChooser = new Random();
-            currentTurn = registers[randomTurnChooser.Next(registers.Count)];
-
-            currentState = State.ShipPlacement;
         }
 
         /// <summary>
@@ -81,28 +82,31 @@ namespace MBC.Core
         /// <item>None of the <see cref="Ship"/>s in the <see cref="ShipList"/> are conflicting</item>
         /// </list>
         /// </summary>
-        /// <param name="register">The <see cref="ControllerRegister"/> to check the ships for.</param>
+        /// <param name="rID">The <see cref="ControllerRegister"/> to check the ships for.</param>
         /// <returns>A value indicating if all aforementioned conditions are true.</returns>
-        protected bool ControllerShipsValid(ControllerRegister register)
+        protected bool ControllerShipsValid(ControllerID rID)
         {
-            return register.Ships != null && register.Ships.EqualLengthsAs(MatchInfo.StartingShips) && register.Ships.ShipsPlaced && register.Ships.GetConflictingShips().Count == 0;
+            return Registers[rID].Ships != null &&
+                Registers[rID].Ships.EqualLengthsAs(MatchInfo.StartingShips) &&
+                Registers[rID].Ships.ShipsPlaced &&
+                Registers[rID].Ships.GetConflictingShips().Count == 0;
         }
 
         /// <summary>
         /// Indicates whether or not a <see cref="Shot"/> made by a <see cref="ControllerUser"/> violates the
         /// standard rules for making a <see cref="Shot"/>.
         /// </summary>
-        /// <param name="register">The <see cref="ControllerUser"/> making a <see cref="Shot"/>.</param>
+        /// <param name="rID">The <see cref="ControllerUser"/> making a <see cref="Shot"/>.</param>
         /// <param name="shot">The <see cref="Shot"/> made by the given <see cref="ControllerUser"/>.</param>
         /// <returns>A value indicating if the <see cref="Shot"/> made was invalid.</returns>
-        protected bool ControllerShotInvalid(ControllerRegister register, Shot shot)
+        protected bool ControllerShotInvalid(ControllerID rID, Shot shot)
         {
             return shot == null ||
                 (shot.Coordinates > MatchInfo.FieldSize) ||
                     (shot.Coordinates < new Coordinates(0, 0)) ||
-                    register.ID == shot.Receiver ||
-                    register.Shots.Contains(shot) ||
-                    !remainingRegisters.Contains(registers[shot.Receiver]);
+                    rID == shot.Receiver ||
+                    Registers[rID].Shots.Contains(shot) ||
+                    !Remaining.Contains(shot.Receiver);
         }
 
         /// <summary>
@@ -110,19 +114,18 @@ namespace MBC.Core
         /// calls the <see cref="ControllerUser.RoundLost()"/> method in the <see cref="ControllerUser"/>,
         /// and removes the <see cref="ControllerUser"/> from the remaining <see cref="ControllerRegister"/>s.
         /// </summary>
-        /// <param name="loser">The <see cref="ControllerUser"/> that lost the round.</param>
-        protected void MakeLoser(ControllerRegister loser)
+        /// <param name="rID">The <see cref="ControllerUser"/> that lost the round.</param>
+        protected void MakeLoser(ControllerID rID)
         {
-            MakeEvent(new ControllerLostEvent(loser));
+            MakeEvent(new ControllerLostEvent(rID));
             try
             {
-                controllers[loser.ID].RoundLost();
+                Controllers[rID].RoundLost();
             }
             catch (ControllerTimeoutException ex)
             {
                 MakeEvent(new ControllerTimeoutEvent(ex));
             }
-            remainingRegisters.Remove(loser);
         }
 
         /// <summary>
@@ -130,26 +133,9 @@ namespace MBC.Core
         /// </summary>
         /// <returns>The next <see cref="ControllerUser"/> after currentTurn
         /// that remains.</returns>
-        protected ControllerRegister NextRemaining()
+        protected ControllerID NextRemaining()
         {
-            if (currentTurn == null)
-            {
-                return null;
-            }
-
-            var next = (currentTurn.ID + 1) % registers.Count;
-            while (next != currentTurn.ID)
-            {
-                foreach (var register in remainingRegisters)
-                {
-                    if (register.ID == next)
-                    {
-                        return register;
-                    }
-                }
-                next = (next + 1) % registers.Count;
-            }
-            return null;
+            return Remaining[(CurrentTurn + 1) % Remaining.Count];
         }
 
         /// <summary>
@@ -157,7 +143,51 @@ namespace MBC.Core
         /// </summary>
         protected void NextTurn()
         {
-            currentTurn = NextRemaining();
+            MakeEvent(new RoundTurnChangeEvent(CurrentTurn, NextRemaining()));
+        }
+
+        protected void StandardPlaceShot()
+        {
+            try
+            {
+                Shot shotMade = Controllers[CurrentTurn].MakeShot();
+
+                if (ControllerShotInvalid(CurrentTurn, shotMade))
+                {
+                    MakeEvent(new ControllerShotEvent(CurrentTurn, shotMade));
+                    MakeLoser(CurrentTurn);
+                    return;
+                }
+                MakeEvent(new ControllerShotEvent(CurrentTurn, shotMade));
+                Controllers[shotMade.Receiver].NotifyOpponentShot(shotMade);
+
+                var shipHit = Registers[shotMade.Receiver].Ships.ShipAt(shotMade.Coordinates);
+                var shotHit = shipHit != null;
+                if (shotHit)
+                {
+                    var shipSunk = shipHit.IsSunk(Registers[shotMade.Receiver].ShotsAgainst);
+
+                    MakeEvent(new ControllerHitShipEvent(CurrentTurn, shotMade));
+                    Controllers[CurrentTurn].NotifyShotHit(shotMade, shipSunk);
+                    if (shipSunk)
+                    {
+                        MakeEvent(new ControllerShipDestroyedEvent(shotMade.Receiver, shipHit));
+                        if (Registers[shotMade.Receiver].ShipsLeft.Count == 0)
+                        {
+                            MakeLoser(shotMade.Receiver);
+                        }
+                    }
+                }
+                else
+                {
+                    Controllers[CurrentTurn].NotifyShotMiss(shotMade);
+                }
+            }
+            catch (ControllerTimeoutException ex)
+            {
+                MakeEvent(new ControllerTimeoutEvent(ex));
+                MakeLoser(ex.Register.ID);
+            }
         }
 
         /// <summary>
@@ -165,32 +195,30 @@ namespace MBC.Core
         /// creates <see cref="ControllerShipsPlacedEvent"/>s for each. Changes the <see cref="Round.CurrentState"/>
         /// to <see cref="Round.State.Main"/>.
         /// </summary>
-        protected override void ShipPlacement()
+        protected void StandardShipPlacement()
         {
-            foreach (var register in Registers)
+            foreach (var rID in Remaining)
             {
                 try
                 {
-                    controllers[register.ID].PlaceShips();
-                    MakeEvent(new ControllerShipsPlacedEvent(register, new ShipList(register.Ships)));
+                    MakeEvent(new ControllerShipsPlacedEvent(rID, Registers[rID].Ships, Controllers[rID].PlaceShips()));
 
-                    if (!ControllerShipsValid(register))
+                    if (!ControllerShipsValid(rID))
                     {
-                        MakeLoser(register);
+                        MakeLoser(rID);
                     }
                 }
                 catch (ControllerTimeoutException ex)
                 {
                     MakeEvent(new ControllerTimeoutEvent(ex));
-                    MakeLoser(register);
+                    MakeLoser(rID);
                 }
             }
-            currentState = State.Main;
         }
 
-        private static List<ControllerRegister> RegistersFromControllers(List<ControllerUser> controllers)
+        private static List<Register> RegistersFromControllers(List<ControllerUser> controllers)
         {
-            var registers = new List<ControllerRegister>();
+            var registers = new List<Register>();
             foreach (var controller in controllers)
             {
                 registers.Add(controller.Register);

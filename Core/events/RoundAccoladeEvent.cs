@@ -1,4 +1,6 @@
 ﻿using MBC.Core.Accolades;
+using MBC.Core.Rounds;
+using System;
 
 namespace MBC.Core.Events
 {
@@ -14,10 +16,14 @@ namespace MBC.Core.Events
         /// </summary>
         /// <param name="round">The <see cref="Round"/> that has had the <paramref name="accolade"/> added.</param>
         /// <param name="accolade">The <see cref="Accolade"/> added to the <paramref name="round"/>.</param>
-        public RoundAccoladeEvent(Round round, Accolade accolade)
-            : base(round)
+        public RoundAccoladeEvent(Accolade accolade)
         {
             this.accolade = accolade;
+        }
+
+        protected internal override void GenerateMessage()
+        {
+
         }
 
         /// <summary>

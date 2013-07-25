@@ -21,12 +21,12 @@ namespace MBC.Shared
             {
                 Match = copy.Match;
                 Score = copy.Score;
-                Ships = new ShipList(copy.Ships);
-                Shots = new ShotList(copy.Shots);
                 ID = copy.ID;
                 Opponents = new List<ControllerID>(copy.Opponents);
             }
         }
+
+        protected ControllerRegister() { }
 
         /// <summary>
         /// Stores the <paramref name="match"/> and <paramref name="id"/> and sets the score to zero.
@@ -50,16 +50,6 @@ namespace MBC.Shared
         /// Gets or sets the current score.
         /// </summary>
         public int Score { get; set; }
-
-        /// <summary>
-        /// Gets or sets the <see cref="ShipList"/>.
-        /// </summary>
-        public ShipList Ships { get; set; }
-
-        /// <summary>
-        /// Gets or sets the <see cref="ShotList"/>.
-        /// </summary>
-        public ShotList Shots { get; set; }
 
         /// <summary>
         /// Gets or sets the <see cref="ControllerID"/>.

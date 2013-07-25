@@ -42,6 +42,7 @@ namespace MBC.Shared
         {
             minLength = int.MaxValue;
             maxLength = int.MinValue;
+            shipList = new List<Ship>();
             foreach (var ship in ships)
             {
                 Add(ship);

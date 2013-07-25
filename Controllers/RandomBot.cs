@@ -83,10 +83,10 @@ namespace MBC.Controllers
         /// of Ship objects that can be accessed.
         /// </summary>
         /// <param name="ships">A collection of Ship objects to place.</param>
-        public override void PlaceShips()
+        public override ShipList PlaceShips(ShipList initialShips)
         {
             //First we'll refer to the ships given to us through a single variable.
-            var myShips = Register.Ships;
+            var myShips = initialShips;
 
             //This loop will continue until all of the Ship objects have been placed.
             while (!myShips.ShipsPlaced)
@@ -103,8 +103,7 @@ namespace MBC.Controllers
                 myShips.PlaceShip(randomCoords, orientation, Register.Match.FieldSize);
             }
 
-            //Since the controller had modified the Ship objects directly, there is no need to do anything
-            //further.
+            return myShips;
         }
 
         /// <summary>

@@ -2,9 +2,17 @@
 
 namespace MBC.App.BattleshipConsole
 {
+    /// <summary>
+    /// Provides functions to display help information to the console.
+    /// </summary>
     public static class Help
     {
-        public static void Display(int idx, params string[] param)
+        /// <summary>
+        /// Displays the <see cref="Input.CommandDescriptions"/> of all existing commands.
+        /// </summary>
+        /// <param name="idx">The current index of the parameter stream.</param>
+        /// <param name="param">The string of parameters made by the user.</param>
+        public static void Commands(int idx, params string[] param)
         {
             var largestLength = 0;
             foreach (var command in Input.CommandDescriptions.Keys)
@@ -26,21 +34,7 @@ namespace MBC.App.BattleshipConsole
                 Console.Write(commandDescPair.Key);
                 Console.ForegroundColor = ConsoleColor.Gray;
                 Console.SetCursorPosition(largestLength, Console.CursorTop);
-                var descSplit = commandDescPair.Value.Split(' ');
-                var targetWidth = Console.WindowWidth - largestLength;
-                var currentWidth = 0;
-                for (var descIdx = 0; descIdx < descSplit.Length; descIdx++)
-                {
-                    currentWidth += descSplit[descIdx].Length + 1;
-                    if (currentWidth > targetWidth)
-                    {
-                        Console.WriteLine();
-                        Console.SetCursorPosition(largestLength, Console.CursorTop);
-                        currentWidth = descSplit[descIdx].Length + 1;
-                    }
-                    Console.Write(' ');
-                    Console.Write(descSplit[descIdx]);
-                }
+                Show.ProperLine(largestLength, commandDescPair.Value);
                 Console.WriteLine();
             }
         }

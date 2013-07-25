@@ -3,7 +3,7 @@ using MBC.Shared;
 using System;
 using System.Collections.Generic;
 
-namespace MBC.Core
+namespace MBC.Core.Matches
 {
     /// <summary>
     /// Derives a <see cref="MatchInfo"/> for the sole purpose of initializing its field members.
@@ -16,34 +16,23 @@ namespace MBC.Core
     [Configuration("mbc_game_mode", GameMode.Classic, null)]
     public class CMatchInfo : MatchInfo
     {
+
+        protected CMatchInfo() { }
         /// <summary>
         /// Initializes the underlying <see cref="MatchInfo"/> with values provided by a <see cref="Configuration"/>
         /// and associates the <see cref="MatchInfo"/> with the given <see cref="ControllerInformation"/>.
         /// </summary>
         /// <param name="config">The <see cref="Configuration"/> to load settings from.</param>
-        /// <param name="controllerInfos">A variable number of <see cref="ControllerInformation"/>
+        /// <param name="controllerNames">A variable number of <see cref="ControllerInformation"/>
         /// to associate with.</param>
         /// <exception cref="ControllerIncompatibleException">A controller is not designed for the
         /// configured <see cref="GameMode"/>.</exception>
-        public CMatchInfo(Configuration config, params ControllerInformation[] controllerInfos)
+        public CMatchInfo(Configuration config)
         {
             //Get the game mode from the Configuration.
             DetermineGameMode(config);
 
-            //Make sure all of the controllers are compatible with the given game mode.
-            foreach (var controllerInfo in controllerInfos)
-            {
-                if (!controllerInfo.Capabilities.CompatibleWith(gameMode))
-                {
-                    throw new ControllerIncompatibleException(controllerInfo, gameMode);
-                }
-            }
-
             this.controllerNames = new List<string>();
-            foreach (var controllerInfo in controllerInfos)
-            {
-                this.controllerNames.Add(controllerInfo.ToString());
-            }
 
             //Configuration setting for a list of ships that the controllers start with.
             initShips = new ShipList(config.GetList<int>("mbc_ship_sizes").ToArray());
@@ -57,15 +46,20 @@ namespace MBC.Core
             methodTimeLimit = config.GetValue<int>("mbc_timeout");
         }
 
+        public void AddControllerName(string name)
+        {
+            controllerNames.Add(name);
+        }
+
         private void DetermineGameMode(Configuration config)
         {
             gameMode = 0;
-            foreach (var gmStr in config.GetValue<List<GameMode>>("mbc_game_mode"))
+            foreach (var gmStr in config.GetList<GameMode>("mbc_game_mode"))
             {
                 gameMode |= gmStr;
                 if (gmStr == GameMode.Salvo || gmStr == GameMode.Powered || gmStr == GameMode.Teams)
                 {
-                    throw new NotImplementedException("The "+gmStr.ToString()+" game mode is not supported.");
+                    throw new NotImplementedException("The " + gmStr.ToString() + " game mode is not supported.");
                 }
             }
         }

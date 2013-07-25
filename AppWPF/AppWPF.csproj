@@ -76,10 +76,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="Elements\ShotCell.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="FieldControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -98,9 +94,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Elements\ShotCell.xaml.cs">
-      <DependentUpon>ShotCell.xaml</DependentUpon>
-    </Compile>
     <Compile Include="FieldControl.xaml.cs">
       <DependentUpon>FieldControl.xaml</DependentUpon>
       <SubType>Code</SubType>

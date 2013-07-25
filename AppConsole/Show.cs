@@ -3,19 +3,33 @@ using System;
 
 namespace MBC.App.BattleshipConsole
 {
+    /// <summary>
+    /// Contains functions for showing various information loaded in the application.
+    /// </summary>
     public static class Show
     {
+        /// <summary>
+        /// Shows the <see cref="Configuration"/> settings that are available and
+        /// their current values to the console.
+        /// </summary>
+        /// <param name="idx">The current index of the parameter stream.</param>
+        /// <param name="param">The string of parameters made by the user.</param>
         public static void Config(int idx, params string[] param)
         {
             Console.WriteLine("[Key] = [Value]");
-            foreach (var pair in Configuration.Global.GetPairs())
+            foreach (var key in Configuration.GetAllKnownKeys())
             {
-                Console.Write(pair.Key);
+                Console.Write(key);
                 Console.Write(" = ");
-                Console.WriteLine(pair.Value);
+                Console.WriteLine(Configuration.Global.GetValueString(key));
             }
         }
 
+        /// <summary>
+        /// Shows the <see cref="Core.ControllerInformation"/> that has been loaded into <see cref="Input"/>
+        /// </summary>
+        /// <param name="idx">The current index of the parameter stream.</param>
+        /// <param name="param">The string of parameters made by the user.</param>
         public static void Controllers(int idx, params string[] param)
         {
             if (Input.Controllers.Count == 0)
@@ -30,6 +44,29 @@ namespace MBC.App.BattleshipConsole
                 Console.Write(i);
                 Console.Write("]: ");
                 Console.WriteLine(Input.Controllers[i]);
+            }
+        }
+
+        /// <summary>
+        /// Writes a string of text in the console indented at <paramref name="cursorLeft"/>
+        /// with no breaks in each word that is in the <paramref name="txt"/>.
+        /// </summary>
+        /// <param name="cursorLeft">The column on the console to write to.</param>
+        /// <param name="txt">A string of text that is to be written.</param>
+        public static void ProperLine(int cursorLeft, string txt)
+        {
+            var txtSplit = txt.Split(' ');
+            var targetWidth = Console.WindowWidth - cursorLeft;
+            var currentWidth = 0;
+            for (var txtIdx = 0; txtIdx < txtSplit.Length; txtIdx++)
+            {
+                currentWidth += txtSplit[txtIdx].Length + 1;
+                if (currentWidth > targetWidth)
+                {
+                    Console.WriteLine();
+                    Console.SetCursorPosition(cursorLeft, Console.CursorTop);
+                    currentWidth = txtSplit[txtIdx].Length + 1;
+                }
             }
         }
     }

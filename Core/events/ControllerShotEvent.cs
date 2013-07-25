@@ -1,4 +1,6 @@
-﻿using MBC.Shared;
+﻿using MBC.Core.Rounds;
+using MBC.Shared;
+using System;
 using System.Text;
 
 namespace MBC.Core.Events
@@ -8,39 +10,34 @@ namespace MBC.Core.Events
     /// </summary>
     public class ControllerShotEvent : ControllerEvent
     {
-        private Shot shot;
-
         /// <summary>
         /// Passes the <paramref name="register"/> to the base constructor, stores the <paramref name="shot"/>,
         /// and generates a <see cref="Event.Message"/>.
         /// </summary>
         /// <param name="register">A <see cref="ControllerRegister"/> making the <paramref name="shot"/></param>
         /// <param name="shot">The <see cref="Shot"/> made by the <paramref name="register"/>.</param>
-        public ControllerShotEvent(ControllerRegister register, Shot shot)
+        public ControllerShotEvent(ControllerID register, Shot shot)
             : base(register)
         {
-            this.shot = shot;
+            Shot = shot;
+        }
+
+        protected internal override void GenerateMessage()
+        {
             StringBuilder msg = new StringBuilder();
-            msg.Append(register);
-            if (shot != null)
+            msg.Append(RegisterID);
+            if (Shot != null)
             {
                 msg.Append(" shot ");
-                if (shot.Receiver < register.Match.ControllerNames.Count && shot.Receiver >= 0)
-                {
-                    msg.Append(register.Match.ControllerNames[shot.Receiver]);
-                }
-                else
-                {
-                    msg.Append("nobody");
-                }
+                msg.Append(Shot.Receiver);
                 msg.Append(" at ");
-                msg.Append(shot.Coordinates);
+                msg.Append(Shot.Coordinates);
             }
             else
             {
                 msg.Append(" did not make a shot.");
             }
-            message = msg.ToString();
+            Message = msg.ToString();
         }
 
         /// <summary>
@@ -48,10 +45,20 @@ namespace MBC.Core.Events
         /// </summary>
         public Shot Shot
         {
-            get
-            {
-                return shot;
-            }
+            get;
+            private set;
+        }
+
+        internal override void ProcBackward(Round round)
+        {
+            round.Registers[RegisterID].Shots.Remove(Shot);
+            round.Registers[Shot.Receiver].ShotsAgainst.Remove(Shot);
+        }
+
+        internal override void ProcForward(Round round)
+        {
+            round.Registers[RegisterID].Shots.Add(Shot);
+            round.Registers[Shot.Receiver].ShotsAgainst.Add(Shot);
         }
     }
 }

@@ -106,7 +106,7 @@ namespace MBC.Shared
         {
             get
             {
-                return controllerNames;
+                return new List<string>(controllerNames);
             }
         }
     }

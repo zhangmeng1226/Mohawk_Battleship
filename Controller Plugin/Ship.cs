@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Xml.Serialization;
 
 namespace MBC.Shared
 {
@@ -10,9 +11,13 @@ namespace MBC.Shared
     /// </summary>
     public class Ship : IEquatable<Ship>
     {
-        private bool isPlaced = false;
+
+        private bool isPlaced;
+
         private int length;
+
         private Coordinates location;
+
         private ShipOrientation orientation;
 
         /// <summary>
@@ -21,10 +26,10 @@ namespace MBC.Shared
         /// <param name="shipCopy"></param>
         public Ship(Ship shipCopy)
         {
-            isPlaced = shipCopy.isPlaced;
-            location = shipCopy.location;
-            orientation = shipCopy.orientation;
-            length = shipCopy.length;
+            IsPlaced = shipCopy.IsPlaced;
+            Location = shipCopy.Location;
+            Orientation = shipCopy.Orientation;
+            Length = shipCopy.Length;
         }
 
         /// <summary>
@@ -41,28 +46,40 @@ namespace MBC.Shared
                 throw new ArgumentOutOfRangeException("length");
             }
 
-            this.length = length;
+            Length = length;
         }
+
+        private Ship() { }
 
         /// <summary>
         /// Gets a bool that indicates whether or not this <see cref="Ship"/> has been placed.
         /// </summary>
+        [XmlIgnore]
         public bool IsPlaced
         {
             get
             {
-                return this.isPlaced;
+                return isPlaced;
+            }
+            private set
+            {
+                isPlaced = value;
             }
         }
 
         /// <summary>
         /// Gets the length by number of cells occupied.
         /// </summary>
+        [XmlIgnore]
         public int Length
         {
             get
             {
-                return this.length;
+                return length;
+            }
+            set
+            {
+                length = value;
             }
         }
 
@@ -74,12 +91,12 @@ namespace MBC.Shared
         {
             get
             {
-                if (!this.isPlaced)
-                {
-                    throw new InvalidOperationException();
-                }
+                return location;
+            }
+            set
+            {
+                location = value;
 
-                return this.location;
             }
         }
 
@@ -90,12 +107,11 @@ namespace MBC.Shared
         {
             get
             {
-                if (!this.isPlaced)
-                {
-                    throw new InvalidOperationException();
-                }
-
-                return this.orientation;
+                return orientation;
+            }
+            set
+            {
+                orientation = value;
             }
         }
 
@@ -129,10 +145,10 @@ namespace MBC.Shared
             {
                 return false;
             }
-            return isPlaced == ship.isPlaced &&
-                location == ship.location &&
-                orientation == ship.orientation &&
-                length == ship.length;
+            return IsPlaced == ship.IsPlaced &&
+                Location == ship.Location &&
+                Orientation == ship.Orientation &&
+                Length == ship.Length;
         }
 
         /// <summary>
@@ -150,18 +166,18 @@ namespace MBC.Shared
         /// <returns>An enumerable collection of <see cref="Coordinates"/>.</returns>
         public IEnumerable<Coordinates> GetAllLocations()
         {
-            if (this.Orientation == ShipOrientation.Horizontal)
+            if (Orientation == ShipOrientation.Horizontal)
             {
-                for (int i = 0; i < this.length; i++)
+                for (int i = 0; i < Length; i++)
                 {
-                    yield return new Coordinates(this.location.X + i, this.location.Y);
+                    yield return new Coordinates(Location.X + i, Location.Y);
                 }
             }
             else
             {
-                for (int i = 0; i < this.length; i++)
+                for (int i = 0; i < Length; i++)
                 {
-                    yield return new Coordinates(this.location.X, this.location.Y + i);
+                    yield return new Coordinates(Location.X, Location.Y + i);
                 }
             }
         }
@@ -173,10 +189,10 @@ namespace MBC.Shared
         public override int GetHashCode()
         {
             int hash = 23;
-            hash = hash * 37 + isPlaced.GetHashCode();
-            hash = hash * 37 + location.GetHashCode();
-            hash = hash * 37 + orientation.GetHashCode();
-            hash = hash * 37 + length.GetHashCode();
+            hash = hash * 37 + IsPlaced.GetHashCode();
+            hash = hash * 37 + Location.GetHashCode();
+            hash = hash * 37 + Orientation.GetHashCode();
+            hash = hash * 37 + Length.GetHashCode();
             return hash;
         }
 
@@ -187,17 +203,17 @@ namespace MBC.Shared
         /// <returns>A value indicating the presence of this <see cref="Ship"/> at the <paramref name="location"/>.</returns>
         public bool IsAt(Coordinates location)
         {
-            if (!this.isPlaced)
+            if (!IsPlaced)
             {
                 return false;
             }
-            if (this.Orientation == ShipOrientation.Horizontal)
+            if (Orientation == ShipOrientation.Horizontal)
             {
-                return (this.location.Y == location.Y) && (this.location.X <= location.X) && (this.location.X + this.length > location.X);
+                return (Location.Y == location.Y) && (Location.X <= location.X) && (Location.X + Length > location.X);
             }
             else
             {
-                return (this.location.X == location.X) && (this.location.Y <= location.Y) && (this.location.Y + this.length > location.Y);
+                return (Location.X == location.X) && (Location.Y <= location.Y) && (Location.Y + Length > location.Y);
             }
         }
 
@@ -226,26 +242,26 @@ namespace MBC.Shared
         /// <returns>A value indicating valid <see cref="Ship"/> placement.</returns>
         public bool IsValid(Coordinates boardSize)
         {
-            if (!this.isPlaced)
+            if (!IsPlaced)
             {
                 return false;
             }
 
-            if (this.location.X < 0 || this.location.Y < 0)
+            if (Location.X < 0 || Location.Y < 0)
             {
                 return false;
             }
 
-            if (this.orientation == ShipOrientation.Horizontal)
+            if (Orientation == ShipOrientation.Horizontal)
             {
-                if (this.location.Y >= boardSize.Y || this.location.X + this.length > boardSize.X)
+                if (Location.Y >= boardSize.Y || Location.X + Length > boardSize.X)
                 {
                     return false;
                 }
             }
             else
             {
-                if (this.location.X >= boardSize.X || this.location.Y + this.length > boardSize.Y)
+                if (Location.X >= boardSize.X || Location.Y + Length > boardSize.Y)
                 {
                     return false;
                 }
@@ -263,9 +279,9 @@ namespace MBC.Shared
         /// <param name="orientation">The <see cref="ShipOrientation"/> to set.</param>
         public void Place(Coordinates location, ShipOrientation orientation)
         {
-            this.location = location;
-            this.orientation = orientation;
-            this.isPlaced = true;
+            Location = location;
+            Orientation = orientation;
+            IsPlaced = true;
         }
 
         /// <summary>
@@ -274,7 +290,7 @@ namespace MBC.Shared
         /// <returns>A string representation of this <see cref="Ship"/>.</returns>
         public override string ToString()
         {
-            return location + " L" + length + " " + Enum.GetName(typeof(ShipOrientation), orientation);
+            return Location + " L" + Length + " " + Enum.GetName(typeof(ShipOrientation), Orientation);
         }
     }
 }

@@ -19,7 +19,6 @@ namespace MBC.Core
         private ControllerInformation controllerInfo;
 
         private int maxTimeout;
-        private ControllerRegister register;
         private Stopwatch timeElapsed;
 
         /// <summary>
@@ -46,12 +45,10 @@ namespace MBC.Core
         /// <summary>
         /// Gets the <see cref="ControllerRegister"/> given by a <see cref="Match"/>.
         /// </summary>
-        public ControllerRegister Register
+        public Register Register
         {
-            get
-            {
-                return register;
-            }
+            get;
+            private set;
         }
 
         /// <summary>
@@ -64,6 +61,7 @@ namespace MBC.Core
                 return (int)timeElapsed.ElapsedMilliseconds;
             }
         }
+
         /// <summary>
         /// Uses the <see cref="Controller"/>'s <see cref="Controller.MakeShot()"/> method to get a <see cref="Shot"/>.
         /// </summary>
@@ -102,9 +100,9 @@ namespace MBC.Core
         /// <param name="registerInstance">The <see cref="ControllerRegister"/> for the <see cref="Controller"/>.</param>
         /// <exception cref="ControllerTimeoutException">Thrown if the controller exceeded the time limit specified
         /// in the <see cref="MatchInfo"/> located in the <see cref="ControllerRegister"/>.</exception>
-        public void NewMatch(ControllerRegister registerInstance)
+        public void NewMatch(Register registerInstance)
         {
-            register = registerInstance;
+            Register = registerInstance;
             Register.Score = 0;
             controller.Register = new ControllerRegister(Register);
 
@@ -122,10 +120,6 @@ namespace MBC.Core
         /// in the <see cref="MatchInfo"/> located in the <see cref="ControllerRegister"/>.</exception>
         public void NewRound()
         {
-            Register.Shots = new ShotList();
-            Register.Ships = new ShipList(Register.Match.StartingShips);
-            controller.Register = new ControllerRegister(Register);
-
             var thread = new Thread(() => controller.NewRound());
 
             HandleThread(thread, "NewRound");
@@ -179,12 +173,13 @@ namespace MBC.Core
         /// </summary>
         /// <exception cref="ControllerTimeoutException">Thrown if the controller exceeded the time limit specified
         /// in the <see cref="MatchInfo"/> located in the <see cref="ControllerRegister"/>.</exception>
-        public void PlaceShips()
+        public ShipList PlaceShips()
         {
-            var thread = new Thread(() => controller.PlaceShips());
+            ShipList result = null;
+            var thread = new Thread(() => result = controller.PlaceShips(Register.Match.StartingShips));
 
             HandleThread(thread, "PlaceShips");
-            Register.Ships = new ShipList(controller.Register.Ships);
+            return result;
         }
 
         /// <summary>
