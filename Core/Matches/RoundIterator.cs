@@ -7,15 +7,26 @@ using System.Xml.Serialization;
 
 namespace MBC.Core.Matches
 {
+    /// <summary>
+    /// Contains a collection of <see cref="Round"/>s for a <see cref="Match"/>. Should not be used
+    /// in application code.
+    /// </summary>
     [Configuration("mbc_match_rounds_mode", Mode.AllRounds,
         Description = "Determines the ending behaviour of a match based on a given number of rounds.",
         DisplayName = "Match Rounds Mode")]
     [Configuration("mbc_match_rounds", 100)]
     public abstract class RoundIterator
     {
+        /// <summary>
+        /// Indicates that the target number of <see cref="Round"/>s has been reached.
+        /// </summary>
         [XmlIgnore]
         protected bool roundsReached;
 
+        /// <summary>
+        /// Initializes various internal variables.
+        /// </summary>
+        /// <param name="match">The <see cref="Match"/> to base settings on.</param>
         public RoundIterator(Match match)
         {
             MonitoringMatch = match;
@@ -25,6 +36,9 @@ namespace MBC.Core.Matches
             roundsReached = false;
         }
 
+        /// <summary>
+        /// Default constructor does nothing.
+        /// </summary>
         private RoundIterator()
         {
         }
@@ -51,6 +65,9 @@ namespace MBC.Core.Matches
             FirstTo
         }
 
+        /// <summary>
+        /// Gets the current focused <see cref="Round"/>
+        /// </summary>
         [XmlIgnore]
         public Round CurrentRound
         {
@@ -58,6 +75,9 @@ namespace MBC.Core.Matches
             protected set;
         }
 
+        /// <summary>
+        /// Gets the index of the internal array of the current <see cref="Round"/> in view.
+        /// </summary>
         [XmlIgnore]
         public int CurrentRoundIdx
         {
@@ -65,18 +85,27 @@ namespace MBC.Core.Matches
             private set;
         }
 
+        /// <summary>
+        /// Gets the <see cref="RoundIterator.Mode"/> that is being used.
+        /// </summary>
         public Mode PlayMode
         {
             get;
             private set;
         }
 
+        /// <summary>
+        /// Gets the list of <see cref="Round"/>s stored.
+        /// </summary>
         public List<Round> RoundList
         {
             get;
             private set;
         }
 
+        /// <summary>
+        /// Gets a value that indicates the <see cref="RoundIterator.CurrentRound"/> is the final <see cref="Round"/>.
+        /// </summary>
         [XmlIgnore]
         public bool TargetReached
         {
@@ -86,12 +115,18 @@ namespace MBC.Core.Matches
             }
         }
 
+        /// <summary>
+        /// Gets or sets a value that indicates the target number of <see cref="Round"/>s.
+        /// </summary>
         public int TargetRounds
         {
             get;
             internal set;
         }
 
+        /// <summary>
+        /// Gets the <see cref="Match"/> that is associated.
+        /// </summary>
         [XmlIgnore]
         protected Match MonitoringMatch
         {
@@ -99,6 +134,11 @@ namespace MBC.Core.Matches
             private set;
         }
 
+        /// <summary>
+        /// Creates a <see cref="RoundIterator"/> for a specific <paramref name="match"/>.
+        /// </summary>
+        /// <param name="match">The <see cref="Match"/> that requires a new <see cref="RoundIterator"/>.</param>
+        /// <returns>A <see cref="RoundIterator"/>.</returns>
         public static RoundIterator CreateRoundIteratorFor(Match match)
         {
             RoundIterator iterator = null;
@@ -115,6 +155,11 @@ namespace MBC.Core.Matches
             return iterator;
         }
 
+        /// <summary>
+        /// Moves the <see cref="RoundIterator.CurrentRound"/> forward if the <see cref="RoundIterator.TargetReached"/>
+        /// and returns a value indicating whether or not the <see cref="RoundIterator.CurrentRound"/> could move forward.
+        /// </summary>
+        /// <returns>A value indicating whether or not the <see cref="RoundIterator.CurrentRound"/> could move forward.</returns>
         internal bool NextRound()
         {
             if (CurrentRound == null)
@@ -141,6 +186,12 @@ namespace MBC.Core.Matches
             return true;
         }
 
+        /// <summary>
+        /// Moves the <see cref="RoundIterator.CurrentRound"/> backward if it is not the first <see cref="Round"/>
+        /// that had been generated.
+        /// </summary>
+        /// <returns>A value indicating whether or not the <see cref="RoundIterator.CurrentRound"/> is the first
+        /// <see cref="Round"/>.</returns>
         internal bool PrevRound()
         {
             if (CurrentRoundIdx > 0)
@@ -151,8 +202,17 @@ namespace MBC.Core.Matches
             return true;
         }
 
+        /// <summary>
+        /// Abstract method used to determine whether or not the <see cref="RoundIterator.TargetReached"/>
+        /// based on the <see cref="RoundIterator.Mode"/>.
+        /// </summary>
+        /// <returns></returns>
         protected abstract bool IsRoundsReached();
 
+        /// <summary>
+        /// Determines if the <see cref="RoundIterator.TargetRounds"/> has been attained by
+        /// a single <see cref="Register"/>.
+        /// </summary>
         private class FirstToRoundIterator : RoundIterator
         {
             public FirstToRoundIterator(Match match)
@@ -175,6 +235,10 @@ namespace MBC.Core.Matches
             }
         }
 
+        /// <summary>
+        /// Determines if the <see cref="RoundIterator.TargetRounds"/> has been met
+        /// with the current number of <see cref="Round"/>s in the <see cref="RoundIterator"/> collection.
+        /// </summary>
         private class PlayAllRoundIterator : RoundIterator
         {
             public PlayAllRoundIterator(Match match)
