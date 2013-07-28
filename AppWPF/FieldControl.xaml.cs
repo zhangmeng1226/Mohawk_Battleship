@@ -34,7 +34,7 @@ namespace MBC.App.WPF
 
         static FieldControl()
         {
-            ControllerColorProperty = DependencyProperty.Register("ControllerColor", typeof(Color), typeof(FieldControl));
+            ControllerColorProperty = DependencyProperty.Register("ControllerColor", typeof(Color), typeof(FieldControl));            
         }
 
         private int controller; //The controller index this FieldControl displays information for.

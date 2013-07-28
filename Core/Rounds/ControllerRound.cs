@@ -31,6 +31,9 @@ namespace MBC.Core.Rounds
             Controllers = controllers;
         }
 
+        /// <summary>
+        /// Implements a standard <see cref="Round"/> ending.
+        /// </summary>
         public override void End()
         {
             foreach (var rID in Remaining)
@@ -73,7 +76,7 @@ namespace MBC.Core.Rounds
         }
 
         /// <summary>
-        /// Indicates whether or not the current state of a given <see cref="ControllerRegister"/> has <see cref="Ship"/>s
+        /// Indicates whether or not the current state of a given <see cref="Register"/> has <see cref="Ship"/>s
         /// that are valid, checking the following:
         /// <list type="bullet">
         /// <item>The <see cref="ShipList"/> is not null</item>
@@ -82,7 +85,7 @@ namespace MBC.Core.Rounds
         /// <item>None of the <see cref="Ship"/>s in the <see cref="ShipList"/> are conflicting</item>
         /// </list>
         /// </summary>
-        /// <param name="rID">The <see cref="ControllerRegister"/> to check the ships for.</param>
+        /// <param name="rID">The <see cref="Register"/> to check the ships for.</param>
         /// <returns>A value indicating if all aforementioned conditions are true.</returns>
         protected bool ControllerShipsValid(ControllerID rID)
         {
@@ -110,9 +113,9 @@ namespace MBC.Core.Rounds
         }
 
         /// <summary>
-        /// For a given <see cref="ControllerRegister"/>, fires the <see cref="ControllerLostEvent"/>,
+        /// For a given <see cref="Register"/>, fires the <see cref="ControllerLostEvent"/>,
         /// calls the <see cref="ControllerUser.RoundLost()"/> method in the <see cref="ControllerUser"/>,
-        /// and removes the <see cref="ControllerUser"/> from the remaining <see cref="ControllerRegister"/>s.
+        /// and removes the <see cref="ControllerUser"/> from the remaining <see cref="Register"/>s.
         /// </summary>
         /// <param name="rID">The <see cref="ControllerUser"/> that lost the round.</param>
         protected void MakeLoser(ControllerID rID)
@@ -139,13 +142,17 @@ namespace MBC.Core.Rounds
         }
 
         /// <summary>
-        /// Changes the currentTurn to the next remaining <see cref="ControllerRegister"/>.
+        /// Changes the currentTurn to the next remaining <see cref=Register"/>.
         /// </summary>
         protected void NextTurn()
         {
             MakeEvent(new RoundTurnChangeEvent(CurrentTurn, NextRemaining()));
         }
 
+        /// <summary>
+        /// The standard procedure for inquiring a <see cref="ControllerUser"/> for the next <see cref="Shot"/>
+        /// to be made.
+        /// </summary>
         protected void StandardPlaceShot()
         {
             try

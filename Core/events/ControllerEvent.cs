@@ -4,10 +4,9 @@ using MBC.Shared;
 namespace MBC.Core.Events
 {
     /// <summary>
-    /// The base class for a series of <see cref="Event"/>s that are specific to the actions made by
-    /// <see cref="Controller"/>s. Provides the <see cref="ControllerRegister"/> of the <see cref="Controller"/>
-    /// that caused the event to be created. Most if not all events contain references to the objects that
-    /// provide information, so the information may be irrelevent if more events are created after.
+    /// The base class for a series of <see cref="Event"/>s that provide information on the actions
+    /// made in rounds from controllers. Provides the <see cref="ControllerID"/> of the <see cref="Controller"/>
+    /// that caused the event to be created.
     /// </summary>
     public abstract class ControllerEvent : RoundEvent
     {

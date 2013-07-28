@@ -24,7 +24,7 @@ namespace MBC.App.WPF
         public MainWindow()
         {
             Environment.CurrentDirectory = Environment.CurrentDirectory + "\\..";
-            //Configuration.InitializeConfiguration(Environment.CurrentDirectory+"\\configs");
+            Configuration.Initialize(Environment.CurrentDirectory+"\\configs");
             InitializeComponent();
             centerConsoleBorder.Visibility = System.Windows.Visibility.Collapsed;
             advTabs.Visibility = System.Windows.Visibility.Collapsed;
