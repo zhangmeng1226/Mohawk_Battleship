@@ -6,6 +6,9 @@
     <Window.Resources>
         <ResourceDictionary>
             <BooleanToVisibilityConverter x:Key="btvconvert" />
+            <ContextMenu x:Key="SelectorMenu" MenuItem.Click="menuSelector_Click">
+                <MenuItem Header="None" IsEnabled="False"/>
+            </ContextMenu>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="ResourceDictionary.xaml" />
             </ResourceDictionary.MergedDictionaries>
@@ -63,10 +66,10 @@
                     <Label HorizontalAlignment="Center" Grid.Row="0" Grid.Column="0" Content="Select" Style="{StaticResource defaultLabel}" />
                     <Label HorizontalAlignment="Center" Grid.Row="0" Grid.Column="1" Content="Bot Name" Style="{StaticResource defaultLabel}" />
                     <Label HorizontalAlignment="Center" Grid.Row="0" Grid.Column="2" Content="Score" Style="{StaticResource defaultLabel}" />
-                    <Button Name="btnRedSelect" Width="30" Grid.Row="1" Grid.Column="0" Content="R" Style="{StaticResource redButton}" Click="btnRedSelect_Click" />
+                    <Button Name="btnRedSelect" Width="30" Grid.Row="1" Grid.Column="0" Content="R" Style="{StaticResource redButton}" ContextMenu="{StaticResource SelectorMenu}" Click="btnRedSelect_Click" />
                     <Label Grid.Row="1" Grid.Column="1" Content="None selected!" Style="{StaticResource defaultLabel}" />
                     <Label HorizontalAlignment="Right" Grid.Row="1" Grid.Column="2" Content="0" Style="{StaticResource defaultLabel}" />
-                    <Button Name="btnBlueSelect" Width="30" Grid.Row="2" Grid.Column="0" Content="B" Style="{StaticResource blueButton}" Click="btnBlueSelect_Click" />
+                    <Button Name="btnBlueSelect" Width="30" Grid.Row="2" Grid.Column="0" Content="B" Style="{StaticResource blueButton}" ContextMenu="{StaticResource SelectorMenu}" Click="btnBlueSelect_Click" />
                     <Label Grid.Row="2" Grid.Column="1" Content="None selected!" Style="{StaticResource defaultLabel}" />
                     <Label HorizontalAlignment="Right" Grid.Row="2" Grid.Column="2" Content="0" Style="{StaticResource defaultLabel}" />
                     <Button Name="btnScoreReset" Grid.Row="3" Grid.Column="1" Content="Reset Scores" Style="{StaticResource defaultButton}" Click="btnScoreReset_Click" />
@@ -89,7 +92,7 @@
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
                                 <RowDefinition />
-                                <RowDefinition />
+                                <RowDefinition /> 
                             </Grid.RowDefinitions>
                             <TextBox x:Name="txtNumOfRounds" Width="50" Text="0" Grid.Row="0" Grid.Column="0"
                                      Grid.RowSpan="2" VerticalContentAlignment="Center" />

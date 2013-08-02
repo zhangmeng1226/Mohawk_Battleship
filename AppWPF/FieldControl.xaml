@@ -18,7 +18,7 @@
             <GradientStop Color="Black" Offset="0.0" />
             <GradientStop Color="DarkGray" Offset="3" />
         </RadialGradientBrush>
-    </UserControl.Background>
+    </UserControl.Background> 
     <Border BorderBrush="Black" BorderThickness="2" CornerRadius="5" Grid.Column="2">
         <Grid>
             <Grid.RowDefinitions>

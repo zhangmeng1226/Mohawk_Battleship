@@ -15,7 +15,7 @@ using System.Windows.Shapes;
 
 namespace MBC.App.WPF
 {
-    /// <summary>
+    /// <summary> 
     /// The FieldControl class is a WPF control that graphically displays the state of a Field object.
     /// The FieldControl must be given the IBattleshipController index that is being displayed on this Field.
     /// Usage of this class is simple by utilizing three class members:

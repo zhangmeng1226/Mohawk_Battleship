@@ -1,6 +1,8 @@
 ﻿using MBC.Core;
+using MBC.Core.Matches;
 using MBC.Core.Util;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
@@ -14,22 +16,28 @@ namespace MBC.App.WPF
     /// </summary>
     public partial class MainWindow : Window
     {
-        private ObservableCollection<RoundActivityEntry> roundActLogEntries = new ObservableCollection<RoundActivityEntry>();
-        private ObservableCollection<RoundEntry> roundLogEntries = new ObservableCollection<RoundEntry>();
-        private Configuration config;
+        private ObservableCollection<EventEntry> eventEntries = new ObservableCollection<EventEntry>();
+        private ObservableCollection<RoundEntry> roundEntries = new ObservableCollection<RoundEntry>();
+
+        private Match currentMatch;
+
+        private List<ControllerInformation> availableControllers;
+        private ControllerInformation redSelected;
+        private ControllerInformation blueSelected;
 
         /// <summary>
         /// Constructor for the MainWindow. Collapses the collapseable elements of the WPF application.
         /// </summary>
         public MainWindow()
         {
-            Environment.CurrentDirectory = Environment.CurrentDirectory + "\\..";
-            //Configuration.InitializeConfiguration(Environment.CurrentDirectory+"\\configs");
+            Configuration.Initialize(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\MBC Data");
             InitializeComponent();
             centerConsoleBorder.Visibility = System.Windows.Visibility.Collapsed;
             advTabs.Visibility = System.Windows.Visibility.Collapsed;
+            availableControllers = ControllerInformation.LoadControllerFolder(
+                Configuration.Global.GetValue<string>("app_data_root") + "controllers");
+            availableControllers.AddRange(ControllerInformation.LoadControllerFolder(Environment.CurrentDirectory + "\\..\\bots"));
             UpdateLayout();
-            config = Configuration.Global;
         }
 
         /*
@@ -74,7 +82,7 @@ namespace MBC.App.WPF
         /// <summary>
         /// Provides information to the WPF ListView control that displays the current round's RoundLog.
         /// </summary>
-        public class RoundActivityEntry
+        public class EventEntry
         {
             /// <summary>
             /// The activity number (starting from 1)
@@ -130,7 +138,7 @@ namespace MBC.App.WPF
 
         /// <summary>
         /// Invoked when the size of either FieldControl attached to this MainWindow has changed, either by
-        /// clicking a checkbox that changes a view, or through a window resize.
+        /// clicking a checkbox that changes a view, or through a window resize
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -192,7 +200,25 @@ namespace MBC.App.WPF
         /// Should provide a popup menu displaying all of the available controllers.</summary>
         private void btnBlueSelect_Click(object sender, RoutedEventArgs e)
         {
-            throw new NotImplementedException();
+            UpdateMenuControllers(btnBlueSelect.ContextMenu);
+            btnBlueSelect.ContextMenu.PlacementTarget = this;
+            btnBlueSelect.ContextMenu.IsOpen = true;
+        }
+
+        private void UpdateMenuControllers(ContextMenu menu)
+        {
+            menu.Items.Clear();
+            foreach (var ctrl in availableControllers)
+            {
+                var item = new MenuItem();
+                item.Header = ctrl.ToString();
+                menu.Items.Add(item);
+            }
+        }
+
+        private void menuSelector_Click(object sender, RoutedEventArgs e)
+        {
+            MenuItem selected = e.Source as MenuItem;
         }
 
         /// <summary>Called when the user clicks on the "Reset Scores" button on the top menu.
@@ -229,7 +255,9 @@ namespace MBC.App.WPF
         /// Should provide a popup menu displaying all of the available controllers.</summary>
         private void btnRedSelect_Click(object sender, RoutedEventArgs e)
         {
-            throw new NotImplementedException();
+            UpdateMenuControllers(btnRedSelect.ContextMenu);
+            btnRedSelect.ContextMenu.PlacementTarget = this;
+            btnRedSelect.ContextMenu.IsOpen = true;
         }
 
         /// <summary>Called when the user clicks on the "Load Benchmark..." button in the Round Log tab.
