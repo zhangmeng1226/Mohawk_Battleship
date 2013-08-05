@@ -24,6 +24,7 @@ namespace MBC.App.WPF
         private List<ControllerInformation> availableControllers;
         private ControllerInformation redSelected;
         private ControllerInformation blueSelected;
+        private bool redPopupActivated;
 
         /// <summary>
         /// Constructor for the MainWindow. Collapses the collapseable elements of the WPF application.
@@ -200,6 +201,7 @@ namespace MBC.App.WPF
         /// Should provide a popup menu displaying all of the available controllers.</summary>
         private void btnBlueSelect_Click(object sender, RoutedEventArgs e)
         {
+            redPopupActivated = false;
             UpdateMenuControllers(btnBlueSelect.ContextMenu);
             btnBlueSelect.ContextMenu.PlacementTarget = this;
             btnBlueSelect.ContextMenu.IsOpen = true;
@@ -219,6 +221,21 @@ namespace MBC.App.WPF
         private void menuSelector_Click(object sender, RoutedEventArgs e)
         {
             MenuItem selected = e.Source as MenuItem;
+            foreach (var ctrl in availableControllers)
+            {
+                if (ctrl.ToString() == selected.Header)
+                {
+                    if (redPopupActivated)
+                    {
+                        redSelected = ctrl;
+                    }
+                    else
+                    {
+                        blueSelected = ctrl;
+                    }
+                    break;
+                }
+            }
         }
 
         /// <summary>Called when the user clicks on the "Reset Scores" button on the top menu.
@@ -255,6 +272,7 @@ namespace MBC.App.WPF
         /// Should provide a popup menu displaying all of the available controllers.</summary>
         private void btnRedSelect_Click(object sender, RoutedEventArgs e)
         {
+            redPopupActivated = true;
             UpdateMenuControllers(btnRedSelect.ContextMenu);
             btnRedSelect.ContextMenu.PlacementTarget = this;
             btnRedSelect.ContextMenu.IsOpen = true;
