@@ -23,14 +23,10 @@ namespace MBC.App.WPF
 
         private List<ControllerInformation> availableControllers;
         private ControllerInformation redSelected;
-<<<<<<< HEAD
         private ControllerInformation blueSelected;
         private bool redPopupActivated;
-=======
-        private ControllerInformation blueSelected;
 
         private Configuration configuration;
->>>>>>> aad01dfe538f1cbe441835f175137d26bbfc7053
 
         /// <summary>
         /// Constructor for the MainWindow. Collapses the collapseable elements of the WPF application.
