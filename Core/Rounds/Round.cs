@@ -47,7 +47,16 @@ namespace MBC.Core.Rounds
                 Registers.Add(register);
                 Remaining.Add(register.ID);
             }
-            CurrentTurn = Remaining[newRandom.Next(Remaining.Count)];
+
+            //If the Remaining is populated set the CurrentTurn to a randomly selected element. Otherwise create a new ControllerId
+            if (Remaining.Count > 0)
+            {
+                CurrentTurn = Remaining[newRandom.Next(Remaining.Count)];
+            }
+            else
+            {
+                CurrentTurn = new ControllerID();
+            }
         }
 
         public event MBCEventHandler Event;

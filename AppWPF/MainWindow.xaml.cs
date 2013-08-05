@@ -23,8 +23,14 @@ namespace MBC.App.WPF
 
         private List<ControllerInformation> availableControllers;
         private ControllerInformation redSelected;
+<<<<<<< HEAD
         private ControllerInformation blueSelected;
         private bool redPopupActivated;
+=======
+        private ControllerInformation blueSelected;
+
+        private Configuration configuration;
+>>>>>>> aad01dfe538f1cbe441835f175137d26bbfc7053
 
         /// <summary>
         /// Constructor for the MainWindow. Collapses the collapseable elements of the WPF application.
@@ -35,9 +41,15 @@ namespace MBC.App.WPF
             InitializeComponent();
             centerConsoleBorder.Visibility = System.Windows.Visibility.Collapsed;
             advTabs.Visibility = System.Windows.Visibility.Collapsed;
+
+            configuration = Configuration.Global;
+
             availableControllers = ControllerInformation.LoadControllerFolder(
-                Configuration.Global.GetValue<string>("app_data_root") + "controllers");
+                configuration.GetValue<string>("app_data_root") + "controllers");
             availableControllers.AddRange(ControllerInformation.LoadControllerFolder(Environment.CurrentDirectory + "\\..\\bots"));
+
+            currentMatch = new ControlledMatch(configuration, availableControllers.ToArray());
+
             UpdateLayout();
         }
 
