@@ -2,6 +2,7 @@
 using MBC.Core.Matches;
 using MBC.Core.Util;
 using System;
+using MBC.Core.Rounds;
 
 namespace MBC.App.BattleshipConsole
 {
@@ -48,6 +49,9 @@ namespace MBC.App.BattleshipConsole
         /// <param name="param">The string of parameters made by the user.</param>
         public static void Start(int idx, params string[] param)
         {
+            int bot1 = 0;
+            int bot2 = 0;
+
             if (CurrentMatch == null)
             {
                 Console.WriteLine("No match has been created.");
@@ -56,6 +60,24 @@ namespace MBC.App.BattleshipConsole
             Running = true;
             while (Running && !CurrentMatch.StepForward());
             Console.WriteLine("The match has stopped.");
+
+
+            foreach (Round currentRound in CurrentMatch.Rounds.RoundList)
+            {
+                var winner = currentRound.Remaining;
+
+                if (winner[0] == 0)
+                {
+                    bot1++;
+                }
+                else
+                {
+                    bot2++;
+                }
+            }
+
+            Console.WriteLine("0: has " + bot1 + " wins");
+            Console.WriteLine("1: has " + bot2 + " wins");
         }
 
         /// <summary>
@@ -66,7 +88,7 @@ namespace MBC.App.BattleshipConsole
         public static void Stop(int idx, params string[] param)
         {
             CurrentMatch.End();
-            Console.WriteLine("The match has been stopped and ended.");
+            Console.WriteLine("The match has been stopped and ended.");                        
         }
     }
 }
