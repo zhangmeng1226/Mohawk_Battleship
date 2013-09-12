@@ -67,6 +67,8 @@ namespace MBC.App.BattleshipConsole
                     Console.SetCursorPosition(cursorLeft, Console.CursorTop);
                     currentWidth = txtSplit[txtIdx].Length + 1;
                 }
+                Console.Write(txtSplit[txtIdx]);
+                Console.Write(' ');
             }
         }
     }
