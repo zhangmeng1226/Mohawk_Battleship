@@ -19,26 +19,12 @@ namespace MBC.Shared
         {
             if (copy != null)
             {
-                Match = copy.Match;
+                Match = new MatchInfo(copy.Match);
                 Score = copy.Score;
                 ID = copy.ID;
+                Team = new Team(copy.Team);
                 Opponents = new List<ControllerID>(copy.Opponents);
             }
-        }
-
-        protected ControllerRegister() { }
-
-        /// <summary>
-        /// Stores the <paramref name="match"/> and <paramref name="id"/> and sets the score to zero.
-        /// </summary>
-        /// <param name="match">The <see cref="MatchInfo"/> about a match a <see cref="Controller"/> is
-        /// entered in.</param>
-        /// <param name="id">The unique <see cref="ControllerID"/> of a <see cref="Controller"/> in the match.</param>
-        public ControllerRegister(MatchInfo match, ControllerID id)
-        {
-            Match = match;
-            ID = id;
-            Score = 0;
         }
 
         /// <summary>
@@ -56,6 +42,8 @@ namespace MBC.Shared
         /// </summary>
         public ControllerID ID { get; set; }
 
+        public Team Team { get; set; }
+
         /// <summary>
         /// Gets or sets the list of <see cref="ControllerID"/>s that have been designated as opponents.
         /// </summary>
@@ -68,8 +56,7 @@ namespace MBC.Shared
         /// <returns>A string representation.</returns>
         public override string ToString()
         {
-            IEnumerable<string> names = Match.ControllerNames;
-            return "[" + ID + "]" + Match.ControllerNames[ID];
+            return string.Format("[%s][%s]", Team, ID);
         }
 
         /// <summary>

@@ -20,7 +20,7 @@ namespace MBC.Core.Rounds
         [XmlIgnore]
         private AccoladeGenerator accoladeGenerator;
 
-        private EventIterator events;
+        private EventCollection events;
 
         private List<Accolade> generatedAccolades;
 
@@ -35,7 +35,7 @@ namespace MBC.Core.Rounds
         {
             MatchInfo = matchInfo;
 
-            events = new EventIterator();
+            events = new EventCollection();
             Registers = new List<Register>();
             Remaining = new List<ControllerID>();
             generatedAccolades = new List<Accolade>();

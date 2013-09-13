@@ -82,7 +82,7 @@ namespace MBC.Core.Matches
         private void CreateRegisters()
         {
             registers = new List<Register>();
-            var info = (CMatchInfo)Info;
+            var info = (ConfiguredMatchInfo)Info;
             for (var id = 0; id < controllers.Count; id++)
             {
                 Registers.Add(new Register(Info, id));

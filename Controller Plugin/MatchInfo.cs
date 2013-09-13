@@ -8,43 +8,14 @@ namespace MBC.Shared
     /// </summary>
     public class MatchInfo
     {
-        /// <summary>
-        /// A list of strings of all <see cref="Controller"/>s involved. Respects the order of
-        /// <see cref="ControllerRegister.ID"/> of each <see cref="Controller"/>.
-        /// </summary>
-        protected List<string> controllerNames;
 
-        /// <summary>
-        /// A <see cref="ShipList"/> containing the <see cref="Ship"/>s that a <see cref="Controller"/> is
-        /// given at the beginning of a round for placement.
-        /// </summary>
-        protected ShipList initShips;
-
-        /// <summary>
-        /// <see cref="Coordinates"/> with the <see cref="Coordinates.X"/> and <see cref="Coordinates.Y"/>
-        /// values that indicate the maximum size of the battleship field.
-        /// <remarks>
-        /// The battleship field starts at (0, 0) and controllers may place <see cref="Ship"/>s and
-        /// <see cref="Shot"/>s less than the maximum size.
-        /// </remarks>
-        /// </summary>
-        protected Coordinates fieldSize;
-
-        /// <summary>
-        /// The time in milliseconds that a <see cref="Controller"/> has to return from a method.
-        /// </summary>
-        protected int methodTimeLimit;
-
-        /// <summary>
-        /// The <see cref="GameMode"/> that a match is running in.
-        /// </summary>
-        protected GameMode gameMode;
-
-        /// <summary>
-        /// Does nothing, but makes it so only deriving classes may create a <see cref="MatchInfo"/>.
-        /// </summary>
-        protected MatchInfo()
+        public MatchInfo(MatchInfo copy)
         {
+            StartingShips = new ShipList(copy.StartingShips);
+            FieldSize = copy.FieldSize;
+            TimeLimit = copy.TimeLimit;
+            GameMode = copy.GameMode;
+            Teams = new List<Team>(copy.Teams);
         }
 
         /// <summary>
@@ -53,10 +24,8 @@ namespace MBC.Shared
         /// </summary>
         public ShipList StartingShips
         {
-            get
-            {
-                return new ShipList(initShips);
-            }
+            get;
+            set;
         }
 
         /// <summary>
@@ -69,10 +38,8 @@ namespace MBC.Shared
         /// </summary>
         public Coordinates FieldSize
         {
-            get
-            {
-                return fieldSize;
-            }
+            get;
+            set;
         }
 
         /// <summary>
@@ -80,10 +47,8 @@ namespace MBC.Shared
         /// </summary>
         public int TimeLimit
         {
-            get
-            {
-                return methodTimeLimit;
-            }
+            get;
+            set;
         }
 
         /// <summary>
@@ -91,23 +56,14 @@ namespace MBC.Shared
         /// </summary>
         public GameMode GameMode
         {
-            get
-            {
-                return gameMode;
-            }
+            get;
+            set;
         }
 
-        /// <summary>
-        /// Gets a list of strings of all <see cref="Controller"/>s involved. Respects the order of
-        /// <see cref="ControllerRegister.ID"/> of each <see cref="Controller"/>.
-        /// </summary>
-        /// <seealso cref="ControllerID"/>
-        public List<string> ControllerNames
+        public List<Team> Teams
         {
-            get
-            {
-                return new List<string>(controllerNames);
-            }
+            get;
+            set;
         }
     }
 }

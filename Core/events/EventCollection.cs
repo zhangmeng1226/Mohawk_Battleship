@@ -5,14 +5,14 @@ using System.Xml.Serialization;
 
 namespace MBC.Core.Matches
 {
-    public class EventIterator
+    public class EventCollection
     {
         [XmlIgnore]
         private int currentEventIdx;
 
         private List<Event> generatedEvents;
 
-        public EventIterator()
+        public EventCollection()
         {
             generatedEvents = new List<Event>();
             currentEventIdx = -1;

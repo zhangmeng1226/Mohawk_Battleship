@@ -11,22 +11,17 @@ namespace MBC.Core.Matches
         Description = "Determines the ending behaviour of a match based on a given number of rounds.",
         DisplayName = "Match Rounds Mode")]
     [Configuration("mbc_match_rounds", 100)]
-    public abstract class RoundIterator
+    public class RoundCollection
     {
         [XmlIgnore]
         protected bool roundsReached;
 
-        public RoundIterator(Match match)
+        public RoundCollection()
         {
-            MonitoringMatch = match;
             TargetRounds = MonitoringMatch.Config.GetValue<int>("mbc_match_rounds");
             CurrentRoundIdx = 0;
             RoundList = new List<Round>();
             roundsReached = false;
-        }
-
-        private RoundIterator()
-        {
         }
 
         /// <summary>
@@ -99,9 +94,9 @@ namespace MBC.Core.Matches
             private set;
         }
 
-        public static RoundIterator CreateRoundIteratorFor(Match match)
+        public static RoundCollection CreateRoundIteratorFor(Match match)
         {
-            RoundIterator iterator = null;
+            RoundCollection iterator = null;
             switch (match.Config.GetValue<Mode>("mbc_match_rounds_mode"))
             {
                 case Mode.AllRounds:
@@ -153,7 +148,7 @@ namespace MBC.Core.Matches
 
         protected abstract bool IsRoundsReached();
 
-        private class FirstToRoundIterator : RoundIterator
+        private class FirstToRoundIterator : RoundCollection
         {
             public FirstToRoundIterator(Match match)
                 : base(match)
@@ -175,7 +170,7 @@ namespace MBC.Core.Matches
             }
         }
 
-        private class PlayAllRoundIterator : RoundIterator
+        private class PlayAllRoundIterator : RoundCollection
         {
             public PlayAllRoundIterator(Match match)
                 : base(match)

@@ -15,19 +15,6 @@ namespace MBC.Core
     public abstract class Player : ControllerRegister
     {
 
-        public static Player FromControllerInformation(ControllerInformation info)
-        {
-            return new ControllerPlayer(info);
-        }
-
-        public static Player CreateDummy(string displayName)
-        {
-            return new DummyPlayer(displayName);
-        }
-
-        private int maxTimeout;
-        private Stopwatch timeElapsed;
-
         protected Player()
         {
 
@@ -43,17 +30,6 @@ namespace MBC.Core
         /// Occurs whenever the <see cref="Controller"/> outputs a message string.
         /// </summary>
         public event StringOutputHandler ControllerMessageEvent;
-
-        /// <summary>
-        /// Gets the time (in milliseconds) that the <see cref="Controller"/> took to finish the last method.
-        /// </summary>
-        public int TimeElapsed
-        {
-            get
-            {
-                return (int)timeElapsed.ElapsedMilliseconds;
-            }
-        }
 
         public virtual Shot MakeShot()
         {
