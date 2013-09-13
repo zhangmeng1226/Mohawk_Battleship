@@ -395,7 +395,7 @@ namespace MBC.Shared
             {
                 CheckShipLengths();
             }
-            return result;
+            return shipList.Remove(ship);
         }
         /// <summary>
         /// Searches for a <see cref="Ship"/> located at the <paramref name="coord"/>.
