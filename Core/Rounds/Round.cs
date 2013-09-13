@@ -74,7 +74,7 @@ namespace MBC.Core.Rounds
         }
 
         /// <summary>
-        /// The <see cref="ControllerUser"/> that has the current turn.
+        /// The <see cref="Player"/> that has the current turn.
         /// </summary>
         public ControllerID CurrentTurn
         {
@@ -114,7 +114,7 @@ namespace MBC.Core.Rounds
         }
 
         /// <summary>
-        /// The <see cref="ControllerUser"/>s that have not been defeated.
+        /// The <see cref="Player"/>s that have not been defeated.
         /// </summary>
         [XmlIgnore]
         public List<ControllerID> Remaining

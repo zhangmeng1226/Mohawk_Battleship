@@ -44,6 +44,7 @@
   <ItemGroup>
     <Compile Include="Accolades\Accolade.cs" />
     <Compile Include="Accolades\AccoladeGenerator.cs" />
+    <Compile Include="ControllerPlayer.cs" />
     <Compile Include="Events\RoundTurnChangeEvent.cs" />
     <Compile Include="Matches\ControlledMatch.cs" />
     <Compile Include="Events\EventIterator.cs" />
@@ -54,7 +55,7 @@
     <Compile Include="Rounds\ClassicRound.cs" />
     <Compile Include="ControllerInformation.cs" />
     <Compile Include="Rounds\ControllerRound.cs" />
-    <Compile Include="ControllerUser.cs" />
+    <Compile Include="Player.cs" />
     <Compile Include="Exceptions\ControllerIncompatibleException.cs" />
     <Compile Include="Exceptions\ControllerTimeoutException.cs" />
     <Compile Include="Events\ControllerShipDestroyedEvent.cs" />

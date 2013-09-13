@@ -5,8 +5,8 @@ namespace MBC.Core
 {
     /// <summary>
     /// An exception that provides information about the time it took for a method run through a
-    /// <see cref="ControllerUser"/>. Provides the <see cref="ControllerRegister"/> of the
-    /// <see cref="ControllerUser"/> that threw this exception. Used when a <see cref="Controller"/>
+    /// <see cref="Player"/>. Provides the <see cref="ControllerRegister"/> of the
+    /// <see cref="Player"/> that threw this exception. Used when a <see cref="Controller"/>
     /// has exceeded the <see cref="MatchInfo.TimeLimit"/> specified in <see cref="MatchInfo"/>.
     /// </summary>
     public class ControllerTimeoutException : Exception

@@ -9,14 +9,14 @@ using System.Xml.Serialization;
 namespace MBC.Core.Matches
 {
     /// <summary>
-    /// A <see cref="Match"/> that utilizes <see cref="ControllerUser"/>s to generate new <see cref="Event"/>s.
+    /// A <see cref="Match"/> that utilizes <see cref="Player"/>s to generate new <see cref="Event"/>s.
     /// </summary>
     public class ControlledMatch : Match
     {
         /// <summary>
-        /// The <see cref="ControllerUser"/>s participating in this <see cref="Match"/>.
+        /// The <see cref="Player"/>s participating in this <see cref="Match"/>.
         /// </summary>
-        private List<ControllerUser> controllers;
+        private List<Player> controllers;
 
         /// <summary>
         /// Inits a <see cref="ControlledMatch"/> with the given <paramref name="conf"/> and sets up the <see cref="Register"/>s
@@ -24,7 +24,7 @@ namespace MBC.Core.Matches
         /// </summary>
         /// <param name="conf">The <see cref="Configuration"/> used to set up this <see cref="Match"/>.</param>
         /// <param name="controllerInfoLst">A collection of <see cref="ControllerInformation"/> that defines the
-        /// <see cref="ControllerUser"/>s to generate.</param>
+        /// <see cref="Player"/>s to generate.</param>
         public ControlledMatch(Configuration conf, IEnumerable<ControllerInformation> controllerInfoLst)
             : base(conf)
         {
@@ -37,7 +37,7 @@ namespace MBC.Core.Matches
         /// </summary>
         /// <param name="conf">The <see cref="Configuration"/> used to set up this <see cref="Match"/>.</param>
         /// <param name="controllerInfos">A collection of <see cref="ControllerInformation"/> that defines the
-        /// <see cref="ControllerUser"/>s to generate.</param>
+        /// <see cref="Player"/>s to generate.</param>
         public ControlledMatch(Configuration conf, params ControllerInformation[] controllerInfos)
             : base(conf)
         {
@@ -77,7 +77,7 @@ namespace MBC.Core.Matches
         }
 
         /// <summary>
-        /// Creates the <see cref="Register"/>s from the <see cref="ControllerUser"/>s in this <see cref="ControlledMatch"/>.
+        /// Creates the <see cref="Register"/>s from the <see cref="Player"/>s in this <see cref="ControlledMatch"/>.
         /// </summary>
         private void CreateRegisters()
         {
@@ -110,13 +110,13 @@ namespace MBC.Core.Matches
         /// Generates the <see cref="ConrollerUser"/>s for this <see cref="ControlledMatch"/> through a
         /// collection of <see cref="ControllerInformation"/>.
         /// </summary>
-        /// <param name="ctrlInfos">The <see cref="ControllerInformation"/> objects that create the <see cref="ControllerUser"/>s.</param>
+        /// <param name="ctrlInfos">The <see cref="ControllerInformation"/> objects that create the <see cref="Player"/>s.</param>
         private void GenerateControllers(IEnumerable<ControllerInformation> ctrlInfos)
         {
-            controllers = new List<ControllerUser>();
+            controllers = new List<Player>();
             for (var id = 0; id < ctrlInfos.Count(); id++)
             {
-                controllers.Add(new ControllerUser(ctrlInfos.ElementAt(id)));
+                controllers.Add(new Player(ctrlInfos.ElementAt(id)));
             }
         }
 

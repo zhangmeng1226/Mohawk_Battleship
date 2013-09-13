@@ -18,31 +18,12 @@ namespace MBC.Core
                 ShotsAgainst = new ShotList(copy.ShotsAgainst);
             }
         }
+
         public Register(MatchInfo match, ControllerID id)
             : base(match, id) { }
 
         private Register() { }
 
-        /// <summary>
-        /// Gets or sets the <see cref="ShipList"/>.
-        /// </summary>
-        public ShipList Ships { get; set; }
 
-        /// <summary>
-        /// Gets or sets the <see cref="ShotList"/>.
-        /// </summary>
-        public ShotList Shots { get; set; }
-
-        public ShipList ShipsLeft
-        {
-            get;
-            set;
-        }
-
-        public ShotList ShotsAgainst
-        {
-            get;
-            set;
-        }
     }
 }
