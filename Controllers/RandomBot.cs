@@ -7,6 +7,7 @@ namespace MBC.Controllers
     /// <summary>
     /// This is a controller that uses a pseudo-random number generator to make all of its decisions. This
     /// controller is highly documented and gives a good idea of how to develop a controller for use in MBC.
+    /// 
     ///
     /// Every controller must implement the IBattleshipController interface from the shared framework in
     /// order to be detected by the MBC core. See <see cref="Controller"/> for information about
@@ -25,7 +26,7 @@ namespace MBC.Controllers
     ///
 
     //Here, a NameAttribute is defined, stating the name of this controller.
-    [Name("RandomBot")]
+    [Name("RandomBot C#")]
 
     //Here, a VersionAttribute is defined, stating the version information for this controller.
     [Version(1, 0)]

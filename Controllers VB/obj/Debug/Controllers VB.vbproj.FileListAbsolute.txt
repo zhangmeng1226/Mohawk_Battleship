@@ -1,0 +1,9 @@
+C:\Users\pk.pk-PC\Documents\GitHub\Mohawk_Battleship\bots\Controllers VB.dll
+C:\Users\pk.pk-PC\Documents\GitHub\Mohawk_Battleship\bots\Controllers VB.pdb
+C:\Users\pk.pk-PC\Documents\GitHub\Mohawk_Battleship\bots\Controllers VB.xml
+C:\Users\pk.pk-PC\Documents\GitHub\Mohawk_Battleship\Controllers VB\obj\Debug\Controllers VB.vbprojResolveAssemblyReference.cache
+C:\Users\pk.pk-PC\Documents\GitHub\Mohawk_Battleship\Controllers VB\obj\Debug\Controllers_VB.Resources.resources
+C:\Users\pk.pk-PC\Documents\GitHub\Mohawk_Battleship\Controllers VB\obj\Debug\Controllers VB.vbproj.GenerateResource.Cache
+C:\Users\pk.pk-PC\Documents\GitHub\Mohawk_Battleship\Controllers VB\obj\Debug\Controllers VB.dll
+C:\Users\pk.pk-PC\Documents\GitHub\Mohawk_Battleship\Controllers VB\obj\Debug\Controllers VB.xml
+C:\Users\pk.pk-PC\Documents\GitHub\Mohawk_Battleship\Controllers VB\obj\Debug\Controllers VB.pdb
