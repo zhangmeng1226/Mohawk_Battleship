@@ -16,7 +16,7 @@ namespace MBC.Core.Events
         /// based on the <see cref="MBC.Shared.ControllerRegister"/>s that are involved in it.
         /// </summary>
         /// <param name="round">The associated <see cref="Round"/>.</param>
-        public RoundBeginEvent(IEnumerable<Register> roundControllers)
+        public RoundBeginEvent(IEnumerable<Player> roundControllers)
         {
             StringBuilder msg = new StringBuilder();
             msg.Append("A round has begun with ");

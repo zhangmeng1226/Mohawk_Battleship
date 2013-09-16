@@ -10,29 +10,29 @@ namespace MBC.Core.Events
     public class RoundTurnChangeEvent : RoundEvent
     {
         /// <summary>
-        /// Sets the previous and next <see cref="ControllerID"/>s in the switch.
+        /// Sets the previous and next <see cref="IDNumber"/>s in the switch.
         /// </summary>
-        /// <param name="last">The previous <see cref="ControllerID"/> that had the turn.</param>
-        /// <param name="next">The next <see cref="ControllerID"/> to take the turn.</param>
-        public RoundTurnChangeEvent(ControllerID last, ControllerID next)
+        /// <param name="last">The previous <see cref="IDNumber"/> that had the turn.</param>
+        /// <param name="next">The next <see cref="IDNumber"/> to take the turn.</param>
+        public RoundTurnChangeEvent(Player last, Player next)
         {
             NextTurn = next;
             PreviousTurn = last;
         }
 
         /// <summary>
-        /// Gets the <see cref="ControllerID"/> of the next turn.
+        /// Gets the <see cref="IDNumber"/> of the next turn.
         /// </summary>
-        public ControllerID NextTurn
+        public Player NextTurn
         {
             get;
             private set;
         }
 
         /// <summary>
-        /// Gets the <see cref="ControllerID"/> of the previous turn.
+        /// Gets the <see cref="IDNumber"/> of the previous turn.
         /// </summary>
-        public ControllerID PreviousTurn
+        public Player PreviousTurn
         {
             get;
             private set;

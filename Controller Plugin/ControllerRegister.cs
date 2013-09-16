@@ -23,7 +23,7 @@ namespace MBC.Shared
                 Score = copy.Score;
                 ID = copy.ID;
                 Team = new Team(copy.Team);
-                Opponents = new List<ControllerID>(copy.Opponents);
+                Opponents = new List<IDNumber>(copy.Opponents);
             }
         }
 
@@ -38,20 +38,20 @@ namespace MBC.Shared
         public int Score { get; set; }
 
         /// <summary>
-        /// Gets or sets the <see cref="ControllerID"/>.
+        /// Gets or sets the <see cref="IDNumber"/>.
         /// </summary>
-        public ControllerID ID { get; set; }
+        public IDNumber ID { get; set; }
 
         public Team Team { get; set; }
 
         /// <summary>
-        /// Gets or sets the list of <see cref="ControllerID"/>s that have been designated as opponents.
+        /// Gets or sets the list of <see cref="IDNumber"/>s that have been designated as opponents.
         /// </summary>
-        public List<ControllerID> Opponents { get; set; }
+        public List<IDNumber> Opponents { get; set; }
 
         /// <summary>
         /// Generates a string representation of the <see cref="ControllerRegister"/> by providing the
-        /// <see cref="ControllerID"/> and <see cref="Controller"/> display name.
+        /// <see cref="IDNumber"/> and <see cref="Controller"/> display name.
         /// </summary>
         /// <returns>A string representation.</returns>
         public override string ToString()

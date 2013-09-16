@@ -11,7 +11,7 @@ namespace MBC.Core
     /// </summary>
     public class ControllerTimeoutException : Exception
     {
-        private ControllerRegister controller;
+        private Player player;
         private string methodName;
         private int timeTaken;
 
@@ -21,11 +21,11 @@ namespace MBC.Core
         /// <param name="register">The associated <see cref="ControllerRegister"/>.</param>
         /// <param name="methodName">The name of the method called to a <see cref="Controller"/>.</param>
         /// <param name="timeTaken">The time in milliseconds that the method took to finish.</param>
-        public ControllerTimeoutException(ControllerRegister register, string methodName, int timeTaken)
-            : base(register + " took too long executing " + methodName + " according to the time limit of " +
-            register.Match.TimeLimit + "ms. Time taken was " + timeTaken + "ms.")
+        public ControllerTimeoutException(Player player, string methodName, int timeTaken)
+            : base(player + " took too long executing " + methodName + " according to the time limit of " +
+            player.Match.TimeLimit + "ms. Time taken was " + timeTaken + "ms.")
         {
-            this.controller = register;
+            this.player = player;
             this.methodName = methodName;
             this.timeTaken = timeTaken;
         }
@@ -33,11 +33,11 @@ namespace MBC.Core
         /// <summary>
         /// Gets the associated <see cref="ControllerRegister"/>.
         /// </summary>
-        public ControllerRegister Register
+        public Player Player
         {
             get
             {
-                return controller;
+                return Player;
             }
         }
 

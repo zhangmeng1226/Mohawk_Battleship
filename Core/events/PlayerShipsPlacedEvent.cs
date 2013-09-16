@@ -9,7 +9,7 @@ namespace MBC.Core.Events
     /// Provides information about a <see cref="ControllerRegister"/>'s <see cref="ShipList"/> that had
     /// been requested to be modified.
     /// </summary>
-    public class ControllerShipsPlacedEvent : ControllerEvent
+    public class PlayerShipsPlacedEvent : PlayerEvent
     {
         /// <summary>
         /// Passes the <paramref name="register"/> to the base constructor, stores the rest of the parameters,
@@ -17,8 +17,8 @@ namespace MBC.Core.Events
         /// </summary>
         /// <param name="register">A <see cref="ControllerRegister"/>.</param>
         /// <param name="newShips">The <see cref="ShipList"/> associated with the <see cref="ControllerRegister"/></param>
-        public ControllerShipsPlacedEvent(ControllerID register, ShipList oldShips, ShipList newShips)
-            : base(register)
+        public PlayerShipsPlacedEvent(Player plr, ShipList oldShips, ShipList newShips)
+            : base(plr)
         {
             Ships = newShips;
             PrevShips = oldShips;
@@ -28,7 +28,7 @@ namespace MBC.Core.Events
         {
 
             StringBuilder msg = new StringBuilder();
-            msg.Append(RegisterID);
+            msg.Append(Player);
             int placedCount = 0;
             foreach (var ship in Ships.Ships)
             {
@@ -86,14 +86,14 @@ namespace MBC.Core.Events
 
         internal override void ProcBackward(Round round)
         {
-            round.Registers[RegisterID].Ships = PrevShips;
-            round.Registers[RegisterID].ShipsLeft = new ShipList(PrevShips.Ships);
+            round.Registers[PlayerID].Ships = PrevShips;
+            round.Registers[PlayerID].ShipsLeft = new ShipList(PrevShips.Ships);
         }
 
         internal override void ProcForward(Round round)
         {
-            round.Registers[RegisterID].Ships = Ships;
-            round.Registers[RegisterID].ShipsLeft = new ShipList(Ships.Ships);
+            round.Registers[PlayerID].Ships = Ships;
+            round.Registers[PlayerID].ShipsLeft = new ShipList(Ships.Ships);
         }
     }
 }

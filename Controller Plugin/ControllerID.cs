@@ -14,31 +14,31 @@
     /// </code>
     /// </example>
     /// </summary>
-    public struct ControllerID
+    public struct IDNumber
     {
         private int value;
 
-        private ControllerID(int value)
+        private IDNumber(int value)
         {
             this.value = value;
         }
 
         /// <summary>
-        /// Causes an int value to act as a <see cref="ControllerID"/>.
+        /// Causes an int value to act as a <see cref="IDNumber"/>.
         /// </summary>
         /// <param name="value">The int to convert.</param>
-        /// <returns>A <see cref="ControllerID"/> identical to the <paramref name="value"/>.</returns>
-        public static implicit operator ControllerID(int value)
+        /// <returns>A <see cref="IDNumber"/> identical to the <paramref name="value"/>.</returns>
+        public static implicit operator IDNumber(int value)
         {
-            return new ControllerID(value);
+            return new IDNumber(value);
         }
 
         /// <summary>
-        /// Causes a <see cref="ControllerID"/> to act as an int value.
+        /// Causes a <see cref="IDNumber"/> to act as an int value.
         /// </summary>
-        /// <param name="id">The <see cref="ControllerID"/> to convert.</param>
+        /// <param name="id">The <see cref="IDNumber"/> to convert.</param>
         /// <returns>An int value with the same value as the <paramref name="id"/>.</returns>
-        public static implicit operator int(ControllerID id)
+        public static implicit operator int(IDNumber id)
         {
             return id.value;
         }

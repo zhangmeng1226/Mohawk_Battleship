@@ -12,7 +12,7 @@ namespace MBC.Shared
     public class ShotList : ICollection<Shot>
     {
         private List<Shot> shotHistory;
-        private Dictionary<ControllerID, List<Shot>> shotsByReceiver;
+        private Dictionary<IDNumber, List<Shot>> shotsByReceiver;
 
         /// <summary>
         /// Contructs a new ShotList copying the contents of an existing ShotList.
@@ -20,7 +20,7 @@ namespace MBC.Shared
         /// <param name="copyList">The ShotList to copy.</param>
         public ShotList(ShotList copyList)
         {
-            shotsByReceiver = new Dictionary<ControllerID, List<Shot>>();
+            shotsByReceiver = new Dictionary<IDNumber, List<Shot>>();
             shotHistory = new List<Shot>();
 
             if (copyList != null)
@@ -38,7 +38,7 @@ namespace MBC.Shared
         public ShotList()
         {
             shotHistory = new List<Shot>();
-            shotsByReceiver = new Dictionary<ControllerID, List<Shot>>();
+            shotsByReceiver = new Dictionary<IDNumber, List<Shot>>();
         }
 
         /// <summary>
@@ -96,7 +96,7 @@ namespace MBC.Shared
         /// Creates a new empty internal list for Shot objects for a specific receiver ID.
         /// </summary>
         /// <param name="receiver">The ControllerID of the receiver to create the list for.</param>
-        public void MakeReceiver(ControllerID receiver)
+        public void MakeReceiver(IDNumber receiver)
         {
             shotsByReceiver[receiver] = new List<Shot>();
         }
@@ -105,7 +105,7 @@ namespace MBC.Shared
         /// Creates a new empty internal list for Shot objects for a list of specific receiver IDs.
         /// </summary>
         /// <param name="receivers">A List of ControllerIDs to create lists for.</param>
-        public void MakeReceivers(List<ControllerID> receivers)
+        public void MakeReceivers(List<IDNumber> receivers)
         {
             foreach (var receiver in receivers)
             {
@@ -298,7 +298,7 @@ namespace MBC.Shared
         /// <summary>
         /// Generates and returns a ShotList of Shot objects that have been received by a specific ControllerID
         /// </summary>
-        public ShotList ShotsToReceiver(ControllerID idx)
+        public ShotList ShotsToReceiver(IDNumber idx)
         {
             ShotList newList = new ShotList();
             newList.shotHistory = shotHistory;

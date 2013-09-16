@@ -14,7 +14,7 @@ namespace MBC.Core.Events
     /// </summary>
     /// <seealso cref="MatchEvent"/>
     /// <seealso cref="RoundEvent"/>
-    /// <seealso cref="ControllerEvent"/>
+    /// <seealso cref="PlayerEvent"/>
     public abstract class Event
     {
         [XmlIgnore]

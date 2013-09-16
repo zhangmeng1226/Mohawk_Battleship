@@ -5,12 +5,12 @@ namespace MBC.Shared
     /// <summary>
     /// Provides information about a primary component of a battleship game match; the shot. Contains
     /// the <see cref="Coordinates"/> used to target a <see cref="Ship"/> of a <see cref="Controller"/> associated
-    /// with a certain <see cref="ControllerID"/>.
+    /// with a certain <see cref="IDNumber"/>.
     /// </summary>
     public class Shot : IEquatable<Shot>, IComparable<Shot>
     {
         private Coordinates coords;
-        private ControllerID receiver;
+        private IDNumber receiver;
 
         /// <summary>
         /// Copies an existing <see cref="Shot"/>.
@@ -26,7 +26,7 @@ namespace MBC.Shared
         /// Initializes the <see cref="Shot.Coordinates"/> to (-1, -1) and stores the <paramref name="receiver"/>.
         /// </summary>
         /// <param name="receiver">The receiving <see cref="ControllerRegister"/> of this <see cref="Shot"/>.</param>
-        public Shot(ControllerID receiver)
+        public Shot(IDNumber receiver)
         {
             this.coords = new Coordinates(-1, -1);
             this.receiver = receiver;
@@ -35,10 +35,10 @@ namespace MBC.Shared
         private Shot() { }
 
         /// <summary>
-        /// Gets or sets the <see cref="ControllerID"/> that identifies the <see cref="ControllerRegister"/>
+        /// Gets or sets the <see cref="IDNumber"/> that identifies the <see cref="ControllerRegister"/>
         /// receiving this <see cref="Shot"/>.
         /// </summary>
-        public ControllerID Receiver
+        public IDNumber Receiver
         {
             get
             {

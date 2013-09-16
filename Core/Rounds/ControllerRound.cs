@@ -44,7 +44,7 @@ namespace MBC.Core.Rounds
                 }
                 catch (ControllerTimeoutException ex)
                 {
-                    MakeEvent(new ControllerTimeoutEvent(ex));
+                    MakeEvent(new PlayerTimeoutEvent(ex));
                 }
             }
             base.End();
@@ -70,7 +70,7 @@ namespace MBC.Core.Rounds
                 }
                 catch (ControllerTimeoutException ex)
                 {
-                    MakeEvent(new ControllerTimeoutEvent(ex));
+                    MakeEvent(new PlayerTimeoutEvent(ex));
                 }
             }
         }
@@ -87,7 +87,7 @@ namespace MBC.Core.Rounds
         /// </summary>
         /// <param name="rID">The <see cref="Register"/> to check the ships for.</param>
         /// <returns>A value indicating if all aforementioned conditions are true.</returns>
-        protected bool ControllerShipsValid(ControllerID rID)
+        protected bool ControllerShipsValid(IDNumber rID)
         {
             return Registers[rID].Ships != null &&
                 Registers[rID].Ships.EqualLengthsAs(MatchInfo.StartingShips) &&
@@ -102,7 +102,7 @@ namespace MBC.Core.Rounds
         /// <param name="rID">The <see cref="Player"/> making a <see cref="Shot"/>.</param>
         /// <param name="shot">The <see cref="Shot"/> made by the given <see cref="Player"/>.</param>
         /// <returns>A value indicating if the <see cref="Shot"/> made was invalid.</returns>
-        protected bool ControllerShotInvalid(ControllerID rID, Shot shot)
+        protected bool ControllerShotInvalid(IDNumber rID, Shot shot)
         {
             return shot == null ||
                 (shot.Coordinates > MatchInfo.FieldSize) ||
@@ -114,26 +114,26 @@ namespace MBC.Core.Rounds
 
         /// <summary>
 <<<<<<< HEAD
-        /// For a given <see cref="ControllerRegister"/>, fires the <see cref="ControllerLostEvent"/>,
+        /// For a given <see cref="ControllerRegister"/>, fires the <see cref="PlayerLostEvent"/>,
         /// calls the <see cref="Player.RoundLost()"/> method in the <see cref="Player"/>,
         /// and removes the <see cref="Player"/> from the remaining <see cref="ControllerRegister"/>s.
 =======
-        /// For a given <see cref="Register"/>, fires the <see cref="ControllerLostEvent"/>,
+        /// For a given <see cref="Register"/>, fires the <see cref="PlayerLostEvent"/>,
         /// calls the <see cref="ControllerUser.RoundLost()"/> method in the <see cref="ControllerUser"/>,
         /// and removes the <see cref="ControllerUser"/> from the remaining <see cref="Register"/>s.
 >>>>>>> origin/master
         /// </summary>
         /// <param name="rID">The <see cref="Player"/> that lost the round.</param>
-        protected void MakeLoser(ControllerID rID)
+        protected void MakeLoser(IDNumber rID)
         {
-            MakeEvent(new ControllerLostEvent(rID));
+            MakeEvent(new PlayerLostEvent(rID));
             try
             {
                 Controllers[rID].RoundLost();
             }
             catch (ControllerTimeoutException ex)
             {
-                MakeEvent(new ControllerTimeoutEvent(ex));
+                MakeEvent(new PlayerTimeoutEvent(ex));
             }
         }
 
@@ -142,7 +142,7 @@ namespace MBC.Core.Rounds
         /// </summary>
         /// <returns>The next <see cref="Player"/> after currentTurn
         /// that remains.</returns>
-        protected ControllerID NextRemaining()
+        protected IDNumber NextRemaining()
         {
             return Remaining[(CurrentTurn + 1) % Remaining.Count];
         }
@@ -167,11 +167,11 @@ namespace MBC.Core.Rounds
 
                 if (ControllerShotInvalid(CurrentTurn, shotMade))
                 {
-                    MakeEvent(new ControllerShotEvent(CurrentTurn, shotMade));
+                    MakeEvent(new PlayerShotEvent(CurrentTurn, shotMade));
                     MakeLoser(CurrentTurn);
                     return;
                 }
-                MakeEvent(new ControllerShotEvent(CurrentTurn, shotMade));
+                MakeEvent(new PlayerShotEvent(CurrentTurn, shotMade));
                 Controllers[shotMade.Receiver].NotifyOpponentShot(shotMade);
 
                 var shipHit = Registers[shotMade.Receiver].Ships.ShipAt(shotMade.Coordinates);
@@ -180,11 +180,11 @@ namespace MBC.Core.Rounds
                 {
                     var shipSunk = shipHit.IsSunk(Registers[shotMade.Receiver].ShotsAgainst);
 
-                    MakeEvent(new ControllerHitShipEvent(CurrentTurn, shotMade));
+                    MakeEvent(new PlayerHitShipEvent(CurrentTurn, shotMade));
                     Controllers[CurrentTurn].NotifyShotHit(shotMade, shipSunk);
                     if (shipSunk)
                     {
-                        MakeEvent(new ControllerShipDestroyedEvent(shotMade.Receiver, shipHit));
+                        MakeEvent(new PlayerShipDestroyedEvent(shotMade.Receiver, shipHit));
                         if (Registers[shotMade.Receiver].ShipsLeft.Count == 0)
                         {
                             MakeLoser(shotMade.Receiver);
@@ -198,14 +198,14 @@ namespace MBC.Core.Rounds
             }
             catch (ControllerTimeoutException ex)
             {
-                MakeEvent(new ControllerTimeoutEvent(ex));
+                MakeEvent(new PlayerTimeoutEvent(ex));
                 MakeLoser(ex.Register.ID);
             }
         }
 
         /// <summary>
         /// Calls <see cref="Player.PlaceShips()"/> on every <see cref="Player"/> and
-        /// creates <see cref="ControllerShipsPlacedEvent"/>s for each. Changes the <see cref="Round.CurrentState"/>
+        /// creates <see cref="PlayerShipsPlacedEvent"/>s for each. Changes the <see cref="Round.CurrentState"/>
         /// to <see cref="Round.State.Main"/>.
         /// </summary>
         protected void StandardShipPlacement()
@@ -214,7 +214,7 @@ namespace MBC.Core.Rounds
             {
                 try
                 {
-                    MakeEvent(new ControllerShipsPlacedEvent(rID, Registers[rID].Ships, Controllers[rID].PlaceShips()));
+                    MakeEvent(new PlayerShipsPlacedEvent(rID, Registers[rID].Ships, Controllers[rID].PlaceShips()));
 
                     if (!ControllerShipsValid(rID))
                     {
@@ -223,7 +223,7 @@ namespace MBC.Core.Rounds
                 }
                 catch (ControllerTimeoutException ex)
                 {
-                    MakeEvent(new ControllerTimeoutEvent(ex));
+                    MakeEvent(new PlayerTimeoutEvent(ex));
                     MakeLoser(rID);
                 }
             }

@@ -3,16 +3,19 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
+using MBC.Core.Util;
 
 namespace MBC.Core
 {
-    public class ControllerPlayer : Player
+    [Configuration("mbc_player_thread_timeout", 500)]
+    public class BattleshipPlayer : Player
     {
         private Controller controller;
 
         private ControllerInformation controllerInfo;
 
-        public ControllerPlayer(ControllerInformation targetControllerInfo)
+        public BattleshipPlayer(ControllerInformation targetControllerInfo)
         {
             this.controllerInfo = targetControllerInfo;
             this.timeElapsed = new Stopwatch();
@@ -20,6 +23,32 @@ namespace MBC.Core
 
             controller = (Controller)Activator.CreateInstance(targetControllerInfo.Controller);
             controller.ControllerMessageEvent += ReceiveMessage;
+        }
+
+        /// <summary>
+        /// Runs a <see cref="Thread"/> and waits for it to finish for a time as defined in the <see cref="Configuration"/>.
+        /// Throws a <see cref="ControllerTimeoutException"/> if the time limit has been exceeded.
+        /// </summary>
+        /// <param name="thread">The thread to start.</param>
+        /// <param name="method">The name of the method of the <see cref="Controller"/> being ran.
+        /// Used as information for a <see cref="ControllerTimeoutException"/>.</param>
+        /// <exception cref="ControllerTimeoutException">Thrown if the controller exceeded the time limit specified
+        /// in the <see cref="MatchInfo"/> located in the <see cref="ControllerRegister"/>.</exception>
+        private void HandleThread(Thread thread, string method)
+        {
+            //Start the thread.
+            timeElapsed.Restart();
+            thread.Start();
+            if (!thread.Join(maxTimeout))
+            {
+                //Thread timed out.
+                thread.Abort();
+            }
+            timeElapsed.Stop();
+            if (TimeElapsed > Match.TimeLimit)
+            {
+                throw new ControllerTimeoutException(this, method, TimeElapsed);
+            }
         }
 
         public override string ToString()
@@ -45,11 +74,10 @@ namespace MBC.Core
             HandleThread(thread, "MatchOver");
         }
 
-        public void NewMatch(Register registerInstance)
+        public void NewMatch()
         {
-            Register = registerInstance;
-            Register.Score = 0;
-            controller.Register = new ControllerRegister(Register);
+            Score = 0;
+            controller.Register = new ControllerRegister(this);
 
             var thread = new Thread(() =>
             controller.NewMatch());
@@ -104,7 +132,7 @@ namespace MBC.Core
 
         public void RoundWon()
         {
-            Register.Score++;
+            Score++;
             controller.Register.Score++;
 
             var thread = new Thread(() =>

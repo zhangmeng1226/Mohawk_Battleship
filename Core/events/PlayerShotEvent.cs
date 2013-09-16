@@ -8,7 +8,7 @@ namespace MBC.Core.Events
     /// <summary>
     /// Provides information about a <see cref="Shot"/> that was made by a <see cref="ControllerRegister"/>.
     /// </summary>
-    public class ControllerShotEvent : ControllerEvent
+    public class PlayerShotEvent : PlayerEvent
     {
         /// <summary>
         /// Passes the <paramref name="register"/> to the base constructor, stores the <paramref name="shot"/>,
@@ -16,16 +16,17 @@ namespace MBC.Core.Events
         /// </summary>
         /// <param name="register">A <see cref="ControllerRegister"/> making the <paramref name="shot"/></param>
         /// <param name="shot">The <see cref="Shot"/> made by the <paramref name="register"/>.</param>
-        public ControllerShotEvent(ControllerID register, Shot shot)
-            : base(register)
+        public PlayerShotEvent(Player shooter, Shot shot)
+            : base(shooter)
         {
             Shot = shot;
         }
 
+
         protected internal override void GenerateMessage()
         {
             StringBuilder msg = new StringBuilder();
-            msg.Append(RegisterID);
+            msg.Append(Player);
             if (Shot != null)
             {
                 msg.Append(" shot ");
@@ -41,7 +42,7 @@ namespace MBC.Core.Events
         }
 
         /// <summary>
-        /// Gets the <see cref="Shot"/> made by the <see cref="ControllerEvent.Register"/>.
+        /// Gets the <see cref="Shot"/> made by the <see cref="PlayerEvent.Register"/>.
         /// </summary>
         public Shot Shot
         {
@@ -51,13 +52,13 @@ namespace MBC.Core.Events
 
         internal override void ProcBackward(Round round)
         {
-            round.Registers[RegisterID].Shots.Remove(Shot);
+            round.Registers[PlayerID].Shots.Remove(Shot);
             round.Registers[Shot.Receiver].ShotsAgainst.Remove(Shot);
         }
 
         internal override void ProcForward(Round round)
         {
-            round.Registers[RegisterID].Shots.Add(Shot);
+            round.Registers[PlayerID].Shots.Add(Shot);
             round.Registers[Shot.Receiver].ShotsAgainst.Add(Shot);
         }
     }

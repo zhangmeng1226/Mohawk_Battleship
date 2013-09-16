@@ -7,23 +7,23 @@ namespace MBC.Core.Events
     /// <summary>
     /// Provides information about a <see cref="ControllerRegister"/> that had lost a <see cref="Round"/>.
     /// </summary>
-    public class ControllerLostEvent : ControllerEvent
+    public class PlayerLostEvent : PlayerEvent
     {
-        public ControllerLostEvent(ControllerID register) : base(register) { }
+        public PlayerLostEvent(Player loser) : base(loser) { }
 
         protected internal override void GenerateMessage()
         {
-            Message = RegisterID + " has lost the round.";
+            Message = Player + " has lost the round.";
         }
 
         internal override void ProcBackward(Round round)
         {
-            round.Remaining.Add(RegisterID);
+            round.Remaining.Add(Player);
         }
 
         internal override void ProcForward(Round round)
         {
-            round.Remaining.Remove(RegisterID);
+            round.Remaining.Remove(Player);
         }
     }
 }

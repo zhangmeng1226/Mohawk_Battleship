@@ -37,7 +37,7 @@ namespace MBC.Core.Rounds
 
             events = new EventCollection();
             Registers = new List<Register>();
-            Remaining = new List<ControllerID>();
+            Remaining = new List<IDNumber>();
             generatedAccolades = new List<Accolade>();
             accoladeGenerator = new AccoladeGenerator(this);
 
@@ -55,7 +55,7 @@ namespace MBC.Core.Rounds
             }
             else
             {
-                CurrentTurn = new ControllerID();
+                CurrentTurn = new IDNumber();
             }
         }
 
@@ -76,7 +76,7 @@ namespace MBC.Core.Rounds
         /// <summary>
         /// The <see cref="Player"/> that has the current turn.
         /// </summary>
-        public ControllerID CurrentTurn
+        public IDNumber CurrentTurn
         {
             get;
             internal set;
@@ -117,7 +117,7 @@ namespace MBC.Core.Rounds
         /// The <see cref="Player"/>s that have not been defeated.
         /// </summary>
         [XmlIgnore]
-        public List<ControllerID> Remaining
+        public List<IDNumber> Remaining
         {
             get;
             private set;

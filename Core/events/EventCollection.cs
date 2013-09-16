@@ -5,21 +5,21 @@ using System.Xml.Serialization;
 
 namespace MBC.Core.Matches
 {
-    public class EventCollection
+    public class EventCollection<EV>
     {
         [XmlIgnore]
         private int currentEventIdx;
 
-        private List<Event> generatedEvents;
+        private List<EV> generatedEvents;
 
         public EventCollection()
         {
-            generatedEvents = new List<Event>();
+            generatedEvents = new List<EV>();
             currentEventIdx = -1;
         }
 
         [XmlIgnore]
-        public Event CurrentEvent
+        public EV CurrentEvent
         {
             get
             {
@@ -27,7 +27,7 @@ namespace MBC.Core.Matches
             }
         }
 
-        public void AddEvent(Event ev)
+        public void AddEvent(EV ev)
         {
             generatedEvents.Add(ev);
             currentEventIdx = generatedEvents.Count - 1;

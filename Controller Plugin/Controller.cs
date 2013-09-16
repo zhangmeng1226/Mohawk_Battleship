@@ -67,9 +67,9 @@ namespace MBC.Shared
         /// Called when an opposing <see cref="Controller"/> has had all of their <see cref="Ship"/>s destroyed,
         /// lost the round, and has been removed from the active <see cref="Controller"/>s in the round.
         /// </summary>
-        /// <param name="destroyedID">The <see cref="ControllerID"/> of the <see cref="Controller"/> that
+        /// <param name="destroyedID">The <see cref="IDNumber"/> of the <see cref="Controller"/> that
         /// is no longer an opponent.</param>
-        public virtual void OpponentDestroyed(ControllerID destroyedID)
+        public virtual void OpponentDestroyed(IDNumber destroyedID)
         {
         }
 

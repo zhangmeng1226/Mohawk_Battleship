@@ -97,7 +97,7 @@ namespace MBC.Core.Matches
         {
             foreach (var registrant in Registers)
             {
-                registrant.Opponents = new List<ControllerID>();
+                registrant.Opponents = new List<IDNumber>();
                 foreach (var otherRegister in Registers)
                 {
                     if (otherRegister == registrant) continue;

@@ -11,7 +11,7 @@ namespace MBC.Shared
         public Team(Team copy)
         {
             Name = copy.Name;
-            Members = new List<ControllerID>(Members);
+            Members = new List<IDNumber>(Members);
         }
 
         public string Name
@@ -20,7 +20,7 @@ namespace MBC.Shared
             set;
         }
 
-        public List<ControllerID> Members
+        public List<IDNumber> Members
         {
             get;
             set;
