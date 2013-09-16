@@ -11,6 +11,9 @@ namespace MBC.Core.Rounds
     /// </summary>
     internal class ClassicRound : ControlledRound
     {
+        /// <summary>
+        /// The current <see cref="LogicState"/>.
+        /// </summary>
         [XmlIgnore]
         private LogicState currentState;
 
@@ -25,11 +28,29 @@ namespace MBC.Core.Rounds
             currentState = LogicState.Begin;
         }
 
+        /// <summary>
+        /// Identifies the current game logic state.
+        /// </summary>
         private enum LogicState
         {
+            /// <summary>
+            /// The beginning of the <see cref="Round"/>.
+            /// </summary>
             Begin,
+
+            /// <summary>
+            /// The first phase of the <see cref="Round"/>.
+            /// </summary>
             PlaceShips,
+
+            /// <summary>
+            /// The second repeating phase of the <see cref="Round"/>.
+            /// </summary>
             Turn,
+
+            /// <summary>
+            /// The end of the <see cref="Round"/> has been reached (no more progression).
+            /// </summary>
             End
         }
 

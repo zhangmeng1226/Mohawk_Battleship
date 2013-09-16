@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Controller Plugin", "Controller Plugin\Controller Plugin.csproj", "{51FD717F-5965-4C31-9BDD-051DA693A729}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Controllers", "Controllers\Controllers.csproj", "{E523BDD8-4F4C-4C96-AFAD-84A1BC8A1353}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Controllers CSharp", "Controllers\Controllers CSharp.csproj", "{E523BDD8-4F4C-4C96-AFAD-84A1BC8A1353}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppWPF", "AppWPF\AppWPF.csproj", "{43DAE228-DB84-4845-843A-E6F4DE7E00C7}"
 EndProject
@@ -12,6 +12,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App3D", "App3D\App3D.csproj", "{A7F8A710-032E-45A7-98BC-8BA94F584E74}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppConsole", "AppConsole\AppConsole.csproj", "{0C9709E3-83DC-4E53-93F4-C9DCBEA203A6}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Controllers VB", "Controllers VB\Controllers VB.vbproj", "{595E704F-2DD3-42C3-93C2-118D6ED951F2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -127,6 +129,22 @@ Global
 		{0C9709E3-83DC-4E53-93F4-C9DCBEA203A6}.Release|Win32.ActiveCfg = Release|Any CPU
 		{0C9709E3-83DC-4E53-93F4-C9DCBEA203A6}.Release|x64.ActiveCfg = Release|Any CPU
 		{0C9709E3-83DC-4E53-93F4-C9DCBEA203A6}.Release|x86.ActiveCfg = Release|Any CPU
+		{595E704F-2DD3-42C3-93C2-118D6ED951F2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{595E704F-2DD3-42C3-93C2-118D6ED951F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{595E704F-2DD3-42C3-93C2-118D6ED951F2}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{595E704F-2DD3-42C3-93C2-118D6ED951F2}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{595E704F-2DD3-42C3-93C2-118D6ED951F2}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{595E704F-2DD3-42C3-93C2-118D6ED951F2}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{595E704F-2DD3-42C3-93C2-118D6ED951F2}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{595E704F-2DD3-42C3-93C2-118D6ED951F2}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{595E704F-2DD3-42C3-93C2-118D6ED951F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{595E704F-2DD3-42C3-93C2-118D6ED951F2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{595E704F-2DD3-42C3-93C2-118D6ED951F2}.Release|ARM.ActiveCfg = Release|Any CPU
+		{595E704F-2DD3-42C3-93C2-118D6ED951F2}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{595E704F-2DD3-42C3-93C2-118D6ED951F2}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{595E704F-2DD3-42C3-93C2-118D6ED951F2}.Release|Win32.ActiveCfg = Release|Any CPU
+		{595E704F-2DD3-42C3-93C2-118D6ED951F2}.Release|x64.ActiveCfg = Release|Any CPU
+		{595E704F-2DD3-42C3-93C2-118D6ED951F2}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
