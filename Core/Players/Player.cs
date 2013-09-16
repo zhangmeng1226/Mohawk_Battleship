@@ -15,11 +15,6 @@ namespace MBC.Core
     public abstract class Player : ControllerRegister
     {
 
-        protected Player()
-        {
-
-        }
-
         public ShipList Ships { get; internal set; }
         public ShotList Shots { get; internal set; }
         public ShipList ShipsLeft { get; internal set; }
@@ -41,7 +36,7 @@ namespace MBC.Core
 
         }
 
-        public virtual void NewMatch(Register registerInstance)
+        public virtual void NewMatch()
         {
             Score = 0;
         }

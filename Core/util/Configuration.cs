@@ -25,17 +25,17 @@ namespace MBC.Core.Util
     /// </summary>
     public class Configuration
     {
-        private static SortedDictionary<string, ConfigurationAttribute> compiledConfiguration;
+        private static Dictionary<string, ConfigurationAttribute> compiledConfiguration;
         private static Configuration globalInstance;
         private string configName;
-        private SortedDictionary<string, object> simpleConfig;
+        private Dictionary<string, object> simpleConfig;
 
         /// <summary>
         /// Initializes with the given name and attempts to load a file with the same name.
         /// </summary>
         public Configuration(string name)
         {
-            simpleConfig = new SortedDictionary<string, object>();
+            simpleConfig = new Dictionary<string, object>();
             configName = name;
             LoadConfigFile();
         }
@@ -46,7 +46,7 @@ namespace MBC.Core.Util
         /// </summary>
         private Configuration()
         {
-            simpleConfig = new SortedDictionary<string, object>();
+            simpleConfig = new Dictionary<string, object>();
         }
 
         /// <summary>
@@ -188,7 +188,7 @@ namespace MBC.Core.Util
         /// <param name="appDataPath">The absolute path to the desired application path.</param>
         public static void Initialize(string appDataPath)
         {
-            compiledConfiguration = new SortedDictionary<string, ConfigurationAttribute>();
+            compiledConfiguration = new Dictionary<string, ConfigurationAttribute>();
             LoadConfigurationDefaults();
 
             if (appDataPath.Last() != '\\')
