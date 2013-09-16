@@ -176,7 +176,6 @@ namespace MBC.Core
                                 cont);
                             results.Add(info);
                         }
-                        break;
                     }
                 }
             }
