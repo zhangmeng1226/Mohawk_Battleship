@@ -22,22 +22,5 @@ namespace MBC.Core
         public ShotList ShotsAgainst { get; internal set; }
         public Shot LastShot { get; internal set; }
         public List<PlayerEvent> events;
-
-        /// <summary>
-        /// Occurs whenever the <see cref="Controller"/> outputs a message string.
-        /// </summary>
-        public event StringOutputHandler ControllerMessageEvent;
-
-        /// <summary>
-        /// This method is subscribed to the <see cref="Controller"/>'s <see cref="Controller.ControllerMessageEvent"/>.
-        /// </summary>
-        /// <param name="message">A string containing the message.</param>
-        private void ReceiveMessage(string message)
-        {
-            if (ControllerMessageEvent != null)
-            {
-                ControllerMessageEvent(message);
-            }
-        }
     }
 }

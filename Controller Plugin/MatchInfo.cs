@@ -15,7 +15,6 @@ namespace MBC.Shared
             FieldSize = copy.FieldSize;
             TimeLimit = copy.TimeLimit;
             GameMode = copy.GameMode;
-            Teams = new List<Team>(copy.Teams);
         }
 
         /// <summary>
@@ -55,12 +54,6 @@ namespace MBC.Shared
         /// Gets the <see cref="GameMode"/> that determines the behaviour of the running rounds in the match.
         /// </summary>
         public GameMode GameMode
-        {
-            get;
-            set;
-        }
-
-        public List<Team> Teams
         {
             get;
             set;

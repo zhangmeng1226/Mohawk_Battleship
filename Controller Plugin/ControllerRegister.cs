@@ -22,7 +22,6 @@ namespace MBC.Shared
                 Match = new MatchInfo(copy.Match);
                 Score = copy.Score;
                 ID = copy.ID;
-                Team = new Team(copy.Team);
                 Opponents = new List<IDNumber>(copy.Opponents);
             }
         }
@@ -42,8 +41,6 @@ namespace MBC.Shared
         /// </summary>
         public IDNumber ID { get; set; }
 
-        public Team Team { get; set; }
-
         /// <summary>
         /// Gets or sets the list of <see cref="IDNumber"/>s that have been designated as opponents.
         /// </summary>
@@ -56,7 +53,7 @@ namespace MBC.Shared
         /// <returns>A string representation.</returns>
         public override string ToString()
         {
-            return string.Format("[%s][%s]", Team, ID);
+            return string.Format("[%s]", ID);
         }
 
         /// <summary>

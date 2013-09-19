@@ -1,108 +1,56 @@
-﻿using MBC.Core.Events;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Xml.Serialization;
+using MBC.Core.Events;
+using MBC.Core.Rounds;
 using MBC.Core.Util;
 using MBC.Shared;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
 
-namespace MBC.Core
+namespace MBC.Core.Matches
 {
-
-    /// <summary>
-    /// <para>
-    /// A match is the basic requirement of a game, in this case, a battleship game. Each Match contains
-    /// a number of <see cref="Round"/>s and <see cref="ControllerRegister"/>s. The Match provides functions
-    /// on starting, playing, stopping, and ending the progress of the game. The Match has multi-threading
-    /// functionality integrated when running a Match in a separate thread is required. The Match fires
-    /// its own <see cref="MatchEvent"/>s during Match progression.
-    /// </para>
-    /// <para>
-    /// On the application side, there is never a need for references to <see cref="ControllerUser"/>s.
-    /// </para>
-    /// </summary>
-    /// <seealso cref="MatchBeginEvent"/>
-    /// <seealso cref="MatchPlayEvent"/>
-    /// <seealso cref="MatchStopEvent"/>
-    /// <seealso cref="MatchEndEvent"/>
-    /// <seealso cref="Round"/>
-    /// <seealso cref="ControllerRegister"/>
-    [Configuration("mbc_match_rounds_mode", PlayMode.AllRounds, 
-        Description="Determines the ending behaviour of a match based on a given number of rounds.",
-        DisplayName="Match Rounds Mode")]
+    [Configuration("mbc_field_width", 10)]
+    [Configuration("mbc_field_height", 10)]
+    [Configuration("mbc_ship_sizes", 2, 3, 3, 4, 5)]
+    [Configuration("mbc_game_mode", GameMode.Classic, null)]
+    [Configuration("mbc_match_playeradd_init_only", true)]
+    [Configuration("mbc_match_teams", 1)]
+    [Configuration("mbc_match_rounds_mode", RoundMode.AllRounds,
+        Description = "Determines the ending behaviour of a match based on a given number of rounds.",
+        DisplayName = "Match Rounds Mode")]
     [Configuration("mbc_match_rounds", 100)]
     public class Match
     {
-        private Configuration conf;
-        private MatchInfo info;
-        private PlayMode roundPlay;
+        private List<MatchEvent> events;
 
-        private List<ControllerUser> controllers; //Empty if the match is loaded by a file
-        private List<ControllerRegister> registers;
+        private List<Player> players;
 
-        private int targetRounds;
-        private int roundIteration;
-        private List<Round> roundList;
-        private Round currentRound;
-        private bool inProgress;
+        private Dictionary<IDNumber, Player> playersByID;
 
-        private Thread runningThread;
-        private AutoResetEvent sleepHandle; //Used when a delay between Round progression is used.
-        private bool isRunning;
-        private int delay; //Used to delay each call to progress a Round by milliseconds.
+        private List<Round> rounds;
 
-        /// <summary>
-        /// Creates a new Match using the application-wide <see cref="Configuration"/> and the
-        /// controllers specified in the given <see cref="ControllerInformation"/>s to use.
-        /// </summary>
-        /// <param name="controllers">A variable number of controllers to load from the given
-        /// <see cref="ControllerInformation"/>s.
-        /// </param>
-        /// <seealso cref="ControllerInformation"/>
-        /// <seealso cref="Configuration"/>
-        public Match(params ControllerInformation[] controllers)
+        private bool started;
+
+        public Match(Configuration conf)
         {
-            Init(Configuration.Global, controllers);
+            Init();
+            EnsureGameModeCompatibility();
+            Config = conf;
+        }        /// <summary>
+        private Match()
+        {
+            Init();
         }
 
         /// <summary>
-        /// Creates a new Match using a specific <see cref="Configuration"/> and a number of
-        /// controllers specified in the given <see cref="ControllerInformation"/>s to use.
+        /// Invoked whenever an <see cref="Event"/> has been generated.
         /// </summary>
-        /// <param name="conf">The <see cref="Configuration"/> to utilize.</param>
-        /// <param name="controllers">A variable number of controllers to load from the given
-        /// <see cref="ControllerInformation"/>s.
-        /// </param>
-        /// <seealso cref="ControllerInformation"/>
-        /// <seealso cref="Configuration"/>
-        public Match(Configuration conf, params ControllerInformation[] controllers)
-        {
-            Init(conf, controllers);
-        }
+        public event MBCEventHandler Event;
 
-        /// <summary>
-        /// Occurs when a <see cref="MatchEvent"/> has been generated.
-        /// </summary>
-        /// <seealso cref="MatchEvent"/>
-        public event MBCMatchEventHandler MatchEvent;
-
-        /// <summary>
-        /// Occurs when a <see cref="RoundEvent"/> has been generated from a <see cref="Round"/>.
-        /// </summary>
-        /// <seealso cref="RoundEvent"/>
-        public event MBCRoundEventHandler RoundEvent;
-
-        /// <summary>
-        /// Occurs when a controller within a <see cref="Round"/> has caused a <see cref="ControllerEvent"/>
-        /// to generate.
-        /// </summary>
-        /// <seealso cref="ControllerEvent"/>
-        public event MBCControllerEventHandler ControllerEvent;
-
-        /// <summary>
         /// Provides various behaviours as to how a Match will handle the number of rounds it is configured
         /// with.
         /// </summary>
-        public enum PlayMode
+        public enum RoundMode
         {
             /// <summary>
             /// Creates and plays through <see cref="Round"/>s until the number of <see cref="Round"/>s generated
@@ -119,354 +67,165 @@ namespace MBC.Core
             /// <seealso cref="ControllerRegister"/>
             FirstTo
         }
+        /// <summary>
+        /// Gets the <see cref="Configuration"/> used to determine game behaviour.
+        /// </summary>
+        public Configuration Config
+        {
+            get;
+            private set;
+        }
 
         /// <summary>
-        /// Gets the behaviour of the number of rounds being played as defined by <see cref="PlayMode"/>.
+        /// Gets the <see cref="BooleanThreader"/> that handle multi-threading and automatic progression.
         /// </summary>
-        /// <seealso cref="PlayMode"/>
-        public PlayMode RoundPlayMode
+        [XmlIgnore]
+        public BooleanThreader Thread
+        {
+            get;
+            private set;
+        }
+
+        public IList<Player> Players
         {
             get
             {
-                return roundPlay;
+                return players.AsReadOnly();
             }
         }
 
         /// <summary>
-        /// Gets the <see cref="MatchInfo"/> generated through a <see cref="Configuration"/>
+        /// Gets or sets the <see cref="Event"/>s that have been generated by this <see cref="Match"/>.
         /// </summary>
-        /// <seealso cref="MatchInfo"/>
-        /// <seealso cref="Configuration"/>
-        public MatchInfo Info
+        private IList<MatchEvent> Events
         {
             get
             {
-                return info;
+                return events.AsReadOnly();
             }
         }
 
-        /// <summary>
-        /// Gets the number of rounds set through the <see cref="Configuration"/>.
-        /// </summary>
-        public int NumberOfRounds
+        private IList<Round> Rounds
         {
             get
             {
-                return targetRounds;
+                return rounds.AsReadOnly();
             }
         }
 
-        /// <summary>
-        /// Gets the list of <see cref="Round"/>s created.
-        /// </summary>
-        /// <seealso cref="Round"/>
-        public IEnumerable<Round> Rounds
+        public void AddPlayer(Player plr)
         {
-            get
+            if (started && Config.GetValue<bool>("mbc_match_playeradd_init_only"))
             {
-                return roundList.AsEnumerable();
+                throw new InvalidOperationException("Cannot add players after the match has started (mbc_match_playeradd_init_only set to true)");
             }
         }
 
-        /// <summary>
-        /// Gets the <see cref="Round"/> currently being progressed.
-        /// </summary>
-        /// <seealso cref="Round"/>
-        public Round CurrentRound
+        public void End()
         {
-            get
-            {
-                return currentRound;
-            }
+            Thread.Pause();
+            MakeEvent(new MatchEndEvent());
         }
 
-        /// <summary>
-        /// True if the match can be progressed, false if it cannot and this match ended.
-        /// </summary>
-        public bool InProgress
+        public Player GetPlayerByID(IDNumber id)
         {
-            get
-            {
-                return inProgress;
-            }
+            return playersByID[id];
         }
 
-        /// <summary>
-        /// Gets the <see cref="ControllerRegister"/>s involved.
-        /// </summary>
-        /// <seealso cref="ControllerRegister"/>
-        public IEnumerable<ControllerRegister> Registers
+        public bool PlayRound()
         {
-            get
-            {
-                return registers.AsEnumerable();
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the time in milliseconds to wait between <see cref="Round"/> progressions while
-        /// running.
-        /// </summary>
-        public int TurnDelay
-        {
-            get
-            {
-                return delay;
-            }
-            set
-            {
-                if (value <= 0)
-                {
-                    delay = 0;
-                }
-                else
-                {
-                    delay = value;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Does a single <see cref="Round"/> progression. Creates new <see cref="Round"/>s if the <see cref="Match.CurrentRound"/>
-        /// is complete until the match is complete.
-        /// </summary>
-        /// <returns>false if the behaviour of <see cref="Match.RoundPlayMode"/> has been satisfied, signifying
-        /// the end of the match, or true if the match has not ended.</returns>
-        /// <seealso cref="PlayMode"/>
-        public bool Step()
-        {
-            if (isRunning)
+            if (MatchConditionsMet())
             {
                 return true;
             }
-            return Progress();
+            Round newRound = CreateNewRound();
+
+
+            return MatchConditionsMet();
+        }
+
+        public void SaveToFile(File fLocation)
+        {
         }
 
         /// <summary>
-        /// If the match is not running, runs the match in a different thread, creates a new <see cref="MatchPlayEvent"/>,
-        /// and continuously makes calls to <see cref="Match.Step()"/> until that method returns false. If the
-        /// match is running, does nothing.
+        /// Used to send a generated <see cref="Event"/> to any listeners on <see cref="Match.Event"/>.
         /// </summary>
-        /// <seealso cref="Thread"/>
-        public void Play()
+        /// <param name="ev">The <see cref="Event"/> generated in this <see cref="Match"/>.</param>
+        /// <param name="backward">True if the event was invoked backwards.</param>
+        internal void RoundEventGenerated(Event ev, bool backward)
         {
-            if (isRunning)
+            if (Event != null)
             {
-                return;
+                Event(ev, backward);
             }
-            MakeEvent(new MatchPlayEvent(this));
-            isRunning = true;
-            sleepHandle.Reset();
-            runningThread.Start();
+        }
+
+        private void EnsureGameModeCompatibility()
+        {
+            foreach (var mode in Config.GetList<GameMode>("mbc_game_mode"))
+            {
+                if (mode == GameMode.Teams)
+                {
+                    throw new NotImplementedException("The " + mode.ToString() + " game mode is not supported.");
+                }
+            }
+        }
+
+        private void Init()
+        {
+            events = new List<MatchEvent>();
+            rounds = new List<Round>();
+            players = new List<Player>();
+            playersByID = new Dictionary<IDNumber, Player>();
+            Thread = new BooleanThreader(PlayRound);
+            started = false;
         }
 
         /// <summary>
-        /// If the match is running in a separate thread, stops the thread and creates a new <see cref="MatchStopEvent"/>,
-        /// otherwise, does nothing.
+        /// Generates a <see cref="Match"/>-specific <see cref="Event"/>.
         /// </summary>
-        /// <seealso cref="Thread"/>
-        public void Stop()
-        {
-            if (isRunning)
-            {
-                MakeEvent(new MatchStopEvent(this));
-                isRunning = false;
-                sleepHandle.Set();
-            }
-        }
-
-        /// <summary>
-        /// <see cref="Match.Stop()"/>s the match, ends the currently running <see cref="Round"/>, creates
-        /// a <see cref="MatchEndEvent"/>, and prevents further progression of the match.
-        /// </summary>
-        /// <seealso cref="MatchEvent"/>
-        /// <seealso cref="Match.InProgress"/>
-        public void End()
-        {
-            Stop();
-            if (currentRound != null)
-            {
-                currentRound.End();
-            }
-            MakeEvent(new MatchEndEvent(this));
-            roundIteration = targetRounds;
-        }
-
-        private void Init(Configuration conf, params ControllerInformation[] controllersToLoad)
-        {
-            this.conf = conf;
-            //Get the game info from the Configuration.
-            //Expecting an exception to be thrown here if a controller isn't compatible with the configured game mode.
-            info = new CMatchInfo(conf, controllersToLoad);
-
-            //Create and register the controllers to load.
-            GenerateControllers(controllersToLoad);
-            RegisterControllers();
-            FormOpponents();
-
-            //Configuration setting for the number of rounds this Match will perform.
-            roundList = new List<Round>();
-            targetRounds = conf.GetValue<int>("mbc_match_rounds");
-            roundIteration = -1;
-            inProgress = true;
-
-            //Make a thread for this Match.
-            runningThread = new Thread(PlayLoop);
-            sleepHandle = new AutoResetEvent(false);
-            isRunning = false;
-            delay = 0;
-
-            //Configuration setting for round playing behaviour, given a number of rounds.
-            switch (conf.GetValue<string>("mbc_match_rounds_mode"))
-            {
-                case "all":
-                    roundPlay = PlayMode.AllRounds;
-                    break;
-
-                case "first to":
-                    roundPlay = PlayMode.FirstTo;
-                    break;
-
-                default:
-                    conf.SetValue("mbc_match_rounds_mode", "all");
-                    break;
-            }
-        }
-
+        /// <param name="ev">The <see cref="Event"/> generated.</param>
         private void MakeEvent(MatchEvent ev)
         {
-            if (MatchEvent != null)
+            events.Add(ev);
+            if (Event != null)
             {
-                MatchEvent(ev);
+                Event(ev, false);
             }
         }
 
-        private bool IsRoundTargetReached()
+        private Round CreateNewRound()
         {
-            if (roundPlay == PlayMode.AllRounds)
+            foreach (var mode in Config.GetList<GameMode>("mbc_game_mode"))
             {
-                return roundIteration == targetRounds;
-            }
-            else if (roundPlay == PlayMode.FirstTo)
-            {
-                foreach (var registrant in controllers)
+                switch (mode)
                 {
-                    if (registrant.Register.Score == targetRounds)
-                    {
-                        return true;
-                    }
+                    case GameMode.Classic:
+                        return new ClassicRound(this);
                 }
+            }
+            throw new InvalidOperationException("An unsupported game mode was configured for this match!");
+        }
+
+        private bool MatchConditionsMet()
+        {
+            switch (Config.GetValue<RoundMode>("mbc_match_rounds_mode"))
+            {
+                case RoundMode.AllRounds:
+                    return rounds.Count >= Config.GetValue<int>("mbc_match_rounds");
+                case RoundMode.FirstTo:
+                    foreach (var player in players)
+                    {
+                        if (player.Score >= Config.GetValue<int>("mbc_match_rounds"))
+                        {
+                            return true;
+                        }
+                    }
+                    break;
             }
             return false;
         }
 
-        /// <summary>
-        /// No teams taken into account atm
-        /// </summary>
-        private void FormOpponents()
-        {
-            foreach (var registrant in registers)
-            {
-                registrant.Opponents = new List<ControllerID>();
-                foreach (var otherRegister in registers)
-                {
-                    if (otherRegister == registrant) continue;
-                    registrant.Opponents.Add(otherRegister.ID);
-                }
-            }
-        }
-
-        private void GenerateControllers(IEnumerable<ControllerInformation> ctrlInfos)
-        {
-            controllers = new List<ControllerUser>();
-            for (var id = 0; id < ctrlInfos.Count(); id++)
-            {
-                controllers.Add(new ControllerUser(ctrlInfos.ElementAt(id)));
-            }
-        }
-
-        private void RegisterControllers()
-        {
-            registers = new List<ControllerRegister>();
-            for(var id = 0; id < controllers.Count; id++)
-            {
-                registers.Add(new ControllerRegister(info, id));
-            }
-        }
-
-        private bool Progress()
-        {
-            if (!inProgress || IsRoundTargetReached())
-            {
-                inProgress = false;
-                return false;
-            }
-
-            if (currentRound == null)
-            {
-                if (roundIteration++ == -1)
-                {
-                    for (var id = 0; id < controllers.Count; id++)
-                    {
-                        controllers[id].NewMatch(registers[id]);
-                    }
-                    MakeEvent(new MatchBeginEvent(this));
-                }
-                if (!SetNewRound())
-                {
-                    return false;
-                }
-            }
-            if (!currentRound.Progress())
-            {
-                currentRound = null;
-            }
-            return true;
-        }
-
-        private bool SetNewRound()
-        {
-            if (info.GameMode.HasFlag(GameMode.Classic))
-            {
-                currentRound = new ClassicRound(info, controllers);
-                currentRound.RoundEvent += (ev) =>
-                    {
-                        if (RoundEvent != null)
-                        {
-                            RoundEvent(ev);
-                        }
-                    };
-                currentRound.ControllerEvent += (ev) =>
-                    {
-                        if (ControllerEvent != null)
-                        {
-                            ControllerEvent(ev);
-                        }
-                    };
-                roundList.Add(currentRound);
-                return true;
-            }
-            else
-            {
-                End();
-                return false;
-            }
-        }
-
-        private void PlayLoop()
-        {
-            while (isRunning)
-            {
-                if (!Progress())
-                {
-                    break;
-                }
-                if (delay != 0)
-                {
-                    sleepHandle.WaitOne(delay);
-                }
-            }
-            isRunning = false;
-        }
     }
 }

@@ -18,28 +18,16 @@ namespace MBC.Core.Rounds
     public abstract class Round
     {
         [XmlIgnore]
-        private AccoladeGenerator accoladeGenerator;
+        //private AccoladeGenerator accoladeGenerator;
 
-        private EventCollection events;
+        //private List<Accolade> accolades;
 
-        private List<Accolade> generatedAccolades;
+        private List<RoundEvent> events;
 
-        /// <summary>
-        /// Attaches the <see cref="MatchInfo"/> from a <see cref="Match"/> and attaches the
-        /// <see cref="ControllerRegister"/>s given. Initializes an empty list of <see cref="Round.Events"/>
-        /// and <see cref="Round.Accolades"/>.
-        /// </summary>
-        /// <param name="inputRegisters">A variable number of controllers that are involved in this Round.</param>
-        /// <param name="matchInfo">Information about the match that determines Round behaviour.</param>
-        public Round(MatchInfo matchInfo, List<Register> inputRegisters)
+        public Round(Match match)
         {
-            MatchInfo = matchInfo;
-
-            events = new EventCollection();
-            Registers = new List<Register>();
+            events = new List<RoundEvent>();
             Remaining = new List<IDNumber>();
-            generatedAccolades = new List<Accolade>();
-            accoladeGenerator = new AccoladeGenerator(this);
 
             var newRandom = new Random();
             foreach (var register in inputRegisters)
@@ -69,7 +57,7 @@ namespace MBC.Core.Rounds
         {
             get
             {
-                return generatedAccolades;
+                return accolades;
             }
         }
 
@@ -129,7 +117,7 @@ namespace MBC.Core.Rounds
         /// <param name="accolade">The <see cref="Accolade"/> to add.</param>
         public void AddAccolade(Accolade accolade)
         {
-            generatedAccolades.Add(accolade);
+            accolades.Add(accolade);
             MakeEvent(new RoundAccoladeEvent(accolade));
         }
 
