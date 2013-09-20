@@ -51,9 +51,10 @@
     <Compile Include="Attributes\NameAttribute.cs" />
     <Compile Include="Attributes\VersionAttribute.cs" />
     <Compile Include="IDNumber.cs" />
-    <Compile Include="ControllerRegister.cs" />
+    <Compile Include="Register.cs" />
     <Compile Include="MatchInfo.cs" />
     <Compile Include="GameMode.cs" />
+    <Compile Include="RoundMode.cs" />
     <Compile Include="ShipList.cs" />
     <Compile Include="Shot.cs" />
     <Compile Include="ShotList.cs" />

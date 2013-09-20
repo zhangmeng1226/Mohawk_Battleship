@@ -5,7 +5,7 @@ namespace MBC.Core
 {
     /// <summary>
     /// An exception that provides information about the time it took for a method run through a
-    /// <see cref="Player"/>. Provides the <see cref="ControllerRegister"/> of the
+    /// <see cref="Player"/>. Provides the <see cref="Register"/> of the
     /// <see cref="Player"/> that threw this exception. Used when a <see cref="Controller"/>
     /// has exceeded the <see cref="MatchInfo.TimeLimit"/> specified in <see cref="MatchInfo"/>.
     /// </summary>
@@ -18,7 +18,7 @@ namespace MBC.Core
         /// <summary>
         /// Stores the parameters given and generates a message describing the exception.
         /// </summary>
-        /// <param name="register">The associated <see cref="ControllerRegister"/>.</param>
+        /// <param name="register">The associated <see cref="Register"/>.</param>
         /// <param name="methodName">The name of the method called to a <see cref="Controller"/>.</param>
         /// <param name="timeTaken">The time in milliseconds that the method took to finish.</param>
         public ControllerTimeoutException(Player player, string methodName, int timeTaken)
@@ -31,7 +31,7 @@ namespace MBC.Core
         }
 
         /// <summary>
-        /// Gets the associated <see cref="ControllerRegister"/>.
+        /// Gets the associated <see cref="Register"/>.
         /// </summary>
         public Player Player
         {

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Xml.Serialization;
 namespace MBC.Core.Events
 {
@@ -6,7 +7,7 @@ namespace MBC.Core.Events
     /// Defines a method that retrieves and handles an <see cref="Event"/>.
     /// </summary>
     /// <param name="ev">The generated <see cref="Event"/></param>
-    public delegate void MBCEventHandler(Event ev, bool backward);
+    public delegate void MBCEventHandler(Event ev);
 
     /// <summary>
     /// The base class for any event created in the MBC core framework. Provides a message string that
@@ -17,6 +18,7 @@ namespace MBC.Core.Events
     /// <seealso cref="PlayerEvent"/>
     public abstract class Event
     {
+
         [XmlIgnore]
         private string curMessage = null;
 

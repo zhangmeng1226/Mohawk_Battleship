@@ -25,7 +25,7 @@ namespace MBC.Shared
         /// <summary>
         /// Initializes the <see cref="Shot.Coordinates"/> to (-1, -1) and stores the <paramref name="receiver"/>.
         /// </summary>
-        /// <param name="receiver">The receiving <see cref="ControllerRegister"/> of this <see cref="Shot"/>.</param>
+        /// <param name="receiver">The receiving <see cref="Register"/> of this <see cref="Shot"/>.</param>
         public Shot(IDNumber receiver)
         {
             this.coords = new Coordinates(-1, -1);
@@ -35,7 +35,7 @@ namespace MBC.Shared
         private Shot() { }
 
         /// <summary>
-        /// Gets or sets the <see cref="IDNumber"/> that identifies the <see cref="ControllerRegister"/>
+        /// Gets or sets the <see cref="IDNumber"/> that identifies the <see cref="Register"/>
         /// receiving this <see cref="Shot"/>.
         /// </summary>
         public IDNumber Receiver

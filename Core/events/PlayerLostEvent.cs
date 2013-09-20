@@ -5,7 +5,7 @@ using System;
 namespace MBC.Core.Events
 {
     /// <summary>
-    /// Provides information about a <see cref="ControllerRegister"/> that had lost a <see cref="Round"/>.
+    /// Provides information about a <see cref="Register"/> that had lost a <see cref="Round"/>.
     /// </summary>
     public class PlayerLostEvent : PlayerEvent
     {

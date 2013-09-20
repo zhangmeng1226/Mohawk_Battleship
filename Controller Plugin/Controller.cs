@@ -11,7 +11,7 @@ namespace MBC.Shared
     /// <summary>
     /// <para>
     /// Provides a number of overrideable methods that are invoked during a match, and is provided with
-    /// a copy of a <see cref="ControllerRegister"/> for use.
+    /// a copy of a <see cref="Register"/> for use.
     /// </para>
     /// <para>
     /// At a minimum, certain attributes must be set to a deriving class, which are the <see cref="Attributes.NameAttribute"/>,
@@ -28,9 +28,11 @@ namespace MBC.Shared
         public event StringOutputHandler ControllerMessageEvent;
 
         /// <summary>
-        /// Gets or sets the <see cref="ControllerRegister"/> that is available for manipulation.
+        /// Gets or sets the <see cref="Register"/> that is available for manipulation.
         /// </summary>
-        public ControllerRegister Register { get; set; }
+        public Register Register { get; set; }
+
+        public MatchInfo Match { get; set; }
 
         /// <summary>
         /// Called when required to create and return a <see cref="Shot"/>. Refer to the rules of the
@@ -56,7 +58,7 @@ namespace MBC.Shared
         }
 
         /// <summary>
-        /// Called when entered in a new round. The <see cref="Controller.Register"/> <see cref="ControllerRegister.Ships"/>
+        /// Called when entered in a new round. The <see cref="Controller.Register"/> <see cref="Register.Ships"/>
         /// will be reset to an unplaced state.
         /// </summary>
         public virtual void NewRound()
@@ -83,10 +85,10 @@ namespace MBC.Shared
         }
 
         /// <summary>
-        /// Called when the <see cref="ControllerRegister.Ships"/> in the <see cref="Controller.Register"/> must
+        /// Called when the <see cref="Register.Ships"/> in the <see cref="Controller.Register"/> must
         /// be placed. Refer to the rules of the <see cref="MatchInfo.GameMode"/> in the <see cref="Controller.Register"/>.
         /// </summary>
-        public abstract ShipList PlaceShips(ShipList initialShips);
+        public abstract ShipList PlaceShips();
 
         /// <summary>
         /// Called when the round has been lost.

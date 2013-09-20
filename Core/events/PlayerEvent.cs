@@ -11,18 +11,19 @@ namespace MBC.Core.Events
     public abstract class PlayerEvent : RoundEvent
     {
         /// <summary>
-        /// Copies the <see cref="ControllerRegister"/> object reference.
+        /// Copies the <see cref="Register"/> object reference.
         /// </summary>
         /// <param name="register"></param>
         public PlayerEvent(Player plr)
         {
             Player = plr;
+            Player.AttachEvent(this);
         }
 
         private PlayerEvent() { }
 
         /// <summary>
-        /// Gets the <see cref="ControllerRegister"/> that caused this event to occur.
+        /// Gets the <see cref="Register"/> that caused this event to occur.
         /// </summary>
         public Player Player
         {

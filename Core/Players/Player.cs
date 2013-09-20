@@ -5,22 +5,17 @@ using System.Diagnostics;
 using System.Threading;
 using MBC.Core.Events;
 using System.Collections.Generic;
+using MBC.Core.Matches;
 
 namespace MBC.Core
 {
-    /// <summary>
-    /// Loads a <see cref="Controller"/> from <see cref="ControllerInformation"/>. Wraps the <see cref="Controller"/>
-    /// to invoke its methods in a different thread and prevent hang-ups due to
-    /// <see cref="Controller"/>s taking too long to complete method calls.
-    /// </summary>
-    public abstract class Player : ControllerRegister
-    {
 
+    public abstract class Player : MBCObject
+    {
         public ShipList Ships { get; internal set; }
         public ShotList Shots { get; internal set; }
         public ShipList ShipsLeft { get; internal set; }
         public ShotList ShotsAgainst { get; internal set; }
-        public Shot LastShot { get; internal set; }
-        public List<PlayerEvent> events;
+        public Register Register { get; internal set; }
     }
 }

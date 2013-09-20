@@ -2,7 +2,7 @@
 {
     /// <summary>
     /// Identical to an integer and can be used exactly as such in code. Used to identify a <see cref="Controller"/>
-    /// in a specific index of arrays present in <see cref="ControllerRegister"/> and <see cref="MatchInfo"/>.
+    /// in a specific index of arrays present in <see cref="Register"/> and <see cref="MatchInfo"/>.
     /// <example>
     /// <code>
     /// {

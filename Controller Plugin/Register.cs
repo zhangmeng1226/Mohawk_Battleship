@@ -9,27 +9,22 @@ namespace MBC.Shared
     /// to an associated <see cref="Controller"/> at respectable times. Most fields may be modified by the
     /// associated <see cref="Controller"/> without causing harm to the logic in the core framework.
     /// </summary>
-    public class ControllerRegister : IEquatable<ControllerRegister>
+    public class Register : IEquatable<Register>
     {
         /// <summary>
-        /// Deeply copies an existing <see cref="ControllerRegister"/>.
+        /// Deeply copies an existing <see cref="Register"/>.
         /// </summary>
-        /// <param name="copy">A <see cref="ControllerRegister"/> to copy.</param>
-        public ControllerRegister(ControllerRegister copy)
+        /// <param name="copy">A <see cref="Register"/> to copy.</param>
+        public Register(Register copy)
         {
             if (copy != null)
             {
-                Match = new MatchInfo(copy.Match);
                 Score = copy.Score;
                 ID = copy.ID;
                 Opponents = new List<IDNumber>(copy.Opponents);
+                Name = copy.Name;
             }
         }
-
-        /// <summary>
-        /// Gets or sets the <see cref="MatchInfo"/>.
-        /// </summary>
-        public MatchInfo Match { get; set; }
 
         /// <summary>
         /// Gets or sets the current score.
@@ -46,54 +41,60 @@ namespace MBC.Shared
         /// </summary>
         public List<IDNumber> Opponents { get; set; }
 
+        public string Name
+        {
+            get;
+            set;
+        }
+
         /// <summary>
-        /// Generates a string representation of the <see cref="ControllerRegister"/> by providing the
+        /// Generates a string representation of the <see cref="Register"/> by providing the
         /// <see cref="IDNumber"/> and <see cref="Controller"/> display name.
         /// </summary>
         /// <returns>A string representation.</returns>
         public override string ToString()
         {
-            return string.Format("[%s]", ID);
+            return string.Format("[%s] %s", ID, Name);
         }
 
         /// <summary>
-        /// Determines whether or not this <see cref="ControllerRegister"/> is equivalent to another
-        /// <see cref="ControllerRegister"/>. Only the <see cref="ControllerRegister.ID"/> and <see cref="ControllerRegister.Match"/>
+        /// Determines whether or not this <see cref="Register"/> is equivalent to another
+        /// <see cref="Register"/>. Only the <see cref="Register.ID"/> and <see cref="Register.Match"/>
         /// are compared as they are only relevant for equivalence.
         /// </summary>
-        /// <param name="register">The <see cref="ControllerRegister"/> to compare with.</param>
+        /// <param name="register">The <see cref="Register"/> to compare with.</param>
         /// <returns>A value indicating equality.</returns>
-        public bool Equals(ControllerRegister register)
+        public bool Equals(Register register)
         {
             if (register == null)
             {
                 return false;
             }
-            return (ID == register.ID) && (Match == register.Match);
+            return (ID == register.ID) && (Name == register.Name);
         }
 
         /// <summary>
-        /// Determines whether or not this <see cref="ControllerRegister"/> is equivalent to another
-        /// <see cref="ControllerRegister"/>. Only the <see cref="ControllerRegister.ID"/> and <see cref="ControllerRegister.Match"/>
+        /// Determines whether or not this <see cref="Register"/> is equivalent to another
+        /// <see cref="Register"/>. Only the <see cref="Register.ID"/> and <see cref="Register.Match"/>
         /// are compared as they are only relevant for equivalence.
         /// </summary>
         /// <param name="obj">The object to compare with.</param>
         /// <returns>A value indicating equality.</returns>
         public override bool Equals(object obj)
         {
-            return base.Equals(obj as ControllerRegister);
+            return base.Equals(obj as Register);
         }
 
         /// <summary>
-        /// Generates a hash code from the <see cref="ControllerRegister.ID"/> and
-        /// <see cref="ControllerRegister.Match"/>.
+        /// Generates a hash code from the <see cref="Register.ID"/> and
+        /// <see cref="Register.Match"/>.
         /// </summary>
         /// <returns>A hash code value.</returns>
         public override int GetHashCode()
         {
             int hash = 23;
             hash = hash * 37 + ID;
-            hash = hash * 37 + Match.GetHashCode();
+            hash = hash * 37 + Name.GetHashCode();
             return hash;
         }
     }

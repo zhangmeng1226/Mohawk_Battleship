@@ -5,7 +5,7 @@ using System;
 namespace MBC.Core.Events
 {
     /// <summary>
-    /// Provides information about a <see cref="ControllerRegister"/> that had taken too long to return from
+    /// Provides information about a <see cref="Register"/> that had taken too long to return from
     /// a method call in its associating <see cref="Controller"/>.
     /// </summary>
     public class PlayerTimeoutEvent : PlayerEvent

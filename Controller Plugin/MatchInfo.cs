@@ -9,9 +9,19 @@ namespace MBC.Shared
     public class MatchInfo
     {
 
+        public MatchInfo()
+        {
+
+        }
+
         public MatchInfo(MatchInfo copy)
         {
             StartingShips = new ShipList(copy.StartingShips);
+            Registers = new List<Register>();
+            foreach (var register in copy.Registers)
+            {
+                Registers.Add(new Register(register));
+            }
             FieldSize = copy.FieldSize;
             TimeLimit = copy.TimeLimit;
             GameMode = copy.GameMode;
@@ -50,10 +60,28 @@ namespace MBC.Shared
             set;
         }
 
+        public int NumberOfRounds
+        {
+            get;
+            set;
+        }
+
         /// <summary>
         /// Gets the <see cref="GameMode"/> that determines the behaviour of the running rounds in the match.
         /// </summary>
         public GameMode GameMode
+        {
+            get;
+            set;
+        }
+
+        public RoundMode RoundMode
+        {
+            get;
+            set;
+        }
+
+        public List<Register> Registers
         {
             get;
             set;

@@ -6,7 +6,7 @@ using System.Text;
 namespace MBC.Core.Events
 {
     /// <summary>
-    /// Provides information about a <see cref="Shot"/> that was made by a <see cref="ControllerRegister"/>.
+    /// Provides information about a <see cref="Shot"/> that was made by a <see cref="Register"/>.
     /// </summary>
     public class PlayerShotEvent : PlayerEvent
     {
@@ -14,7 +14,7 @@ namespace MBC.Core.Events
         /// Passes the <paramref name="register"/> to the base constructor, stores the <paramref name="shot"/>,
         /// and generates a <see cref="Event.Message"/>.
         /// </summary>
-        /// <param name="register">A <see cref="ControllerRegister"/> making the <paramref name="shot"/></param>
+        /// <param name="register">A <see cref="Register"/> making the <paramref name="shot"/></param>
         /// <param name="shot">The <see cref="Shot"/> made by the <paramref name="register"/>.</param>
         public PlayerShotEvent(Player shooter, Shot shot)
             : base(shooter)

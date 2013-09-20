@@ -11,45 +11,13 @@ namespace MBC.Core.Rounds
     /// to cause influence to the <see cref="Event"/>s generated in a <see cref="Round"/>. Provides standardized
     /// functions that most battleship games use.
     /// </summary>
-    internal abstract class ControlledRound : Round
+    internal abstract class BattleshipRound : Round
     {
-        /// <summary>
-        /// A list of <see cref="Player"/>s involved in influencing generated <see cref="Event"/>s.
-        /// </summary>
-        [XmlIgnore]
-        protected List<Player> Controllers;
 
-        /// <summary>
-        /// Attaches the <see cref="MatchInfo"/> provided by a <see cref="Match"/> and retrieves the list of
-        /// <see cref="Player"/>s that persist in a <see cref="Match"/>.
-        /// </summary>
-        /// <param name="matchInfo">The <see cref="MatchInfo"/> from a round to associate with.</param>
-        /// <param name="controllers">The <see cref="Player"/>s to utilize.</param>
-        public ControlledRound(MatchInfo matchInfo, List<Player> controllers)
-            : base(matchInfo, RegistersFromControllers(controllers))
+        internal override void HandleEvent(Event ev)
         {
-            Controllers = controllers;
+ 	        throw new NotImplementedException();
         }
-
-        /// <summary>
-        /// Implements a standard <see cref="Round"/> ending.
-        /// </summary>
-        public override void End()
-        {
-            foreach (var rID in Remaining)
-            {
-                try
-                {
-                    Controllers[rID].RoundWon();
-                }
-                catch (ControllerTimeoutException ex)
-                {
-                    MakeEvent(new PlayerTimeoutEvent(ex));
-                }
-            }
-            base.End();
-        }
-
         /// <summary>
         /// Fires the <see cref="RoundBeginEvent"/> and invokes <see cref="Player.NewRound()"/> on all
         /// <see cref="Player"/>s. Picks a random <see cref="Player"/> to have the
@@ -113,15 +81,12 @@ namespace MBC.Core.Rounds
         }
 
         /// <summary>
-<<<<<<< HEAD
-        /// For a given <see cref="ControllerRegister"/>, fires the <see cref="PlayerLostEvent"/>,
+        /// For a given <see cref="Register"/>, fires the <see cref="PlayerLostEvent"/>,
         /// calls the <see cref="Player.RoundLost()"/> method in the <see cref="Player"/>,
-        /// and removes the <see cref="Player"/> from the remaining <see cref="ControllerRegister"/>s.
-=======
+        /// and removes the <see cref="Player"/> from the remaining <see cref="Register"/>s.
         /// For a given <see cref="Register"/>, fires the <see cref="PlayerLostEvent"/>,
         /// calls the <see cref="ControllerUser.RoundLost()"/> method in the <see cref="ControllerUser"/>,
         /// and removes the <see cref="ControllerUser"/> from the remaining <see cref="Register"/>s.
->>>>>>> origin/master
         /// </summary>
         /// <param name="rID">The <see cref="Player"/> that lost the round.</param>
         protected void MakeLoser(IDNumber rID)

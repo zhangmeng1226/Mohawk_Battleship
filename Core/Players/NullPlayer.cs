@@ -5,18 +5,12 @@ using System.Text;
 
 namespace MBC.Core.Players
 {
-    public class NullPlayer
+    public class NullPlayer : Player
     {
-        private string playerName;
-
         public NullPlayer(string name)
         {
-            playerName = name;
+            Name = name;
         }
 
-        public override string ToString()
-        {
-            return playerName;
-        }
     }
 }

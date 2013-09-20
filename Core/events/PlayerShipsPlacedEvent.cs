@@ -6,7 +6,7 @@ using System.Text;
 namespace MBC.Core.Events
 {
     /// <summary>
-    /// Provides information about a <see cref="ControllerRegister"/>'s <see cref="ShipList"/> that had
+    /// Provides information about a <see cref="Register"/>'s <see cref="ShipList"/> that had
     /// been requested to be modified.
     /// </summary>
     public class PlayerShipsPlacedEvent : PlayerEvent
@@ -15,13 +15,12 @@ namespace MBC.Core.Events
         /// Passes the <paramref name="register"/> to the base constructor, stores the rest of the parameters,
         /// and generates a message based on the state of the given <see cref="ShipList"/>.
         /// </summary>
-        /// <param name="register">A <see cref="ControllerRegister"/>.</param>
-        /// <param name="newShips">The <see cref="ShipList"/> associated with the <see cref="ControllerRegister"/></param>
-        public PlayerShipsPlacedEvent(Player plr, ShipList oldShips, ShipList newShips)
+        /// <param name="register">A <see cref="Register"/>.</param>
+        /// <param name="newShips">The <see cref="ShipList"/> associated with the <see cref="Register"/></param>
+        public PlayerShipsPlacedEvent(Player plr, ShipList newShips)
             : base(plr)
         {
             Ships = newShips;
-            PrevShips = oldShips;
         }
 
         protected internal override void GenerateMessage()
@@ -82,18 +81,6 @@ namespace MBC.Core.Events
         {
             get;
             private set;
-        }
-
-        internal override void ProcBackward(Round round)
-        {
-            round.Registers[PlayerID].Ships = PrevShips;
-            round.Registers[PlayerID].ShipsLeft = new ShipList(PrevShips.Ships);
-        }
-
-        internal override void ProcForward(Round round)
-        {
-            round.Registers[PlayerID].Ships = Ships;
-            round.Registers[PlayerID].ShipsLeft = new ShipList(Ships.Ships);
         }
     }
 }

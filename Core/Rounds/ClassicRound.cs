@@ -6,10 +6,10 @@ using System.Xml.Serialization;
 namespace MBC.Core.Rounds
 {
     /// <summary>
-    /// A derivative of the <see cref="ControlledRound"/> which provides a turn-by-turn based game of
+    /// A derivative of the <see cref="BattleshipRound"/> which provides a turn-by-turn based game of
     /// battleship.
     /// </summary>
-    internal class ClassicRound : ControlledRound
+    internal class ClassicRound : BattleshipRound
     {
         /// <summary>
         /// The current <see cref="LogicState"/>.
