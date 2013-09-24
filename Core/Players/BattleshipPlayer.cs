@@ -11,7 +11,7 @@ using MBC.Core.Events;
 namespace MBC.Core
 {
     [Configuration("mbc_player_timeout", 500)]
-    public class BattleshipPlayer : Player
+    public class BattleshipUser
     {
         private Controller controller;
 
@@ -19,7 +19,7 @@ namespace MBC.Core
 
         private MultiMethodThreader threader;
 
-        public BattleshipPlayer(ControllerInformation targetControllerInfo)
+        public BattleshipUser(ControllerInformation targetControllerInfo)
         {
             Register.Name = targetControllerInfo.Name;
             controllerInfo = targetControllerInfo;

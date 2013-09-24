@@ -45,7 +45,7 @@
     <Compile Include="Accolades\Accolade.cs" />
     <Compile Include="Accolades\AccoladeGenerator.cs" />
     <Compile Include="Events\MatchAddPlayerEvent.cs" />
-    <Compile Include="Events\MatchCreateRoundEvent.cs" />
+    <Compile Include="Events\MatchRoundEvent.cs" />
     <Compile Include="Players\BattleshipPlayer.cs" />
     <Compile Include="Events\RoundTurnChangeEvent.cs" />
     <Compile Include="Threading\BooleanThreader.cs" />

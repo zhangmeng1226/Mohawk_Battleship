@@ -9,37 +9,12 @@ namespace MBC.Shared
     /// to an associated <see cref="Controller"/> at respectable times. Most fields may be modified by the
     /// associated <see cref="Controller"/> without causing harm to the logic in the core framework.
     /// </summary>
-    public class Register : IEquatable<Register>
+    public struct Register : IEquatable<Register>
     {
-        /// <summary>
-        /// Deeply copies an existing <see cref="Register"/>.
-        /// </summary>
-        /// <param name="copy">A <see cref="Register"/> to copy.</param>
-        public Register(Register copy)
-        {
-            if (copy != null)
-            {
-                Score = copy.Score;
-                ID = copy.ID;
-                Opponents = new List<IDNumber>(copy.Opponents);
-                Name = copy.Name;
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the current score.
-        /// </summary>
-        public int Score { get; set; }
-
         /// <summary>
         /// Gets or sets the <see cref="IDNumber"/>.
         /// </summary>
         public IDNumber ID { get; set; }
-
-        /// <summary>
-        /// Gets or sets the list of <see cref="IDNumber"/>s that have been designated as opponents.
-        /// </summary>
-        public List<IDNumber> Opponents { get; set; }
 
         public string Name
         {
@@ -66,10 +41,6 @@ namespace MBC.Shared
         /// <returns>A value indicating equality.</returns>
         public bool Equals(Register register)
         {
-            if (register == null)
-            {
-                return false;
-            }
             return (ID == register.ID) && (Name == register.Name);
         }
 
@@ -82,7 +53,7 @@ namespace MBC.Shared
         /// <returns>A value indicating equality.</returns>
         public override bool Equals(object obj)
         {
-            return base.Equals(obj as Register);
+            return base.Equals(obj);
         }
 
         /// <summary>

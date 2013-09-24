@@ -18,8 +18,6 @@ namespace MBC.Core.Events
     /// <seealso cref="PlayerEvent"/>
     public abstract class Event
     {
-        private List<Event> subEvents;
-
         protected internal virtual string GenerateMessage()
         {
             return "";

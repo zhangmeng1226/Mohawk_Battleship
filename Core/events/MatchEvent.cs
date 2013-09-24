@@ -9,6 +9,5 @@ namespace MBC.Core.Events
     /// </summary>
     public abstract class MatchEvent : Event
     {
-
     }
 }

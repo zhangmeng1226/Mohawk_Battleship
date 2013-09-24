@@ -10,12 +10,19 @@ using MBC.Core.Matches;
 namespace MBC.Core
 {
 
-    public abstract class Player : Register
+    public class Player
     {
-        public ShipList Ships { get; internal set; }
-        public ShotList Shots { get; internal set; }
-        public ShipList ShipsLeft { get; internal set; }
-        public ShotList ShotsAgainst { get; internal set; }
+        /// <summary>
+        /// Gets or sets the <see cref="Register"/> that is available for manipulation.
+        /// </summary>
         public Register Register { get; internal set; }
+
+        public FieldInfo Field { get; internal set; }
+
+        public RegisterInfo Stats { get; internal set; }
+
+        public MatchInfo Match { get; internal set; }
+
+        public Team Team { get; internal set; }
     }
 }

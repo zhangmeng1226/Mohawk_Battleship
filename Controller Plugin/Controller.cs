@@ -1,13 +1,8 @@
-﻿using System.Security.Permissions;
+﻿using System.Collections.Generic;
+using System.Security.Permissions;
 
 namespace MBC.Shared
 {
-    /// <summary>
-    /// Defines a method that receives a string.
-    /// </summary>
-    /// <param name="message">A string containing the message being passed.</param>
-    public delegate void StringOutputHandler(string message);
-
     /// <summary>
     /// <para>
     /// Provides a number of overrideable methods that are invoked during a match, and is provided with
@@ -20,7 +15,7 @@ namespace MBC.Shared
     /// </para>
     /// </summary>
     [SecurityPermission(SecurityAction.PermitOnly, SerializationFormatter = true)]
-    public abstract class Controller
+    public abstract class Controller : IController
     {
         /// <summary>
         /// Occurs whenever a string message is generated.
@@ -32,21 +27,30 @@ namespace MBC.Shared
         /// </summary>
         public Register Register { get; set; }
 
+        public FieldInfo Field { get; set; }
+
+        public RegisterInfo Stats { get; set; }
+
         public MatchInfo Match { get; set; }
 
-        /// <summary>
-        /// Called when required to create and return a <see cref="Shot"/>. Refer to the rules of the
-        /// <see cref="MatchInfo.GameMode"/> in the <see cref="Controller.Register"/> when creating the
-        /// <see cref="Shot"/>.
-        /// </summary>
-        /// <returns>A <see cref="Shot"/> to be processed by the MBC core framework.</returns>
-        public abstract Shot MakeShot();
+        public Team Team { get; set; }
 
-        /// <summary>
-        /// Called when the match against other <see cref="Controller"/>s is over.
-        /// </summary>
-        public virtual void MatchOver()
+        public IDNumber NextOpponent()
         {
+
+        }
+
+        public List<IDNumber> AllOpponents()
+        {
+            List<IDNumber> opponents = new List<IDNumber>();
+            foreach (var team in Match.Teams)
+            {
+                foreach (var member in team.Members)
+                {
+                    opponents.Add(member);
+                }
+            }
+            return opponents;
         }
 
         /// <summary>
@@ -54,6 +58,13 @@ namespace MBC.Shared
         /// been updated with new information.
         /// </summary>
         public virtual void NewMatch()
+        {
+        }
+
+        /// <summary>
+        /// Called when the match against other <see cref="Controller"/>s is over.
+        /// </summary>
+        public virtual void MatchOver()
         {
         }
 
@@ -83,12 +94,6 @@ namespace MBC.Shared
         public virtual void OpponentShot(Shot shot)
         {
         }
-
-        /// <summary>
-        /// Called when the <see cref="Register.Ships"/> in the <see cref="Controller.Register"/> must
-        /// be placed. Refer to the rules of the <see cref="MatchInfo.GameMode"/> in the <see cref="Controller.Register"/>.
-        /// </summary>
-        public abstract ShipList PlaceShips();
 
         /// <summary>
         /// Called when the round has been lost.

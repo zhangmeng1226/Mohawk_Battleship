@@ -20,7 +20,7 @@ namespace MBC.Shared
             Registers = new List<Register>();
             foreach (var register in copy.Registers)
             {
-                Registers.Add(new Register(register));
+                Registers.Add(register);
             }
             FieldSize = copy.FieldSize;
             TimeLimit = copy.TimeLimit;
@@ -82,6 +82,18 @@ namespace MBC.Shared
         }
 
         public List<Register> Registers
+        {
+            get;
+            set;
+        }
+
+        public List<RegisterInfo> RegisterInfoList
+        {
+            get;
+            set;
+        }
+
+        public List<Team> Teams
         {
             get;
             set;
