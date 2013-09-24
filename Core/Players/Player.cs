@@ -10,7 +10,7 @@ using MBC.Core.Matches;
 namespace MBC.Core
 {
 
-    public abstract class Player : MBCObject
+    public abstract class Player : Register
     {
         public ShipList Ships { get; internal set; }
         public ShotList Shots { get; internal set; }

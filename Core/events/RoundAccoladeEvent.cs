@@ -21,11 +21,6 @@ namespace MBC.Core.Events
             this.accolade = accolade;
         }
 
-        protected internal override void GenerateMessage()
-        {
-
-        }
-
         /// <summary>
         /// Gets an <see cref="Accolade"/> that has been added to the <see cref="RoundEvent.Round"/>.
         /// </summary>

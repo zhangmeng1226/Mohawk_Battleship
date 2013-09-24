@@ -43,13 +43,7 @@ namespace MBC.Core.Events
 
         protected internal override void GenerateMessage()
         {
-            Message = Player + " took " + TimeTaken + "ms on \"" + Method + "\" which is a timeout.";
-        }
-
-        private void Init(int time, string method)
-        {
-            TimeTaken = time;
-            Method = method;
+            return Player + " took " + TimeTaken + "ms on \"" + Method + "\" which is a timeout.";
         }
     }
 }

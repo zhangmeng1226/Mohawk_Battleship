@@ -18,6 +18,11 @@ namespace MBC.Core.Events
         /// <param name="round">The associated <see cref="Round"/>.</param>
         public RoundBeginEvent(IEnumerable<Player> roundControllers)
         {
+        }
+
+        protected internal override string GenerateMessage()
+        {
+            /*
             StringBuilder msg = new StringBuilder();
             msg.Append("A round has begun with ");
             int controllerCount = 0;
@@ -35,12 +40,8 @@ namespace MBC.Core.Events
             }
             msg.Append('.');
 
-            this.Message = msg.ToString();
-        }
-
-        protected internal override void GenerateMessage()
-        {
-
+            return msg.ToString();*/
+            return "";
         }
     }
 }

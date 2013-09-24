@@ -43,21 +43,7 @@ namespace MBC.Core.Events
         /// </summary>
         protected internal override void GenerateMessage()
         {
-            Message = "Turn switch from " + PreviousTurn + " to " + NextTurn;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="round"></param>
-        internal override void ProcBackward(Round round)
-        {
-            round.CurrentTurn = PreviousTurn;
-        }
-
-        internal override void ProcForward(Round round)
-        {
-            round.CurrentTurn = NextTurn;
+            return "Turn switch from " + PreviousTurn + " to " + NextTurn;
         }
     }
 }

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace MBC.Core.Events
 {
-    public class ExceptionEvent : Event
+    public class MatchCreateRoundEvent : MatchEvent
     {
     }
 }

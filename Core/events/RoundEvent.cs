@@ -9,15 +9,5 @@ namespace MBC.Core.Events
     /// </summary>
     public abstract class RoundEvent : Event
     {
-
-        internal virtual void ProcForward(Round round)
-        {
-
-        }
-
-        internal virtual void ProcBackward(Round round)
-        {
-
-        }
     }
 }

@@ -13,17 +13,7 @@ namespace MBC.Core.Events
 
         protected internal override void GenerateMessage()
         {
-            Message = Player + " has lost the round.";
-        }
-
-        internal override void ProcBackward(Round round)
-        {
-            round.Remaining.Add(Player);
-        }
-
-        internal override void ProcForward(Round round)
-        {
-            round.Remaining.Remove(Player);
+            return Player + " has lost the round.";
         }
     }
 }

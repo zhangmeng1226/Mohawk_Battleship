@@ -65,7 +65,7 @@ namespace MBC.Core.Events
                 }
             }
             msg.Append(".");
-            Message = msg.ToString();
+            return msg.ToString();
         }
 
         public ShipList PrevShips

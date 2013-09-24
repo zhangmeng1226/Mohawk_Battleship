@@ -19,9 +19,9 @@ namespace MBC.Core.Events
             private set;
         }
 
-        protected internal override void GenerateMessage()
+        protected internal override string GenerateMessage()
         {
-            Message = "Added player " + Player;
+            return "Added player " + Player;
         }
     }
 }

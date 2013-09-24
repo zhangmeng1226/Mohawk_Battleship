@@ -25,7 +25,7 @@ namespace MBC.Core.Events
 
         protected internal override void GenerateMessage()
         {
-            Message = Player + " hit " + HitShot.Receiver + "'s ship at " + HitShot.Coordinates;
+            return Player + " hit " + HitShot.Receiver + "'s ship at " + HitShot.Coordinates;
         }
 
         /// <summary>

@@ -18,17 +18,7 @@ namespace MBC.Core.Events
 
         protected internal override void GenerateMessage()
         {
-            Message = "This round has ended.";
-        }
-
-        internal override void ProcBackward(Round round)
-        {
-            round.Ended = false;
-        }
-
-        internal override void ProcForward(Round round)
-        {
-            round.Ended = true;
+            return "This round has ended.";
         }
     }
 }

@@ -25,7 +25,7 @@ namespace MBC.Core.Events
 
         protected internal override void GenerateMessage()
         {
-            Message = Player + " has had their ship at " + DestroyedShip + " destroyed.";
+            return Player + " has had their ship at " + DestroyedShip + " destroyed.";
         }
 
         /// <summary>
@@ -35,16 +35,6 @@ namespace MBC.Core.Events
         {
             get;
             private set;
-        }
-
-        internal override void ProcBackward(Round round)
-        {
-            round.Registers[PlayerID].ShipsLeft.Add(DestroyedShip);
-        }
-
-        internal override void ProcForward(Round round)
-        {
-            round.Registers[PlayerID].ShipsLeft.Remove(DestroyedShip);
         }
     }
 }

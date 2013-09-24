@@ -44,12 +44,10 @@
   <ItemGroup>
     <Compile Include="Accolades\Accolade.cs" />
     <Compile Include="Accolades\AccoladeGenerator.cs" />
-    <Compile Include="Events\ExceptionEvent.cs" />
     <Compile Include="Events\MatchAddPlayerEvent.cs" />
-    <Compile Include="MBCObject.cs" />
+    <Compile Include="Events\MatchCreateRoundEvent.cs" />
     <Compile Include="Players\BattleshipPlayer.cs" />
     <Compile Include="Events\RoundTurnChangeEvent.cs" />
-    <Compile Include="Events\EventCollection.cs" />
     <Compile Include="Threading\BooleanThreader.cs" />
     <Compile Include="Players\NullPlayer.cs" />
     <Compile Include="Rounds\ClassicRound.cs" />

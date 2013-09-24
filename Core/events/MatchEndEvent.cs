@@ -10,7 +10,7 @@ namespace MBC.Core.Events
     {
         protected internal override void GenerateMessage()
         {
-            Message = "The match has ended.";
+            return "The match has ended.";
         }
     }
 }

@@ -38,7 +38,7 @@ namespace MBC.Core.Events
             {
                 msg.Append(" did not make a shot.");
             }
-            Message = msg.ToString();
+            return msg.ToString();
         }
 
         /// <summary>
@@ -48,18 +48,6 @@ namespace MBC.Core.Events
         {
             get;
             private set;
-        }
-
-        internal override void ProcBackward(Round round)
-        {
-            round.Registers[PlayerID].Shots.Remove(Shot);
-            round.Registers[Shot.Receiver].ShotsAgainst.Remove(Shot);
-        }
-
-        internal override void ProcForward(Round round)
-        {
-            round.Registers[PlayerID].Shots.Add(Shot);
-            round.Registers[Shot.Receiver].ShotsAgainst.Add(Shot);
         }
     }
 }

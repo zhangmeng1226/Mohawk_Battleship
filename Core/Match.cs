@@ -20,16 +20,15 @@ namespace MBC.Core.Matches
         Description = "Determines the ending behaviour of a match based on a given number of rounds.",
         DisplayName = "Match Rounds Mode")]
     [Configuration("mbc_match_rounds", 100)]
-    public class Match : MBCObject
+    public class Match
     {
+        private List<Event> events;
+        private MatchInfo info;
         private List<Player> players;
 
         private Dictionary<IDNumber, Player> playersByID;
 
         private List<Round> rounds;
-
-        private MatchInfo info;
-
         private bool started;
 
         public Match(Configuration conf)
@@ -44,6 +43,7 @@ namespace MBC.Core.Matches
             Init();
         }
 
+        public event MBCEventHandler EventCreated;
         /// <summary>
         /// Gets the <see cref="Configuration"/> used to determine game behaviour.
         /// </summary>
@@ -61,6 +61,14 @@ namespace MBC.Core.Matches
             }
         }
 
+        public IList<Player> Players
+        {
+            get
+            {
+                return players.AsReadOnly();
+            }
+        }
+
         /// <summary>
         /// Gets the <see cref="BooleanThreader"/> that handle multi-threading and automatic progression.
         /// </summary>
@@ -71,11 +79,14 @@ namespace MBC.Core.Matches
             private set;
         }
 
-        public IList<Player> Players
+        /// <summary>
+        /// Gets or sets the <see cref="Event"/>s that have been generated.
+        /// </summary>
+        private IList<Event> Events
         {
             get
             {
-                return players.AsReadOnly();
+                return events.AsReadOnly();
             }
         }
 
@@ -95,7 +106,6 @@ namespace MBC.Core.Matches
             }
             playersByID[players.Count] = plr;
             plr.Register.ID = players.Count;
-            plr.Parent = this;
             players.Add(plr);
             AttachEvent(new MatchAddPlayerEvent(plr));
         }
@@ -114,6 +124,10 @@ namespace MBC.Core.Matches
 
         public bool PlayRound()
         {
+            if (!started)
+            {
+                AttachEvent(new MatchBeginEvent());
+            }
             if (MatchConditionsMet())
             {
                 return true;
@@ -126,6 +140,27 @@ namespace MBC.Core.Matches
 
         public void SaveToFile(File fLocation)
         {
+        }
+
+        internal virtual void AttachEvent(Event ev)
+        {
+            events.Add(ev);
+            if (EventCreated != null)
+            {
+                EventCreated(ev);
+            }
+        }
+        private Round CreateNewRound()
+        {
+            foreach (var mode in Config.GetList<GameMode>("mbc_game_mode"))
+            {
+                switch (mode)
+                {
+                    case GameMode.Classic:
+                        return new ClassicRound(this);
+                }
+            }
+            throw new InvalidOperationException("An unsupported game mode was configured for this match!");
         }
 
         private void EnsureGameModeCompatibility()
@@ -141,11 +176,31 @@ namespace MBC.Core.Matches
 
         private void Init()
         {
+            events = new List<Event>();
             rounds = new List<Round>();
             players = new List<Player>();
             playersByID = new Dictionary<IDNumber, Player>();
             Thread = new BooleanThreader(PlayRound);
             started = false;
+        }
+
+        private bool MatchConditionsMet()
+        {
+            switch (Info.RoundMode)
+            {
+                case RoundMode.AllRounds:
+                    return rounds.Count >= Info.NumberOfRounds;
+                case RoundMode.FirstTo:
+                    foreach (var player in players)
+                    {
+                        if (player.Register.Score >= Info.NumberOfRounds)
+                        {
+                            return true;
+                        }
+                    }
+                    break;
+            }
+            return false;
         }
 
         private void SetConfiguration(Configuration config)
@@ -175,38 +230,5 @@ namespace MBC.Core.Matches
                 Info.GameMode |= mode;
             }
         }
-
-        private Round CreateNewRound()
-        {
-            foreach (var mode in Config.GetList<GameMode>("mbc_game_mode"))
-            {
-                switch (mode)
-                {
-                    case GameMode.Classic:
-                        return new ClassicRound(this);
-                }
-            }
-            throw new InvalidOperationException("An unsupported game mode was configured for this match!");
-        }
-
-        private bool MatchConditionsMet()
-        {
-            switch (Info.RoundMode)
-            {
-                case RoundMode.AllRounds:
-                    return rounds.Count >= Info.NumberOfRounds;
-                case RoundMode.FirstTo:
-                    foreach (var player in players)
-                    {
-                        if (player.Register.Score >= Info.NumberOfRounds)
-                        {
-                            return true;
-                        }
-                    }
-                    break;
-            }
-            return false;
-        }
-
     }
 }

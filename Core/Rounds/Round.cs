@@ -9,12 +9,13 @@ using System.Xml.Serialization;
 namespace MBC.Core.Rounds
 {
 
-    public abstract class Round : MBCObject
+    public abstract class Round
     {
 
         public Round(Match match)
         {
-            Parent = match;
+
         }
+
     }
 }

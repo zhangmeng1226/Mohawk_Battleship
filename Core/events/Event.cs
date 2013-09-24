@@ -18,31 +18,12 @@ namespace MBC.Core.Events
     /// <seealso cref="PlayerEvent"/>
     public abstract class Event
     {
+        private List<Event> subEvents;
 
-        [XmlIgnore]
-        private string curMessage = null;
-
-        /// <summary>
-        /// Gets a string representation of the message generated.
-        /// </summary>
-        [XmlIgnore]
-        public string Message
+        protected internal virtual string GenerateMessage()
         {
-            get
-            {
-                if (curMessage == null)
-                {
-                    GenerateMessage();
-                }
-                return curMessage;
-            }
-            protected set
-            {
-                curMessage = value;
-            }
+            return "";
         }
-
-        protected internal abstract void GenerateMessage();
 
         /// <summary>
         /// Provides a string representation.
@@ -50,7 +31,7 @@ namespace MBC.Core.Events
         /// <returns>The <see cref="Event.Message"/>.</returns>
         public override string ToString()
         {
-            return Message;
+            return GenerateMessage();
         }
     }
 }

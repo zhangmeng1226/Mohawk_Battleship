@@ -8,7 +8,7 @@ namespace MBC.Core.Events
     /// made in rounds from controllers. Provides the <see cref="IDNumber"/> of the <see cref="Controller"/>
     /// that caused the event to be created.
     /// </summary>
-    public abstract class PlayerEvent : RoundEvent
+    public abstract class PlayerEvent : Event
     {
         /// <summary>
         /// Copies the <see cref="Register"/> object reference.
@@ -17,7 +17,6 @@ namespace MBC.Core.Events
         public PlayerEvent(Player plr)
         {
             Player = plr;
-            Player.AttachEvent(this);
         }
 
         private PlayerEvent() { }

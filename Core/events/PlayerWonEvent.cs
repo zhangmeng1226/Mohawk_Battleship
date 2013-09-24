@@ -16,12 +16,11 @@ namespace MBC.Core.Events
         public PlayerWonEvent(Player player)
             : base(player)
         {
-            Message = player + " has won the round.";
         }
 
         protected internal override void GenerateMessage()
         {
-            Message = Player + " has won the round.";
+            return Player + " has won the round.";
         }
     }
 }
