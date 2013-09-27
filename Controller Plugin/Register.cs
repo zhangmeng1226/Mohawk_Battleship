@@ -11,6 +11,18 @@ namespace MBC.Shared
     /// </summary>
     public struct Register : IEquatable<Register>
     {
+        public Register()
+        {
+            ID = -1;
+            Name = "";
+        }
+
+        public Register(IDNumber id, string name)
+        {
+            ID = id;
+            Name = name;
+        }
+
         /// <summary>
         /// Gets or sets the <see cref="IDNumber"/>.
         /// </summary>

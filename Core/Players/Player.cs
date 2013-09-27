@@ -1,28 +1,21 @@
-﻿using MBC.Core.Util;
-using MBC.Shared;
-using System;
-using System.Diagnostics;
-using System.Threading;
-using MBC.Core.Events;
+﻿using System;
 using System.Collections.Generic;
-using MBC.Core.Matches;
+using System.Linq;
+using System.Text;
+using MBC.Shared;
 
-namespace MBC.Core
+namespace MBC.Core.Players
 {
-
-    public class Player
+    public class Player : IPlayer
     {
-        /// <summary>
-        /// Gets or sets the <see cref="Register"/> that is available for manipulation.
-        /// </summary>
-        public Register Register { get; internal set; }
+        public Register Register { get; set; }
 
-        public FieldInfo Field { get; internal set; }
+        public FieldInfo Field { get; set; }
 
-        public RegisterInfo Stats { get; internal set; }
+        public RegisterInfo Stats { get; set; }
 
-        public MatchInfo Match { get; internal set; }
+        public MatchInfo Match { get; set; }
 
-        public Team Team { get; internal set; }
+        public Team Team { get; set; }
     }
 }

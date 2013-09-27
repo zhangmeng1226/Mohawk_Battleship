@@ -15,7 +15,6 @@ namespace MBC.Core.Threading
         /// <param name="match">The <see cref="Match"/> to automatically step.</param>
         public BooleanThreader(ThreadStartBool start)
         {
-            RunThread = new Thread(RunLoop);
             RunToTrue = false;
             controllingMethod = start;
         }
@@ -26,7 +25,7 @@ namespace MBC.Core.Threading
             private set;
         }
 
-        private void RunLoop()
+        protected override void ThreadRun()
         {
             bool incomplete = false;
             do

@@ -11,6 +11,7 @@ namespace MBC.Core.Threading
 
         public Threader()
         {
+            RunThread = new Thread(ThreadRun);
             IsRunning = false;
             SleepHandle = new AutoResetEvent(false);
         }
@@ -38,6 +39,8 @@ namespace MBC.Core.Threading
             get;
             private set;
         }
+
+        protected abstract void ThreadRun();
 
         public void Run()
         {
