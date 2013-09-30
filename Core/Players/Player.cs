@@ -8,6 +8,14 @@ namespace MBC.Core.Players
 {
     public class Player : IPlayer
     {
+        public Player(IPlayer copy)
+        {
+            Register = new Register(copy.Register);
+            Field = new FieldInfo(copy.Field);
+            Match = new MatchConfig(copy.Match);
+            Team = new Team(copy.Team);
+        }
+
         public Register Register { get; set; }
 
         public FieldInfo Field { get; set; }

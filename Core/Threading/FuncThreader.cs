@@ -17,9 +17,9 @@ namespace MBC.Core.Threading
         {
         }
 
-        public FuncThreader(Delegate invoke)
+        public FuncThreader(Delegate invoke, params object[] parameters)
         {
-            invokeMethod = invoke;
+            SetMethod(invoke, parameters);
         }
 
         public MethodInfo Method

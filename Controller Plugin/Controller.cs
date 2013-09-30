@@ -29,8 +29,6 @@ namespace MBC.Shared
 
         public FieldInfo Field { get; set; }
 
-        public RegisterInfo Stats { get; set; }
-
         public MatchConfig Match { get; set; }
 
         public Team Team { get; set; }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.Serialization;
 using System.Xml.Serialization;
 using MBC.Core.Events;
 using MBC.Core.Rounds;
@@ -20,16 +21,15 @@ namespace MBC.Core.Matches
         Description = "Determines the ending behaviour of a match based on a given number of rounds.",
         DisplayName = "Match Rounds Mode")]
     [Configuration("mbc_match_rounds", 100)]
-    public class Match
+    public class Match : ISerializable
     {
         private List<Event> events;
-        private MatchConfig info;
+        private List<Round> rounds;
         private List<IPlayer> players;
-
         private Dictionary<IDNumber, IPlayer> playersByID;
 
-        private List<Round> rounds;
-        private bool started;
+        private int currentEventIdx;
+        private FuncThreader matchThreader;
 
         public Match(Configuration conf)
         {
@@ -38,7 +38,17 @@ namespace MBC.Core.Matches
             SetConfiguration(conf);
         }
 
-        private Match()
+        private Match(SerializationInfo info, StreamingContext context)
+        {
+
+        }
+
+        private void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+
+        }
+
+        public Match()
         {
             Init();
         }
@@ -54,12 +64,22 @@ namespace MBC.Core.Matches
             private set;
         }
 
-        public MatchConfig Info
+        public bool IsRunning
         {
-            get
-            {
-                return info;
-            }
+            get;
+            private set;
+        }
+
+        public MatchConfig CompiledConfig
+        {
+            get;
+            private set;
+        }
+
+        public IDNumber ID
+        {
+            get;
+            private set;
         }
 
         public IList<IPlayer> Players
@@ -68,16 +88,6 @@ namespace MBC.Core.Matches
             {
                 return players.AsReadOnly();
             }
-        }
-
-        /// <summary>
-        /// Gets the <see cref="BooleanThreader"/> that handle multi-threading and automatic progression.
-        /// </summary>
-        [XmlIgnore]
-        public BooleanThreader Thread
-        {
-            get;
-            private set;
         }
 
         /// <summary>
@@ -101,28 +111,27 @@ namespace MBC.Core.Matches
 
         public void AddController(ControlledPlayer plr)
         {
-            if (started && Config.GetValue<bool>("mbc_match_playeradd_init_only"))
+            if (rounds.Count > 0 && Config.GetValue<bool>("mbc_match_playeradd_init_only"))
             {
                 throw new InvalidOperationException("Cannot add players after the match has started (mbc_match_playeradd_init_only set to true)");
             }
-            for (int i = 0; i < playersByID.Count; i++)
+            for (int i = 0; i < playersByID.Count + 1; i++)
             {
                 if (!playersByID.ContainsKey(i))
                 {
                     playersByID[i] = plr;
-                    break;
+                    plr.NewMatch(CompiledConfig, i);
+                    players.Add(plr);
+                    EventCreated(new MatchAddPlayerEvent(plr.Register.ID, plr.Register.Name));
+                    return;
                 }
             }
-            plr.NewMatch(Info, players.Count);
-            players.Add(plr);
-            AttachEvent(new MatchAddPlayerEvent(plr.Register));
         }
 
         public void End()
         {
-            Thread.Stop();
-            Thread.Join();
-            AttachEvent(new MatchEndEvent());
+            matchThreader.Stop();
+            EventCreated(new MatchEndEvent());
         }
 
         public IPlayer GetPlayerByID(IDNumber id)
@@ -130,33 +139,21 @@ namespace MBC.Core.Matches
             return playersByID[id];
         }
 
-        public bool PlayRound()
+        public void AddEvent(Event newEvent)
         {
-            if (!started)
-            {
-                AttachEvent(new MatchBeginEvent());
-            }
-            if (MatchConditionsMet())
-            {
-                return true;
-            }
-            Round newRound = CreateNewRound();
+            events.Add(newEvent);
+        }
 
+        public void PlayThread()
+        {
+            while (IsRunning && !MatchConditionsMet())
+            {
 
-            return MatchConditionsMet();
+            }
         }
 
         public void SaveToFile(File fLocation)
         {
-        }
-
-        internal virtual void AttachEvent(Event ev)
-        {
-            events.Add(ev);
-            if (EventCreated != null)
-            {
-                EventCreated(ev);
-            }
         }
 
         private Round CreateNewRound()
@@ -185,25 +182,28 @@ namespace MBC.Core.Matches
 
         private void Init()
         {
+            EventCreated += AddEvent;
             events = new List<Event>();
             rounds = new List<Round>();
             players = new List<IPlayer>();
             playersByID = new Dictionary<IDNumber, IPlayer>();
-            Thread = new BooleanThreader(PlayRound);
-            started = false;
+            matchThreader = new FuncThreader(new Action(PlayThread));
+            ID = (int)DateTime.Now.Subtract(new DateTime(1970,1,1,0,0,0)).TotalSeconds;
+            EventCreated(new MatchBeginEvent(ID));
         }
 
         private bool MatchConditionsMet()
         {
-            switch (Info.RoundMode)
+            switch (CompiledConfig.RoundMode)
             {
                 case RoundMode.AllRounds:
-                    return rounds.Count >= Info.NumberOfRounds;
+                    return rounds.Count >= CompiledConfig.NumberOfRounds;
                 case RoundMode.FirstTo:
                     foreach (var player in players)
                     {
-                        if (player.Stats.Score >= Info.NumberOfRounds)
+                        if (player.Register.Score >= CompiledConfig.NumberOfRounds)
                         {
+
                             return true;
                         }
                     }
@@ -212,32 +212,33 @@ namespace MBC.Core.Matches
             return false;
         }
 
-        private void SetConfiguration(Configuration config)
+        public void SetConfiguration(Configuration config)
         {
             Config = config;
-            info = new MatchConfig();
-            Info.FieldSize = new Coordinates(Config.GetValue<int>("mbc_field_width"), Config.GetValue<int>("mbc_field_height"));
-            Info.NumberOfRounds = Config.GetValue<int>("mbc_match_rounds");
+            CompiledConfig = new MatchConfig();
+            CompiledConfig.FieldSize = new Coordinates(Config.GetValue<int>("mbc_field_width"), Config.GetValue<int>("mbc_field_height"));
+            CompiledConfig.NumberOfRounds = Config.GetValue<int>("mbc_match_rounds");
 
-            Info.Registers = new List<Register>();
+            CompiledConfig.Registers = new Dictionary<IDNumber, Register>();
             foreach (var player in players)
             {
-                Info.Registers.Add(player.Register);
+                CompiledConfig.Registers.Add(player.Register.ID, player.Register);
             }
 
-            Info.StartingShips = new ShipList();
+            CompiledConfig.StartingShips = new ShipList();
             foreach (var length in Config.GetList<int>("mbc_ship_sizes"))
             {
-                Info.StartingShips.Add(new Ship(length));
+                CompiledConfig.StartingShips.Add(new Ship(length));
             }
 
-            Info.TimeLimit = Config.GetValue<int>("mbc_player_thread_timeout");
+            CompiledConfig.TimeLimit = Config.GetValue<int>("mbc_player_thread_timeout");
 
-            Info.GameMode = 0;
+            CompiledConfig.GameMode = 0;
             foreach (var mode in Config.GetList<GameMode>("mbc_game_mode"))
             {
-                Info.GameMode |= mode;
+                CompiledConfig.GameMode |= mode;
             }
+            EventCreated(new MatchConfigChangedEvent(CompiledConfig));
         }
     }
 }

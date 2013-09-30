@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
+using System.Runtime.Serialization;
 
 namespace MBC.Shared
 {
 
-    public class MatchConfig
+    public class MatchConfig : ISerializable
     {
 
         public MatchConfig()
@@ -22,6 +23,16 @@ namespace MBC.Shared
             FieldSize = copy.FieldSize;
             TimeLimit = copy.TimeLimit;
             GameMode = copy.GameMode;
+        }
+
+        private MatchConfig(SerializationInfo info, StreamingContext context)
+        {
+
+        }
+
+        private void GetObjectData(SerializationInfo info, StreamingContext context) 
+        {
+            //Do not serialize teams/registers
         }
 
         /// <summary>

@@ -9,20 +9,12 @@ namespace MBC.Core.Threading
     public abstract class Threader
     {
 
+        public event Action<Threader> ThreadStop;
+
         public Threader()
         {
             RunThread = new Thread(ThreadRun);
             IsRunning = false;
-            SleepHandle = new AutoResetEvent(false);
-        }
-
-        /// <summary>
-        /// Gets or sets the AutoResetEvent handle used for signalling.
-        /// </summary>
-        private AutoResetEvent SleepHandle
-        {
-            get;
-            set;
         }
 
         protected Thread RunThread
@@ -48,7 +40,6 @@ namespace MBC.Core.Threading
             {
                 return;
             }
-            SleepHandle.Reset();
             RunThread.Start();
         }
 
@@ -57,7 +48,7 @@ namespace MBC.Core.Threading
             if (IsRunning)
             {
                 IsRunning = false;
-                SleepHandle.Set();
+                ThreadStop(this);
             }
         }
 

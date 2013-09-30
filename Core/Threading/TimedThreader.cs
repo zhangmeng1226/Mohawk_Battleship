@@ -9,7 +9,6 @@ namespace MBC.Core.Threading
     public class TimedThreader : FuncThreader
     {
         private Stopwatch watcher;
-        private int maxTime;
 
         public TimedThreader()
         {
@@ -18,20 +17,14 @@ namespace MBC.Core.Threading
 
         public TimedThreader(int timeout)
         {
-            maxTime = timeout;
+            watcher = new Stopwatch();
+            MaxTime = timeout;
         }
 
-        public TimedThreader(Delegate invoke)
-            : base(invoke)
+        public TimedThreader(int timeout, Delegate invoke, params object[] parameters)
+            : base(invoke, parameters)
         {
-            watcher = new Stopwatch();
-        }
 
-        public TimedThreader(Delegate invoke, int timeout)
-            : base(invoke)
-        {
-            watcher = new Stopwatch();
-            maxTime = timeout;
         }
 
         public void TimeMethod(Delegate invoke, params object[] parameters)
@@ -40,12 +33,18 @@ namespace MBC.Core.Threading
             TimeMethod();
         }
 
+        public int MaxTime
+        {
+            get;
+            set;
+        }
+
         public void TimeMethod()
         {
             Run();
-            if (WaitFor(maxTime))
+            if (WaitFor(MaxTime))
             {
-                throw new MethodTimeoutException(Method.Name, maxTime);
+                throw new MethodTimeoutException(Method.Name, MaxTime);
             }
         }
 

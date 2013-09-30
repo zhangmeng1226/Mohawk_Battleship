@@ -31,7 +31,8 @@ namespace MBC.Core.Events
         {
             MatchBegin,
             MatchEnd,
-            MatchPlayerAdd,
+            MatchConfigChanged,
+            MatchPlayerTeamAssign,
             MatchAddPlayer,
             PlayerHitShip,
             PlayerLost,
@@ -43,6 +44,7 @@ namespace MBC.Core.Events
             RoundAccolade,
             RoundBegin,
             RoundEnd,
+            RoundStateSave,
             RoundPlayerAdd,
             RoundPlayerAction,
             Unspecified

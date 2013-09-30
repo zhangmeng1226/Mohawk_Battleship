@@ -14,6 +14,8 @@ namespace MBC.Core.Rounds
     {
         public event MBCEventHandler EventGenerated;
 
+        private List<IController> controllers;
+
         public Round(MatchConfig roundParams)
         {
 
