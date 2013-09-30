@@ -13,7 +13,6 @@ namespace MBC.Core.Rounds
     /// </summary>
     internal abstract class BattleshipRound : Round
     {
-
         internal override void HandleEvent(Event ev)
         {
  	        throw new NotImplementedException();
@@ -117,7 +116,7 @@ namespace MBC.Core.Rounds
         /// </summary>
         protected void NextTurn()
         {
-            MakeEvent(new RoundTurnChangeEvent(CurrentTurn, NextRemaining()));
+            MakeEvent(new RoundPlayerActionEvent(CurrentTurn, NextRemaining()));
         }
 
         /// <summary>

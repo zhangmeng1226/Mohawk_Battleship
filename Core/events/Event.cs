@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using System.Xml.Serialization;
 namespace MBC.Core.Events
 {
@@ -16,20 +17,35 @@ namespace MBC.Core.Events
     /// <seealso cref="MatchEvent"/>
     /// <seealso cref="RoundEvent"/>
     /// <seealso cref="PlayerEvent"/>
-    public abstract class Event
+    public abstract class Event : ISerializable
     {
-        protected internal virtual string GenerateMessage()
+        public virtual Type EventType
         {
-            return "";
+            get
+            {
+                return Type.Unspecified;
+            }
         }
 
-        /// <summary>
-        /// Provides a string representation.
-        /// </summary>
-        /// <returns>The <see cref="Event.Message"/>.</returns>
-        public override string ToString()
+        public enum Type
         {
-            return GenerateMessage();
+            MatchBegin,
+            MatchEnd,
+            MatchPlayerAdd,
+            MatchAddPlayer,
+            PlayerHitShip,
+            PlayerLost,
+            PlayerShipDestroyed,
+            PlayerShipsPlaced,
+            PlayerShot,
+            PlayerTimeout,
+            PlayerWon,
+            RoundAccolade,
+            RoundBegin,
+            RoundEnd,
+            RoundPlayerAdd,
+            RoundPlayerAction,
+            Unspecified
         }
     }
 }

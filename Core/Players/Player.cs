@@ -12,8 +12,6 @@ namespace MBC.Core.Players
 
         public FieldInfo Field { get; set; }
 
-        public RegisterInfo Stats { get; set; }
-
         public MatchInfo Match { get; set; }
 
         public Team Team { get; set; }

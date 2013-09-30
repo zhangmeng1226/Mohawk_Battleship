@@ -1,6 +1,8 @@
 ﻿using MBC.Core.Accolades;
 using MBC.Core.Rounds;
 using System;
+using System.Runtime.Serialization;
+using MBC.Shared;
 
 namespace MBC.Core.Events
 {
@@ -16,9 +18,27 @@ namespace MBC.Core.Events
         /// </summary>
         /// <param name="round">The <see cref="Round"/> that has had the <paramref name="accolade"/> added.</param>
         /// <param name="accolade">The <see cref="Accolade"/> added to the <paramref name="round"/>.</param>
-        public RoundAccoladeEvent(Accolade accolade)
+        public RoundAccoladeEvent(IDNumber roundID, Accolade accolade) : base(roundID)
         {
             this.accolade = accolade;
+        }
+
+        private RoundAccoladeEvent(SerializationInfo info, StreamingContext context)
+        {
+
+        }
+
+        private void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+
+        }
+
+        public virtual Type EventType
+        {
+            get
+            {
+                return Type.RoundAccolade;
+            }
         }
 
         /// <summary>

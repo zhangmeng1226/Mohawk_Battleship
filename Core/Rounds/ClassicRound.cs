@@ -22,7 +22,7 @@ namespace MBC.Core.Rounds
         /// </summary>
         /// <param name="info">The <see cref="MatchInfo"/> from a round to associate with.</param>
         /// <param name="controllers">The <see cref="Player"/>s to utilize.</param>
-        public ClassicRound(MatchInfo info, List<Player> controllers)
+        public ClassicRound(MatchInfo info, List<IPlayer> controllers)
             : base(info, controllers)
         {
             currentState = LogicState.Begin;

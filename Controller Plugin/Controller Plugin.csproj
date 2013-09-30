@@ -8,7 +8,7 @@
     <ProjectGuid>{51FD717F-5965-4C31-9BDD-051DA693A729}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MBC.Core</RootNamespace>
+    <RootNamespace>MBC.Shared</RootNamespace>
     <AssemblyName>ctrlplugin</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -53,10 +53,10 @@
     <Compile Include="FieldInfo.cs" />
     <Compile Include="IController.cs" />
     <Compile Include="IDNumber.cs" />
+    <Compile Include="IPlayer.cs" />
     <Compile Include="Register.cs" />
     <Compile Include="MatchInfo.cs" />
     <Compile Include="GameMode.cs" />
-    <Compile Include="RegisterStats.cs" />
     <Compile Include="RoundMode.cs" />
     <Compile Include="ShipList.cs" />
     <Compile Include="Shot.cs" />

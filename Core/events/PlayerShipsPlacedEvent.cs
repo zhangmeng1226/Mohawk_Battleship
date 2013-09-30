@@ -2,6 +2,7 @@
 using MBC.Shared;
 using System;
 using System.Text;
+using System.Runtime.Serialization;
 
 namespace MBC.Core.Events
 {
@@ -17,55 +18,20 @@ namespace MBC.Core.Events
         /// </summary>
         /// <param name="register">A <see cref="Register"/>.</param>
         /// <param name="newShips">The <see cref="ShipList"/> associated with the <see cref="Register"/></param>
-        public PlayerShipsPlacedEvent(Player plr, ShipList newShips)
+        public PlayerShipsPlacedEvent(IDNumber plr, ShipList newShips)
             : base(plr)
         {
             Ships = newShips;
         }
 
-        protected internal override void GenerateMessage()
+        private PlayerShipsPlacedEvent(SerializationInfo info, StreamingContext context)
         {
 
-            StringBuilder msg = new StringBuilder();
-            msg.Append(Player);
-            int placedCount = 0;
-            foreach (var ship in Ships.Ships)
-            {
-                if (ship.IsPlaced)
-                {
-                    if (placedCount++ == 0)
-                    {
-                        msg.Append(" placed ");
-                    }
-                    else
-                    {
-                        msg.Append(", ");
-                    }
-                    msg.Append(ship);
-                }
-            }
-            if (placedCount > 0 && !Ships.ShipsPlaced)
-            {
-                msg.Append(" and ");
-            }
-            if (!Ships.ShipsPlaced)
-            {
-                placedCount = 0;
-                msg.Append(" did not place ");
-                foreach (var ship in Ships.Ships)
-                {
-                    if (!ship.IsPlaced)
-                    {
-                        if (placedCount++ != 0)
-                        {
-                            msg.Append(", ");
-                        }
-                        msg.Append(ship);
-                    }
-                }
-            }
-            msg.Append(".");
-            return msg.ToString();
+        }
+
+        private void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+
         }
 
         public ShipList PrevShips
@@ -81,6 +47,14 @@ namespace MBC.Core.Events
         {
             get;
             private set;
+        }
+
+        public virtual Type EventType
+        {
+            get
+            {
+                return Type.PlayerShipsPlaced;
+            }
         }
     }
 }

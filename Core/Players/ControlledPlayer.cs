@@ -21,7 +21,6 @@ namespace MBC.Core
 
         private Register myRegister;
         private FieldInfo myField;
-        private RegisterInfo myStats;
         private MatchInfo myMatch;
         private Team myTeam;
 
@@ -34,7 +33,7 @@ namespace MBC.Core
             set
             {
                 myRegister = value;
-                controller.Register = value;
+                controller.Register = new Register(value);
             }
         }
 
@@ -48,19 +47,6 @@ namespace MBC.Core
             {
                 myField = value;
                 controller.Field = new FieldInfo(value);
-            }
-        }
-
-        public RegisterInfo Stats
-        {
-            get
-            {
-                return myStats;
-            }
-            set
-            {
-                myStats = value;
-                controller.Stats = new RegisterInfo(value);
             }
         }
 
@@ -123,7 +109,7 @@ namespace MBC.Core
         /// </summary>
         public void NewMatch(MatchInfo newMatch, IDNumber assignedNum)
         {
-            Register = new Register(assignedNum, Register.Name);
+            Register.ID = assignedNum;
             Match = newMatch;
             threader.TimeMethod(new Action(controller.NewMatch));
         }

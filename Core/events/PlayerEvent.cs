@@ -10,21 +10,19 @@ namespace MBC.Core.Events
     /// </summary>
     public abstract class PlayerEvent : Event
     {
-        /// <summary>
-        /// Copies the <see cref="Register"/> object reference.
-        /// </summary>
-        /// <param name="register"></param>
-        public PlayerEvent(Player plr)
+        protected PlayerEvent()
         {
-            Player = plr;
+
+        }
+
+        public PlayerEvent(IDNumber plrID)
+        {
+            Player = plrID;
         }
 
         private PlayerEvent() { }
 
-        /// <summary>
-        /// Gets the <see cref="Register"/> that caused this event to occur.
-        /// </summary>
-        public Player Player
+        public IDNumber Player
         {
             get;
             private set;

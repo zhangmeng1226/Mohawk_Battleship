@@ -24,9 +24,9 @@ namespace MBC.Core.Matches
     {
         private List<Event> events;
         private MatchInfo info;
-        private List<Player> players;
+        private List<IPlayer> players;
 
-        private Dictionary<IDNumber, Player> playersByID;
+        private Dictionary<IDNumber, IPlayer> playersByID;
 
         private List<Round> rounds;
         private bool started;
@@ -44,6 +44,7 @@ namespace MBC.Core.Matches
         }
 
         public event MBCEventHandler EventCreated;
+
         /// <summary>
         /// Gets the <see cref="Configuration"/> used to determine game behaviour.
         /// </summary>
@@ -61,7 +62,7 @@ namespace MBC.Core.Matches
             }
         }
 
-        public IList<Player> Players
+        public IList<IPlayer> Players
         {
             get
             {
@@ -98,16 +99,23 @@ namespace MBC.Core.Matches
             }
         }
 
-        public void AddPlayer(Player plr)
+        public void AddController(ControlledPlayer plr)
         {
             if (started && Config.GetValue<bool>("mbc_match_playeradd_init_only"))
             {
                 throw new InvalidOperationException("Cannot add players after the match has started (mbc_match_playeradd_init_only set to true)");
             }
-            playersByID[players.Count] = plr;
-            plr.Register.ID = players.Count;
+            for (int i = 0; i < playersByID.Count; i++)
+            {
+                if (!playersByID.ContainsKey(i))
+                {
+                    playersByID[i] = plr;
+                    break;
+                }
+            }
+            plr.NewMatch(Info, players.Count);
             players.Add(plr);
-            AttachEvent(new MatchAddPlayerEvent(plr));
+            AttachEvent(new MatchAddPlayerEvent(plr.Register));
         }
 
         public void End()
@@ -117,7 +125,7 @@ namespace MBC.Core.Matches
             AttachEvent(new MatchEndEvent());
         }
 
-        public Player GetPlayerByID(IDNumber id)
+        public IPlayer GetPlayerByID(IDNumber id)
         {
             return playersByID[id];
         }
@@ -150,6 +158,7 @@ namespace MBC.Core.Matches
                 EventCreated(ev);
             }
         }
+
         private Round CreateNewRound()
         {
             foreach (var mode in Config.GetList<GameMode>("mbc_game_mode"))
@@ -178,8 +187,8 @@ namespace MBC.Core.Matches
         {
             events = new List<Event>();
             rounds = new List<Round>();
-            players = new List<Player>();
-            playersByID = new Dictionary<IDNumber, Player>();
+            players = new List<IPlayer>();
+            playersByID = new Dictionary<IDNumber, IPlayer>();
             Thread = new BooleanThreader(PlayRound);
             started = false;
         }
@@ -193,7 +202,7 @@ namespace MBC.Core.Matches
                 case RoundMode.FirstTo:
                     foreach (var player in players)
                     {
-                        if (player.Register.Score >= Info.NumberOfRounds)
+                        if (player.Stats.Score >= Info.NumberOfRounds)
                         {
                             return true;
                         }

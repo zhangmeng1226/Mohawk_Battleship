@@ -1,6 +1,7 @@
 ﻿using MBC.Core.Rounds;
 using System;
 using System.Xml.Serialization;
+using MBC.Shared;
 
 namespace MBC.Core.Events
 {
@@ -9,5 +10,20 @@ namespace MBC.Core.Events
     /// </summary>
     public abstract class RoundEvent : Event
     {
+        protected RoundEvent()
+        {
+
+        }
+
+        public RoundEvent(IDNumber roundID)
+        {
+
+        }
+
+        public IDNumber RoundID
+        {
+            get;
+            private set;
+        }
     }
 }

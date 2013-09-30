@@ -1,6 +1,7 @@
 ﻿using MBC.Core.Rounds;
 using MBC.Shared;
 using System;
+using System.Runtime.Serialization;
 
 namespace MBC.Core.Events
 {
@@ -9,11 +10,24 @@ namespace MBC.Core.Events
     /// </summary>
     public class PlayerLostEvent : PlayerEvent
     {
-        public PlayerLostEvent(Player loser) : base(loser) { }
-
-        protected internal override void GenerateMessage()
+        public PlayerLostEvent(IDNumber loser) : base(loser) { }
+        
+        private PlayerLostEvent(SerializationInfo info, StreamingContext context)
         {
-            return Player + " has lost the round.";
+
+        }
+
+        private void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+
+        }
+
+        public virtual Type EventType
+        {
+            get
+            {
+                return Type.PlayerLost;
+            }
         }
     }
 }

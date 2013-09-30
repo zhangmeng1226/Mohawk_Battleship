@@ -9,18 +9,20 @@ namespace MBC.Shared
     /// to an associated <see cref="Controller"/> at respectable times. Most fields may be modified by the
     /// associated <see cref="Controller"/> without causing harm to the logic in the core framework.
     /// </summary>
-    public struct Register : IEquatable<Register>
+    public class Register : IEquatable<Register>
     {
-        public Register()
-        {
-            ID = -1;
-            Name = "";
-        }
-
         public Register(IDNumber id, string name)
         {
             ID = id;
             Name = name;
+        }
+
+        public Register(Register copy)
+        {
+            ID = copy.ID;
+            Name = copy.Name;
+            Score = copy.Score;
+            IsAlive = copy.IsAlive;
         }
 
         /// <summary>
@@ -29,6 +31,18 @@ namespace MBC.Shared
         public IDNumber ID { get; set; }
 
         public string Name
+        {
+            get;
+            set;
+        }
+
+        public int Score
+        {
+            get;
+            set;
+        }
+
+        public bool IsAlive
         {
             get;
             set;
@@ -75,10 +89,7 @@ namespace MBC.Shared
         /// <returns>A hash code value.</returns>
         public override int GetHashCode()
         {
-            int hash = 23;
-            hash = hash * 37 + ID;
-            hash = hash * 37 + Name.GetHashCode();
-            return hash;
+            return ID;
         }
     }
 }

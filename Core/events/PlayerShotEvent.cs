@@ -2,6 +2,7 @@
 using MBC.Shared;
 using System;
 using System.Text;
+using System.Runtime.Serialization;
 
 namespace MBC.Core.Events
 {
@@ -16,29 +17,28 @@ namespace MBC.Core.Events
         /// </summary>
         /// <param name="register">A <see cref="Register"/> making the <paramref name="shot"/></param>
         /// <param name="shot">The <see cref="Shot"/> made by the <paramref name="register"/>.</param>
-        public PlayerShotEvent(Player shooter, Shot shot)
+        public PlayerShotEvent(IDNumber shooter, Shot shot)
             : base(shooter)
         {
             Shot = shot;
         }
 
-
-        protected internal override void GenerateMessage()
+        private PlayerShotEvent(SerializationInfo info, StreamingContext context)
         {
-            StringBuilder msg = new StringBuilder();
-            msg.Append(Player);
-            if (Shot != null)
+
+        }
+
+        private void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+
+        }
+
+        public virtual Type EventType
+        {
+            get
             {
-                msg.Append(" shot ");
-                msg.Append(Shot.Receiver);
-                msg.Append(" at ");
-                msg.Append(Shot.Coordinates);
+                return Type.PlayerShot;
             }
-            else
-            {
-                msg.Append(" did not make a shot.");
-            }
-            return msg.ToString();
         }
 
         /// <summary>

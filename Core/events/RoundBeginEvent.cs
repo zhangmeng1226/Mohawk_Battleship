@@ -3,6 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using MBC.Shared;
+using System.Runtime.Serialization;
 
 namespace MBC.Core.Events
 {
@@ -16,32 +18,34 @@ namespace MBC.Core.Events
         /// based on the <see cref="MBC.Shared.Register"/>s that are involved in it.
         /// </summary>
         /// <param name="round">The associated <see cref="Round"/>.</param>
-        public RoundBeginEvent(IEnumerable<Player> roundControllers)
+        public RoundBeginEvent(IDNumber roundID) 
+            : base(roundID)
         {
+            RoundID = roundID;
         }
 
-        protected internal override string GenerateMessage()
+        public IDNumber RoundID
         {
-            /*
-            StringBuilder msg = new StringBuilder();
-            msg.Append("A round has begun with ");
-            int controllerCount = 0;
-            foreach (var controller in roundControllers)
-            {
-                if ((controller != roundControllers.Last()) && (controllerCount++ != 0))
-                {
-                    msg.Append(", ");
-                }
-                else if (controller == roundControllers.Last())
-                {
-                    msg.Append(" and ");
-                }
-                msg.Append(controller);
-            }
-            msg.Append('.');
+            get;
+            private set;
+        }
 
-            return msg.ToString();*/
-            return "";
+        private RoundBeginEvent(SerializationInfo info, StreamingContext context)
+        {
+
+        }
+
+        private void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+
+        }
+
+        public virtual Type EventType
+        {
+            get
+            {
+                return Type.RoundBegin;
+            }
         }
     }
 }

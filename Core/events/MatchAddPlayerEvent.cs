@@ -1,27 +1,49 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
+using MBC.Shared;
 
 namespace MBC.Core.Events
 {
-    public class MatchAddPlayerEvent : MatchEvent
+    public class MatchAddPlayerEvent : Event
     {
 
-        public MatchAddPlayerEvent(Player newPlayer)
+        public MatchAddPlayerEvent(IDNumber newPlayer, string plrName)
         {
-            Player = newPlayer;
+            PlayerID = newPlayer;
+            PlayerName = plrName;
         }
 
-        public Player Player
+        private MatchAddPlayerEvent(SerializationInfo info, StreamingContext context)
+        {
+
+        }
+
+        private void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+
+        }
+
+        public string PlayerName
         {
             get;
             private set;
         }
 
-        protected internal override string GenerateMessage()
+        public IDNumber PlayerID
         {
-            return "Added player " + Player;
+            get;
+            private set;
+        }
+
+        public virtual Type EventType
+        {
+            get
+            {
+                return Type.MatchAddPlayer;
+            }
         }
     }
 }

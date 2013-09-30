@@ -17,10 +17,10 @@ namespace MBC.Shared
         public MatchInfo(MatchInfo copy)
         {
             StartingShips = new ShipList(copy.StartingShips);
-            Registers = new List<Register>();
-            foreach (var register in copy.Registers)
+            Registers = new Dictionary<IDNumber, Register>();
+            foreach (var regPair in copy.Registers)
             {
-                Registers.Add(register);
+                Registers[regPair.Key] = new Register(regPair.Value);
             }
             FieldSize = copy.FieldSize;
             TimeLimit = copy.TimeLimit;
@@ -81,13 +81,7 @@ namespace MBC.Shared
             set;
         }
 
-        public List<Register> Registers
-        {
-            get;
-            set;
-        }
-
-        public List<RegisterInfo> RegisterInfoList
+        public Dictionary<IDNumber, Register> Registers
         {
             get;
             set;

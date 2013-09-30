@@ -1,16 +1,34 @@
 ﻿using MBC.Core.Matches;
 using System;
+using System.Runtime.Serialization;
 
 namespace MBC.Core.Events
 {
     /// <summary>
     /// Provides information about a <see cref="Match"/> that has ended.
     /// </summary>
-    public class MatchEndEvent : MatchEvent
+    public class MatchEndEvent : Event
     {
-        protected internal override void GenerateMessage()
+        public MatchEndEvent()
         {
-            return "The match has ended.";
+
+        }
+
+        private MatchEndEvent(SerializationInfo info, StreamingContext context)
+        {
+
+        }
+
+        private void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+
+        }
+        public virtual Type EventType
+        {
+            get
+            {
+                return Type.MatchEnd;
+            }
         }
     }
 }

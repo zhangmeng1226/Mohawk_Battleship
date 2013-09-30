@@ -1,5 +1,7 @@
 ﻿using MBC.Core.Rounds;
 using System;
+using MBC.Shared;
+using System.Runtime.Serialization;
 
 namespace MBC.Core.Events
 {
@@ -12,13 +14,34 @@ namespace MBC.Core.Events
         /// Passes the <paramref name="round"/> to the base constructor and generates a <see cref="Event.Message"/>.
         /// </summary>
         /// <param name="round"></param>
-        public RoundEndEvent()
+        public RoundEndEvent(IDNumber roundID)
+            : base(roundID)
         {
+            RoundID = roundID;
         }
 
-        protected internal override void GenerateMessage()
+        public IDNumber RoundID
         {
-            return "This round has ended.";
+            get;
+            private set;
+        }
+
+        private RoundEndEvent(SerializationInfo info, StreamingContext context)
+        {
+
+        }
+
+        private void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+
+        }
+
+        public virtual Type EventType
+        {
+            get
+            {
+                return Type.RoundEnd;
+            }
         }
     }
 }

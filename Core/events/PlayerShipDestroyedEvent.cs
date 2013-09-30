@@ -1,6 +1,7 @@
 ﻿using MBC.Core.Rounds;
 using MBC.Shared;
 using System;
+using System.Runtime.Serialization;
 
 namespace MBC.Core.Events
 {
@@ -17,15 +18,20 @@ namespace MBC.Core.Events
         /// <param name="register">The <see cref="Register"/> that destroyed the <see cref="Ship"/>.</param>
         /// <param name="shipOwner">The <see cref="Register"/> that owns the destroyed <see cref="Ship"/></param>
         /// <param name="destroyedShip">The destroyed <see cref="Ship"/>.</param>
-        public PlayerShipDestroyedEvent(Player owner, Ship destroyedShip)
+        public PlayerShipDestroyedEvent(IDNumber owner, Ship destroyedShip)
             : base(owner)
         {
             DestroyedShip = destroyedShip;
         }
 
-        protected internal override void GenerateMessage()
+        private PlayerShipDestroyedEvent(SerializationInfo info, StreamingContext context)
         {
-            return Player + " has had their ship at " + DestroyedShip + " destroyed.";
+
+        }
+
+        private void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+
         }
 
         /// <summary>
@@ -35,6 +41,14 @@ namespace MBC.Core.Events
         {
             get;
             private set;
+        }
+
+        public virtual Type EventType
+        {
+            get
+            {
+                return Type.PlayerShipDestroyed;
+            }
         }
     }
 }
