@@ -23,7 +23,7 @@ namespace MBC.Core.Matches
     public class Match
     {
         private List<Event> events;
-        private MatchInfo info;
+        private MatchConfig info;
         private List<IPlayer> players;
 
         private Dictionary<IDNumber, IPlayer> playersByID;
@@ -54,7 +54,7 @@ namespace MBC.Core.Matches
             private set;
         }
 
-        public MatchInfo Info
+        public MatchConfig Info
         {
             get
             {
@@ -215,7 +215,7 @@ namespace MBC.Core.Matches
         private void SetConfiguration(Configuration config)
         {
             Config = config;
-            info = new MatchInfo();
+            info = new MatchConfig();
             Info.FieldSize = new Coordinates(Config.GetValue<int>("mbc_field_width"), Config.GetValue<int>("mbc_field_height"));
             Info.NumberOfRounds = Config.GetValue<int>("mbc_match_rounds");
 

@@ -21,7 +21,7 @@ namespace MBC.Core
 
         private Register myRegister;
         private FieldInfo myField;
-        private MatchInfo myMatch;
+        private MatchConfig myMatch;
         private Team myTeam;
 
         public Register Register
@@ -50,7 +50,7 @@ namespace MBC.Core
             }
         }
 
-        public MatchInfo Match 
+        public MatchConfig Match 
         {
             get
             {
@@ -59,7 +59,7 @@ namespace MBC.Core
             set
             {
                 myMatch = value;
-                controller.Match = new MatchInfo(value);
+                controller.Match = new MatchConfig(value);
             }
         }
 
@@ -107,7 +107,7 @@ namespace MBC.Core
         /// <summary>
         /// <see cref="IController.NewMatch()"/>
         /// </summary>
-        public void NewMatch(MatchInfo newMatch, IDNumber assignedNum)
+        public void NewMatch(MatchConfig newMatch, IDNumber assignedNum)
         {
             Register.ID = assignedNum;
             Match = newMatch;

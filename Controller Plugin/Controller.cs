@@ -31,7 +31,7 @@ namespace MBC.Shared
 
         public RegisterInfo Stats { get; set; }
 
-        public MatchInfo Match { get; set; }
+        public MatchConfig Match { get; set; }
 
         public Team Team { get; set; }
 

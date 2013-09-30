@@ -37,7 +37,7 @@ namespace MBC.Shared
 
         /// <summary>
         /// Called when required to create and return a <see cref="Shot"/>. Refer to the rules of the
-        /// <see cref="MatchInfo.GameMode"/> in the <see cref="Controller.Register"/> when creating the
+        /// <see cref="MatchConfig.GameMode"/> in the <see cref="Controller.Register"/> when creating the
         /// <see cref="Shot"/>.
         /// </summary>
         /// <returns>A <see cref="Shot"/> to be processed by the MBC core framework.</returns>
@@ -60,7 +60,7 @@ namespace MBC.Shared
 
         /// <summary>
         /// Called when the <see cref="Register.Ships"/> in the <see cref="Controller.Register"/> must
-        /// be placed. Refer to the rules of the <see cref="MatchInfo.GameMode"/> in the <see cref="Controller.Register"/>.
+        /// be placed. Refer to the rules of the <see cref="MatchConfig.GameMode"/> in the <see cref="Controller.Register"/>.
         /// </summary>
         ShipList PlaceShips();
 

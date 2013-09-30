@@ -28,7 +28,7 @@ namespace MBC.Core.Rounds
 
             foreach (var register in Registers)
             {
-                register.Ships = new ShipList(MatchInfo.StartingShips);
+                register.Ships = new ShipList(MatchConfig.StartingShips);
                 register.Shots = new ShotList();
                 register.ShotsAgainst = new ShotList();
                 try
@@ -47,7 +47,7 @@ namespace MBC.Core.Rounds
         /// that are valid, checking the following:
         /// <list type="bullet">
         /// <item>The <see cref="ShipList"/> is not null</item>
-        /// <item>The <see cref="ShipList"/> has the same <see cref="Ship.Length"/>s as the in the <see cref="MatchInfo.StartingShips"/></item>
+        /// <item>The <see cref="ShipList"/> has the same <see cref="Ship.Length"/>s as the in the <see cref="MatchConfig.StartingShips"/></item>
         /// <item>All <see cref="Ship"/>s in the <see cref="ShipList"/> have been placed</item>
         /// <item>None of the <see cref="Ship"/>s in the <see cref="ShipList"/> are conflicting</item>
         /// </list>
@@ -57,7 +57,7 @@ namespace MBC.Core.Rounds
         protected bool ControllerShipsValid(IDNumber rID)
         {
             return Registers[rID].Ships != null &&
-                Registers[rID].Ships.EqualLengthsAs(MatchInfo.StartingShips) &&
+                Registers[rID].Ships.EqualLengthsAs(MatchConfig.StartingShips) &&
                 Registers[rID].Ships.ShipsPlaced &&
                 Registers[rID].Ships.GetConflictingShips().Count == 0;
         }
@@ -72,7 +72,7 @@ namespace MBC.Core.Rounds
         protected bool ControllerShotInvalid(IDNumber rID, Shot shot)
         {
             return shot == null ||
-                (shot.Coordinates > MatchInfo.FieldSize) ||
+                (shot.Coordinates > MatchConfig.FieldSize) ||
                     (shot.Coordinates < new Coordinates(0, 0)) ||
                     rID == shot.Receiver ||
                     Registers[rID].Shots.Contains(shot) ||

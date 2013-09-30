@@ -2,19 +2,16 @@
 
 namespace MBC.Shared
 {
-    /// <summary>
-    /// Provides information about a single match in a game of battleship. Remains consistent and un-modified
-    /// throughout the match.
-    /// </summary>
-    public class MatchInfo
+
+    public class MatchConfig
     {
 
-        public MatchInfo()
+        public MatchConfig()
         {
 
         }
 
-        public MatchInfo(MatchInfo copy)
+        public MatchConfig(MatchConfig copy)
         {
             StartingShips = new ShipList(copy.StartingShips);
             Registers = new Dictionary<IDNumber, Register>();

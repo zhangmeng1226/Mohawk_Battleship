@@ -6,7 +6,7 @@
 
         FieldInfo Field { get; set; }
 
-        MatchInfo Match { get; set; }
+        MatchConfig Match { get; set; }
 
         Team Team { get; set; }
     }

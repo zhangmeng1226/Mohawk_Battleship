@@ -20,9 +20,9 @@ namespace MBC.Core.Rounds
         /// <summary>
         /// Passes parameters to the base constructor.
         /// </summary>
-        /// <param name="info">The <see cref="MatchInfo"/> from a round to associate with.</param>
+        /// <param name="info">The <see cref="MatchConfig"/> from a round to associate with.</param>
         /// <param name="controllers">The <see cref="Player"/>s to utilize.</param>
-        public ClassicRound(MatchInfo info, List<IPlayer> controllers)
+        public ClassicRound(MatchConfig info, List<IPlayer> controllers)
             : base(info, controllers)
         {
             currentState = LogicState.Begin;

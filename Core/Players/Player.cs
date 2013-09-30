@@ -12,7 +12,7 @@ namespace MBC.Core.Players
 
         public FieldInfo Field { get; set; }
 
-        public MatchInfo Match { get; set; }
+        public MatchConfig Match { get; set; }
 
         public Team Team { get; set; }
     }

@@ -19,7 +19,7 @@ namespace MBC.Controllers
     /// "Controller Plugin" project and opening the "Attributes" folder. Note that you do not need to
     /// type out the word "Attribute" after the attribute you wish to use.
     ///
-    /// Note that each controller has a time limit before they lose the round, defined in the <see cref="MatchInfo"/>
+    /// Note that each controller has a time limit before they lose the round, defined in the <see cref="MatchConfig"/>
     /// that is given at the beginning of a match. There is even a second time limit that aborts the call
     /// to a controller if they take much longer.
     /// </summary>
