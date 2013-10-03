@@ -16,7 +16,15 @@ namespace MBC.Shared
         /// <summary>
         /// Occurs whenever a string message is generated.
         /// </summary>
-        event StringOutputHandler ControllerMessageEvent;     
+        event StringOutputHandler ControllerMessageEvent;
+
+        Register Register { get; set; }
+
+        FieldInfo Field { get; set; }
+
+        MatchConfig Match { get; set; }
+
+        Team Team { get; set; }
 
         /// <summary>
         /// Called when entered in a new match. The <see cref="Controller.Register"/> will have

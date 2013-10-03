@@ -6,22 +6,21 @@ using MBC.Shared;
 
 namespace MBC.Core.Players
 {
-    public class Player : IPlayer
+    public class Player
     {
-        public Player(IPlayer copy)
+        public Player(IDNumber id, string name)
+        {
+            Register = new Register(id, name);
+        }
+
+        public Player(Player copy)
         {
             Register = new Register(copy.Register);
-            Field = new FieldInfo(copy.Field);
-            Match = new MatchConfig(copy.Match);
             Team = new Team(copy.Team);
         }
 
-        public Register Register { get; set; }
+        public virtual Register Register { get; set; }
 
-        public FieldInfo Field { get; set; }
-
-        public MatchConfig Match { get; set; }
-
-        public Team Team { get; set; }
+        public virtual Team Team { get; set; }
     }
 }

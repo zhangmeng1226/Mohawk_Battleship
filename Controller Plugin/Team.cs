@@ -8,7 +8,7 @@ namespace MBC.Shared
     public class Team
     {
 
-        public List<IDNumber> members;
+        private List<IDNumber> members;
 
         public Team(Team copy)
         {
@@ -17,9 +17,11 @@ namespace MBC.Shared
             Name = copy.Name;
         }
 
-        public Team()
+        public Team(IDNumber id, string name)
         {
             members = new List<IDNumber>();
+            ID = id;
+            Name = name;
         }
 
         public IDNumber ID
@@ -34,11 +36,11 @@ namespace MBC.Shared
             set;
         }
 
-        public IList<IDNumber> Members
+        public List<IDNumber> Members
         {
             get
             {
-                return members.AsReadOnly();
+                return members;
             }
         }
     }

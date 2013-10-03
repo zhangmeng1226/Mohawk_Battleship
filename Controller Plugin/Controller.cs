@@ -15,7 +15,7 @@ namespace MBC.Shared
     /// </para>
     /// </summary>
     [SecurityPermission(SecurityAction.PermitOnly, SerializationFormatter = true)]
-    public abstract class Controller : IController, IPlayer
+    public abstract class Controller : IController
     {
         /// <summary>
         /// <see cref="IController.ControllerMessageEvent"/>
@@ -32,6 +32,18 @@ namespace MBC.Shared
         public MatchConfig Match { get; set; }
 
         public Team Team { get; set; }
+
+        public Dictionary<IDNumber, Register> Registers
+        {
+            get;
+            set;
+        }
+
+        public List<Team> Teams
+        {
+            get;
+            set;
+        }
 
         public IDNumber NextOpponent()
         {

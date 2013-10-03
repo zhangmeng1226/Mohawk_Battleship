@@ -88,17 +88,5 @@ namespace MBC.Shared
             get;
             set;
         }
-
-        public Dictionary<IDNumber, Register> Registers
-        {
-            get;
-            set;
-        }
-
-        public List<Team> Teams
-        {
-            get;
-            set;
-        }
     }
 }

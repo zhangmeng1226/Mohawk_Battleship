@@ -9,7 +9,7 @@ namespace MBC.Core.Threading
     public abstract class Threader
     {
 
-        public event Action<Threader> ThreadStop;
+        public event Action ThreadStop;
 
         public Threader()
         {

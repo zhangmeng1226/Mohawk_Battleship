@@ -11,7 +11,7 @@ using MBC.Core.Events;
 namespace MBC.Core
 {
     [Configuration("mbc_player_timeout", 500)]
-    public class ControlledPlayer : IController, IPlayer
+    public class ControlledPlayer : IController
     {
         private Controller controller;
 
@@ -19,21 +19,23 @@ namespace MBC.Core
 
         private TimedThreader threader;
 
-        private Register myRegister;
-        private FieldInfo myField;
-        private MatchConfig myMatch;
-        private Team myTeam;
-
         public Register Register
         {
             get
             {
-                return myRegister;
+                return controller.Register;
             }
             set
             {
-                myRegister = value;
                 controller.Register = new Register(value);
+            }
+        }
+
+        public ControllerInformation ControllerInfo
+        {
+            get
+            {
+                return controllerInfo;
             }
         }
 
@@ -41,11 +43,10 @@ namespace MBC.Core
         {
             get
             {
-                return myField;
+                return controller.Field;
             }
             set
             {
-                myField = value;
                 controller.Field = new FieldInfo(value);
             }
         }
@@ -54,11 +55,10 @@ namespace MBC.Core
         {
             get
             {
-                return myMatch;
+                return controller.Match;
             }
             set
             {
-                myMatch = value;
                 controller.Match = new MatchConfig(value);
             }
         }
@@ -67,11 +67,10 @@ namespace MBC.Core
         {
             get
             {
-                return myTeam;
+                return controller.Team;
             }
             set
             {
-                myTeam = value;
                 controller.Team = new Team(value);
             }
         }
@@ -79,7 +78,6 @@ namespace MBC.Core
         public ControlledPlayer(ControllerInformation targetControllerInfo)
         {
             controllerInfo = targetControllerInfo;
-            myRegister = new Register(-1, controllerInfo.Name);
 
             controller = (Controller)Activator.CreateInstance(targetControllerInfo.Controller);
             controller.ControllerMessageEvent += ReceiveMessage;
@@ -107,10 +105,8 @@ namespace MBC.Core
         /// <summary>
         /// <see cref="IController.NewMatch()"/>
         /// </summary>
-        public void NewMatch(MatchConfig newMatch, IDNumber assignedNum)
+        public void NewMatch()
         {
-            Register.ID = assignedNum;
-            Match = newMatch;
             threader.TimeMethod(new Action(controller.NewMatch));
         }
 

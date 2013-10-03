@@ -11,9 +11,9 @@ namespace MBC.Core.Events
     {
         public MatchConfigChangedEvent(MatchConfig config)
         {
-            NewConfig = new MatchConfig(config);
-            NewConfig.Registers = null;
-            NewConfig.Teams = null;
+            Config = new MatchConfig(config);
+            Config.Registers = null;
+            Config.Teams = null;
         }
 
         public MatchConfigChangedEvent(SerializationInfo info, StreamingContext context)
@@ -34,7 +34,7 @@ namespace MBC.Core.Events
             }
         }
 
-        public MatchConfig NewConfig
+        public MatchConfig Config
         {
             get;
             private set;

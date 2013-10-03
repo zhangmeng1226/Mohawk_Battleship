@@ -19,6 +19,11 @@ namespace MBC.Core.Events
     /// <seealso cref="PlayerEvent"/>
     public abstract class Event : ISerializable
     {
+        public Event()
+        {
+            Millis = DateTime.Now.Millisecond;
+        }
+
         public virtual Type EventType
         {
             get
@@ -27,13 +32,21 @@ namespace MBC.Core.Events
             }
         }
 
+        public int Millis
+        {
+            get;
+            private set;
+        }
+
         public enum Type
         {
             MatchBegin,
             MatchEnd,
             MatchConfigChanged,
+            MatchTeamCreate,
             MatchPlayerTeamAssign,
             MatchAddPlayer,
+            MatchRemovePlayer,
             PlayerHitShip,
             PlayerLost,
             PlayerShipDestroyed,

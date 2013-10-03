@@ -7,16 +7,15 @@ using MBC.Shared;
 
 namespace MBC.Core.Events
 {
-    public class MatchAddPlayerEvent : Event
+    public class MatchTeamCreateEvent : Event
     {
-
-        public MatchAddPlayerEvent(IDNumber newPlayer, string plrName)
+        public MatchTeamCreateEvent(IDNumber teamID, string teamName)
         {
-            PlayerID = newPlayer;
-            PlayerName = plrName;
+            TeamID = teamID;
+            TeamName = teamName;
         }
 
-        private MatchAddPlayerEvent(SerializationInfo info, StreamingContext context)
+        private MatchTeamCreateEvent(SerializationInfo info, StreamingContext context)
         {
 
         }
@@ -26,13 +25,13 @@ namespace MBC.Core.Events
 
         }
 
-        public string PlayerName
+        public IDNumber TeamID
         {
             get;
             private set;
         }
 
-        public IDNumber PlayerID
+        public string TeamName
         {
             get;
             private set;
@@ -42,7 +41,7 @@ namespace MBC.Core.Events
         {
             get
             {
-                return Type.MatchAddPlayer;
+                return Type.MatchTeamCreate;
             }
         }
     }

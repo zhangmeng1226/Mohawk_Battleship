@@ -9,7 +9,10 @@ namespace MBC.Shared
     {
         public FieldInfo()
         {
-
+            Ships = new ShipList();
+            Shots = new ShotList();
+            ShipsLeft = new ShipList();
+            ShotsAgainst = new ShotList();
         }
 
         public FieldInfo(FieldInfo copy)
