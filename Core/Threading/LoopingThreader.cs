@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading;
 
 namespace MBC.Core.Threading
 {
@@ -7,7 +6,6 @@ namespace MBC.Core.Threading
     {
         public LoopingThreader()
         {
-
         }
 
         public LoopingThreader(Delegate invoke, params object[] parameters)

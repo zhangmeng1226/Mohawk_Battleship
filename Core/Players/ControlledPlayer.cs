@@ -1,12 +1,8 @@
-﻿using MBC.Shared;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using MBC.Core.Util;
 using MBC.Core.Threading;
-using MBC.Core.Events;
+using MBC.Core.Util;
+using MBC.Shared;
 
 namespace MBC.Core
 {
@@ -18,86 +14,6 @@ namespace MBC.Core
         private ControllerSkeleton controllerInfo;
 
         private TimedThreader threader;
-
-        public Register Register
-        {
-            get
-            {
-                return controller.Register;
-            }
-            set
-            {
-                controller.Register = new Register(value);
-            }
-        }
-
-        public ControllerSkeleton ControllerInfo
-        {
-            get
-            {
-                return controllerInfo;
-            }
-        }
-
-        public FieldInfo Field 
-        {
-            get
-            {
-                return controller.Field;
-            }
-            set
-            {
-                controller.Field = new FieldInfo(value);
-            }
-        }
-
-        public MatchConfig Match 
-        {
-            get
-            {
-                return controller.Match;
-            }
-            set
-            {
-                controller.Match = new MatchConfig(value);
-            }
-        }
-
-        public Team Team 
-        {
-            get
-            {
-                return controller.Team;
-            }
-            set
-            {
-                controller.Team = new Team(value);
-            }
-        }
-
-        public Dictionary<IDNumber, Register> Registers
-        {
-            get
-            {
-                return controller.Registers;
-            }
-            set
-            {
-                controller.Registers = new Dictionary<IDNumber, Register>(value);
-            }
-        }
-
-        public List<Team> Teams
-        {
-            get
-            {
-                return controller.Teams;
-            }
-            set
-            {
-                controller.Teams = new List<Team>(value);
-            }
-        }
 
         public ControlledPlayer(ControllerSkeleton targetController)
         {
@@ -114,24 +30,90 @@ namespace MBC.Core
         /// </summary>
         public event StringOutputHandler ControllerMessageEvent;
 
+        public ControllerSkeleton ControllerInfo
+        {
+            get
+            {
+                return controllerInfo;
+            }
+        }
+
+        public FieldInfo Field
+        {
+            get
+            {
+                return controller.Field;
+            }
+            set
+            {
+                controller.Field = new FieldInfo(value);
+            }
+        }
+
+        public MatchConfig Match
+        {
+            get
+            {
+                return controller.Match;
+            }
+            set
+            {
+                controller.Match = new MatchConfig(value);
+            }
+        }
+
+        public Register Register
+        {
+            get
+            {
+                return controller.Register;
+            }
+            set
+            {
+                controller.Register = new Register(value);
+            }
+        }
+
+        public Dictionary<IDNumber, Register> Registers
+        {
+            get
+            {
+                return controller.Registers;
+            }
+            set
+            {
+                controller.Registers = new Dictionary<IDNumber, Register>(value);
+            }
+        }
+
+        public Team Team
+        {
+            get
+            {
+                return controller.Team;
+            }
+            set
+            {
+                controller.Team = new Team(value);
+            }
+        }
+
+        public List<Team> Teams
+        {
+            get
+            {
+                return controller.Teams;
+            }
+            set
+            {
+                controller.Teams = new List<Team>(value);
+            }
+        }
+
         public Shot MakeShot()
         {
             threader.TimeMethod(new Func<Shot>(controller.MakeShot));
             return threader.GetReturnValue<Shot>();
-        }
-
-        public ShipList PlaceShips()
-        {
-            threader.TimeMethod(new Func<ShipList>(controller.PlaceShips));
-            return threader.GetReturnValue<ShipList>();
-        }
-
-        /// <summary>
-        /// <see cref="IController.NewMatch()"/>
-        /// </summary>
-        public void NewMatch()
-        {
-            threader.TimeMethod(new Action(controller.NewMatch));
         }
 
         /// <summary>
@@ -140,6 +122,14 @@ namespace MBC.Core
         public void MatchOver()
         {
             threader.TimeMethod(new Action(controller.MatchOver));
+        }
+
+        /// <summary>
+        /// <see cref="IController.NewMatch()"/>
+        /// </summary>
+        public void NewMatch()
+        {
+            threader.TimeMethod(new Action(controller.NewMatch));
         }
 
         /// <summary>
@@ -164,6 +154,12 @@ namespace MBC.Core
         public void OpponentShot(Shot shot)
         {
             threader.TimeMethod(new Action<Shot>(controller.OpponentShot), new Shot(shot));
+        }
+
+        public ShipList PlaceShips()
+        {
+            threader.TimeMethod(new Func<ShipList>(controller.PlaceShips));
+            return threader.GetReturnValue<ShipList>();
         }
 
         /// <summary>

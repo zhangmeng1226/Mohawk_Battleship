@@ -1,7 +1,6 @@
-﻿using MBC.Shared;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Xml.Serialization;
+using MBC.Shared;
 
 namespace MBC.Core.Rounds
 {

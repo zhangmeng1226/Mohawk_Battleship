@@ -1,27 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 
 namespace MBC.Core.Threading
 {
     public abstract class Threader
     {
-
-        public event Action ThreadStop;
-
         public Threader()
         {
             RunThread = new Thread(ThreadRun);
             IsRunning = false;
         }
 
-        protected Thread RunThread
-        {
-            get;
-            set;
-        }
+        public event Action ThreadStop;
 
         /// <summary>
         /// Gets a value that indicates the running state.
@@ -32,7 +22,16 @@ namespace MBC.Core.Threading
             private set;
         }
 
-        protected abstract void ThreadRun();
+        protected Thread RunThread
+        {
+            get;
+            set;
+        }
+
+        public void Join()
+        {
+            RunThread.Join();
+        }
 
         public void Run()
         {
@@ -52,14 +51,11 @@ namespace MBC.Core.Threading
             }
         }
 
-        public void Join()
-        {
-            RunThread.Join();
-        }
-
         public bool WaitFor(int milliseconds)
         {
             return RunThread.Join(milliseconds);
         }
+
+        protected abstract void ThreadRun();
     }
 }

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Serialization;
-using System.Text;
+﻿using System.Runtime.Serialization;
 using MBC.Shared;
 
 namespace MBC.Core.Events
@@ -17,12 +13,6 @@ namespace MBC.Core.Events
 
         private MatchTeamCreateEvent(SerializationInfo info, StreamingContext context)
         {
-
-        }
-
-        private void GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-
         }
 
         public IDNumber TeamID
@@ -35,6 +25,10 @@ namespace MBC.Core.Events
         {
             get;
             private set;
+        }
+
+        private void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
         }
     }
 }

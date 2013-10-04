@@ -1,7 +1,6 @@
-﻿using MBC.Core.Rounds;
-using System;
+﻿using System.Runtime.Serialization;
+using MBC.Core.Rounds;
 using MBC.Shared;
-using System.Runtime.Serialization;
 
 namespace MBC.Core.Events
 {
@@ -20,20 +19,18 @@ namespace MBC.Core.Events
             RoundID = roundID;
         }
 
+        private RoundEndEvent(SerializationInfo info, StreamingContext context)
+        {
+        }
+
         public IDNumber RoundID
         {
             get;
             private set;
         }
 
-        private RoundEndEvent(SerializationInfo info, StreamingContext context)
-        {
-
-        }
-
         private void GetObjectData(SerializationInfo info, StreamingContext context)
         {
-
         }
     }
 }

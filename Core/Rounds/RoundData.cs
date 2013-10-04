@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using MBC.Shared;
 
 namespace MBC.Core.Rounds
@@ -11,7 +8,7 @@ namespace MBC.Core.Rounds
     /// </summary>
     public class RoundData
     {
-        private List<IPlayer> players;
         private MatchConfig config;
+        private List<IPlayer> players;
     }
 }

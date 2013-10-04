@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Serialization;
-using System.Text;
+﻿using System.Runtime.Serialization;
 
 namespace MBC.Core.Events
 {
@@ -10,17 +6,14 @@ namespace MBC.Core.Events
     {
         public StateSaveEvent()
         {
-
         }
 
         public StateSaveEvent(SerializationInfo info, StreamingContext context)
         {
-
         }
 
         public void GetObjectData(SerializationInfo info, StreamingContext context)
         {
-
         }
     }
 }

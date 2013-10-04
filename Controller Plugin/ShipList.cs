@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace MBC.Shared
 {
@@ -237,6 +236,37 @@ namespace MBC.Shared
         }
 
         /// <summary>
+        /// Determines whether or not the <paramref name="ships"/> have an equal amount of <see cref="Ship"/>s and identical <see cref="Ship.Length"/>s
+        /// as in this <see cref="ShipList"/>.
+        /// </summary>
+        /// <param name="ships">A <see cref="ShipList"/> to compare.</param>
+        /// <returns>A value indicating the same <see cref="Ship"/> configuration of the two <see cref="ShipList"/>s.</returns>
+        public bool EqualLengthsAs(ShipList ships)
+        {
+            if (ships.Count != Count)
+            {
+                return false;
+            }
+            var lengthsThis = new List<int>();
+            for (var i = 0; i < Count; i++)
+            {
+                lengthsThis.Add(shipList[i].Length);
+            }
+            foreach (var ship in ships)
+            {
+                if (lengthsThis.Contains(ship.Length))
+                {
+                    lengthsThis.Remove(ship.Length);
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        /// <summary>
         /// Generates a <see cref="ShipList"/> of <see cref="Ship"/>s that conflict with one another.
         /// </summary>
         /// <returns>A <see cref="ShipList"/> of conflicting <see cref="Ship"/>s.</returns>
@@ -255,6 +285,16 @@ namespace MBC.Shared
             }
             return conflictingShips;
         }
+
+        /// <summary>
+        /// Gets the enumerator.
+        /// </summary>
+        /// <returns>An IEnumerator of <see cref="Ship"/>s.</returns>
+        public IEnumerator<Ship> GetEnumerator()
+        {
+            return new ShipListEnumerator(this);
+        }
+
         /// <summary>
         /// Generates a <see cref="ShipList"/> containing <see cref="Ship"/>s that have been sunk according
         /// to the <paramref name="shots"/>.
@@ -283,15 +323,6 @@ namespace MBC.Shared
                 }
             }
             return newList;
-        }
-
-        /// <summary>
-        /// Gets the enumerator.
-        /// </summary>
-        /// <returns>An IEnumerator of <see cref="Ship"/>s.</returns>
-        public IEnumerator<Ship> GetEnumerator()
-        {
-            return new ShipListEnumerator(this);
         }
 
         /// <summary>
@@ -353,37 +384,6 @@ namespace MBC.Shared
         }
 
         /// <summary>
-        /// Determines whether or not the <paramref name="ships"/> have an equal amount of <see cref="Ship"/>s and identical <see cref="Ship.Length"/>s
-        /// as in this <see cref="ShipList"/>.
-        /// </summary>
-        /// <param name="ships">A <see cref="ShipList"/> to compare.</param>
-        /// <returns>A value indicating the same <see cref="Ship"/> configuration of the two <see cref="ShipList"/>s.</returns>
-        public bool EqualLengthsAs(ShipList ships)
-        {
-            if (ships.Count != Count)
-            {
-                return false;
-            }
-            var lengthsThis = new List<int>();
-            for (var i = 0; i < Count; i++)
-            {
-                lengthsThis.Add(shipList[i].Length);
-            }
-            foreach (var ship in ships)
-            {
-                if (lengthsThis.Contains(ship.Length))
-                {
-                    lengthsThis.Remove(ship.Length);
-                }
-                else
-                {
-                    return false;
-                }
-            }
-            return true;
-        }
-
-        /// <summary>
         /// Removes an equivalent <paramref name="ship"/>.
         /// </summary>
         /// <param name="ship">The <see cref="Ship"/> to remove.</param>
@@ -397,6 +397,7 @@ namespace MBC.Shared
             }
             return result;
         }
+
         /// <summary>
         /// Searches for a <see cref="Ship"/> located at the <paramref name="coord"/>.
         /// </summary>

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading;
 
 namespace MBC.Core.Threading
@@ -14,6 +11,12 @@ namespace MBC.Core.Threading
         {
             RunThread = new Thread(RunMethod);
             methodStore = new Dictionary<string, ThreadStart>();
+        }
+
+        public string MethodToRun
+        {
+            get;
+            set;
         }
 
         public ThreadStart this[string key]
@@ -32,12 +35,6 @@ namespace MBC.Core.Threading
         {
             MethodToRun = name;
             Run();
-        }
-
-        public string MethodToRun
-        {
-            get;
-            set;
         }
 
         private void RunMethod()

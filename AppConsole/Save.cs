@@ -1,5 +1,6 @@
-﻿using MBC.Core.Util;
-using System;
+﻿using System;
+using MBC.Core.Util;
+
 namespace MBC.App.BattleshipConsole
 {
     /// <summary>
@@ -15,7 +16,7 @@ namespace MBC.App.BattleshipConsole
         public static void Config(int idx, params string[] param)
         {
             Configuration.Global.SaveConfigFile();
-            Console.WriteLine("Saved the current configuration ("+Configuration.Global.Name+")");
+            Console.WriteLine("Saved the current configuration (" + Configuration.Global.Name + ")");
         }
 
         /// <summary>
@@ -27,7 +28,7 @@ namespace MBC.App.BattleshipConsole
         {
             var fileName = param[idx++];
             MatchRun.CurrentMatch.SaveToFile(fileName);
-            Console.WriteLine("Saved the current match as "+fileName);
+            Console.WriteLine("Saved the current match as " + fileName);
         }
     }
 }

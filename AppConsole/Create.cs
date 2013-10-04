@@ -1,8 +1,7 @@
-﻿using MBC.Core;
-using MBC.Core.Matches;
-using MBC.Core.Util;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using MBC.Core;
+using MBC.Core.Util;
 
 namespace MBC.App.BattleshipConsole
 {

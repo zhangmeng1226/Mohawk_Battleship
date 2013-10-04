@@ -23,6 +23,7 @@ namespace MBC.Shared.Attributes
         /// The program the student has been enrolled in.
         /// </summary>
         public readonly string Program;
+
         /// <summary>
         /// Stores all of the parameters.
         /// </summary>

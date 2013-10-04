@@ -1,11 +1,8 @@
-﻿using MBC.Core.Rounds;
+﻿using System.Runtime.Serialization;
 using MBC.Shared;
-using System;
-using System.Runtime.Serialization;
 
 namespace MBC.Core.Events
 {
-
     public class RoundPlayerActionEvent : RoundEvent
     {
         public RoundPlayerActionEvent(IDNumber roundID)
@@ -15,12 +12,10 @@ namespace MBC.Core.Events
 
         private RoundPlayerActionEvent(SerializationInfo info, StreamingContext context)
         {
-
         }
 
         private void GetObjectData(SerializationInfo info, StreamingContext context)
         {
-
         }
     }
 }

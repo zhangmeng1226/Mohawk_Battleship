@@ -1,6 +1,5 @@
-﻿using MBC.Core.Util;
-using System;
-using System.Collections.Generic;
+﻿using System;
+using MBC.Core.Util;
 
 namespace MBC.App.BattleshipConsole
 {
@@ -31,7 +30,7 @@ namespace MBC.App.BattleshipConsole
             }
             catch
             {
-                Console.WriteLine(key+" was not set to "+valueUnparsed+".");
+                Console.WriteLine(key + " was not set to " + valueUnparsed + ".");
             }
         }
     }

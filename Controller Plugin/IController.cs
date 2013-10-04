@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace MBC.Shared
+﻿namespace MBC.Shared
 {
     /// <summary>
     /// Defines a method that receives a string.
@@ -18,30 +13,13 @@ namespace MBC.Shared
         /// </summary>
         event StringOutputHandler ControllerMessageEvent;
 
-        Register Register { get; set; }
-
         FieldInfo Field { get; set; }
 
         MatchConfig Match { get; set; }
 
+        Register Register { get; set; }
+
         Team Team { get; set; }
-
-        /// <summary>
-        /// Called when entered in a new match. The <see cref="Controller.Register"/> will have
-        /// been updated with new information.
-        /// </summary>
-        void NewMatch();
-
-        /// <summary>
-        /// Called when the match against other <see cref="Controller"/>s is over.
-        /// </summary>
-        void MatchOver();
-
-        /// <summary>
-        /// Called when entered in a new round. The <see cref="Controller.Register"/> <see cref="Register.Ships"/>
-        /// will be reset to an unplaced state.
-        /// </summary>
-        void NewRound();
 
         /// <summary>
         /// Called when required to create and return a <see cref="Shot"/>. Refer to the rules of the
@@ -50,6 +28,23 @@ namespace MBC.Shared
         /// </summary>
         /// <returns>A <see cref="Shot"/> to be processed by the MBC core framework.</returns>
         Shot MakeShot();
+
+        /// <summary>
+        /// Called when the match against other <see cref="Controller"/>s is over.
+        /// </summary>
+        void MatchOver();
+
+        /// <summary>
+        /// Called when entered in a new match. The <see cref="Controller.Register"/> will have
+        /// been updated with new information.
+        /// </summary>
+        void NewMatch();
+
+        /// <summary>
+        /// Called when entered in a new round. The <see cref="Controller.Register"/> <see cref="Register.Ships"/>
+        /// will be reset to an unplaced state.
+        /// </summary>
+        void NewRound();
 
         /// <summary>
         /// Called when an opposing <see cref="Controller"/> has had all of their <see cref="Ship"/>s destroyed,

@@ -3,13 +3,10 @@ using System.Runtime.Serialization;
 
 namespace MBC.Shared
 {
-
     public class MatchConfig : ISerializable
     {
-
         public MatchConfig()
         {
-
         }
 
         public MatchConfig(MatchConfig copy)
@@ -27,22 +24,6 @@ namespace MBC.Shared
 
         private MatchConfig(SerializationInfo info, StreamingContext context)
         {
-
-        }
-
-        private void GetObjectData(SerializationInfo info, StreamingContext context) 
-        {
-            //Do not serialize teams/registers
-        }
-
-        /// <summary>
-        /// Gets a <see cref="ShipList"/> that contains the <see cref="Ship"/> objects that a controller 
-        /// can place at the beginning of a round.
-        /// </summary>
-        public ShipList StartingShips
-        {
-            get;
-            set;
         }
 
         /// <summary>
@@ -60,9 +41,9 @@ namespace MBC.Shared
         }
 
         /// <summary>
-        /// Gets the time in milliseconds of the max allowed time of a <see cref="Controller"/> to return from a method invoke.
+        /// Gets the <see cref="GameMode"/> that determines the behaviour of the running rounds in the match.
         /// </summary>
-        public int TimeLimit
+        public GameMode GameMode
         {
             get;
             set;
@@ -74,19 +55,34 @@ namespace MBC.Shared
             set;
         }
 
-        /// <summary>
-        /// Gets the <see cref="GameMode"/> that determines the behaviour of the running rounds in the match.
-        /// </summary>
-        public GameMode GameMode
+        public RoundMode RoundMode
         {
             get;
             set;
         }
 
-        public RoundMode RoundMode
+        /// <summary>
+        /// Gets a <see cref="ShipList"/> that contains the <see cref="Ship"/> objects that a controller
+        /// can place at the beginning of a round.
+        /// </summary>
+        public ShipList StartingShips
         {
             get;
             set;
+        }
+
+        /// <summary>
+        /// Gets the time in milliseconds of the max allowed time of a <see cref="Controller"/> to return from a method invoke.
+        /// </summary>
+        public int TimeLimit
+        {
+            get;
+            set;
+        }
+
+        private void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            //Do not serialize teams/registers
         }
     }
 }

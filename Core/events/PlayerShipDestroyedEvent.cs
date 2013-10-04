@@ -1,7 +1,5 @@
-﻿using MBC.Core.Rounds;
+﻿using System.Runtime.Serialization;
 using MBC.Shared;
-using System;
-using System.Runtime.Serialization;
 
 namespace MBC.Core.Events
 {
@@ -26,12 +24,6 @@ namespace MBC.Core.Events
 
         private PlayerShipDestroyedEvent(SerializationInfo info, StreamingContext context)
         {
-
-        }
-
-        private void GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-
         }
 
         /// <summary>
@@ -41,6 +33,10 @@ namespace MBC.Core.Events
         {
             get;
             private set;
+        }
+
+        private void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
         }
     }
 }

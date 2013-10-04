@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using MBC.Core.Events;
 using MBC.Core.Rounds;
-using MBC.Core.Threading;
 using MBC.Core.Util;
 using MBC.Shared;
 
@@ -26,6 +23,12 @@ namespace MBC.Core.Matches
         {
             SetConfiguration(Configuration.Global);
             GenerateEvent(new MatchBeginEvent(ID));
+        }
+
+        public Configuration Config
+        {
+            get;
+            private set;
         }
 
         public virtual void AddController(ControlledPlayer plr)
@@ -53,24 +56,12 @@ namespace MBC.Core.Matches
             IsPlaying = true;
             while (IsPlaying)
             {
-
             }
-        }
-
-        public override void Stop()
-        {
-            IsPlaying = false;
         }
 
         public override void SaveToFile(File fLocation)
         {
             throw new NotImplementedException();
-        }
-
-        public Configuration Config
-        {
-            get;
-            private set;
         }
 
         public void SetConfiguration(Configuration config)
@@ -98,6 +89,11 @@ namespace MBC.Core.Matches
                 throw new NotImplementedException("The " + CompiledConfig.GameMode.ToString() + " game mode is not supported.");
             }
             GenerateEvent(new MatchConfigChangedEvent(CompiledConfig));
+        }
+
+        public override void Stop()
+        {
+            IsPlaying = false;
         }
 
         protected virtual Round CreateNewRound()

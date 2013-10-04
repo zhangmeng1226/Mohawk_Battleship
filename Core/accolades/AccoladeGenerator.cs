@@ -1,4 +1,5 @@
 ﻿using MBC.Core.Rounds;
+
 namespace MBC.Core.Accolades
 {
     /// <summary>
@@ -9,7 +10,7 @@ namespace MBC.Core.Accolades
     public class AccoladeGenerator
     {
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="round"></param>
         public AccoladeGenerator(Round round)

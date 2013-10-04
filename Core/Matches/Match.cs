@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Runtime.Serialization;
 using MBC.Core.Events;
 using MBC.Core.Players;
 using MBC.Core.Rounds;
@@ -97,7 +96,6 @@ namespace MBC.Core.Matches
 
         public void SaveToFile(File fLocation)
         {
-
         }
 
         public abstract void Stop();

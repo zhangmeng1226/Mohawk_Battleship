@@ -1,5 +1,4 @@
-﻿using MBC.Core.Rounds;
-using MBC.Shared;
+﻿using MBC.Shared;
 
 namespace MBC.Core.Events
 {
@@ -10,14 +9,13 @@ namespace MBC.Core.Events
     /// </summary>
     public abstract class PlayerEvent : Event
     {
-        protected PlayerEvent()
-        {
-
-        }
-
         public PlayerEvent(IDNumber plrID)
         {
             Player = plrID;
+        }
+
+        protected PlayerEvent()
+        {
         }
 
         public IDNumber Player

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Serialization;
-using System.Text;
-using MBC.Core.Matches;
+﻿using System.Runtime.Serialization;
 using MBC.Shared;
 
 namespace MBC.Core.Events
@@ -17,18 +12,16 @@ namespace MBC.Core.Events
 
         public MatchConfigChangedEvent(SerializationInfo info, StreamingContext context)
         {
-
-        }
-
-        public void GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-
         }
 
         public MatchConfig Config
         {
             get;
             private set;
+        }
+
+        public void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
         }
     }
 }

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace MBC.Shared
+﻿namespace MBC.Shared
 {
     public class FieldInfo
     {
@@ -27,8 +22,11 @@ namespace MBC.Shared
         }
 
         public ShipList Ships { get; internal set; }
-        public ShotList Shots { get; internal set; }
+
         public ShipList ShipsLeft { get; internal set; }
+
+        public ShotList Shots { get; internal set; }
+
         public ShotList ShotsAgainst { get; internal set; }
     }
 }

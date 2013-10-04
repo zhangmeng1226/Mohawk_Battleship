@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace MBC.Shared
 {
@@ -30,6 +29,12 @@ namespace MBC.Shared
         /// </summary>
         public IDNumber ID { get; set; }
 
+        public bool IsAlive
+        {
+            get;
+            set;
+        }
+
         public string Name
         {
             get;
@@ -40,22 +45,6 @@ namespace MBC.Shared
         {
             get;
             set;
-        }
-
-        public bool IsAlive
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// Generates a string representation of the <see cref="Register"/> by providing the
-        /// <see cref="IDNumber"/> and <see cref="Controller"/> display name.
-        /// </summary>
-        /// <returns>A string representation.</returns>
-        public override string ToString()
-        {
-            return string.Format("[%s] %s", ID, Name);
         }
 
         /// <summary>
@@ -90,6 +79,16 @@ namespace MBC.Shared
         public override int GetHashCode()
         {
             return ID;
+        }
+
+        /// <summary>
+        /// Generates a string representation of the <see cref="Register"/> by providing the
+        /// <see cref="IDNumber"/> and <see cref="Controller"/> display name.
+        /// </summary>
+        /// <returns>A string representation.</returns>
+        public override string ToString()
+        {
+            return string.Format("[%s] %s", ID, Name);
         }
     }
 }

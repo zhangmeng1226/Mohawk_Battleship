@@ -22,16 +22,14 @@ namespace MBC.Shared
         /// </summary>
         public event StringOutputHandler ControllerMessageEvent;
 
-        /// <summary>
-        /// Gets or sets the <see cref="Register"/>.
-        /// </summary>
-        public Register Register { get; set; }
-
         public FieldInfo Field { get; set; }
 
         public MatchConfig Match { get; set; }
 
-        public Team Team { get; set; }
+        /// <summary>
+        /// Gets or sets the <see cref="Register"/>.
+        /// </summary>
+        public Register Register { get; set; }
 
         public Dictionary<IDNumber, Register> Registers
         {
@@ -39,15 +37,12 @@ namespace MBC.Shared
             set;
         }
 
+        public Team Team { get; set; }
+
         public List<Team> Teams
         {
             get;
             set;
-        }
-
-        public IDNumber NextOpponent()
-        {
-            return 0;
         }
 
         public List<IDNumber> AllOpponents()
@@ -63,16 +58,7 @@ namespace MBC.Shared
             return opponents;
         }
 
-        /// <summary>
-        /// <see cref="IController.NewMatch()"/>
-        /// </summary>
-        public virtual void NewMatch()
-        {
-        }
-
         public abstract Shot MakeShot();
-
-        public abstract ShipList PlaceShips();
 
         /// <summary>
         /// <see cref="IController.MatchOver()"/>
@@ -82,10 +68,22 @@ namespace MBC.Shared
         }
 
         /// <summary>
+        /// <see cref="IController.NewMatch()"/>
+        /// </summary>
+        public virtual void NewMatch()
+        {
+        }
+
+        /// <summary>
         /// <see cref="IController.NewRound()"/>
         /// </summary>
         public virtual void NewRound()
         {
+        }
+
+        public IDNumber NextOpponent()
+        {
+            return 0;
         }
 
         /// <summary>
@@ -101,6 +99,8 @@ namespace MBC.Shared
         public virtual void OpponentShot(Shot shot)
         {
         }
+
+        public abstract ShipList PlaceShips();
 
         /// <summary>
         /// <see cref="IController.RoundLost()"/>

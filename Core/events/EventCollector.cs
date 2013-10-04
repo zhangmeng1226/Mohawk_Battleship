@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Runtime.Serialization;
-using System.Text;
 
 namespace MBC.Core.Events
 {
@@ -22,11 +19,6 @@ namespace MBC.Core.Events
             //Deserialize
         }
 
-        protected void GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            //Serialize
-        }
-
         public void AddEventGenerator(IEventGenerator gen)
         {
             gen.EventGenerated += EventGenerated;
@@ -37,7 +29,12 @@ namespace MBC.Core.Events
             events.Add(ev);
         }
 
-        IEnumerator<Event> GetEnumerator()
+        protected void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            //Serialize
+        }
+
+        private IEnumerator<Event> GetEnumerator()
         {
             return events.GetEnumerator();
         }

@@ -1,7 +1,6 @@
-﻿using MBC.Core.Matches;
+﻿using System.Runtime.Serialization;
+using MBC.Core.Matches;
 using MBC.Shared;
-using System.Runtime.Serialization;
-using System.Collections.Generic;
 
 namespace MBC.Core.Events
 {
@@ -17,18 +16,16 @@ namespace MBC.Core.Events
 
         private MatchBeginEvent(SerializationInfo info, StreamingContext context)
         {
-
-        }
-
-        private void GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-
         }
 
         public IDNumber MatchID
         {
             get;
             private set;
+        }
+
+        private void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
         }
     }
 }

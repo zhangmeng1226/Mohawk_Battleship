@@ -1,10 +1,6 @@
-﻿using MBC.Core.Rounds;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Runtime.Serialization;
+using MBC.Core.Rounds;
 using MBC.Shared;
-using System.Runtime.Serialization;
 
 namespace MBC.Core.Events
 {
@@ -18,10 +14,14 @@ namespace MBC.Core.Events
         /// based on the <see cref="MBC.Shared.Register"/>s that are involved in it.
         /// </summary>
         /// <param name="round">The associated <see cref="Round"/>.</param>
-        public RoundBeginEvent(IDNumber roundID) 
+        public RoundBeginEvent(IDNumber roundID)
             : base(roundID)
         {
             RoundID = roundID;
+        }
+
+        private RoundBeginEvent(SerializationInfo info, StreamingContext context)
+        {
         }
 
         public IDNumber RoundID
@@ -30,14 +30,8 @@ namespace MBC.Core.Events
             private set;
         }
 
-        private RoundBeginEvent(SerializationInfo info, StreamingContext context)
-        {
-
-        }
-
         private void GetObjectData(SerializationInfo info, StreamingContext context)
         {
-
         }
     }
 }

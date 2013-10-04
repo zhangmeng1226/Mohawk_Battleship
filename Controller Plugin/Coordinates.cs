@@ -23,98 +23,6 @@ namespace MBC.Shared
         }
 
         /// <summary>
-        /// Adds the values of two <see cref="Coordinates"/>.
-        /// </summary>
-        /// <param name="coord1">The <see cref="Coordinates"/> to add to.</param>
-        /// <param name="coord2">The <see cref="Coordinates"/> to add.</param>
-        /// <returns>The resulting <see cref="Coordinates"/>.</returns>
-        public static Coordinates operator +(Coordinates coord1, Coordinates coord2)
-        {
-            return new Coordinates(coord1.x + coord2.x, coord1.y + coord2.y);
-        }
-
-        /// <summary>
-        /// Subtracts the value of a set of <see cref="Coordinates"/> from another set of <see cref="Coordinates"/>.
-        /// </summary>
-        /// <param name="coord1">The <see cref="Coordinates"/> to subtract values from.</param>
-        /// <param name="coord2">The <see cref="Coordinates"/> to subtract.</param>
-        /// <returns>The resulting <see cref="Coordinates"/>.</returns>
-        public static Coordinates operator -(Coordinates coord1, Coordinates coord2)
-        {
-            return new Coordinates(coord1.x - coord2.x, coord1.y - coord2.y);
-        }
-
-        /// <summary>
-        /// Compares two <see cref="Coordinates"/> for equality.
-        /// </summary>
-        /// <param name="coord1"><see cref="Coordinates"/> to compare.</param>
-        /// <param name="coord2"><see cref="Coordinates"/> to compare to the other set.</param>
-        /// <returns>true if the given <see cref="Coordinates"/> are equal, false otherwise.</returns>
-        public static bool operator ==(Coordinates coord1, Coordinates coord2)
-        {
-            return coord1.x == coord2.x && coord1.y == coord2.y;
-        }
-
-        /// <summary>
-        /// Compares two <see cref="Coordinates"/> for inequality.
-        /// </summary>
-        /// <param name="coord1"><see cref="Coordinates"/> to compare.</param>
-        /// <param name="coord2"><see cref="Coordinates"/> to compare to the other set.</param>
-        /// <returns>true if the given <see cref="Coordinates"/> are inequal, false otherwise.</returns>
-        public static bool operator !=(Coordinates coord1, Coordinates coord2)
-        {
-            return !(coord1 == coord2);
-        }
-
-        /// <summary>
-        /// Compares two <see cref="Coordinates"/>, determining if a set of <see cref="Coordinates"/> is greater than the other
-        /// in both components.
-        /// </summary>
-        /// <param name="coord1">The <see cref="Coordinates"/> to compare.</param>
-        /// <param name="coord2">The <see cref="Coordinates"/> to compare with.</param>
-        /// <returns>true if coord1 has both components larger than coord2, false otherwise.</returns>
-        public static bool operator >(Coordinates coord1, Coordinates coord2)
-        {
-            return coord1.x > coord2.x && coord1.y > coord2.y;
-        }
-
-        /// <summary>
-        /// Compares two <see cref="Coordinates"/>, determining if a set of <see cref="Coordinates"/> is smaller than the other
-        /// in both components.
-        /// </summary>
-        /// <param name="coord1">The <see cref="Coordinates"/> to compare.</param>
-        /// <param name="coord2">The <see cref="Coordinates"/> to compare with.</param>
-        /// <returns>true if coord2 has both components smaller than coord1, false otherwise.</returns>
-        public static bool operator <(Coordinates coord1, Coordinates coord2)
-        {
-            return coord1.x < coord2.x && coord1.y < coord2.y;
-        }
-
-        /// <summary>
-        /// Compares two <see cref="Coordinates"/>, determining if a set of <see cref="Coordinates"/> is greater than or equal to the other
-        /// in both components.
-        /// </summary>
-        /// <param name="coord1">The Coordinates to compare.</param>
-        /// <param name="coord2">The Coordinates to compare with.</param>
-        /// <returns>true if coord1 has both components larger than or equal to coord2, false otherwise.</returns>
-        public static bool operator >=(Coordinates coord1, Coordinates coord2)
-        {
-            return coord1.x >= coord2.x && coord1.y >= coord2.y;
-        }
-
-        /// <summary>
-        /// Compares two <see cref="Coordinates"/>, determining if a set of <see cref="Coordinates"/> is smaller than or equal to the other
-        /// in both components.
-        /// </summary>
-        /// <param name="coord1">The <see cref="Coordinates"/> to compare.</param>
-        /// <param name="coord2">The <see cref="Coordinates"/> to compare with.</param>
-        /// <returns>true if coord2 has both components smaller than or equal to coord1, false otherwise.</returns>
-        public static bool operator <=(Coordinates coord1, Coordinates coord2)
-        {
-            return coord1.x <= coord2.x && coord1.y <= coord2.y;
-        }
-
-        /// <summary>
         /// Gets the X component.
         /// </summary>
         public int X
@@ -134,6 +42,98 @@ namespace MBC.Shared
             {
                 return y;
             }
+        }
+
+        /// <summary>
+        /// Subtracts the value of a set of <see cref="Coordinates"/> from another set of <see cref="Coordinates"/>.
+        /// </summary>
+        /// <param name="coord1">The <see cref="Coordinates"/> to subtract values from.</param>
+        /// <param name="coord2">The <see cref="Coordinates"/> to subtract.</param>
+        /// <returns>The resulting <see cref="Coordinates"/>.</returns>
+        public static Coordinates operator -(Coordinates coord1, Coordinates coord2)
+        {
+            return new Coordinates(coord1.x - coord2.x, coord1.y - coord2.y);
+        }
+
+        /// <summary>
+        /// Compares two <see cref="Coordinates"/> for inequality.
+        /// </summary>
+        /// <param name="coord1"><see cref="Coordinates"/> to compare.</param>
+        /// <param name="coord2"><see cref="Coordinates"/> to compare to the other set.</param>
+        /// <returns>true if the given <see cref="Coordinates"/> are inequal, false otherwise.</returns>
+        public static bool operator !=(Coordinates coord1, Coordinates coord2)
+        {
+            return !(coord1 == coord2);
+        }
+
+        /// <summary>
+        /// Adds the values of two <see cref="Coordinates"/>.
+        /// </summary>
+        /// <param name="coord1">The <see cref="Coordinates"/> to add to.</param>
+        /// <param name="coord2">The <see cref="Coordinates"/> to add.</param>
+        /// <returns>The resulting <see cref="Coordinates"/>.</returns>
+        public static Coordinates operator +(Coordinates coord1, Coordinates coord2)
+        {
+            return new Coordinates(coord1.x + coord2.x, coord1.y + coord2.y);
+        }
+
+        /// <summary>
+        /// Compares two <see cref="Coordinates"/>, determining if a set of <see cref="Coordinates"/> is smaller than the other
+        /// in both components.
+        /// </summary>
+        /// <param name="coord1">The <see cref="Coordinates"/> to compare.</param>
+        /// <param name="coord2">The <see cref="Coordinates"/> to compare with.</param>
+        /// <returns>true if coord2 has both components smaller than coord1, false otherwise.</returns>
+        public static bool operator <(Coordinates coord1, Coordinates coord2)
+        {
+            return coord1.x < coord2.x && coord1.y < coord2.y;
+        }
+
+        /// <summary>
+        /// Compares two <see cref="Coordinates"/>, determining if a set of <see cref="Coordinates"/> is smaller than or equal to the other
+        /// in both components.
+        /// </summary>
+        /// <param name="coord1">The <see cref="Coordinates"/> to compare.</param>
+        /// <param name="coord2">The <see cref="Coordinates"/> to compare with.</param>
+        /// <returns>true if coord2 has both components smaller than or equal to coord1, false otherwise.</returns>
+        public static bool operator <=(Coordinates coord1, Coordinates coord2)
+        {
+            return coord1.x <= coord2.x && coord1.y <= coord2.y;
+        }
+
+        /// <summary>
+        /// Compares two <see cref="Coordinates"/> for equality.
+        /// </summary>
+        /// <param name="coord1"><see cref="Coordinates"/> to compare.</param>
+        /// <param name="coord2"><see cref="Coordinates"/> to compare to the other set.</param>
+        /// <returns>true if the given <see cref="Coordinates"/> are equal, false otherwise.</returns>
+        public static bool operator ==(Coordinates coord1, Coordinates coord2)
+        {
+            return coord1.x == coord2.x && coord1.y == coord2.y;
+        }
+
+        /// <summary>
+        /// Compares two <see cref="Coordinates"/>, determining if a set of <see cref="Coordinates"/> is greater than the other
+        /// in both components.
+        /// </summary>
+        /// <param name="coord1">The <see cref="Coordinates"/> to compare.</param>
+        /// <param name="coord2">The <see cref="Coordinates"/> to compare with.</param>
+        /// <returns>true if coord1 has both components larger than coord2, false otherwise.</returns>
+        public static bool operator >(Coordinates coord1, Coordinates coord2)
+        {
+            return coord1.x > coord2.x && coord1.y > coord2.y;
+        }
+
+        /// <summary>
+        /// Compares two <see cref="Coordinates"/>, determining if a set of <see cref="Coordinates"/> is greater than or equal to the other
+        /// in both components.
+        /// </summary>
+        /// <param name="coord1">The Coordinates to compare.</param>
+        /// <param name="coord2">The Coordinates to compare with.</param>
+        /// <returns>true if coord1 has both components larger than or equal to coord2, false otherwise.</returns>
+        public static bool operator >=(Coordinates coord1, Coordinates coord2)
+        {
+            return coord1.x >= coord2.x && coord1.y >= coord2.y;
         }
 
         /// <summary>
@@ -161,22 +161,13 @@ namespace MBC.Shared
         }
 
         /// <summary>
-        /// Creates a formatted string representation of these <see cref="Coordinates"/> in the format: (x, y)
-        /// </summary>
-        /// <returns>The string representation of these <see cref="Coordinates"/>.</returns>
-        public override string ToString()
-        {
-            return "(" + x + ", " + y + ")";
-        }
-
-        /// <summary>
         /// Determines if these <see cref="Coordinates"/> are equal to another object.
         /// </summary>
         /// <param name="obj">The object to compare to.</param>
         /// <returns>true if these <see cref="Coordinates"/> are equal to the object.</returns>
         public override bool Equals(object obj)
         {
-            return obj is Coordinates && Equals((Coordinates) obj);
+            return obj is Coordinates && Equals((Coordinates)obj);
         }
 
         /// <summary>
@@ -189,6 +180,15 @@ namespace MBC.Shared
             hash = hash * 37 + X;
             hash = hash * 37 + Y;
             return hash;
+        }
+
+        /// <summary>
+        /// Creates a formatted string representation of these <see cref="Coordinates"/> in the format: (x, y)
+        /// </summary>
+        /// <returns>The string representation of these <see cref="Coordinates"/>.</returns>
+        public override string ToString()
+        {
+            return "(" + x + ", " + y + ")";
         }
     }
 }

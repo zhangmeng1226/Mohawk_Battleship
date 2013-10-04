@@ -1,8 +1,6 @@
-﻿using MBC.Core.Rounds;
-using MBC.Shared;
-using System;
+﻿using System.Runtime.Serialization;
 using MBC.Core.Threading;
-using System.Runtime.Serialization;
+using MBC.Shared;
 
 namespace MBC.Core.Events
 {
@@ -26,12 +24,6 @@ namespace MBC.Core.Events
 
         private PlayerTimeoutEvent(SerializationInfo info, StreamingContext context)
         {
-
-        }
-
-        private void GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-
         }
 
         /// <summary>
@@ -51,6 +43,10 @@ namespace MBC.Core.Events
         {
             get;
             private set;
+        }
+
+        private void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
         }
     }
 }

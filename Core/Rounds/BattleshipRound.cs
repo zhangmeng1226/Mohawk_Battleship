@@ -1,8 +1,7 @@
-﻿using MBC.Core.Events;
-using MBC.Shared;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Xml.Serialization;
+using MBC.Core.Events;
+using MBC.Shared;
 
 namespace MBC.Core.Rounds
 {
@@ -15,8 +14,9 @@ namespace MBC.Core.Rounds
     {
         internal override void HandleEvent(Event ev)
         {
- 	        throw new NotImplementedException();
+            throw new NotImplementedException();
         }
+
         /// <summary>
         /// Fires the <see cref="RoundBeginEvent"/> and invokes <see cref="Player.NewRound()"/> on all
         /// <see cref="Player"/>s. Picks a random <see cref="Player"/> to have the

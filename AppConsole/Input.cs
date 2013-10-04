@@ -1,8 +1,8 @@
-﻿using MBC.Core;
-using MBC.Core.Util;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using MBC.Core;
+using MBC.Core.Util;
 
 namespace MBC.App.BattleshipConsole
 {
@@ -12,7 +12,7 @@ namespace MBC.App.BattleshipConsole
     /// <param name="idx">The current index in the <paramref name="param"/> array.</param>
     /// <param name="param">An array of strings that make up a command.</param>
     public delegate void MBCShellCommandHandler(int idx, params string[] param);
-    
+
     /// <summary>
     /// <para>The main part of the AppConsole that stores command strings that are associated
     /// with <see cref="MBCShellCommandHandler"/>s, which perform specific tasks. The
@@ -192,7 +192,7 @@ namespace MBC.App.BattleshipConsole
             {
                 MatchRun.Running = false;
             };
-            Configuration.Initialize(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)+"\\MBC Data");
+            Configuration.Initialize(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\MBC Data");
 
             //Load controllers from the application data directory.
             availableControllers = ControllerSkeleton.LoadControllerFolder(

@@ -1,17 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Serialization;
-using System.Text;
-using MBC.Core.Matches;
-using MBC.Core.Players;
+﻿using System.Runtime.Serialization;
 using MBC.Shared;
 
 namespace MBC.Core.Events
 {
     public class MatchAddPlayerEvent : Event
     {
-
         public MatchAddPlayerEvent(IDNumber newPlayer, string plrName)
         {
             PlayerID = newPlayer;
@@ -20,12 +13,12 @@ namespace MBC.Core.Events
 
         private MatchAddPlayerEvent(SerializationInfo info, StreamingContext context)
         {
-
         }
 
-        private void GetObjectData(SerializationInfo info, StreamingContext context)
+        public IDNumber PlayerID
         {
-
+            get;
+            private set;
         }
 
         public string PlayerName
@@ -34,10 +27,8 @@ namespace MBC.Core.Events
             private set;
         }
 
-        public IDNumber PlayerID
+        private void GetObjectData(SerializationInfo info, StreamingContext context)
         {
-            get;
-            private set;
         }
     }
 }

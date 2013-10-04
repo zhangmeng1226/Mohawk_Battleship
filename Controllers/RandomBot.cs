@@ -1,13 +1,13 @@
-﻿using MBC.Shared;
+﻿using System;
+using MBC.Shared;
 using MBC.Shared.Attributes;
-using System;
 
 namespace MBC.Controllers
 {
     /// <summary>
     /// This is a controller that uses a pseudo-random number generator to make all of its decisions. This
     /// controller is highly documented and gives a good idea of how to develop a controller for use in MBC.
-    /// 
+    ///
     ///
     /// Every controller must implement the IBattleshipController interface from the shared framework in
     /// order to be detected by the MBC core. See <see cref="Controller"/> for information about
@@ -63,6 +63,19 @@ namespace MBC.Controllers
         private ShotList shotQueue;
 
         /// <summary>
+        /// This method is called when a shot is available to the controller. The Shot object is a reference
+        /// to a copy held by the competition and is expected to be modified to the desired target. By default,
+        /// the Shot receiver is the next controller in the turn.
+        /// </summary>
+        /// <param name="shot">The Shot to modify.</param>
+        public override Shot MakeShot()
+        {
+            //The controller only cares about modifying the Coordinates. The Coordinates of the next random
+            //shot from the NextRandomShot() method is provided.
+            return NextRandomShot();
+        }
+
+        /// <summary>
         /// This method is called from the competition whenever this controller is being involved in a new
         /// matchup against a controller, or controllers. This can be treated similarily like a constructor
         /// for this controller for simplicity's sake.
@@ -108,28 +121,6 @@ namespace MBC.Controllers
         }
 
         /// <summary>
-        /// This method is called when a shot is available to the controller. The Shot object is a reference
-        /// to a copy held by the competition and is expected to be modified to the desired target. By default,
-        /// the Shot receiver is the next controller in the turn.
-        /// </summary>
-        /// <param name="shot">The Shot to modify.</param>
-        public override Shot MakeShot()
-        {
-            //The controller only cares about modifying the Coordinates. The Coordinates of the next random
-            //shot from the NextRandomShot() method is provided.
-            return NextRandomShot();
-        }
-
-        /// <summary>
-        /// This method is called when this controller won the round.
-        /// </summary>
-        public override void RoundWon()
-        {
-            //Demonstrating the use of the ControllerMessageEvent by sending a string.
-            SendMessage("Yay, I won! What are the chances of that?");
-        }
-
-        /// <summary>
         /// This method is called when the controller lost the round.
         /// </summary>
         public override void RoundLost()
@@ -139,36 +130,12 @@ namespace MBC.Controllers
         }
 
         /// <summary>
-        /// This method randomly returns one of two ShipOrientation enums.
+        /// This method is called when this controller won the round.
         /// </summary>
-        /// <returns>A randomly selected ShipOrientation.</returns>
-        private ShipOrientation RandomShipOrientation()
+        public override void RoundWon()
         {
-            //The controller first makes a two-element array that contains the two possible orientations.
-            var orientations = new ShipOrientation[] { ShipOrientation.Horizontal, ShipOrientation.Vertical };
-
-            //Then the controller uses the random number generator "rand" to choose either a 0 or a 1 to
-            //pick the index of a ShipOrientation randomly. The ShipOrientation is then returned back to the
-            //caller.
-            return orientations[rand.Next(2)];
-        }
-
-        /// <summary>
-        /// This method generates a random set of coordinates within the match field boundaries.
-        /// </summary>
-        /// <returns>Coordinates of randomized X and Y components within this controller's match information
-        /// field boundaries.</returns>
-        private Coordinates RandomCoordinates()
-        {
-            //First generate a random X coordinate. Note that rand.Next() gets a random number that is
-            //always less than the given value; we add one to get the full range of the field.
-            var xCoord = rand.Next(Register.Match.FieldSize.X + 1);
-
-            //Then generate a random Y coordinate.
-            var yCoord = rand.Next(Register.Match.FieldSize.Y + 1);
-
-            //Then put the two coordinates together and return it.
-            return new Coordinates(xCoord, yCoord);
+            //Demonstrating the use of the ControllerMessageEvent by sending a string.
+            SendMessage("Yay, I won! What are the chances of that?");
         }
 
         /// <summary>
@@ -190,6 +157,39 @@ namespace MBC.Controllers
 
             //Then return the random shot back to the caller.
             return randomShot;
+        }
+
+        /// <summary>
+        /// This method generates a random set of coordinates within the match field boundaries.
+        /// </summary>
+        /// <returns>Coordinates of randomized X and Y components within this controller's match information
+        /// field boundaries.</returns>
+        private Coordinates RandomCoordinates()
+        {
+            //First generate a random X coordinate. Note that rand.Next() gets a random number that is
+            //always less than the given value; we add one to get the full range of the field.
+            var xCoord = rand.Next(Register.Match.FieldSize.X + 1);
+
+            //Then generate a random Y coordinate.
+            var yCoord = rand.Next(Register.Match.FieldSize.Y + 1);
+
+            //Then put the two coordinates together and return it.
+            return new Coordinates(xCoord, yCoord);
+        }
+
+        /// <summary>
+        /// This method randomly returns one of two ShipOrientation enums.
+        /// </summary>
+        /// <returns>A randomly selected ShipOrientation.</returns>
+        private ShipOrientation RandomShipOrientation()
+        {
+            //The controller first makes a two-element array that contains the two possible orientations.
+            var orientations = new ShipOrientation[] { ShipOrientation.Horizontal, ShipOrientation.Vertical };
+
+            //Then the controller uses the random number generator "rand" to choose either a 0 or a 1 to
+            //pick the index of a ShipOrientation randomly. The ShipOrientation is then returned back to the
+            //caller.
+            return orientations[rand.Next(2)];
         }
 
         /// <summary>

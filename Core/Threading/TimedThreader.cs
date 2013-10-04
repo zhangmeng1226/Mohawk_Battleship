@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
 
 namespace MBC.Core.Threading
 {
@@ -24,13 +21,6 @@ namespace MBC.Core.Threading
         public TimedThreader(int timeout, Delegate invoke, params object[] parameters)
             : base(invoke, parameters)
         {
-
-        }
-
-        public void TimeMethod(Delegate invoke, params object[] parameters)
-        {
-            SetMethod(invoke, parameters);
-            TimeMethod();
         }
 
         public int MaxTime
@@ -39,20 +29,26 @@ namespace MBC.Core.Threading
             set;
         }
 
+        public int TimeElapsed
+        {
+            get
+            {
+                return (int)watcher.ElapsedMilliseconds;
+            }
+        }
+
+        public void TimeMethod(Delegate invoke, params object[] parameters)
+        {
+            SetMethod(invoke, parameters);
+            TimeMethod();
+        }
+
         public void TimeMethod()
         {
             Run();
             if (WaitFor(MaxTime))
             {
                 throw new MethodTimeoutException(Method.Name, MaxTime);
-            }
-        }
-
-        public int TimeElapsed
-        {
-            get
-            {
-                return (int)watcher.ElapsedMilliseconds;
             }
         }
 

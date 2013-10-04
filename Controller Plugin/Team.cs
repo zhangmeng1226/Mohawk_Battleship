@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace MBC.Shared
 {
     public class Team
     {
-
         private List<IDNumber> members;
 
         public Team(Team copy)
@@ -30,18 +26,18 @@ namespace MBC.Shared
             set;
         }
 
-        public string Name
-        {
-            get;
-            set;
-        }
-
         public List<IDNumber> Members
         {
             get
             {
                 return members;
             }
+        }
+
+        public string Name
+        {
+            get;
+            set;
         }
     }
 }

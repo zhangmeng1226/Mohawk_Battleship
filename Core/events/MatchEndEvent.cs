@@ -1,6 +1,5 @@
-﻿using MBC.Core.Matches;
-using System;
-using System.Runtime.Serialization;
+﻿using System.Runtime.Serialization;
+using MBC.Core.Matches;
 
 namespace MBC.Core.Events
 {
@@ -11,17 +10,14 @@ namespace MBC.Core.Events
     {
         public MatchEndEvent()
         {
-
         }
 
         private MatchEndEvent(SerializationInfo info, StreamingContext context)
         {
-
         }
 
         private void GetObjectData(SerializationInfo info, StreamingContext context)
         {
-
         }
     }
 }

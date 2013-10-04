@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace MBC.Core.Threading
 {
@@ -10,8 +7,8 @@ namespace MBC.Core.Threading
         private string methodName;
         private int timeTaken;
 
-        public MethodTimeoutException(string methodName, int timeTaken) 
-            : base("Method call to "+methodName+" has exceeded the time limit of "+timeTaken)
+        public MethodTimeoutException(string methodName, int timeTaken)
+            : base("Method call to " + methodName + " has exceeded the time limit of " + timeTaken)
         {
             this.methodName = methodName;
             this.timeTaken = timeTaken;

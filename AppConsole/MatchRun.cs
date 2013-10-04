@@ -1,7 +1,6 @@
-﻿using MBC.Core;
+﻿using System;
 using MBC.Core.Matches;
 using MBC.Core.Util;
-using System;
 
 namespace MBC.App.BattleshipConsole
 {
@@ -22,6 +21,24 @@ namespace MBC.App.BattleshipConsole
         public static bool Running { get; set; }
 
         /// <summary>
+        /// Begins running the <see cref="MatchRun.CurrentMatch"/> continuously until it ends, or
+        /// <see cref="MatchRun.Running"/> is made false.
+        /// </summary>
+        /// <param name="idx">The current index of the parameter stream.</param>
+        /// <param name="param">The string of parameters made by the user.</param>
+        public static void Start(int idx, params string[] param)
+        {
+            if (CurrentMatch == null)
+            {
+                Console.WriteLine("No match has been created.");
+                return;
+            }
+            Running = true;
+            while (Running && !CurrentMatch.StepForward()) ;
+            Console.WriteLine("The match has stopped.");
+        }
+
+        /// <summary>
         /// Progresses the <see cref="MatchRun.CurrentMatch"/> by a single step.
         /// </summary>
         /// <param name="idx">The current index of the parameter stream.</param>
@@ -38,24 +55,6 @@ namespace MBC.App.BattleshipConsole
             {
                 Console.WriteLine("The match is over.");
             }
-        }
-
-        /// <summary>
-        /// Begins running the <see cref="MatchRun.CurrentMatch"/> continuously until it ends, or
-        /// <see cref="MatchRun.Running"/> is made false.
-        /// </summary>
-        /// <param name="idx">The current index of the parameter stream.</param>
-        /// <param name="param">The string of parameters made by the user.</param>
-        public static void Start(int idx, params string[] param)
-        {
-            if (CurrentMatch == null)
-            {
-                Console.WriteLine("No match has been created.");
-                return;
-            }
-            Running = true;
-            while (Running && !CurrentMatch.StepForward());
-            Console.WriteLine("The match has stopped.");
         }
 
         /// <summary>

@@ -1,5 +1,5 @@
-﻿using MBC.Core.Util;
-using System;
+﻿using System;
+using MBC.Core.Util;
 
 namespace MBC.App.BattleshipConsole
 {

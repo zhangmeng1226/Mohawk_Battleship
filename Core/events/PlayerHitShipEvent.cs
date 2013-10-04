@@ -1,14 +1,10 @@
-﻿using MBC.Core.Rounds;
+﻿using System.Runtime.Serialization;
 using MBC.Shared;
-using System;
-using System.Runtime.Serialization;
 
 namespace MBC.Core.Events
 {
-
     public class PlayerHitShipEvent : PlayerEvent
     {
-
         public PlayerHitShipEvent(IDNumber sender, Shot shot)
             : base(sender)
         {
@@ -17,18 +13,16 @@ namespace MBC.Core.Events
 
         private PlayerHitShipEvent(SerializationInfo info, StreamingContext context)
         {
-
-        }
-
-        private void GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-
         }
 
         public Shot HitShot
         {
             get;
             private set;
+        }
+
+        private void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
         }
     }
 }

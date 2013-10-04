@@ -1,19 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading;
 
 namespace MBC.Core.Threading
 {
     public class FuncThreader : Threader
     {
         protected Delegate invokeMethod;
-        protected object invokeReturn;
         protected object[] invokeParams;
+        protected object invokeReturn;
 
-        public FuncThreader() 
+        public FuncThreader()
         {
         }
 
@@ -30,10 +26,9 @@ namespace MBC.Core.Threading
             }
         }
 
-        public void SetMethod(Delegate invoke, params object[] parameters)
+        public T GetReturnValue<T>()
         {
-            invokeParams = parameters;
-            invokeMethod = invoke;
+            return (T)invokeReturn;
         }
 
         public void RunMethod(Delegate invoke, params object[] parameters)
@@ -43,9 +38,10 @@ namespace MBC.Core.Threading
             Run();
         }
 
-        public T GetReturnValue<T>()
+        public void SetMethod(Delegate invoke, params object[] parameters)
         {
-            return (T)invokeReturn;
+            invokeParams = parameters;
+            invokeMethod = invoke;
         }
 
         protected override void ThreadRun()
