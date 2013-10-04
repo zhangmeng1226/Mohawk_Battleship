@@ -24,7 +24,7 @@ namespace MBC.App.BattleshipConsole
     {
         private static SortedDictionary<string, string> availableCommandDescriptions;
         private static SortedDictionary<string, MBCShellCommandHandler> availableCommands;
-        private static List<ControllerInformation> availableControllers;
+        private static List<ControllerSkeleton> availableControllers;
         private static bool inputRunning = false;
 
         static Input()
@@ -70,9 +70,9 @@ namespace MBC.App.BattleshipConsole
         }
 
         /// <summary>
-        /// Gets a list of <see cref="ControllerInformation"/> loaded by commands.
+        /// Gets a list of <see cref="ControllerSkeleton"/> loaded by commands.
         /// </summary>
-        public static List<ControllerInformation> Controllers
+        public static List<ControllerSkeleton> Controllers
         {
             get
             {
@@ -195,10 +195,10 @@ namespace MBC.App.BattleshipConsole
             Configuration.Initialize(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)+"\\MBC Data");
 
             //Load controllers from the application data directory.
-            availableControllers = ControllerInformation.LoadControllerFolder(
+            availableControllers = ControllerSkeleton.LoadControllerFolder(
                 Configuration.Global.GetValue<string>("app_data_root") + "controllers");
             //Load controllers from the running application root directory.
-            availableControllers.AddRange(ControllerInformation.LoadControllerFolder(Environment.CurrentDirectory + "\\..\\bots"));
+            availableControllers.AddRange(ControllerSkeleton.LoadControllerFolder(Environment.CurrentDirectory + "\\..\\bots"));
 
             if (args.Length != 0)
             {

@@ -10,10 +10,10 @@ namespace MBC.Core
 {
     /// <summary>
     /// Provides various information about a <see cref="Controller"/> that is loaded from an external library via
-    /// <see cref="ControllerInformation.LoadControllerFolder(string)"/>. Contains the <see cref="Type"/>
+    /// <see cref="ControllerSkeleton.LoadControllerFolder(string)"/>. Contains the <see cref="Type"/>
     /// that represents a constructable <see cref="Controller"/>.
     /// </summary>
-    public class ControllerInformation
+    public class ControllerSkeleton
     {
         private AcademicInfoAttribute academicAttrib;
         private AuthorAttribute authorAttrib;
@@ -37,7 +37,7 @@ namespace MBC.Core
         /// <param name="dll">A string of the absolute path to the library file the <see cref="Controller"/>
         /// was loaded from.</param>
         /// <param name="inter">The <see cref="Type"/> that is used to construct <see cref="Controller"/>s</param>.
-        public ControllerInformation(NameAttribute name, VersionAttribute ver, DescriptionAttribute desc,
+        public ControllerSkeleton(NameAttribute name, VersionAttribute ver, DescriptionAttribute desc,
             AuthorAttribute auth, AcademicInfoAttribute academic, CapabilitiesAttribute capabilities,
             string dll, Type inter)
         {
@@ -142,13 +142,13 @@ namespace MBC.Core
         }
 
         /// <summary>
-        /// Loads a list of <see cref="ControllerInformation"/> from a single .DLL file.
+        /// Loads a list of <see cref="ControllerSkeleton"/> from a single .DLL file.
         /// </summary>
         /// <param name="filePath">The absolute path to the .DLL file.</param>
-        /// <returns>A list of successfully loaded <see cref="ControllerInformation"/>s.</returns>
-        public static List<ControllerInformation> LoadControllerDLL(string filePath)
+        /// <returns>A list of successfully loaded <see cref="ControllerSkeleton"/>s.</returns>
+        public static List<ControllerSkeleton> LoadControllerDLL(string filePath)
         {
-            var results = new List<ControllerInformation>();
+            var results = new List<ControllerSkeleton>();
             try
             {
                 var dllInfo = Assembly.LoadFile(filePath);
@@ -167,7 +167,7 @@ namespace MBC.Core
                             //Split the absolute path. We only want the name of the DLL file.
                             string[] pathSplit = filePath.Split('\\');
 
-                            ControllerInformation info = new ControllerInformation(nameAttrib, verAttrib,
+                            ControllerSkeleton info = new ControllerSkeleton(nameAttrib, verAttrib,
                                 (DescriptionAttribute)cont.GetCustomAttributes(typeof(DescriptionAttribute), false)[0],
                                 (AuthorAttribute)cont.GetCustomAttributes(typeof(AuthorAttribute), false)[0],
                                 (AcademicInfoAttribute)cont.GetCustomAttributes(typeof(AcademicInfoAttribute), false)[0],
@@ -188,15 +188,15 @@ namespace MBC.Core
 
         /// <summary>
         /// Searches a given folder for dynamic-loaded libraries (.dll) and attempts to load <see cref="Controller"/>s
-        /// from them. Creates <see cref="ControllerInformation"/> objects for each unique <see cref="Controller"/>.
+        /// from them. Creates <see cref="ControllerSkeleton"/> objects for each unique <see cref="Controller"/>.
         /// </summary>
         /// <param name="path">The absolute path name to a folder containing DLL files.</param>
         /// <exception cref="DirectoryNotFoundException">The given directory was not found or was a relative path.</exception>
-        /// <returns>A list of <see cref="ControllerInformation"/> objects that have been created from
+        /// <returns>A list of <see cref="ControllerSkeleton"/> objects that have been created from
         /// findings.</returns>
-        public static List<ControllerInformation> LoadControllerFolder(string path)
+        public static List<ControllerSkeleton> LoadControllerFolder(string path)
         {
-            var results = new List<ControllerInformation>();
+            var results = new List<ControllerSkeleton>();
             try
             {
                 var filePaths = new List<string>(Directory.GetFiles(path, "*.dll"));

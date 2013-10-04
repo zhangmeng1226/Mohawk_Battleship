@@ -15,7 +15,7 @@ namespace MBC.Core
     {
         private Controller controller;
 
-        private ControllerInformation controllerInfo;
+        private ControllerSkeleton controllerInfo;
 
         private TimedThreader threader;
 
@@ -31,7 +31,7 @@ namespace MBC.Core
             }
         }
 
-        public ControllerInformation ControllerInfo
+        public ControllerSkeleton ControllerInfo
         {
             get
             {
@@ -75,11 +75,35 @@ namespace MBC.Core
             }
         }
 
-        public ControlledPlayer(ControllerInformation targetControllerInfo)
+        public Dictionary<IDNumber, Register> Registers
         {
-            controllerInfo = targetControllerInfo;
+            get
+            {
+                return controller.Registers;
+            }
+            set
+            {
+                controller.Registers = new Dictionary<IDNumber, Register>(value);
+            }
+        }
 
-            controller = (Controller)Activator.CreateInstance(targetControllerInfo.Controller);
+        public List<Team> Teams
+        {
+            get
+            {
+                return controller.Teams;
+            }
+            set
+            {
+                controller.Teams = new List<Team>(value);
+            }
+        }
+
+        public ControlledPlayer(ControllerSkeleton targetController)
+        {
+            controllerInfo = targetController;
+
+            controller = (Controller)Activator.CreateInstance(targetController.Controller);
             controller.ControllerMessageEvent += ReceiveMessage;
 
             threader = new TimedThreader();

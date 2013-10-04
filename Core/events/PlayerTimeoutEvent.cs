@@ -34,14 +34,6 @@ namespace MBC.Core.Events
 
         }
 
-        public virtual Type EventType
-        {
-            get
-            {
-                return Type.PlayerTimeout;
-            }
-        }
-
         /// <summary>
         /// Gets a string identifying the method call made to a <see cref="Controller"/> through the
         /// associated <see cref="PlayerEvent.Register"/>.

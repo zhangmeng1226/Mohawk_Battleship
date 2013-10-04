@@ -53,7 +53,7 @@ namespace MBC.Shared
         public List<IDNumber> AllOpponents()
         {
             List<IDNumber> opponents = new List<IDNumber>();
-            foreach (var team in Match.Teams)
+            foreach (var team in Teams)
             {
                 foreach (var member in team.Members)
                 {

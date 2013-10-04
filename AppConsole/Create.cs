@@ -31,7 +31,7 @@ namespace MBC.App.BattleshipConsole
         /// <param name="param">The string of parameters made by the user.</param>
         public static void Match(int idx, params string[] param)
         {
-            var playControllers = new List<ControllerInformation>();
+            var playControllers = new List<ControllerSkeleton>();
             int strParseInt;
             while (idx < param.Length && int.TryParse(param[idx++], out strParseInt))
             {

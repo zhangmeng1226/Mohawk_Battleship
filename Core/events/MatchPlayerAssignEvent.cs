@@ -3,19 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
+using MBC.Core.Matches;
 using MBC.Shared;
 
 namespace MBC.Core.Events
 {
-    public class MatchPlayerTeamAssign : Event
+    public class MatchPlayerAssignEvent : Event
     {
-        public MatchPlayerTeamAssign(IDNumber player, IDNumber teamAssigned)
+        public MatchPlayerAssignEvent(IDNumber player, IDNumber teamAssigned)
         {
             PlayerID = player;
             TeamID = teamAssigned;
         }
 
-        public MatchPlayerTeamAssign(SerializationInfo info, StreamingContext context)
+        public MatchPlayerAssignEvent(SerializationInfo info, StreamingContext context)
         {
 
         }
@@ -23,14 +24,6 @@ namespace MBC.Core.Events
         public void GetObjectData(SerializationInfo info, StreamingContext context)
         {
 
-        }
-
-        public override Type EventType
-        {
-            get
-            {
-                return Type.MatchPlayerTeamAssign;
-            }
         }
 
         public IDNumber PlayerID

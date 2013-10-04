@@ -26,7 +26,7 @@ namespace MBC.App.BattleshipConsole
         }
 
         /// <summary>
-        /// Shows the <see cref="Core.ControllerInformation"/> that has been loaded into <see cref="Input"/>
+        /// Shows the <see cref="Core.ControllerSkeleton"/> that has been loaded into <see cref="Input"/>
         /// </summary>
         /// <param name="idx">The current index of the parameter stream.</param>
         /// <param name="param">The string of parameters made by the user.</param>

@@ -21,13 +21,5 @@ namespace MBC.Core.Events
         {
 
         }
-
-        public virtual Type EventType
-        {
-            get
-            {
-                return Type.PlayerLost;
-            }
-        }
     }
 }

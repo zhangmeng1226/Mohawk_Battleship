@@ -33,14 +33,6 @@ namespace MBC.Core.Events
 
         }
 
-        public virtual Type EventType
-        {
-            get
-            {
-                return Type.RoundAccolade;
-            }
-        }
-
         /// <summary>
         /// Gets an <see cref="Accolade"/> that has been added to the <see cref="RoundEvent.Round"/>.
         /// </summary>

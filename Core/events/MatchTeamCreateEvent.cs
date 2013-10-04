@@ -36,13 +36,5 @@ namespace MBC.Core.Events
             get;
             private set;
         }
-
-        public override Type EventType
-        {
-            get
-            {
-                return Type.MatchTeamCreate;
-            }
-        }
     }
 }

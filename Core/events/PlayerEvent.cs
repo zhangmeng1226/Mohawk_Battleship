@@ -20,8 +20,6 @@ namespace MBC.Core.Events
             Player = plrID;
         }
 
-        private PlayerEvent() { }
-
         public IDNumber Player
         {
             get;

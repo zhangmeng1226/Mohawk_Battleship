@@ -33,14 +33,6 @@ namespace MBC.Core.Events
 
         }
 
-        public virtual Type EventType
-        {
-            get
-            {
-                return Type.PlayerShot;
-            }
-        }
-
         /// <summary>
         /// Gets the <see cref="Shot"/> made by the <see cref="PlayerEvent.Register"/>.
         /// </summary>

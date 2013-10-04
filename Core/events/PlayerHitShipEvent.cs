@@ -30,13 +30,5 @@ namespace MBC.Core.Events
             get;
             private set;
         }
-
-        public virtual Type EventType
-        {
-            get
-            {
-                return Type.PlayerHitShip;
-            }
-        }
     }
 }

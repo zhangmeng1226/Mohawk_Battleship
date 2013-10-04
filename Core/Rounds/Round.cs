@@ -2,21 +2,27 @@
 using MBC.Shared;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
+using System;
 
 namespace MBC.Core.Rounds
 {
 
-    public abstract class Round : ISerializable 
+    public class Round : EventCollector, IEventActor
     {
-        private List<Event> events;
-        private int currentEventIdx;
+        protected internal Dictionary<IDNumber, Team> roundTeams;
 
-        protected Dictionary<IDNumber, Team> roundTeams;
+        protected internal Dictionary<IDNumber, FieldInfo> playerField;
+        protected internal Dictionary<IDNumber, Register> registers;
 
-        protected Dictionary<IDNumber, FieldInfo> playerField;
-        protected Dictionary<IDNumber, Register> registers;
+        private Dictionary<Type, Action<Event>> eventActions;
 
         public bool IsRunning
+        {
+            get;
+            private set;
+        }
+
+        public IDNumber ID
         {
             get;
             private set;
@@ -26,62 +32,56 @@ namespace MBC.Core.Rounds
 
         public Round()
         {
-            events = new List<Event>();
             playerField = new Dictionary<IDNumber, FieldInfo>();
             registers = new Dictionary<IDNumber, Register>();
             roundTeams = new Dictionary<IDNumber, Team>();
-        }
+            eventActions = new Dictionary<Type, Action<Event>>();
 
-        public Round(MatchConfig config)
-        {
-
-        }
-
-        public Round(SerializationInfo info, StreamingContext context)
-        {
-
-        }
-
-        public void GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            
-        }
-
-        protected virtual void GenerateEvent(Event ev)
-        {
-            events.Add(ev);
-            if (EventCreated != null)
-            {
-                EventCreated(ev);
-            }
+            eventActions.Add(typeof(MatchAddPlayerEvent), MatchAddPlayer);
+            eventActions.Add(typeof(MatchRemovePlayerEvent), MatchRemovePlayer);
+            eventActions.Add(typeof(MatchTeamCreateEvent), MatchTeamCreate);
+            eventActions.Add(typeof(RoundBeginEvent), RoundBegin);
         }
 
         public abstract void Play();
 
         public abstract void Stop();
 
-        protected virtual void ReflectEvent(Event re)
+        private void MatchAddPlayer(Event ev)
         {
-            switch (re.EventType)
+            var addPlayerEvent = (MatchAddPlayerEvent)ev;
+            playerField[addPlayerEvent.PlayerID] = new FieldInfo();
+            registers[addPlayerEvent.PlayerID] = new Register(addPlayerEvent.PlayerID, addPlayerEvent.PlayerName);
+        }
+
+        private void MatchRemovePlayer(Event ev)
+        {
+            var removePlayerEvent = (MatchRemovePlayerEvent)ev;
+            playerField.Remove(removePlayerEvent.PlayerID);
+            registers.Remove(removePlayerEvent.PlayerID);
+            foreach (var team in roundTeams)
             {
-                case Event.Type.MatchAddPlayer:
-                    var addPlayerEvent = (MatchAddPlayerEvent)re;
-                    playerField[addPlayerEvent.PlayerID] = new FieldInfo();
-                    registers[addPlayerEvent.PlayerID] = new Register(addPlayerEvent.PlayerID, addPlayerEvent.PlayerName);
-                    break;
-                case Event.Type.MatchRemovePlayer:
-                    var removePlayerEvent = (MatchRemovePlayerEvent)re;
-                    playerField.Remove(removePlayerEvent.PlayerID);
-                    registers.Remove(removePlayerEvent.PlayerID);
-                    foreach (var team in roundTeams)
-                    {
-                        team.Value.Members.Add(removePlayerEvent.PlayerID);
-                    }
-                    break;
-                case Event.Type.MatchTeamCreate:
-                    var teamCreateEvent = (MatchTeamCreateEvent)re;
-                    roundTeams.Add(new Team(teamCreateEvent.TeamID, teamCreateEvent.TeamName));
-                    break;
+                team.Value.Members.Add(removePlayerEvent.PlayerID);
+            }
+        }
+
+        private void MatchTeamCreate(Event ev)
+        {
+            var teamCreateEvent = (MatchTeamCreateEvent)ev;
+            roundTeams.Add(teamCreateEvent.TeamID, new Team(teamCreateEvent.TeamID, teamCreateEvent.TeamName));
+        }
+
+        private void RoundBegin(Event ev)
+        {
+            ID = ((RoundBeginEvent)ev).RoundID;
+        }
+
+        protected internal virtual void ReflectEvent(Event ev)
+        {
+            var eventType = ev.GetType();
+            if (eventActions.ContainsKey(eventType))
+            {
+                eventActions[eventType](ev);
             }
         }
     }

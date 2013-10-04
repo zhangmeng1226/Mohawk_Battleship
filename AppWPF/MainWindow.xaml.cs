@@ -21,9 +21,9 @@ namespace MBC.App.WPF
 
         private Match currentMatch;
 
-        private List<ControllerInformation> availableControllers;
-        private ControllerInformation redSelected;
-        private ControllerInformation blueSelected;
+        private List<ControllerSkeleton> availableControllers;
+        private ControllerSkeleton redSelected;
+        private ControllerSkeleton blueSelected;
         private bool redPopupActivated;
 
         private Configuration configuration;
@@ -40,9 +40,9 @@ namespace MBC.App.WPF
 
             configuration = Configuration.Global;
 
-            availableControllers = ControllerInformation.LoadControllerFolder(
+            availableControllers = ControllerSkeleton.LoadControllerFolder(
                 configuration.GetValue<string>("app_data_root") + "controllers");
-            availableControllers.AddRange(ControllerInformation.LoadControllerFolder(Environment.CurrentDirectory + "\\..\\bots"));
+            availableControllers.AddRange(ControllerSkeleton.LoadControllerFolder(Environment.CurrentDirectory + "\\..\\bots"));
 
             currentMatch = new ControlledMatch(configuration, availableControllers.ToArray());
 

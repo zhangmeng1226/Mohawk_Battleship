@@ -20,48 +20,42 @@ namespace MBC.Core.Matches
         Description = "Determines the ending behaviour of a match based on a given number of rounds.",
         DisplayName = "Match Rounds Mode")]
     [Configuration("mbc_match_rounds", 100)]
-    public abstract class Match : ISerializable
+    public abstract class Match : EventCollector, IEventActor
     {
-        private int currentEventIdx;
-        private List<Event> events;
-
-        private Dictionary<IDNumber, Player> players;
-        private Dictionary<IDNumber, Round> rounds;
-        private Dictionary<IDNumber, Team> teams;
-
+        protected internal Dictionary<IDNumber, Player> players;
+        protected internal Dictionary<IDNumber, Round> rounds;
+        protected internal Dictionary<IDNumber, Team> teams;
+        private Dictionary<Type, Action<Event>> eventActions;
         private FuncThreader matchThreader;
 
         public Match()
         {
+            players = new Dictionary<IDNumber, Player>();
+            rounds = new Dictionary<IDNumber, Round>();
+            teams = new Dictionary<IDNumber, Team>();
+            eventActions = new Dictionary<Type, Action<Event>>();
+            matchThreader = new FuncThreader(new Action(Play));
             ID = (int)DateTime.Now.Subtract(new DateTime(1970, 1, 1, 0, 0, 0)).TotalSeconds;
+
+            eventActions.Add(typeof(MatchBeginEvent), MatchBegin);
+            eventActions.Add(typeof(MatchAddPlayerEvent), MatchAddPlayer);
+            eventActions.Add(typeof(MatchConfigChangedEvent), MatchConfigChanged);
+            eventActions.Add(typeof(MatchPlayerAssignEvent), MatchPlayerAssign);
+            eventActions.Add(typeof(MatchTeamCreateEvent), MatchTeamCreate);
+            eventActions.Add(typeof(MatchRemovePlayerEvent), MatchRemovePlayer);
+            eventActions.Add(typeof(RoundBeginEvent), RoundBegin);
         }
 
-        private Match(SerializationInfo info, StreamingContext context)
-        {
-
-        }
-
-        public void GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-
-        }
-
-        public virtual void AddPlayer(Player plr)
-        {
-
-        }
-
-        public event MBCEventHandler EventCreated;
         public MatchConfig CompiledConfig
         {
             get;
-            protected set;
+            protected internal set;
         }
 
         public IDNumber ID
         {
             get;
-            private set;
+            protected internal set;
         }
 
         public bool IsPlaying
@@ -69,6 +63,7 @@ namespace MBC.Core.Matches
             get;
             protected set;
         }
+
         public IDictionary<IDNumber, Player> Players
         {
             get
@@ -77,22 +72,19 @@ namespace MBC.Core.Matches
             }
         }
 
-        /// <summary>
-        /// Gets or sets the <see cref="Event"/>s that have been generated.
-        /// </summary>
-        private IList<Event> Events
-        {
-            get
-            {
-                return events.AsReadOnly();
-            }
-        }
-
-        private IDictionary<IDNumber, Round> Rounds
+        public IDictionary<IDNumber, Round> Rounds
         {
             get
             {
                 return rounds;
+            }
+        }
+
+        public IDictionary<IDNumber, Team> Teams
+        {
+            get
+            {
+                return teams;
             }
         }
 
@@ -110,60 +102,64 @@ namespace MBC.Core.Matches
 
         public abstract void Stop();
 
-        protected void GenerateEvent(Event ev)
+        protected virtual void ReflectEvent(Event ev)
         {
-            events.Add(ev);
-            if (EventCreated != null)
+            var eventType = ev.GetType();
+            if (eventActions.ContainsKey(eventType))
             {
-                EventCreated(ev);
+                eventActions[eventType](ev);
             }
         }
 
-        protected virtual void ReflectEvent(Event ev)
+        private void MatchAddPlayer(Event ev)
         {
-            switch (ev.EventType)
+            var addPlayerEvent = (MatchAddPlayerEvent)ev;
+            var newPlayer = new Player(addPlayerEvent.PlayerID, addPlayerEvent.PlayerName);
+            players[addPlayerEvent.PlayerID] = newPlayer;
+        }
+
+        private void MatchBegin(Event ev)
+        {
+            ID = ((MatchBeginEvent)ev).MatchID;
+        }
+
+        private void MatchConfigChanged(Event ev)
+        {
+            CompiledConfig = ((MatchConfigChangedEvent)ev).Config;
+        }
+
+        private void MatchPlayerAssign(Event ev)
+        {
+            var assignEvent = (MatchPlayerAssignEvent)ev;
+            var plr = players[assignEvent.PlayerID];
+            var team = teams[assignEvent.TeamID];
+
+            if (plr.Team != null)
             {
-                case Event.Type.MatchBegin:
-                    ID = ((MatchBeginEvent)ev).MatchID;
-                    break;
-
-                case Event.Type.MatchConfigChanged:
-                    CompiledConfig = ((MatchConfigChangedEvent)ev).Config;
-                    foreach (var player in players)
-                    {
-                        player.Value.Match = CompiledConfig;
-                    }
-                    teams = new Dictionary<IDNumber, Team>();
-                    break;
-
-                case Event.Type.MatchAddPlayer:
-                    var addPlayerEvent = (MatchAddPlayerEvent)ev;
-                    Player newPlayer = new Player(addPlayerEvent.PlayerID, addPlayerEvent.PlayerName);
-                    newPlayer.Match = CompiledConfig;
-                    newPlayer.Register.ID = addPlayerEvent.PlayerID;
-                    players[addPlayerEvent.PlayerID] = newPlayer;
-                    foreach (var round in rounds)
-                    {
-                        round.Value.ReflectEvent(ev);
-                    }
-                    break;
-
-                case Event.Type.MatchRemovePlayer:
-                    players.Remove(((MatchRemovePlayerEvent)ev).PlayerID);
-                    foreach (var round in rounds)
-                    {
-                        round.Value.ReflectEvent(ev);
-                    }
-                    break;
-
-                case Event.Type.MatchTeamCreate:
-                    MatchTeamCreateEvent teamCreateEvent = (MatchTeamCreateEvent)ev;
-                    teams[teamCreateEvent.TeamID] = new Team(teamCreateEvent.TeamID, teamCreateEvent.TeamName);
-                    break;
-
-                case Event.Type.MatchPlayerTeamAssign:
-                    break;
+                plr.Team.Members.Remove(assignEvent.PlayerID);
             }
+
+            team.Members.Add(assignEvent.PlayerID);
+            plr.Team = team;
+        }
+
+        private void MatchRemovePlayer(Event ev)
+        {
+            var removeEvent = (MatchRemovePlayerEvent)ev;
+
+            players[removeEvent.PlayerID].Team.Members.Remove(removeEvent.PlayerID);
+            players.Remove(removeEvent.PlayerID);
+        }
+
+        private void MatchTeamCreate(Event ev)
+        {
+            MatchTeamCreateEvent teamCreateEvent = (MatchTeamCreateEvent)ev;
+            teams[teamCreateEvent.TeamID] = new Team(teamCreateEvent.TeamID, teamCreateEvent.TeamName);
+        }
+
+        private void RoundBegin(Event ev)
+        {
+            rounds.Add(((RoundBeginEvent)ev).RoundID, new Round());
         }
     }
 }

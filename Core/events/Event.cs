@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Xml.Serialization;
+using MBC.Core.Matches;
 namespace MBC.Core.Events
 {
     /// <summary>
@@ -24,43 +25,10 @@ namespace MBC.Core.Events
             Millis = DateTime.Now.Millisecond;
         }
 
-        public virtual Type EventType
-        {
-            get
-            {
-                return Type.Unspecified;
-            }
-        }
-
         public int Millis
         {
             get;
             private set;
-        }
-
-        public enum Type
-        {
-            MatchBegin,
-            MatchEnd,
-            MatchConfigChanged,
-            MatchTeamCreate,
-            MatchPlayerTeamAssign,
-            MatchAddPlayer,
-            MatchRemovePlayer,
-            PlayerHitShip,
-            PlayerLost,
-            PlayerShipDestroyed,
-            PlayerShipsPlaced,
-            PlayerShot,
-            PlayerTimeout,
-            PlayerWon,
-            RoundAccolade,
-            RoundBegin,
-            RoundEnd,
-            RoundStateSave,
-            RoundPlayerAdd,
-            RoundPlayerAction,
-            Unspecified
         }
     }
 }
