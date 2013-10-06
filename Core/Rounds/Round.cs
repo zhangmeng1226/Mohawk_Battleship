@@ -5,27 +5,28 @@ using MBC.Shared;
 
 namespace MBC.Core.Rounds
 {
-    public class Round : EventCollector, IEventActor
+    public abstract class Round
     {
-        protected internal Dictionary<IDNumber, FieldInfo> playerField;
-        protected internal Dictionary<IDNumber, Register> registers;
-        protected internal Dictionary<IDNumber, Team> roundTeams;
-        private Dictionary<Type, Action<Event>> eventActions;
+        private Dictionary<Type, List<MBCEventHandler>> eventActions;
+        private EventDriver eventDriver;
+        private Dictionary<IDNumber, FieldInfo> playerField;
+        private Dictionary<IDNumber, Register> registers;
+        private Dictionary<IDNumber, Team> roundTeams;
 
         public Round()
         {
             playerField = new Dictionary<IDNumber, FieldInfo>();
             registers = new Dictionary<IDNumber, Register>();
             roundTeams = new Dictionary<IDNumber, Team>();
-            eventActions = new Dictionary<Type, Action<Event>>();
+            eventActions = new Dictionary<Type, List<MBCEventHandler>>();
+            eventDriver = new EventDriver();
+            eventDriver.EventApplied += ReflectEvent;
 
-            eventActions.Add(typeof(MatchAddPlayerEvent), MatchAddPlayer);
-            eventActions.Add(typeof(MatchRemovePlayerEvent), MatchRemovePlayer);
-            eventActions.Add(typeof(MatchTeamCreateEvent), MatchTeamCreate);
-            eventActions.Add(typeof(RoundBeginEvent), RoundBegin);
+            AddEventAction(typeof(MatchAddPlayerEvent), MatchAddPlayer);
+            AddEventAction(typeof(MatchRemovePlayerEvent), MatchRemovePlayer);
+            AddEventAction(typeof(MatchTeamCreateEvent), MatchTeamCreate);
+            AddEventAction(typeof(RoundBeginEvent), RoundBegin);
         }
-
-        public event MBCEventHandler EventCreated;
 
         public IDNumber ID
         {
@@ -33,22 +34,53 @@ namespace MBC.Core.Rounds
             private set;
         }
 
-        public bool IsRunning
+        public IDictionary<IDNumber, FieldInfo> PlayerField
         {
-            get;
-            private set;
+            get
+            {
+                return playerField;
+            }
         }
 
-        public abstract void Play();
+        public IDictionary<IDNumber, Register> Registers
+        {
+            get
+            {
+                return registers;
+            }
+        }
 
-        public abstract void Stop();
+        public IDictionary<IDNumber, Team> Teams
+        {
+            get
+            {
+                return roundTeams;
+            }
+        }
 
-        protected internal virtual void ReflectEvent(Event ev)
+        public void AddEventAction(Type typeOfEvent, MBCEventHandler eventAction)
+        {
+            if (!eventActions.ContainsKey(typeOfEvent))
+            {
+                eventActions[typeOfEvent] = new List<MBCEventHandler>();
+            }
+            eventActions[typeOfEvent].Add(eventAction);
+        }
+
+        protected void ApplyEvent(Event ev)
+        {
+            eventDriver.ApplyEvent(ev);
+        }
+
+        protected virtual void ReflectEvent(Event ev)
         {
             var eventType = ev.GetType();
             if (eventActions.ContainsKey(eventType))
             {
-                eventActions[eventType](ev);
+                foreach (MBCEventHandler action in eventActions[eventType])
+                {
+                    action(ev);
+                }
             }
         }
 

@@ -1,6 +1,6 @@
 ﻿namespace MBC.Core.Matches
 {
-    public class LoadedMatch : Match
+    public class MatchReplay : Match
     {
     }
 }

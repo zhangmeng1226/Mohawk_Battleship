@@ -19,30 +19,31 @@ namespace MBC.Core.Matches
         Description = "Determines the ending behaviour of a match based on a given number of rounds.",
         DisplayName = "Match Rounds Mode")]
     [Configuration("mbc_match_rounds", 100)]
-    public abstract class Match : EventCollector, IEventActor
+    public abstract class Match
     {
-        protected internal Dictionary<IDNumber, Player> players;
-        protected internal Dictionary<IDNumber, Round> rounds;
-        protected internal Dictionary<IDNumber, Team> teams;
-        private Dictionary<Type, Action<Event>> eventActions;
-        private FuncThreader matchThreader;
+        private Dictionary<Type, List<MBCEventHandler>> eventActions;
+        private EventDriver eventDriver;
+        private Dictionary<IDNumber, Register> registers;
+        private Dictionary<IDNumber, Round> rounds;
+        private Dictionary<IDNumber, Team> teams;
 
         public Match()
         {
-            players = new Dictionary<IDNumber, Player>();
+            registers = new Dictionary<IDNumber, Register>();
             rounds = new Dictionary<IDNumber, Round>();
             teams = new Dictionary<IDNumber, Team>();
-            eventActions = new Dictionary<Type, Action<Event>>();
-            matchThreader = new FuncThreader(new Action(Play));
+            eventActions = new Dictionary<Type, List<MBCEventHandler>>();
+            eventDriver = new EventDriver();
+            eventDriver.EventApplied += ReflectEvent;
             ID = (int)DateTime.Now.Subtract(new DateTime(1970, 1, 1, 0, 0, 0)).TotalSeconds;
 
-            eventActions.Add(typeof(MatchBeginEvent), MatchBegin);
-            eventActions.Add(typeof(MatchAddPlayerEvent), MatchAddPlayer);
-            eventActions.Add(typeof(MatchConfigChangedEvent), MatchConfigChanged);
-            eventActions.Add(typeof(MatchPlayerAssignEvent), MatchPlayerAssign);
-            eventActions.Add(typeof(MatchTeamCreateEvent), MatchTeamCreate);
-            eventActions.Add(typeof(MatchRemovePlayerEvent), MatchRemovePlayer);
-            eventActions.Add(typeof(RoundBeginEvent), RoundBegin);
+            AddEventAction(typeof(MatchBeginEvent), MatchBegin);
+            AddEventAction(typeof(MatchAddPlayerEvent), MatchAddPlayer);
+            AddEventAction(typeof(MatchConfigChangedEvent), MatchConfigChanged);
+            AddEventAction(typeof(PlayerTeamAssignEvent), MatchPlayerAssign);
+            AddEventAction(typeof(PlayerTeamUnassignEvent), MatchPlayerUnassign);
+            AddEventAction(typeof(MatchTeamCreateEvent), MatchTeamCreate);
+            AddEventAction(typeof(MatchRemovePlayerEvent), MatchRemovePlayer);
         }
 
         public MatchConfig CompiledConfig
@@ -63,11 +64,11 @@ namespace MBC.Core.Matches
             protected set;
         }
 
-        public IDictionary<IDNumber, Player> Players
+        public IDictionary<IDNumber, Register> Registers
         {
             get
             {
-                return players;
+                return registers;
             }
         }
 
@@ -87,33 +88,48 @@ namespace MBC.Core.Matches
             }
         }
 
-        public abstract void Play();
-
-        public void PlayThread()
+        protected EventDriver EventDriver
         {
-            matchThreader.Run();
+            get
+            {
+                return eventDriver;
+            }
+        }
+
+        public void AddEventAction(Type typeOfEvent, MBCEventHandler eventAction)
+        {
+            if (!eventActions.ContainsKey(typeOfEvent))
+            {
+                eventActions[typeOfEvent] = new List<MBCEventHandler>();
+            }
+            eventActions[typeOfEvent].Add(eventAction);
         }
 
         public void SaveToFile(File fLocation)
         {
         }
 
-        public abstract void Stop();
+        protected void ApplyEvent(Event ev)
+        {
+            eventDriver.ApplyEvent(ev);
+        }
 
         protected virtual void ReflectEvent(Event ev)
         {
             var eventType = ev.GetType();
             if (eventActions.ContainsKey(eventType))
             {
-                eventActions[eventType](ev);
+                foreach (MBCEventHandler action in eventActions[eventType])
+                {
+                    action(ev);
+                }
             }
         }
 
         private void MatchAddPlayer(Event ev)
         {
             var addPlayerEvent = (MatchAddPlayerEvent)ev;
-            var newPlayer = new Player(addPlayerEvent.PlayerID, addPlayerEvent.PlayerName);
-            players[addPlayerEvent.PlayerID] = newPlayer;
+            registers[addPlayerEvent.PlayerID] = new Register(addPlayerEvent.PlayerID, addPlayerEvent.PlayerName);
         }
 
         private void MatchBegin(Event ev)
@@ -128,36 +144,33 @@ namespace MBC.Core.Matches
 
         private void MatchPlayerAssign(Event ev)
         {
-            var assignEvent = (MatchPlayerAssignEvent)ev;
-            var plr = players[assignEvent.PlayerID];
-            var team = teams[assignEvent.TeamID];
+            var assignEvent = (PlayerTeamAssignEvent)ev;
 
-            if (plr.Team != null)
-            {
-                plr.Team.Members.Remove(assignEvent.PlayerID);
-            }
+            teams[assignEvent.TeamID].Members.Add(assignEvent.PlayerID);
+        }
 
-            team.Members.Add(assignEvent.PlayerID);
-            plr.Team = team;
+        private void MatchPlayerUnassign(Event ev)
+        {
+            var unassignEvent = (PlayerTeamUnassignEvent)ev;
+
+            teams[unassignEvent.TeamID].Members.Add(unassignEvent.PlayerID);
         }
 
         private void MatchRemovePlayer(Event ev)
         {
             var removeEvent = (MatchRemovePlayerEvent)ev;
 
-            players[removeEvent.PlayerID].Team.Members.Remove(removeEvent.PlayerID);
-            players.Remove(removeEvent.PlayerID);
+            registers.Remove(removeEvent.PlayerID);
+            foreach (var team in teams)
+            {
+                team.Value.Members.Remove(removeEvent.PlayerID);
+            }
         }
 
         private void MatchTeamCreate(Event ev)
         {
-            MatchTeamCreateEvent teamCreateEvent = (MatchTeamCreateEvent)ev;
+            var teamCreateEvent = (MatchTeamCreateEvent)ev;
             teams[teamCreateEvent.TeamID] = new Team(teamCreateEvent.TeamID, teamCreateEvent.TeamName);
-        }
-
-        private void RoundBegin(Event ev)
-        {
-            rounds.Add(((RoundBeginEvent)ev).RoundID, new Round());
         }
     }
 }

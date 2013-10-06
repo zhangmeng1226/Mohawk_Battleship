@@ -44,8 +44,7 @@
   <ItemGroup>
     <Compile Include="Accolades\Accolade.cs" />
     <Compile Include="Accolades\AccoladeGenerator.cs" />
-    <Compile Include="Events\EventCollector.cs" />
-    <Compile Include="Events\IEventActor.cs" />
+    <Compile Include="Events\EventDrivenObject.cs" />
     <Compile Include="Events\IEventGenerator.cs" />
     <Compile Include="Events\MatchAddPlayerEvent.cs" />
     <Compile Include="Events\MatchConfigChangedEvent.cs" />
@@ -56,7 +55,6 @@
     <Compile Include="Events\RoundPlayerActionEvent.cs" />
     <Compile Include="Matches\ActiveMatch.cs" />
     <Compile Include="Matches\LoadedMatch.cs" />
-    <Compile Include="Matches\MatchData.cs" />
     <Compile Include="Matches\SimpleMatch.cs" />
     <Compile Include="Players\ControlledPlayer.cs" />
     <Compile Include="Rounds\RoundData.cs" />
@@ -82,7 +80,7 @@
     <Compile Include="Events\PlayerEvent.cs" />
     <Compile Include="Events\RoundEndEvent.cs" />
     <Compile Include="Events\RoundEvent.cs" />
-    <Compile Include="Matches\Match.cs" />
+    <Compile Include="Matches\MatchData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Rounds\Round.cs" />
     <Compile Include="Threading\FuncThreader.cs" />

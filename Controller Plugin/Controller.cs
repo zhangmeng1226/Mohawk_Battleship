@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Security.Permissions;
 
 namespace MBC.Shared
@@ -24,12 +25,39 @@ namespace MBC.Shared
 
         public FieldInfo Field { get; set; }
 
+        public IDNumber ID { get; set; }
+
         public MatchConfig Match { get; set; }
 
-        /// <summary>
-        /// Gets or sets the <see cref="Register"/>.
-        /// </summary>
-        public Register Register { get; set; }
+        public Register MyRegister
+        {
+            get
+            {
+                foreach (var register in Registers)
+                {
+                    if (register.Value.ID == ID)
+                    {
+                        return register.Value;
+                    }
+                }
+                return null;
+            }
+        }
+
+        public Team MyTeam
+        {
+            get
+            {
+                foreach (var team in Teams)
+                {
+                    if (team.Value.Members.Contains(ID))
+                    {
+                        return team.Value;
+                    }
+                }
+                return null;
+            }
+        }
 
         public Dictionary<IDNumber, Register> Registers
         {
@@ -37,9 +65,7 @@ namespace MBC.Shared
             set;
         }
 
-        public Team Team { get; set; }
-
-        public List<Team> Teams
+        public Dictionary<IDNumber, Team> Teams
         {
             get;
             set;
@@ -47,15 +73,7 @@ namespace MBC.Shared
 
         public List<IDNumber> AllOpponents()
         {
-            List<IDNumber> opponents = new List<IDNumber>();
-            foreach (var team in Teams)
-            {
-                foreach (var member in team.Members)
-                {
-                    opponents.Add(member);
-                }
-            }
-            return opponents;
+            throw new NotImplementedException();
         }
 
         public abstract Shot MakeShot();

@@ -3,15 +3,15 @@ using MBC.Shared;
 
 namespace MBC.Core.Events
 {
-    public class MatchPlayerAssignEvent : Event
+    public class PlayerTeamUnassignEvent : Event
     {
-        public MatchPlayerAssignEvent(IDNumber player, IDNumber teamAssigned)
+        public PlayerTeamUnassignEvent(IDNumber player, IDNumber teamAssigned)
         {
             PlayerID = player;
             TeamID = teamAssigned;
         }
 
-        public MatchPlayerAssignEvent(SerializationInfo info, StreamingContext context)
+        public PlayerTeamUnassignEvent(SerializationInfo info, StreamingContext context)
         {
         }
 

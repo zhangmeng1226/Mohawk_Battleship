@@ -15,14 +15,22 @@ namespace MBC.Core.Matches
 
         public ActiveMatch(Configuration conf)
         {
+            controllers = new Dictionary<IDNumber, ControlledPlayer>();
+            progressRounds = new Dictionary<IDNumber, Round>();
+
+            ApplyEvent(new MatchBeginEvent(ID));
             SetConfiguration(conf);
-            GenerateEvent(new MatchBeginEvent(ID));
+
+            AddEventAction(typeof(MatchAddPlayerEvent), MatchAddPlayer);
+            AddEventAction(typeof(MatchRemovePlayerEvent), MatchRemovePlayer);
+            AddEventAction(typeof(PlayerTeamAssignEvent), PlayerTeamAssign);
+            AddEventAction(typeof(PlayerTeamUnassignEvent), PlayerTeamUnassign);
+            AddEventAction(typeof(MatchTeamCreateEvent), MatchTeamCreate);
         }
 
         public ActiveMatch()
+            : this(Configuration.Global)
         {
-            SetConfiguration(Configuration.Global);
-            GenerateEvent(new MatchBeginEvent(ID));
         }
 
         public Configuration Config
@@ -39,7 +47,7 @@ namespace MBC.Core.Matches
                 {
                     controllers[i] = plr;
                     plr.NewMatch();
-                    GenerateEvent(new MatchAddPlayerEvent(plr.Register.ID, plr.Register.Name));
+                    ApplyEvent(new MatchAddPlayerEvent(i, plr.Skeleton.Name));
                     return;
                 }
             }
@@ -48,10 +56,10 @@ namespace MBC.Core.Matches
         public void End()
         {
             Stop();
-            GenerateEvent(new MatchEndEvent());
+            ApplyEvent(new MatchEndEvent());
         }
 
-        public override void Play()
+        public virtual void Play()
         {
             IsPlaying = true;
             while (IsPlaying)
@@ -67,41 +75,104 @@ namespace MBC.Core.Matches
         public void SetConfiguration(Configuration config)
         {
             Config = config;
-            CompiledConfig = new MatchConfig();
-            CompiledConfig.FieldSize = new Coordinates(Config.GetValue<int>("mbc_field_width"), Config.GetValue<int>("mbc_field_height"));
-            CompiledConfig.NumberOfRounds = Config.GetValue<int>("mbc_match_rounds");
+            var newConfig = new MatchConfig();
+            newConfig.FieldSize = new Coordinates(Config.GetValue<int>("mbc_field_width"), Config.GetValue<int>("mbc_field_height"));
+            newConfig.NumberOfRounds = Config.GetValue<int>("mbc_match_rounds");
 
-            CompiledConfig.StartingShips = new ShipList();
+            newConfig.StartingShips = new ShipList();
             foreach (var length in Config.GetList<int>("mbc_ship_sizes"))
             {
-                CompiledConfig.StartingShips.Add(new Ship(length));
+                newConfig.StartingShips.Add(new Ship(length));
             }
 
-            CompiledConfig.TimeLimit = Config.GetValue<int>("mbc_player_thread_timeout");
+            newConfig.TimeLimit = Config.GetValue<int>("mbc_player_thread_timeout");
 
-            CompiledConfig.GameMode = 0;
+            newConfig.GameMode = 0;
             foreach (var mode in Config.GetList<GameMode>("mbc_game_mode"))
             {
-                CompiledConfig.GameMode |= mode;
+                newConfig.GameMode |= mode;
             }
-            if (!CompiledConfig.GameMode.HasFlag(GameMode.Classic))
+            if (!newConfig.GameMode.HasFlag(GameMode.Classic))
             {
-                throw new NotImplementedException("The " + CompiledConfig.GameMode.ToString() + " game mode is not supported.");
+                throw new NotImplementedException("The " + newConfig.GameMode.ToString() + " game mode is not supported.");
             }
-            GenerateEvent(new MatchConfigChangedEvent(CompiledConfig));
+            ApplyEvent(new MatchConfigChangedEvent(newConfig));
         }
 
-        public override void Stop()
+        public virtual void SetControllerToTeam(IDNumber ctrl, IDNumber team)
+        {
+            if (!controllers.ContainsKey(ctrl))
+            {
+                throw new ArgumentException("Controller ID number " + ctrl + " does not exist in the current match.");
+            }
+            if (!Teams.ContainsKey(team))
+            {
+                throw new ArgumentException("Team ID number " + team + " does not exist in the current match.");
+            }
+            ApplyEvent(new PlayerTeamAssignEvent(ctrl, team));
+        }
+
+        public virtual void Stop()
         {
             IsPlaying = false;
         }
 
-        protected virtual Round CreateNewRound()
+        public virtual void UnsetControllerFromTeam(IDNumber ctrl, IDNumber team)
         {
-            if (CompiledConfig.GameMode.HasFlag(GameMode.Classic))
+            if (!controllers.ContainsKey(ctrl))
             {
-                return new ClassicRound(this);
+                throw new ArgumentException("Controller ID number " + ctrl + " does not exist in the current match.");
             }
+            if (!Teams.ContainsKey(team))
+            {
+                throw new ArgumentException("Team ID number " + team + " does not exist in the current match.");
+            }
+            ApplyEvent(new PlayerTeamUnassignEvent(ctrl, team));
+        }
+
+        private void ControllersUpdateRegisters()
+        {
+            foreach (var controller in controllers)
+            {
+                controller.Value.Registers = (Dictionary<IDNumber, Register>)Registers;
+            }
+        }
+
+        private void ControllersUpdateTeams()
+        {
+            foreach (var controller in controllers)
+            {
+                controller.Value.Teams = (Dictionary<IDNumber, Team>)Teams;
+            }
+        }
+
+        private void MatchAddPlayer(Event ev)
+        {
+            var addPlayer = (MatchAddPlayerEvent)ev;
+            ControllersUpdateRegisters();
+        }
+
+        private void MatchRemovePlayer(Event ev)
+        {
+            var removePlayer = (MatchAddPlayerEvent)ev;
+            controllers.Remove(removePlayer.PlayerID);
+            ControllersUpdateRegisters();
+        }
+
+        private void MatchTeamCreate(Event ev)
+        {
+            var teamCreate = (MatchTeamCreateEvent)ev;
+            ControllersUpdateTeams();
+        }
+
+        private void PlayerTeamAssign(Event ev)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void PlayerTeamUnassign(Event ev)
+        {
+            throw new NotImplementedException();
         }
     }
 }

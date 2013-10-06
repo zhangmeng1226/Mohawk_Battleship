@@ -11,13 +11,13 @@ namespace MBC.Core
     {
         private Controller controller;
 
-        private ControllerSkeleton controllerInfo;
+        private ControllerSkeleton skeleton;
 
         private TimedThreader threader;
 
         public ControlledPlayer(ControllerSkeleton targetController)
         {
-            controllerInfo = targetController;
+            skeleton = targetController;
 
             controller = (Controller)Activator.CreateInstance(targetController.Controller);
             controller.ControllerMessageEvent += ReceiveMessage;
@@ -30,14 +30,6 @@ namespace MBC.Core
         /// </summary>
         public event StringOutputHandler ControllerMessageEvent;
 
-        public ControllerSkeleton ControllerInfo
-        {
-            get
-            {
-                return controllerInfo;
-            }
-        }
-
         public FieldInfo Field
         {
             get
@@ -47,6 +39,18 @@ namespace MBC.Core
             set
             {
                 controller.Field = new FieldInfo(value);
+            }
+        }
+
+        public IDNumber ID
+        {
+            get
+            {
+                return controller.ID;
+            }
+            set
+            {
+                controller.ID = value;
             }
         }
 
@@ -62,18 +66,6 @@ namespace MBC.Core
             }
         }
 
-        public Register Register
-        {
-            get
-            {
-                return controller.Register;
-            }
-            set
-            {
-                controller.Register = new Register(value);
-            }
-        }
-
         public Dictionary<IDNumber, Register> Registers
         {
             get
@@ -82,23 +74,23 @@ namespace MBC.Core
             }
             set
             {
-                controller.Registers = new Dictionary<IDNumber, Register>(value);
+                controller.Registers = new Dictionary<IDNumber, Register>();
+                foreach (var register in value)
+                {
+                    controller.Registers.Add(register.Key, new Register(register.Value));
+                }
             }
         }
 
-        public Team Team
+        public ControllerSkeleton Skeleton
         {
             get
             {
-                return controller.Team;
-            }
-            set
-            {
-                controller.Team = new Team(value);
+                return skeleton;
             }
         }
 
-        public List<Team> Teams
+        public Dictionary<IDNumber, Team> Teams
         {
             get
             {
@@ -106,7 +98,11 @@ namespace MBC.Core
             }
             set
             {
-                controller.Teams = new List<Team>(value);
+                controller.Teams = new Dictionary<IDNumber, Team>();
+                foreach (var team in value)
+                {
+                    controller.Teams.Add(team.Key, new Team(team.Value));
+                }
             }
         }
 
@@ -196,7 +192,7 @@ namespace MBC.Core
 
         public override string ToString()
         {
-            return controllerInfo.ToString();
+            return skeleton.ToString();
         }
 
         /// <summary>

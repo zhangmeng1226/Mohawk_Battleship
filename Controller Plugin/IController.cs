@@ -1,4 +1,6 @@
-﻿namespace MBC.Shared
+﻿using System.Collections.Generic;
+
+namespace MBC.Shared
 {
     /// <summary>
     /// Defines a method that receives a string.
@@ -15,11 +17,13 @@
 
         FieldInfo Field { get; set; }
 
+        IDNumber ID { get; set; }
+
         MatchConfig Match { get; set; }
 
-        Register Register { get; set; }
+        Dictionary<IDNumber, Register> Registers { get; set; }
 
-        Team Team { get; set; }
+        Dictionary<IDNumber, Team> Teams { get; set; }
 
         /// <summary>
         /// Called when required to create and return a <see cref="Shot"/>. Refer to the rules of the

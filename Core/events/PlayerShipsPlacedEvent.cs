@@ -25,12 +25,6 @@ namespace MBC.Core.Events
         {
         }
 
-        public ShipList PrevShips
-        {
-            get;
-            private set;
-        }
-
         /// <summary>
         /// Gets the <see cref="ShipList"/> of the <see cref="Controller.Register"/>.
         /// </summary>
