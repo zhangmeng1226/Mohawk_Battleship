@@ -14,7 +14,8 @@ namespace MBC.Core.Events
             MatchID = matchID;
         }
 
-        private MatchBeginEvent(SerializationInfo info, StreamingContext context)
+        protected MatchBeginEvent(SerializationInfo info, StreamingContext context)
+            : base(info, context)
         {
         }
 
@@ -24,8 +25,9 @@ namespace MBC.Core.Events
             private set;
         }
 
-        private void GetObjectData(SerializationInfo info, StreamingContext context)
+        protected override void GetObjectData(SerializationInfo info, StreamingContext context)
         {
+            base.GetObjectData(info, context);
         }
     }
 }

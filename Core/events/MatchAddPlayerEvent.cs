@@ -11,7 +11,8 @@ namespace MBC.Core.Events
             PlayerName = plrName;
         }
 
-        private MatchAddPlayerEvent(SerializationInfo info, StreamingContext context)
+        protected MatchAddPlayerEvent(SerializationInfo info, StreamingContext context)
+            : base(info, context)
         {
         }
 
@@ -27,8 +28,9 @@ namespace MBC.Core.Events
             private set;
         }
 
-        private void GetObjectData(SerializationInfo info, StreamingContext context)
+        protected override void GetObjectData(SerializationInfo info, StreamingContext context)
         {
+            base.GetObjectData(info, context);
         }
     }
 }

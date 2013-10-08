@@ -34,6 +34,14 @@ namespace MBC.Core.Events
 
         public event MBCSaveStateRequest StateSaveRequest;
 
+        public bool AtEnd
+        {
+            get
+            {
+                return currentEventIdx == events.Count - 1;
+            }
+        }
+
         public bool IsRunning
         {
             get;

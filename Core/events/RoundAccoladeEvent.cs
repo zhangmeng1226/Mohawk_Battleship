@@ -6,7 +6,7 @@ using MBC.Shared;
 namespace MBC.Core.Events
 {
     /// <summary>
-    /// Provides information about a <see cref="Round"/> that has an <see cref="Accolade"/> added to it.
+    /// Provides information about a <see cref="GameLogic"/> that has an <see cref="Accolade"/> added to it.
     /// </summary>
     public class RoundAccoladeEvent : RoundEvent
     {
@@ -15,7 +15,7 @@ namespace MBC.Core.Events
         /// <summary>
         /// Passes the <paramref name="round"/> to the base constructor and stores the <paramref name="accolade"/>.
         /// </summary>
-        /// <param name="round">The <see cref="Round"/> that has had the <paramref name="accolade"/> added.</param>
+        /// <param name="round">The <see cref="GameLogic"/> that has had the <paramref name="accolade"/> added.</param>
         /// <param name="accolade">The <see cref="Accolade"/> added to the <paramref name="round"/>.</param>
         public RoundAccoladeEvent(IDNumber roundID, Accolade accolade)
             : base(roundID)
@@ -23,7 +23,8 @@ namespace MBC.Core.Events
             this.accolade = accolade;
         }
 
-        private RoundAccoladeEvent(SerializationInfo info, StreamingContext context)
+        protected RoundAccoladeEvent(SerializationInfo info, StreamingContext context)
+            : base(info, context)
         {
         }
 
@@ -38,8 +39,9 @@ namespace MBC.Core.Events
             }
         }
 
-        private void GetObjectData(SerializationInfo info, StreamingContext context)
+        protected override void GetObjectData(SerializationInfo info, StreamingContext context)
         {
+            base.GetObjectData(info, context);
         }
     }
 }

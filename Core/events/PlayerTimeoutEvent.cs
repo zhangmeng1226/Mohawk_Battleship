@@ -22,7 +22,8 @@ namespace MBC.Core.Events
             Method = exception.MethodName;
         }
 
-        private PlayerTimeoutEvent(SerializationInfo info, StreamingContext context)
+        protected PlayerTimeoutEvent(SerializationInfo info, StreamingContext context)
+            : base(info, context)
         {
         }
 
@@ -45,8 +46,9 @@ namespace MBC.Core.Events
             private set;
         }
 
-        private void GetObjectData(SerializationInfo info, StreamingContext context)
+        protected override void GetObjectData(SerializationInfo info, StreamingContext context)
         {
+            base.GetObjectData(info, context);
         }
     }
 }

@@ -15,75 +15,13 @@ namespace MBC.Core
     /// </summary>
     public class ControllerSkeleton
     {
-        private AcademicInfoAttribute academicAttrib;
-        private AuthorAttribute authorAttrib;
-        private CapabilitiesAttribute capableAttrib;
-        private Type controllerInterface;
-        private DescriptionAttribute descAttrib;
+        private Dictionary<Type, ControllerAttribute> attributes;
+        private Type controllerClass;
         private string dllFile;
-        private NameAttribute nameAttrib;
-        private VersionAttribute verAttrib;
 
-        /// <summary>
-        /// Copies the given parameters to the internal members.
-        /// </summary>
-        /// <param name="name">The <see cref="NameAttribute"/> set on a <see cref="Controller"/>.</param>
-        /// <param name="ver">The <see cref="VersionAttribute"/> se on a <see cref="Controller"/>.</param>
-        /// <param name="desc">The <see cref="DescriptionAttribute"/> set on a <see cref="Controller"/>.</param>
-        /// <param name="auth">The <see cref="AuthorAttribute"/> set on a <see cref="Controller"/>.</param>
-        /// <param name="academic">The <see cref="AcademicInfoAttribute"/> set on a <see cref="Controller"/>.</param>
-        /// <param name="capabilities">The <see cref="CapabilitiesAttribute"/> set on a
-        /// <see cref="Controller"/>.</param>
-        /// <param name="dll">A string of the absolute path to the library file the <see cref="Controller"/>
-        /// was loaded from.</param>
-        /// <param name="inter">The <see cref="Type"/> that is used to construct <see cref="Controller"/>s</param>.
-        public ControllerSkeleton(NameAttribute name, VersionAttribute ver, DescriptionAttribute desc,
-            AuthorAttribute auth, AcademicInfoAttribute academic, CapabilitiesAttribute capabilities,
-            string dll, Type inter)
+        private ControllerSkeleton()
         {
-            this.nameAttrib = name;
-            this.verAttrib = ver;
-            this.descAttrib = desc;
-            this.authorAttrib = auth;
-            this.academicAttrib = academic;
-            this.capableAttrib = capabilities;
-            this.dllFile = dll;
-            this.controllerInterface = inter;
-        }
-
-        /// <summary>
-        /// Gets the <see cref="AcademicInfoAttribute"/>.
-        /// </summary>
-        /// <seealso cref="AcademicInfoAttribute"/>
-        public AcademicInfoAttribute AcademicInfo
-        {
-            get
-            {
-                return academicAttrib;
-            }
-        }
-
-        /// <summary>
-        /// Gets the <see cref="AuthorAttribute"/>.
-        /// </summary>
-        /// <seealso cref="AuthorAttribute"/>
-        public AuthorAttribute AuthorInfo
-        {
-            get
-            {
-                return authorAttrib;
-            }
-        }
-
-        /// <summary>
-        /// Gets the <see cref="CapabilitiesAttribute"/>.
-        /// </summary>
-        public CapabilitiesAttribute Capabilities
-        {
-            get
-            {
-                return capableAttrib;
-            }
+            attributes = new Dictionary<Type, ControllerAttribute>();
         }
 
         /// <summary>
@@ -93,18 +31,7 @@ namespace MBC.Core
         {
             get
             {
-                return controllerInterface;
-            }
-        }
-
-        /// <summary>
-        /// Gets a string containing the description.
-        /// </summary>
-        public string Description
-        {
-            get
-            {
-                return descAttrib.Description;
+                return controllerClass;
             }
         }
 
@@ -116,28 +43,6 @@ namespace MBC.Core
             get
             {
                 return dllFile;
-            }
-        }
-
-        /// <summary>
-        /// Gets a string representing the name.
-        /// </summary>
-        public string Name
-        {
-            get
-            {
-                return nameAttrib.Name;
-            }
-        }
-
-        /// <summary>
-        /// Gets the version.
-        /// </summary>
-        public Version Version
-        {
-            get
-            {
-                return verAttrib.Version;
             }
         }
 
@@ -167,13 +72,16 @@ namespace MBC.Core
                             //Split the absolute path. We only want the name of the DLL file.
                             string[] pathSplit = filePath.Split('\\');
 
-                            ControllerSkeleton info = new ControllerSkeleton(nameAttrib, verAttrib,
-                                (DescriptionAttribute)cont.GetCustomAttributes(typeof(DescriptionAttribute), false)[0],
-                                (AuthorAttribute)cont.GetCustomAttributes(typeof(AuthorAttribute), false)[0],
-                                (AcademicInfoAttribute)cont.GetCustomAttributes(typeof(AcademicInfoAttribute), false)[0],
-                                capAttrib,
-                                pathSplit[pathSplit.Count() - 1],
-                                cont);
+                            ControllerSkeleton info = new ControllerSkeleton();
+                            info.controllerClass = cont;
+                            info.dllFile = pathSplit[pathSplit.Count() - 1];
+                            foreach (var attribute in cont.GetCustomAttributes(false))
+                            {
+                                if (attribute is ControllerAttribute)
+                                {
+                                    info.attributes[attribute.GetType()] = (ControllerAttribute)attribute;
+                                }
+                            }
                             results.Add(info);
                         }
                     }
@@ -210,12 +118,17 @@ namespace MBC.Core
             return results;
         }
 
+        public T GetAttribute<T>()
+        {
+            return (T)((object)attributes[typeof(T)]);
+        }
+
         /// <summary>
         /// Generates a string that may be used as a display name, from the name and version.
         /// </summary>
         public override string ToString()
         {
-            return Name + " v(" + Version.ToString() + ")";
+            return GetAttribute<NameAttribute>() + " v(" + GetAttribute<VersionAttribute>() + ")";
         }
     }
 }

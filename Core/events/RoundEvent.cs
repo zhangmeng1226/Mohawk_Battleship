@@ -1,10 +1,11 @@
-﻿using MBC.Core.Rounds;
+﻿using System.Runtime.Serialization;
+using MBC.Core.Rounds;
 using MBC.Shared;
 
 namespace MBC.Core.Events
 {
     /// <summary>
-    /// The base class for a series of <see cref="Event"/>s that relate to changes in a <see cref="Round"/>.
+    /// The base class for a series of <see cref="Event"/>s that relate to changes in a <see cref="GameLogic"/>.
     /// </summary>
     public abstract class RoundEvent : Event
     {
@@ -12,7 +13,8 @@ namespace MBC.Core.Events
         {
         }
 
-        protected RoundEvent()
+        protected RoundEvent(SerializationInfo info, StreamingContext context)
+            : base(info, context)
         {
         }
 
@@ -20,6 +22,11 @@ namespace MBC.Core.Events
         {
             get;
             private set;
+        }
+
+        protected override void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            base.GetObjectData(info, context);
         }
     }
 }

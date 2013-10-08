@@ -5,7 +5,7 @@ using MBC.Shared;
 namespace MBC.Core.Events
 {
     /// <summary>
-    /// Provides information about a <see cref="Register"/> that had lost a <see cref="Round"/>.
+    /// Provides information about a <see cref="Register"/> that had lost a <see cref="GameLogic"/>.
     /// </summary>
     public class PlayerLostEvent : PlayerEvent
     {
@@ -15,11 +15,13 @@ namespace MBC.Core.Events
         }
 
         private PlayerLostEvent(SerializationInfo info, StreamingContext context)
+            : base(info, context)
         {
         }
 
-        private void GetObjectData(SerializationInfo info, StreamingContext context)
+        protected override void GetObjectData(SerializationInfo info, StreamingContext context)
         {
+            base.GetObjectData(info, context);
         }
     }
 }

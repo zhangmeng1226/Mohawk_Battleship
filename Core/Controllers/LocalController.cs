@@ -3,19 +3,19 @@ using System.Collections.Generic;
 using MBC.Core.Threading;
 using MBC.Core.Util;
 using MBC.Shared;
+using MBC.Shared.Attributes;
 
-namespace MBC.Core
+namespace MBC.Core.Controllers
 {
     [Configuration("mbc_player_timeout", 500)]
-    public class ControlledPlayer : IController
+    public class LocalController : ControllerHandler
     {
-        private Controller controller;
+        private IController controller;
 
         private ControllerSkeleton skeleton;
-
         private TimedThreader threader;
 
-        public ControlledPlayer(ControllerSkeleton targetController)
+        public LocalController(ControllerSkeleton targetController)
         {
             skeleton = targetController;
 
@@ -104,6 +104,11 @@ namespace MBC.Core
                     controller.Teams.Add(team.Key, new Team(team.Value));
                 }
             }
+        }
+
+        public T GetAttribute<T>()
+        {
+            return skeleton.GetAttribute<T>();
         }
 
         public Shot MakeShot()

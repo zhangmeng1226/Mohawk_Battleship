@@ -12,12 +12,14 @@ namespace MBC.Core.Events
         {
         }
 
-        private MatchEndEvent(SerializationInfo info, StreamingContext context)
+        protected MatchEndEvent(SerializationInfo info, StreamingContext context)
+            : base(info, context)
         {
         }
 
-        private void GetObjectData(SerializationInfo info, StreamingContext context)
+        protected override void GetObjectData(SerializationInfo info, StreamingContext context)
         {
+            base.GetObjectData(info, context);
         }
     }
 }

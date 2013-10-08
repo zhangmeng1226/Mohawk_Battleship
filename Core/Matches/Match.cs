@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using MBC.Core.Events;
-using MBC.Core.Players;
 using MBC.Core.Rounds;
-using MBC.Core.Threading;
 using MBC.Core.Util;
 using MBC.Shared;
 
@@ -21,47 +19,51 @@ namespace MBC.Core.Matches
     [Configuration("mbc_match_rounds", 100)]
     public abstract class Match
     {
+        private Dictionary<IDNumber, FieldInfo> currentFields;
         private Dictionary<Type, List<MBCEventHandler>> eventActions;
-        private EventDriver eventDriver;
         private Dictionary<IDNumber, Register> registers;
-        private Dictionary<IDNumber, Round> rounds;
         private Dictionary<IDNumber, Team> teams;
 
         public Match()
         {
             registers = new Dictionary<IDNumber, Register>();
-            rounds = new Dictionary<IDNumber, Round>();
             teams = new Dictionary<IDNumber, Team>();
+            currentFields = new Dictionary<IDNumber, FieldInfo>();
             eventActions = new Dictionary<Type, List<MBCEventHandler>>();
-            eventDriver = new EventDriver();
-            eventDriver.EventApplied += ReflectEvent;
             ID = (int)DateTime.Now.Subtract(new DateTime(1970, 1, 1, 0, 0, 0)).TotalSeconds;
 
             AddEventAction(typeof(MatchBeginEvent), MatchBegin);
             AddEventAction(typeof(MatchAddPlayerEvent), MatchAddPlayer);
             AddEventAction(typeof(MatchConfigChangedEvent), MatchConfigChanged);
-            AddEventAction(typeof(PlayerTeamAssignEvent), MatchPlayerAssign);
-            AddEventAction(typeof(PlayerTeamUnassignEvent), MatchPlayerUnassign);
             AddEventAction(typeof(MatchTeamCreateEvent), MatchTeamCreate);
             AddEventAction(typeof(MatchRemovePlayerEvent), MatchRemovePlayer);
+            AddEventAction(typeof(PlayerShipDestroyedEvent), PlayerShipDestroyed);
+            AddEventAction(typeof(PlayerShipsPlacedEvent), PlayerShipsPlaced);
+            AddEventAction(typeof(PlayerShotEvent), PlayerShot);
+            AddEventAction(typeof(PlayerTeamAssignEvent), MatchPlayerAssign);
+            AddEventAction(typeof(PlayerTeamUnassignEvent), MatchPlayerUnassign);
+            AddEventAction(typeof(PlayerWonEvent), PlayerWon);
+            AddEventAction(typeof(RoundBeginEvent), RoundBegin);
         }
 
         public MatchConfig CompiledConfig
         {
             get;
-            protected internal set;
+            private set;
+        }
+
+        public IDictionary<IDNumber, FieldInfo> Fields
+        {
+            get
+            {
+                return currentFields;
+            }
         }
 
         public IDNumber ID
         {
             get;
-            protected internal set;
-        }
-
-        public bool IsPlaying
-        {
-            get;
-            protected set;
+            private set;
         }
 
         public IDictionary<IDNumber, Register> Registers
@@ -72,27 +74,11 @@ namespace MBC.Core.Matches
             }
         }
 
-        public IDictionary<IDNumber, Round> Rounds
-        {
-            get
-            {
-                return rounds;
-            }
-        }
-
         public IDictionary<IDNumber, Team> Teams
         {
             get
             {
                 return teams;
-            }
-        }
-
-        protected EventDriver EventDriver
-        {
-            get
-            {
-                return eventDriver;
             }
         }
 
@@ -105,14 +91,9 @@ namespace MBC.Core.Matches
             eventActions[typeOfEvent].Add(eventAction);
         }
 
-        public void SaveToFile(File fLocation)
-        {
-        }
+        public abstract void Play();
 
-        protected void ApplyEvent(Event ev)
-        {
-            eventDriver.ApplyEvent(ev);
-        }
+        public abstract void SaveToFile(File location);
 
         protected virtual void ReflectEvent(Event ev)
         {
@@ -129,6 +110,7 @@ namespace MBC.Core.Matches
         private void MatchAddPlayer(Event ev)
         {
             var addPlayerEvent = (MatchAddPlayerEvent)ev;
+            currentFields[addPlayerEvent.PlayerID] = new FieldInfo();
             registers[addPlayerEvent.PlayerID] = new Register(addPlayerEvent.PlayerID, addPlayerEvent.PlayerName);
         }
 
@@ -153,7 +135,7 @@ namespace MBC.Core.Matches
         {
             var unassignEvent = (PlayerTeamUnassignEvent)ev;
 
-            teams[unassignEvent.TeamID].Members.Add(unassignEvent.PlayerID);
+            teams[unassignEvent.TeamID].Members.Remove(unassignEvent.PlayerID);
         }
 
         private void MatchRemovePlayer(Event ev)
@@ -171,6 +153,39 @@ namespace MBC.Core.Matches
         {
             var teamCreateEvent = (MatchTeamCreateEvent)ev;
             teams[teamCreateEvent.TeamID] = new Team(teamCreateEvent.TeamID, teamCreateEvent.TeamName);
+        }
+
+        private void PlayerShipDestroyed(Event ev)
+        {
+            var shipDestroyed = (PlayerShipDestroyedEvent)ev;
+            currentFields[shipDestroyed.Player].ShipsLeft.Remove(shipDestroyed.DestroyedShip);
+        }
+
+        private void PlayerShipsPlaced(Event ev)
+        {
+            var shipsPlaced = (PlayerShipsPlacedEvent)ev;
+            currentFields[shipsPlaced.Player].Ships = shipsPlaced.Ships;
+            currentFields[shipsPlaced.Player].ShipsLeft = shipsPlaced.Ships;
+        }
+
+        private void PlayerShot(Event ev)
+        {
+            var playerShot = (PlayerShotEvent)ev;
+            currentFields[playerShot.Player].Shots.Add(playerShot.Shot);
+            currentFields[playerShot.Shot.Receiver].ShotsAgainst.Add(playerShot.Shot);
+        }
+
+        private void PlayerWon(Event ev)
+        {
+            registers[((PlayerWonEvent)ev).Player].Score++;
+        }
+
+        private void RoundBegin(Event ev)
+        {
+            foreach (var field in currentFields)
+            {
+                currentFields[field.Key] = new FieldInfo();
+            }
         }
     }
 }

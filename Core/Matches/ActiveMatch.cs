@@ -1,31 +1,34 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using MBC.Core.Controllers;
 using MBC.Core.Events;
 using MBC.Core.Rounds;
 using MBC.Core.Util;
 using MBC.Shared;
+using MBC.Shared.Attributes;
 
 namespace MBC.Core.Matches
 {
     public class ActiveMatch : Match
     {
-        private Dictionary<IDNumber, ControlledPlayer> controllers;
-        private Dictionary<IDNumber, Round> progressRounds;
+        protected Dictionary<IDNumber, IController> controllers;
+        protected GameLogic currentRound;
 
         public ActiveMatch(Configuration conf)
         {
-            controllers = new Dictionary<IDNumber, ControlledPlayer>();
-            progressRounds = new Dictionary<IDNumber, Round>();
+            Events = new EventDriver();
+            Events.EventApplied += ReflectEvent;
+            controllers = new Dictionary<IDNumber, IController>();
 
             ApplyEvent(new MatchBeginEvent(ID));
             SetConfiguration(conf);
 
-            AddEventAction(typeof(MatchAddPlayerEvent), MatchAddPlayer);
+            AddEventAction(typeof(MatchAddPlayerEvent), ControllersUpdateRegisters);
             AddEventAction(typeof(MatchRemovePlayerEvent), MatchRemovePlayer);
-            AddEventAction(typeof(PlayerTeamAssignEvent), PlayerTeamAssign);
-            AddEventAction(typeof(PlayerTeamUnassignEvent), PlayerTeamUnassign);
-            AddEventAction(typeof(MatchTeamCreateEvent), MatchTeamCreate);
+            AddEventAction(typeof(PlayerTeamAssignEvent), ControllersUpdateTeams);
+            AddEventAction(typeof(PlayerTeamUnassignEvent), ControllersUpdateTeams);
+            AddEventAction(typeof(MatchTeamCreateEvent), ControllersUpdateTeams);
         }
 
         public ActiveMatch()
@@ -39,7 +42,21 @@ namespace MBC.Core.Matches
             private set;
         }
 
-        public virtual void AddController(ControlledPlayer plr)
+        public IDictionary<IDNumber, IController> Controllers
+        {
+            get
+            {
+                return controllers;
+            }
+        }
+
+        protected EventDriver Events
+        {
+            get;
+            private set;
+        }
+
+        public virtual void AddController(IController plr)
         {
             for (int i = 0; i < controllers.Count + 1; i++)
             {
@@ -47,7 +64,7 @@ namespace MBC.Core.Matches
                 {
                     controllers[i] = plr;
                     plr.NewMatch();
-                    ApplyEvent(new MatchAddPlayerEvent(i, plr.Skeleton.Name));
+                    ApplyEvent(new MatchAddPlayerEvent(i, plr.GetAttribute<NameAttribute>().ToString()));
                     return;
                 }
             }
@@ -65,11 +82,6 @@ namespace MBC.Core.Matches
             while (IsPlaying)
             {
             }
-        }
-
-        public override void SaveToFile(File fLocation)
-        {
-            throw new NotImplementedException();
         }
 
         public void SetConfiguration(Configuration config)
@@ -130,49 +142,38 @@ namespace MBC.Core.Matches
             ApplyEvent(new PlayerTeamUnassignEvent(ctrl, team));
         }
 
-        private void ControllersUpdateRegisters()
+        protected internal void ApplyEvent(Event ev)
         {
-            foreach (var controller in controllers)
+            Events.ApplyEvent(ev);
+        }
+
+        private void ControllersUpdateRegisters(Event ev)
+        {
+            if (Events.AtEnd)
             {
-                controller.Value.Registers = (Dictionary<IDNumber, Register>)Registers;
+                foreach (var controller in controllers)
+                {
+                    controller.Value.Registers = (Dictionary<IDNumber, Register>)Registers;
+                }
             }
         }
 
-        private void ControllersUpdateTeams()
+        private void ControllersUpdateTeams(Event ev)
         {
-            foreach (var controller in controllers)
+            if (Events.AtEnd)
             {
-                controller.Value.Teams = (Dictionary<IDNumber, Team>)Teams;
+                foreach (var controller in controllers)
+                {
+                    controller.Value.Teams = (Dictionary<IDNumber, Team>)Teams;
+                }
             }
-        }
-
-        private void MatchAddPlayer(Event ev)
-        {
-            var addPlayer = (MatchAddPlayerEvent)ev;
-            ControllersUpdateRegisters();
         }
 
         private void MatchRemovePlayer(Event ev)
         {
             var removePlayer = (MatchAddPlayerEvent)ev;
             controllers.Remove(removePlayer.PlayerID);
-            ControllersUpdateRegisters();
-        }
-
-        private void MatchTeamCreate(Event ev)
-        {
-            var teamCreate = (MatchTeamCreateEvent)ev;
-            ControllersUpdateTeams();
-        }
-
-        private void PlayerTeamAssign(Event ev)
-        {
-            throw new NotImplementedException();
-        }
-
-        private void PlayerTeamUnassign(Event ev)
-        {
-            throw new NotImplementedException();
+            ControllersUpdateRegisters(ev);
         }
     }
 }

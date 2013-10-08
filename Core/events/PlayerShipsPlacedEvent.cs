@@ -9,6 +9,8 @@ namespace MBC.Core.Events
     /// </summary>
     public class PlayerShipsPlacedEvent : PlayerEvent
     {
+        private ShipList ships;
+
         /// <summary>
         /// Passes the <paramref name="register"/> to the base constructor, stores the rest of the parameters,
         /// and generates a message based on the state of the given <see cref="ShipList"/>.
@@ -18,10 +20,11 @@ namespace MBC.Core.Events
         public PlayerShipsPlacedEvent(IDNumber plr, ShipList newShips)
             : base(plr)
         {
-            Ships = newShips;
+            ships = newShips;
         }
 
-        private PlayerShipsPlacedEvent(SerializationInfo info, StreamingContext context)
+        protected PlayerShipsPlacedEvent(SerializationInfo info, StreamingContext context)
+            : base(info, context)
         {
         }
 
@@ -30,12 +33,16 @@ namespace MBC.Core.Events
         /// </summary>
         public ShipList Ships
         {
-            get;
+            get
+            {
+                return new ShipList(ships);
+            }
             private set;
         }
 
-        private void GetObjectData(SerializationInfo info, StreamingContext context)
+        protected override void GetObjectData(SerializationInfo info, StreamingContext context)
         {
+            base.GetObjectData(info, context);
         }
     }
 }

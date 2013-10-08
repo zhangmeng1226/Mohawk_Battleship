@@ -11,7 +11,8 @@ namespace MBC.Core.Events
             HitShot = shot;
         }
 
-        private PlayerHitShipEvent(SerializationInfo info, StreamingContext context)
+        protected PlayerHitShipEvent(SerializationInfo info, StreamingContext context)
+            : base(info, context)
         {
         }
 
@@ -21,8 +22,9 @@ namespace MBC.Core.Events
             private set;
         }
 
-        private void GetObjectData(SerializationInfo info, StreamingContext context)
+        protected override void GetObjectData(SerializationInfo info, StreamingContext context)
         {
+            base.GetObjectData(info, context);
         }
     }
 }

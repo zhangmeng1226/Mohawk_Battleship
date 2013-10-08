@@ -10,7 +10,8 @@ namespace MBC.Core.Events
             Config = new MatchConfig(config);
         }
 
-        public MatchConfigChangedEvent(SerializationInfo info, StreamingContext context)
+        protected MatchConfigChangedEvent(SerializationInfo info, StreamingContext context)
+            : base(info, context)
         {
         }
 
@@ -20,8 +21,9 @@ namespace MBC.Core.Events
             private set;
         }
 
-        public void GetObjectData(SerializationInfo info, StreamingContext context)
+        protected override void GetObjectData(SerializationInfo info, StreamingContext context)
         {
+            base.GetObjectData(info, context);
         }
     }
 }

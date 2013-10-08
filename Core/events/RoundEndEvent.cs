@@ -5,7 +5,7 @@ using MBC.Shared;
 namespace MBC.Core.Events
 {
     /// <summary>
-    /// Provides information about a <see cref="Round"/> that has ended.
+    /// Provides information about a <see cref="GameLogic"/> that has ended.
     /// </summary>
     public class RoundEndEvent : RoundEvent
     {
@@ -19,7 +19,8 @@ namespace MBC.Core.Events
             RoundID = roundID;
         }
 
-        private RoundEndEvent(SerializationInfo info, StreamingContext context)
+        protected RoundEndEvent(SerializationInfo info, StreamingContext context)
+            : base(info, context)
         {
         }
 
@@ -29,8 +30,9 @@ namespace MBC.Core.Events
             private set;
         }
 
-        private void GetObjectData(SerializationInfo info, StreamingContext context)
+        protected override void GetObjectData(SerializationInfo info, StreamingContext context)
         {
+            base.GetObjectData(info, context);
         }
     }
 }

@@ -76,6 +76,16 @@ namespace MBC.Shared
             throw new NotImplementedException();
         }
 
+        public T GetAttribute<T>()
+        {
+            object[] attribute = GetType().GetCustomAttributes(typeof(T), false);
+            if (attribute != null && attribute.Length > 0)
+            {
+                return (T)attribute[0];
+            }
+            return default(T);
+        }
+
         public abstract Shot MakeShot();
 
         /// <summary>

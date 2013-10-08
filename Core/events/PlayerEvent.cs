@@ -1,4 +1,5 @@
-﻿using MBC.Shared;
+﻿using System.Runtime.Serialization;
+using MBC.Shared;
 
 namespace MBC.Core.Events
 {
@@ -14,7 +15,8 @@ namespace MBC.Core.Events
             Player = plrID;
         }
 
-        protected PlayerEvent()
+        protected PlayerEvent(SerializationInfo info, StreamingContext context)
+            : base(info, context)
         {
         }
 
@@ -22,6 +24,11 @@ namespace MBC.Core.Events
         {
             get;
             private set;
+        }
+
+        protected override void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            base.GetObjectData(info, context);
         }
     }
 }

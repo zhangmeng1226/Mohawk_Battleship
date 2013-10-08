@@ -3,9 +3,9 @@
 namespace MBC.Core.Accolades
 {
     /// <summary>
-    /// Analyses the <see cref="MBC.Core.Events.Event"/>s that are generated from within a <see cref="Round"/>, generates
+    /// Analyses the <see cref="MBC.Core.Events.Event"/>s that are generated from within a <see cref="GameLogic"/>, generates
     /// <see cref="Accolade"/>s based on the data collected through event occurrences through <see cref="Events.RoundEvent"/>
-    /// and <see cref="Events.PlayerEvent"/>, and adds these <see cref="Accolade"/>s to the <see cref="Round"/>.
+    /// and <see cref="Events.PlayerEvent"/>, and adds these <see cref="Accolade"/>s to the <see cref="GameLogic"/>.
     /// </summary>
     public class AccoladeGenerator
     {
@@ -13,7 +13,7 @@ namespace MBC.Core.Accolades
         ///
         /// </summary>
         /// <param name="round"></param>
-        public AccoladeGenerator(Round round)
+        public AccoladeGenerator(GameLogic round)
         {
         }
     }

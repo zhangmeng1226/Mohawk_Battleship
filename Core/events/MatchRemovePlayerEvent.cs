@@ -10,7 +10,8 @@ namespace MBC.Core.Events
             PlayerID = newPlayer;
         }
 
-        private MatchRemovePlayerEvent(SerializationInfo info, StreamingContext context)
+        protected MatchRemovePlayerEvent(SerializationInfo info, StreamingContext context)
+            : base(info, context)
         {
         }
 
@@ -20,8 +21,9 @@ namespace MBC.Core.Events
             private set;
         }
 
-        private void GetObjectData(SerializationInfo info, StreamingContext context)
+        protected override void GetObjectData(SerializationInfo info, StreamingContext context)
         {
+            base.GetObjectData(info, context);
         }
     }
 }

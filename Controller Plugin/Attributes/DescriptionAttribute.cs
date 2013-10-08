@@ -5,8 +5,7 @@ namespace MBC.Shared.Attributes
     /// <summary>
     /// Provides a description of a <see cref="Controller"/>.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Class)]
-    public class DescriptionAttribute : Attribute
+    public class DescriptionAttribute : ControllerAttribute
     {
         /// <summary>
         /// Gets a string that describes the <see cref="Controller"/>.

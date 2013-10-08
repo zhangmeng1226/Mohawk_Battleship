@@ -8,6 +8,8 @@ namespace MBC.Core.Events
     /// </summary>
     public class PlayerShotEvent : PlayerEvent
     {
+        private Shot shot;
+
         /// <summary>
         /// Passes the <paramref name="register"/> to the base constructor, stores the <paramref name="shot"/>,
         /// and generates a <see cref="Event.Message"/>.
@@ -17,10 +19,11 @@ namespace MBC.Core.Events
         public PlayerShotEvent(IDNumber shooter, Shot shot)
             : base(shooter)
         {
-            Shot = shot;
+            this.shot = shot;
         }
 
-        private PlayerShotEvent(SerializationInfo info, StreamingContext context)
+        protected PlayerShotEvent(SerializationInfo info, StreamingContext context)
+            : base(info, context)
         {
         }
 
@@ -29,12 +32,16 @@ namespace MBC.Core.Events
         /// </summary>
         public Shot Shot
         {
-            get;
+            get
+            {
+                return shot;
+            }
             private set;
         }
 
-        private void GetObjectData(SerializationInfo info, StreamingContext context)
+        protected override void GetObjectData(SerializationInfo info, StreamingContext context)
         {
+            base.GetObjectData(info, context);
         }
     }
 }

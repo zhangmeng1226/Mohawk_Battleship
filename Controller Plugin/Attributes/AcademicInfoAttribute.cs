@@ -6,8 +6,7 @@ namespace MBC.Shared.Attributes
     /// Provides information about the academic information of a <see cref="Controller"/>'s developer at the
     /// time of development.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Class)]
-    public class AcademicInfoAttribute : Attribute
+    public class AcademicInfoAttribute : ControllerAttribute
     {
         /// <summary>
         /// The program year of the student.
