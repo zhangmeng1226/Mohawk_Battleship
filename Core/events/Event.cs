@@ -23,7 +23,7 @@ namespace MBC.Core.Events
             Millis = DateTime.Now.Millisecond;
         }
 
-        protected Event(SerializationInfo info, StreamingContext context)
+        public Event(SerializationInfo info, StreamingContext context)
         {
         }
 
@@ -33,7 +33,7 @@ namespace MBC.Core.Events
             private set;
         }
 
-        protected virtual void GetObjectData(SerializationInfo info, StreamingContext context)
+        public virtual void GetObjectData(SerializationInfo info, StreamingContext context)
         {
         }
     }

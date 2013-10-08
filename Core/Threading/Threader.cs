@@ -22,6 +22,18 @@ namespace MBC.Core.Threading
             private set;
         }
 
+        public ThreadPriority Priority
+        {
+            get
+            {
+                return RunThread.Priority;
+            }
+            set
+            {
+                RunThread.Priority = value;
+            }
+        }
+
         protected Thread RunThread
         {
             get;
@@ -47,7 +59,10 @@ namespace MBC.Core.Threading
             if (IsRunning)
             {
                 IsRunning = false;
-                ThreadStop(this);
+                if (ThreadStop != null)
+                {
+                    ThreadStop();
+                }
             }
         }
 

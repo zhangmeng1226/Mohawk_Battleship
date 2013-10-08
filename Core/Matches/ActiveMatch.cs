@@ -10,10 +10,9 @@ using MBC.Shared.Attributes;
 
 namespace MBC.Core.Matches
 {
-    public class ActiveMatch : Match
+    public abstract class ActiveMatch : Match
     {
         protected Dictionary<IDNumber, IController> controllers;
-        protected GameLogic currentRound;
 
         public ActiveMatch(Configuration conf)
         {
@@ -50,6 +49,8 @@ namespace MBC.Core.Matches
             }
         }
 
+        public abstract bool Ended { get; }
+
         protected EventDriver Events
         {
             get;
@@ -70,18 +71,20 @@ namespace MBC.Core.Matches
             }
         }
 
+        public IDNumber CreateTeam(string name)
+        {
+            return CreateTeam(name, false);
+        }
+
         public void End()
         {
             Stop();
             ApplyEvent(new MatchEndEvent());
         }
 
-        public virtual void Play()
+        public override void SaveToFile(string location)
         {
-            IsPlaying = true;
-            while (IsPlaying)
-            {
-            }
+            throw new NotImplementedException();
         }
 
         public void SetConfiguration(Configuration config)
@@ -124,11 +127,6 @@ namespace MBC.Core.Matches
             ApplyEvent(new PlayerTeamAssignEvent(ctrl, team));
         }
 
-        public virtual void Stop()
-        {
-            IsPlaying = false;
-        }
-
         public virtual void UnsetControllerFromTeam(IDNumber ctrl, IDNumber team)
         {
             if (!controllers.ContainsKey(ctrl))
@@ -145,6 +143,19 @@ namespace MBC.Core.Matches
         protected internal void ApplyEvent(Event ev)
         {
             Events.ApplyEvent(ev);
+        }
+
+        protected internal IDNumber CreateTeam(string name, bool internalTeam)
+        {
+            for (int i = 0; i <= Teams.Count; i++)
+            {
+                if (!Teams.ContainsKey(i))
+                {
+                    ApplyEvent(new MatchTeamCreateEvent(new Team(i, name, internalTeam)));
+                    return i;
+                }
+            }
+            throw new InvalidProgramException("Not supposed to happen.");
         }
 
         private void ControllersUpdateRegisters(Event ev)

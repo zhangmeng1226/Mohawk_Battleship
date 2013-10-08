@@ -9,7 +9,6 @@ namespace MBC.Core.Threading
 
         public MultiMethodThreader()
         {
-            RunThread = new Thread(RunMethod);
             methodStore = new Dictionary<string, ThreadStart>();
         }
 
@@ -37,7 +36,7 @@ namespace MBC.Core.Threading
             Run();
         }
 
-        private void RunMethod()
+        protected override void ThreadRun()
         {
             methodStore[MethodToRun].Invoke();
         }

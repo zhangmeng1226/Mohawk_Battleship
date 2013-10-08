@@ -4,20 +4,25 @@ namespace MBC.Shared
 {
     public class Team
     {
-        private List<IDNumber> members;
+        private HashSet<IDNumber> members;
 
         public Team(Team copy)
+            : this(copy.ID, copy.Name, copy.IsInternal)
         {
-            members = copy.members;
-            ID = copy.ID;
-            Name = copy.Name;
+            members = new HashSet<IDNumber>(copy.members);
         }
 
         public Team(IDNumber id, string name)
+            : this(id, name, false)
         {
-            members = new List<IDNumber>();
+        }
+
+        public Team(IDNumber id, string name, bool internalTeam)
+        {
+            members = new HashSet<IDNumber>();
             ID = id;
             Name = name;
+            IsInternal = internalTeam;
         }
 
         public IDNumber ID
@@ -26,7 +31,13 @@ namespace MBC.Shared
             set;
         }
 
-        public List<IDNumber> Members
+        public bool IsInternal
+        {
+            get;
+            set;
+        }
+
+        public HashSet<IDNumber> Members
         {
             get
             {

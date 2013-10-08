@@ -15,7 +15,7 @@ namespace MBC.Core.Events
             Player = plrID;
         }
 
-        protected PlayerEvent(SerializationInfo info, StreamingContext context)
+        public PlayerEvent(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
         }
@@ -26,7 +26,7 @@ namespace MBC.Core.Events
             private set;
         }
 
-        protected override void GetObjectData(SerializationInfo info, StreamingContext context)
+        public override void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             base.GetObjectData(info, context);
         }

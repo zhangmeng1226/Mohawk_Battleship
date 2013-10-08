@@ -27,8 +27,13 @@ namespace MBC.Shared
         /// </summary>
         /// <param name="receiver">The receiving <see cref="Register"/> of this <see cref="Shot"/>.</param>
         public Shot(IDNumber receiver)
+            : this(receiver, new Coordinates(-1, -1))
         {
-            this.coords = new Coordinates(-1, -1);
+        }
+
+        public Shot(IDNumber receiver, Coordinates coords)
+        {
+            this.coords = coords;
             this.receiver = receiver;
         }
 

@@ -11,7 +11,7 @@ namespace MBC.Core.Events
             TeamID = teamAssigned;
         }
 
-        protected PlayerTeamUnassignEvent(SerializationInfo info, StreamingContext context)
+        public PlayerTeamUnassignEvent(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
         }
@@ -28,7 +28,7 @@ namespace MBC.Core.Events
             private set;
         }
 
-        protected override void GetObjectData(SerializationInfo info, StreamingContext context)
+        public override void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             base.GetObjectData(info, context);
         }

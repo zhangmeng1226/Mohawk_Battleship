@@ -22,7 +22,7 @@ namespace MBC.Core.Events
             signal = new AutoResetEvent(false);
         }
 
-        protected EventDriver(SerializationInfo info, StreamingContext context)
+        public EventDriver(SerializationInfo info, StreamingContext context)
             : this()
         {
             //Deserialize
@@ -67,6 +67,11 @@ namespace MBC.Core.Events
             }
         }
 
+        public void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            //Serialize
+        }
+
         public void Play(float timeScale)
         {
             if (IsRunning || events.Count == 0 || currentEventIdx == events.Count)
@@ -108,11 +113,6 @@ namespace MBC.Core.Events
         {
             IsRunning = false;
             signal.Set();
-        }
-
-        private void GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            //Serialize
         }
 
         private void RaiseAppliedEvent(Event ev)

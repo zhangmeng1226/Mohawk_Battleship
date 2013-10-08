@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Permissions;
 
 namespace MBC.Shared
@@ -71,11 +72,6 @@ namespace MBC.Shared
             set;
         }
 
-        public List<IDNumber> AllOpponents()
-        {
-            throw new NotImplementedException();
-        }
-
         public T GetAttribute<T>()
         {
             object[] attribute = GetType().GetCustomAttributes(typeof(T), false);
@@ -107,11 +103,6 @@ namespace MBC.Shared
         /// </summary>
         public virtual void NewRound()
         {
-        }
-
-        public IDNumber NextOpponent()
-        {
-            return 0;
         }
 
         /// <summary>
@@ -156,6 +147,49 @@ namespace MBC.Shared
         /// </summary>
         public virtual void ShotMiss(Shot shot)
         {
+        }
+
+        protected List<IDNumber> AllOpponents()
+        {
+            var opponents = new HashSet<IDNumber>();
+            foreach (var team in Teams)
+            {
+                if (!team.Value.Members.Contains(ID))
+                {
+                    foreach (var id in team.Value.Members)
+                    {
+                        opponents.Add(id);
+                    }
+                }
+            }
+            return opponents.ToList();
+        }
+
+        protected Shot CreateShot(Coordinates shotCoords)
+        {
+            return CreateShot(NextOpponent(), shotCoords);
+        }
+
+        protected Shot CreateShot(int xCoord, int yCoord)
+        {
+            return CreateShot(NextOpponent(), new Coordinates(xCoord, yCoord));
+        }
+
+        protected Shot CreateShot(IDNumber opponent, Coordinates shotCoords)
+        {
+            return new Shot(opponent, shotCoords);
+        }
+
+        protected IDNumber NextOpponent()
+        {
+            foreach (var team in Teams)
+            {
+                if (team.Value.Members.Count > 0 && !team.Value.Members.Contains(ID))
+                {
+                    return team.Value.Members.First();
+                }
+            }
+            return -1;
         }
 
         /// <summary>

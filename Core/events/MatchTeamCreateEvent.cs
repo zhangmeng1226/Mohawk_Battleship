@@ -5,30 +5,27 @@ namespace MBC.Core.Events
 {
     public class MatchTeamCreateEvent : Event
     {
-        public MatchTeamCreateEvent(IDNumber teamID, string teamName)
+        private Team team;
+
+        public MatchTeamCreateEvent(Team team)
         {
-            TeamID = teamID;
-            TeamName = teamName;
+            this.team = team;
         }
 
-        protected MatchTeamCreateEvent(SerializationInfo info, StreamingContext context)
+        public MatchTeamCreateEvent(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
         }
 
-        public IDNumber TeamID
+        public Team Team
         {
-            get;
-            private set;
+            get
+            {
+                return new Team(team);
+            }
         }
 
-        public string TeamName
-        {
-            get;
-            private set;
-        }
-
-        protected override void GetObjectData(SerializationInfo info, StreamingContext context)
+        public override void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             base.GetObjectData(info, context);
         }

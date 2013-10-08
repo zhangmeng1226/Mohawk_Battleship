@@ -21,19 +21,12 @@ namespace MBC.Shared
             ID = copy.ID;
             Name = copy.Name;
             Score = copy.Score;
-            IsAlive = copy.IsAlive;
         }
 
         /// <summary>
         /// Gets or sets the <see cref="IDNumber"/>.
         /// </summary>
         public IDNumber ID { get; set; }
-
-        public bool IsAlive
-        {
-            get;
-            set;
-        }
 
         public string Name
         {

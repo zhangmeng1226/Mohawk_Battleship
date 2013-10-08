@@ -19,7 +19,7 @@ namespace MBC.Core.Events
             RoundID = roundID;
         }
 
-        protected RoundEndEvent(SerializationInfo info, StreamingContext context)
+        public RoundEndEvent(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
         }
@@ -30,7 +30,7 @@ namespace MBC.Core.Events
             private set;
         }
 
-        protected override void GetObjectData(SerializationInfo info, StreamingContext context)
+        public override void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             base.GetObjectData(info, context);
         }

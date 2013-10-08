@@ -23,7 +23,7 @@ namespace MBC.Core.Events
             ships = newShips;
         }
 
-        protected PlayerShipsPlacedEvent(SerializationInfo info, StreamingContext context)
+        public PlayerShipsPlacedEvent(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
         }
@@ -37,10 +37,9 @@ namespace MBC.Core.Events
             {
                 return new ShipList(ships);
             }
-            private set;
         }
 
-        protected override void GetObjectData(SerializationInfo info, StreamingContext context)
+        public override void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             base.GetObjectData(info, context);
         }

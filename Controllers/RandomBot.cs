@@ -114,7 +114,7 @@ namespace MBC.Controllers
                 //Use the function within the ShipList object "myShips" to place a ship for the controller.
                 //As explained in the PlaceShip() method of the ShipList, placing a ship at the randomly
                 //generated coordinates may fail.
-                myShips.PlaceShip(randomCoords, orientation, Register.Match.FieldSize);
+                myShips.PlaceShip(randomCoords, orientation, Match.FieldSize);
             }
 
             return myShips;
@@ -168,10 +168,10 @@ namespace MBC.Controllers
         {
             //First generate a random X coordinate. Note that rand.Next() gets a random number that is
             //always less than the given value; we add one to get the full range of the field.
-            var xCoord = rand.Next(Register.Match.FieldSize.X + 1);
+            var xCoord = rand.Next(Match.FieldSize.X + 1);
 
             //Then generate a random Y coordinate.
-            var yCoord = rand.Next(Register.Match.FieldSize.Y + 1);
+            var yCoord = rand.Next(Match.FieldSize.Y + 1);
 
             //Then put the two coordinates together and return it.
             return new Coordinates(xCoord, yCoord);
@@ -202,11 +202,11 @@ namespace MBC.Controllers
             shotQueue = new ShotList();
 
             //Set up our shot queue with our opponents.
-            shotQueue.MakeReceivers(Register.Opponents);
+            shotQueue.MakeReceivers(AllOpponents());
 
             //Initially, a ShotList is empty when it is constructed, so the ShotList can be filled
             //easily by inverting it up to the size of the field in the game.
-            shotQueue.Invert(Register.Match.FieldSize);
+            shotQueue.Invert(Match.FieldSize);
         }
     }
 }

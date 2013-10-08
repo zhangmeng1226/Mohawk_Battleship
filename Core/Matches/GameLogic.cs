@@ -16,13 +16,13 @@ namespace MBC.Core.Rounds
             match = container;
         }
 
+        public abstract bool Ended { get; }
+
         public IDNumber ID
         {
             get;
             private set;
         }
-
-        public abstract bool IsRunning { get; protected set; }
 
         public ActiveMatch Match
         {

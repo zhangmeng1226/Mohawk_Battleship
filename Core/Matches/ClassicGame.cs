@@ -12,12 +12,20 @@ namespace MBC.Core.Matches
     public class ClassicGame : GameLogic
     {
         private int currentTurnIdx;
+        private bool shipsPlaced;
         private List<IDNumber> turns;
 
         public ClassicGame(IDNumber roundID, ActiveMatch match)
             : base(roundID, match)
         {
             turns = RandomizeTurns();
+            shipsPlaced = false;
+            currentTurnIdx = 0;
+            CurrentTurnPlayer = NextTurn();
+            FFATeam = Match.CreateTeam("Free-For-All");
+            DeadTeam = Match.CreateTeam(Constants.TEAM_DEAD_NAME, true);
+
+            AddEventAction(typeof(MatchAddPlayerEvent), PlayerInit);
         }
 
         public IDNumber CurrentTurnPlayer
@@ -26,10 +34,12 @@ namespace MBC.Core.Matches
             private set;
         }
 
-        public override bool IsRunning
+        public override bool Ended
         {
-            get;
-            protected set;
+            get
+            {
+                return NextTurn() == CurrentTurnPlayer;
+            }
         }
 
         protected IDNumber DeadTeam
@@ -38,21 +48,53 @@ namespace MBC.Core.Matches
             private set;
         }
 
+        protected IDNumber FFATeam
+        {
+            get;
+            private set;
+        }
+
+        private bool IsRunning
+        {
+            get;
+            set;
+        }
+
         public IDNumber NextTurn()
         {
             for (int i = 1; i < turns.Count; i++)
             {
                 IDNumber plr = turns[(currentTurnIdx + i) % turns.Count];
                 if (Match.Teams[DeadTeam].Members.Contains(plr)) continue;
-                CurrentTurnPlayer = plr;
                 return plr;
             }
-            throw new InvalidOperationException("No players available for next turn.");
+            return CurrentTurnPlayer;
         }
 
         public override void Play()
         {
-            throw new NotImplementedException();
+            if (IsRunning)
+            {
+                return;
+            }
+            IsRunning = true;
+            while (IsRunning)
+            {
+                if (NextTurn() == CurrentTurnPlayer)
+                {
+                    IsRunning = false;
+                    return;
+                }
+                if (!shipsPlaced)
+                {
+                    PlaceAllShips();
+                }
+                else
+                {
+                    MakeTurn();
+                    CurrentTurnPlayer = NextTurn();
+                }
+            }
         }
 
         public bool ShipsValid(IDNumber player)
@@ -75,14 +117,22 @@ namespace MBC.Core.Matches
 
         public override void Stop()
         {
-            throw new NotImplementedException();
+            IsRunning = false;
+        }
+
+        private void EndLogic()
+        {
+            foreach (var reg in Match.Registers)
+            {
+                Match.Teams[DeadTeam].Members.Add(reg.Key);
+            }
         }
 
         private void MakeTurn()
         {
             try
             {
-                Shot shotMade = Match.Controllers[CurrentTurnPlayer].MakeShot();
+                var shotMade = Match.Controllers[CurrentTurnPlayer].MakeShot();
                 ApplyEvent(new PlayerShotEvent(CurrentTurnPlayer, shotMade));
 
                 if (!ShotValid(CurrentTurnPlayer, shotMade))
@@ -116,14 +166,38 @@ namespace MBC.Core.Matches
             }
             catch (MethodTimeoutException ex)
             {
-                ApplyEvent(new PlayerTimeoutEvent(CurrentTurnPlayer, ex));
-                PlayerLose(CurrentTurnPlayer);
+                PlayerTimedOut(CurrentTurnPlayer, ex);
+            }
+        }
+
+        private void PlaceAllShips()
+        {
+            foreach (var controller in Match.Controllers)
+            {
+                try
+                {
+                    ApplyEvent(new PlayerShipsPlacedEvent(controller.Key, controller.Value.PlaceShips()));
+
+                    if (!ShipsValid(controller.Key))
+                    {
+                        PlayerLose(controller.Key);
+                    }
+                }
+                catch (MethodTimeoutException ex)
+                {
+                    PlayerTimedOut(controller.Key, ex);
+                }
             }
         }
 
         private void PlayerDead(IDNumber plr)
         {
             Match.Teams[DeadTeam].Members.Add(plr);
+        }
+
+        private void PlayerInit(Event ev)
+        {
+            Match.Teams[FFATeam].Members.Add(((MatchAddPlayerEvent)ev).PlayerID);
         }
 
         private void PlayerLose(IDNumber plr)
@@ -138,6 +212,12 @@ namespace MBC.Core.Matches
             {
                 ApplyEvent(new PlayerTimeoutEvent(plr, ex));
             }
+        }
+
+        private void PlayerTimedOut(IDNumber plr, MethodTimeoutException ex)
+        {
+            ApplyEvent(new PlayerTimeoutEvent(plr, ex));
+            PlayerLose(plr);
         }
 
         private List<IDNumber> RandomizeTurns()

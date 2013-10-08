@@ -12,17 +12,12 @@ namespace MBC.Shared
         public MatchConfig(MatchConfig copy)
         {
             StartingShips = new ShipList(copy.StartingShips);
-            Registers = new Dictionary<IDNumber, Register>();
-            foreach (var regPair in copy.Registers)
-            {
-                Registers[regPair.Key] = new Register(regPair.Value);
-            }
             FieldSize = copy.FieldSize;
             TimeLimit = copy.TimeLimit;
             GameMode = copy.GameMode;
         }
 
-        private MatchConfig(SerializationInfo info, StreamingContext context)
+        public MatchConfig(SerializationInfo info, StreamingContext context)
         {
         }
 
@@ -80,7 +75,7 @@ namespace MBC.Shared
             set;
         }
 
-        private void GetObjectData(SerializationInfo info, StreamingContext context)
+        public void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             //Do not serialize teams/registers
         }

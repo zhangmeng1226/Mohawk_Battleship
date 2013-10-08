@@ -47,6 +47,7 @@
     <Compile Include="Attributes\AcademicInfoAttribute.cs" />
     <Compile Include="Attributes\AuthorAttribute.cs" />
     <Compile Include="Attributes\CapabilitiesAttribute.cs" />
+    <Compile Include="Attributes\ControllerAttribute.cs" />
     <Compile Include="Attributes\DescriptionAttribute.cs" />
     <Compile Include="Attributes\NameAttribute.cs" />
     <Compile Include="Attributes\VersionAttribute.cs" />

@@ -21,12 +21,12 @@
             }
         }
 
-        public ShipList Ships { get; internal set; }
+        public ShipList Ships { get; set; }
 
-        public ShipList ShipsLeft { get; internal set; }
+        public ShipList ShipsLeft { get; set; }
 
-        public ShotList Shots { get; internal set; }
+        public ShotList Shots { get; set; }
 
-        public ShotList ShotsAgainst { get; internal set; }
+        public ShotList ShotsAgainst { get; set; }
     }
 }

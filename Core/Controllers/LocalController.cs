@@ -8,7 +8,7 @@ using MBC.Shared.Attributes;
 namespace MBC.Core.Controllers
 {
     [Configuration("mbc_player_timeout", 500)]
-    public class LocalController : ControllerHandler
+    public class LocalController : IController
     {
         private IController controller;
 

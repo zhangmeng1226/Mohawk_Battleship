@@ -93,7 +93,9 @@ namespace MBC.Core.Matches
 
         public abstract void Play();
 
-        public abstract void SaveToFile(File location);
+        public abstract void SaveToFile(string location);
+
+        public abstract void Stop();
 
         protected virtual void ReflectEvent(Event ev)
         {
@@ -152,7 +154,7 @@ namespace MBC.Core.Matches
         private void MatchTeamCreate(Event ev)
         {
             var teamCreateEvent = (MatchTeamCreateEvent)ev;
-            teams[teamCreateEvent.TeamID] = new Team(teamCreateEvent.TeamID, teamCreateEvent.TeamName);
+            teams[teamCreateEvent.Team.ID] = new Team(teamCreateEvent.Team.ID, teamCreateEvent.Team.Name);
         }
 
         private void PlayerShipDestroyed(Event ev)
