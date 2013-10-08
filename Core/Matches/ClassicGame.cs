@@ -11,19 +11,16 @@ namespace MBC.Core.Matches
 {
     public class ClassicGame : GameLogic
     {
-        private int currentTurnIdx;
         private bool shipsPlaced;
         private List<IDNumber> turns;
 
         public ClassicGame(IDNumber roundID, ActiveMatch match)
             : base(roundID, match)
         {
+            FormTeams();
             turns = RandomizeTurns();
             shipsPlaced = false;
-            currentTurnIdx = 0;
             CurrentTurnPlayer = NextTurn();
-            FFATeam = Match.CreateTeam("Free-For-All");
-            DeadTeam = Match.CreateTeam(Constants.TEAM_DEAD_NAME, true);
 
             AddEventAction(typeof(MatchAddPlayerEvent), PlayerInit);
         }
@@ -62,6 +59,14 @@ namespace MBC.Core.Matches
 
         public IDNumber NextTurn()
         {
+            int currentTurnIdx;
+            for (currentTurnIdx = 0; currentTurnIdx < turns.Count; currentTurnIdx++)
+            {
+                if (turns[currentTurnIdx] == CurrentTurnPlayer)
+                {
+                    break;
+                }
+            }
             for (int i = 1; i < turns.Count; i++)
             {
                 IDNumber plr = turns[(currentTurnIdx + i) % turns.Count];
@@ -80,7 +85,7 @@ namespace MBC.Core.Matches
             IsRunning = true;
             while (IsRunning)
             {
-                if (NextTurn() == CurrentTurnPlayer)
+                if (Ended)
                 {
                     IsRunning = false;
                     return;
@@ -93,6 +98,19 @@ namespace MBC.Core.Matches
                 {
                     MakeTurn();
                     CurrentTurnPlayer = NextTurn();
+                    if (Ended)
+                    {
+                        if (!Match.Teams[DeadTeam].Members.Contains(CurrentTurnPlayer))
+                        {
+                            ApplyEvent(new PlayerWonEvent(CurrentTurnPlayer));
+                            turns.Remove(CurrentTurnPlayer);
+                        }
+                        foreach (var plr in turns)
+                        {
+                            ApplyEvent(new PlayerLostEvent(plr));
+                        }
+                        turns.Clear();
+                    }
                 }
             }
         }
@@ -125,6 +143,16 @@ namespace MBC.Core.Matches
             foreach (var reg in Match.Registers)
             {
                 Match.Teams[DeadTeam].Members.Add(reg.Key);
+            }
+        }
+
+        private void FormTeams()
+        {
+            FFATeam = Match.GetTeam("Free-For-All");
+            DeadTeam = Match.GetTeam(Constants.TEAM_DEAD_NAME, true);
+            foreach (var reg in Match.Registers)
+            {
+                Match.Teams[FFATeam].Members.Add(reg.Key);
             }
         }
 
@@ -203,6 +231,7 @@ namespace MBC.Core.Matches
         private void PlayerLose(IDNumber plr)
         {
             Match.Teams[DeadTeam].Members.Add(plr);
+            turns.Remove(plr);
             ApplyEvent(new PlayerLostEvent(plr));
             try
             {

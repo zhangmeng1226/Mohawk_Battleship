@@ -7,6 +7,6 @@ namespace MBC.Shared
 {
     public static class Constants
     {
-        public static const string TEAM_DEAD_NAME = "Dead";
+        public const string TEAM_DEAD_NAME = "Dead";
     }
 }

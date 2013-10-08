@@ -8,12 +8,10 @@ namespace MBC.Core.Rounds
 {
     public abstract class GameLogic
     {
-        private ActiveMatch match;
-
         public GameLogic(IDNumber id, ActiveMatch container)
         {
             ID = id;
-            match = container;
+            Match = container;
         }
 
         public abstract bool Ended { get; }
@@ -36,12 +34,12 @@ namespace MBC.Core.Rounds
 
         protected void AddEventAction(Type typeOfEvent, MBCEventHandler eventAction)
         {
-            match.AddEventAction(typeOfEvent, eventAction);
+            Match.AddEventAction(typeOfEvent, eventAction);
         }
 
         protected void ApplyEvent(Event ev)
         {
-            match.ApplyEvent(ev);
+            Match.ApplyEvent(ev);
         }
     }
 }

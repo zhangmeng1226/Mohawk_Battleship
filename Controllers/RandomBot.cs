@@ -97,10 +97,10 @@ namespace MBC.Controllers
         /// of Ship objects that can be accessed.
         /// </summary>
         /// <param name="ships">A collection of Ship objects to place.</param>
-        public override ShipList PlaceShips(ShipList initialShips)
+        public override ShipList PlaceShips()
         {
             //First we'll refer to the ships given to us through a single variable.
-            var myShips = initialShips;
+            var myShips = Match.StartingShips;
 
             //This loop will continue until all of the Ship objects have been placed.
             while (!myShips.ShipsPlaced)

@@ -51,7 +51,7 @@ namespace MBC.Core.Matches
 
         public abstract bool Ended { get; }
 
-        protected EventDriver Events
+        public EventDriver Events
         {
             get;
             private set;
@@ -71,15 +71,15 @@ namespace MBC.Core.Matches
             }
         }
 
-        public IDNumber CreateTeam(string name)
-        {
-            return CreateTeam(name, false);
-        }
-
         public void End()
         {
             Stop();
             ApplyEvent(new MatchEndEvent());
+        }
+
+        public IDNumber GetTeam(string name)
+        {
+            return GetTeam(name, false);
         }
 
         public override void SaveToFile(string location)
@@ -100,7 +100,7 @@ namespace MBC.Core.Matches
                 newConfig.StartingShips.Add(new Ship(length));
             }
 
-            newConfig.TimeLimit = Config.GetValue<int>("mbc_player_thread_timeout");
+            newConfig.TimeLimit = Config.GetValue<int>("mbc_player_timeout");
 
             newConfig.GameMode = 0;
             foreach (var mode in Config.GetList<GameMode>("mbc_game_mode"))
@@ -145,8 +145,16 @@ namespace MBC.Core.Matches
             Events.ApplyEvent(ev);
         }
 
-        protected internal IDNumber CreateTeam(string name, bool internalTeam)
+        protected internal IDNumber GetTeam(string name, bool internalTeam)
         {
+            foreach (var team in Teams)
+            {
+                if (team.Value.Name == name)
+                {
+                    team.Value.Members.Clear();
+                    return team.Key;
+                }
+            }
             for (int i = 0; i <= Teams.Count; i++)
             {
                 if (!Teams.ContainsKey(i))

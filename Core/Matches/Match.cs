@@ -93,6 +93,15 @@ namespace MBC.Core.Matches
 
         public abstract void Play();
 
+        public void RemoveEventAction(Type typeOfEvent, MBCEventHandler eventAction)
+        {
+            if (!eventActions.ContainsKey(typeOfEvent))
+            {
+                return;
+            }
+            eventActions[typeOfEvent].Remove(eventAction);
+        }
+
         public abstract void SaveToFile(string location);
 
         public abstract void Stop();

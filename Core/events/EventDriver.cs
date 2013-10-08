@@ -30,9 +30,9 @@ namespace MBC.Core.Events
 
         public event MBCEventHandler EventApplied;
 
-        public event MBCSaveStateRequest StateLoadRequest;
+        protected internal event MBCSaveStateRequest StateLoadRequest;
 
-        public event MBCSaveStateRequest StateSaveRequest;
+        protected internal event MBCSaveStateRequest StateSaveRequest;
 
         public bool AtEnd
         {

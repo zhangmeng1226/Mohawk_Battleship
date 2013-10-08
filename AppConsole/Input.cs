@@ -44,7 +44,6 @@ namespace MBC.App.BattleshipConsole
             AddCommand(Save.Match, "save", "match", "[filename] Saves the current match to a file.");
             AddCommand(Save.Config, "save", "config", "[filename] Saves the configuration to a file.");
 
-            AddCommand(MatchRun.Step, "match", "step", "Steps through the current match.");
             AddCommand(MatchRun.Start, "match", "start", "Plays through a match until it ends.");
             AddCommand(MatchRun.Start, "match", "stop", "Ends the current match.");
 
@@ -188,9 +187,10 @@ namespace MBC.App.BattleshipConsole
         {
             //Set up the console
             Console.Title = "MBC console";
+            //Console.TreatControlCAsInput = true;
             Console.CancelKeyPress += (a, b) =>
             {
-                MatchRun.Running = false;
+                b.Cancel = false;
             };
             Configuration.Initialize(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\MBC Data");
 

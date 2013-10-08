@@ -12,6 +12,7 @@ namespace MBC.Shared
         public MatchConfig(MatchConfig copy)
         {
             StartingShips = new ShipList(copy.StartingShips);
+            NumberOfRounds = copy.NumberOfRounds;
             FieldSize = copy.FieldSize;
             TimeLimit = copy.TimeLimit;
             GameMode = copy.GameMode;

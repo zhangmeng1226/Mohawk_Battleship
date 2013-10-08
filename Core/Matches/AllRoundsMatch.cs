@@ -9,12 +9,14 @@ namespace MBC.Core.Matches
         protected GameLogic currentGame;
 
         public AllRoundsMatch()
+            : this(Configuration.Global)
         {
         }
 
         public AllRoundsMatch(Configuration conf)
             : base(conf)
         {
+            IsRunning = false;
         }
 
         public override bool Ended
