@@ -92,6 +92,11 @@ namespace MBC.Core.Matches
                 }
                 if (!shipsPlaced)
                 {
+                    ApplyEvent(new RoundBeginEvent(ID));
+                    foreach (var ctrl in Match.Controllers)
+                    {
+                        ctrl.Value.NewRound();
+                    }
                     PlaceAllShips();
                     shipsPlaced = true;
                 }
@@ -101,17 +106,7 @@ namespace MBC.Core.Matches
                     CurrentTurnPlayer = NextTurn();
                     if (Ended)
                     {
-                        if (!Match.Teams[DeadTeam].Members.Contains(CurrentTurnPlayer))
-                        {
-                            ApplyEvent(new PlayerWonEvent(CurrentTurnPlayer));
-                            turns.Remove(CurrentTurnPlayer);
-                        }
-                        foreach (var plr in turns)
-                        {
-                            ApplyEvent(new PlayerLostEvent(plr));
-                        }
-                        turns.Clear();
-                        ApplyEvent(new RoundEndEvent(ID));
+                        EndLogic();
                     }
                 }
             }
@@ -142,10 +137,17 @@ namespace MBC.Core.Matches
 
         private void EndLogic()
         {
-            foreach (var reg in Match.Registers)
+            if (!Match.Teams[DeadTeam].Members.Contains(CurrentTurnPlayer))
             {
-                Match.SetControllerToTeam(reg.Key, FFATeam);
+                ApplyEvent(new PlayerWonEvent(CurrentTurnPlayer));
+                turns.Remove(CurrentTurnPlayer);
             }
+            foreach (var plr in turns)
+            {
+                ApplyEvent(new PlayerLostEvent(plr));
+            }
+            turns.Clear();
+            ApplyEvent(new RoundEndEvent(ID));
         }
 
         private void FormTeams()

@@ -81,7 +81,7 @@ namespace MBC.Shared
         /// <returns>A string representation.</returns>
         public override string ToString()
         {
-            return string.Format("[%s] %s", ID, Name);
+            return string.Format("[{0}] {1}", ID, Name);
         }
     }
 }

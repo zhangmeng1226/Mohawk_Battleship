@@ -1,4 +1,5 @@
-﻿using MBC.Core.Rounds;
+﻿using MBC.Core.Events;
+using MBC.Core.Rounds;
 using MBC.Core.Util;
 using MBC.Shared;
 
@@ -67,12 +68,7 @@ namespace MBC.Core.Matches
 
         private GameLogic CreateNewRound(IDNumber roundID)
         {
-            var game = new ClassicGame(roundID, this);
-            foreach (var ctrl in Controllers)
-            {
-                ctrl.Value.NewRound();
-            }
-            return game;
+            return new ClassicGame(roundID, this);
         }
     }
 }

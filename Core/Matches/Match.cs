@@ -193,9 +193,9 @@ namespace MBC.Core.Matches
 
         private void RoundBegin(Event ev)
         {
-            foreach (var field in currentFields)
+            foreach (var reg in Registers)
             {
-                currentFields[field.Key] = new FieldInfo();
+                currentFields[reg.Key] = new FieldInfo();
             }
         }
     }
