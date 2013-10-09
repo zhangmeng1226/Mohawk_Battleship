@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Runtime.Serialization;
 
 namespace MBC.Shared
@@ -16,6 +17,7 @@ namespace MBC.Shared
             FieldSize = copy.FieldSize;
             TimeLimit = copy.TimeLimit;
             GameMode = copy.GameMode;
+            Random = copy.Random;
         }
 
         public MatchConfig(SerializationInfo info, StreamingContext context)
@@ -46,6 +48,12 @@ namespace MBC.Shared
         }
 
         public int NumberOfRounds
+        {
+            get;
+            set;
+        }
+
+        public Random Random
         {
             get;
             set;

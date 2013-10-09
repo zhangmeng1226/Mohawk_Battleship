@@ -51,12 +51,6 @@ namespace MBC.Controllers
     public class RandomBot : Controller
     {
         /// <summary>
-        /// This is a Random object that this controller will be using through each match to generate
-        /// random numbers.
-        /// </summary>
-        private Random rand;
-
-        /// <summary>
         /// This is a list of shots that this controller has against another controller or controllers.
         /// It will start out being filled with every possible shot made.
         /// </summary>
@@ -86,10 +80,6 @@ namespace MBC.Controllers
         {
             //The controller calls the SetShots() method to initialize the shotQueue field.
             SetShots();
-
-            //Finally, the controller creates a random number generator into the "rand" field defined
-            //in this class. It uses the tick count of the system as a seed.
-            rand = new Random();
         }
 
         /// <summary>
@@ -146,7 +136,7 @@ namespace MBC.Controllers
         {
             //First generate a random number which will be the index of a random
             //shot from within the shotQueue.
-            var randomShotIndex = rand.Next(shotQueue.Count);
+            var randomShotIndex = Match.Random.Next(shotQueue.Count);
 
             //Then get the Shot object from the shotQueue at the random index.
             Shot randomShot = shotQueue[randomShotIndex];
@@ -168,10 +158,10 @@ namespace MBC.Controllers
         {
             //First generate a random X coordinate. Note that rand.Next() gets a random number that is
             //always less than the given value; we add one to get the full range of the field.
-            var xCoord = rand.Next(Match.FieldSize.X + 1);
+            var xCoord = Match.Random.Next(Match.FieldSize.X + 1);
 
             //Then generate a random Y coordinate.
-            var yCoord = rand.Next(Match.FieldSize.Y + 1);
+            var yCoord = Match.Random.Next(Match.FieldSize.Y + 1);
 
             //Then put the two coordinates together and return it.
             return new Coordinates(xCoord, yCoord);
@@ -189,7 +179,7 @@ namespace MBC.Controllers
             //Then the controller uses the random number generator "rand" to choose either a 0 or a 1 to
             //pick the index of a ShipOrientation randomly. The ShipOrientation is then returned back to the
             //caller.
-            return orientations[rand.Next(2)];
+            return orientations[Match.Random.Next(2)];
         }
 
         /// <summary>

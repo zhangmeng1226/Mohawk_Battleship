@@ -112,6 +112,7 @@ namespace MBC.Core.Matches
             {
                 throw new NotImplementedException("The " + newConfig.GameMode.ToString() + " game mode is not supported.");
             }
+            newConfig.Random = new Random();
             ApplyEvent(new MatchConfigChangedEvent(newConfig));
             foreach (var ctrl in controllers)
             {
