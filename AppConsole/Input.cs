@@ -187,7 +187,7 @@ namespace MBC.App.BattleshipConsole
         {
             //Set up the console
             Console.Title = "MBC console";
-            //Console.TreatControlCAsInput = true;
+            Console.TreatControlCAsInput = true;
             Console.CancelKeyPress += (a, b) =>
             {
                 b.Cancel = false;

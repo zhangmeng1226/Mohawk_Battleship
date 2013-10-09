@@ -118,6 +118,11 @@ namespace MBC.Core
             return results;
         }
 
+        public Controller CreateInstance()
+        {
+            return (Controller)Activator.CreateInstance(Controller);
+        }
+
         public T GetAttribute<T>()
         {
             return (T)((object)attributes[typeof(T)]);

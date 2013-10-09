@@ -1,13 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading;
+using MBC.Core.Util;
 
 namespace MBC.Core.Threading
 {
+    [Configuration("mbc_thread_pool_amt", 4)]
     public abstract class Threader
     {
         public Threader()
         {
-            RunThread = new Thread(ThreadRun);
             IsRunning = false;
         }
 
@@ -20,18 +22,6 @@ namespace MBC.Core.Threading
         {
             get;
             private set;
-        }
-
-        public ThreadPriority Priority
-        {
-            get
-            {
-                return RunThread.Priority;
-            }
-            set
-            {
-                RunThread.Priority = value;
-            }
         }
 
         protected Thread RunThread
