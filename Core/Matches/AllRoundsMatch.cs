@@ -67,7 +67,12 @@ namespace MBC.Core.Matches
 
         private GameLogic CreateNewRound(IDNumber roundID)
         {
-            return new ClassicGame(roundID, this);
+            var game = new ClassicGame(roundID, this);
+            foreach (var ctrl in Controllers)
+            {
+                ctrl.Value.NewRound();
+            }
+            return game;
         }
     }
 }

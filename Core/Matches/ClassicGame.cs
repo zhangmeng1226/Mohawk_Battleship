@@ -93,6 +93,7 @@ namespace MBC.Core.Matches
                 if (!shipsPlaced)
                 {
                     PlaceAllShips();
+                    shipsPlaced = true;
                 }
                 else
                 {
@@ -110,6 +111,7 @@ namespace MBC.Core.Matches
                             ApplyEvent(new PlayerLostEvent(plr));
                         }
                         turns.Clear();
+                        ApplyEvent(new RoundEndEvent(ID));
                     }
                 }
             }
@@ -142,17 +144,19 @@ namespace MBC.Core.Matches
         {
             foreach (var reg in Match.Registers)
             {
-                Match.Teams[DeadTeam].Members.Add(reg.Key);
+                Match.SetControllerToTeam(reg.Key, FFATeam);
             }
         }
 
         private void FormTeams()
         {
             FFATeam = Match.GetTeam("Free-For-All");
+            Match.Teams[FFATeam].IsFriendly = false;
             DeadTeam = Match.GetTeam(Constants.TEAM_DEAD_NAME, true);
             foreach (var reg in Match.Registers)
             {
-                Match.Teams[FFATeam].Members.Add(reg.Key);
+                Match.SetControllerToTeam(reg.Key, FFATeam);
+                Match.UnsetControllerFromTeam(reg.Key, DeadTeam);
             }
         }
 
@@ -161,13 +165,14 @@ namespace MBC.Core.Matches
             try
             {
                 var shotMade = Match.Controllers[CurrentTurnPlayer].MakeShot();
-                ApplyEvent(new PlayerShotEvent(CurrentTurnPlayer, shotMade));
 
                 if (!ShotValid(CurrentTurnPlayer, shotMade))
                 {
+                    ApplyEvent(new PlayerShotEvent(CurrentTurnPlayer, shotMade));
                     PlayerLose(CurrentTurnPlayer);
                     return;
                 }
+                ApplyEvent(new PlayerShotEvent(CurrentTurnPlayer, shotMade));
 
                 Match.Controllers[shotMade.Receiver].OpponentShot(shotMade);
 
@@ -261,8 +266,8 @@ namespace MBC.Core.Matches
             while (randomAddList.Count > 0)
             {
                 var randomResult = randomGenerator.Next(randomAddList.Count);
-                result.Add(randomResult);
-                randomAddList.Remove(randomResult);
+                result.Add(randomAddList[randomResult]);
+                randomAddList.RemoveAt(randomResult);
             }
             return result;
         }

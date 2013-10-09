@@ -69,7 +69,7 @@ namespace MBC.App.BattleshipConsole
                 Console.WriteLine("Match created with:");
                 foreach (var controller in playControllers)
                 {
-                    newMatch.AddController(new TimedController(controller));
+                    newMatch.AddController(new TimedController(controller.CreateInstance()));
                     Console.WriteLine(controller);
                 }
             }

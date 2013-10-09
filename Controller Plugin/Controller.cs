@@ -154,11 +154,14 @@ namespace MBC.Shared
             var opponents = new HashSet<IDNumber>();
             foreach (var team in Teams)
             {
-                if (!team.Value.Members.Contains(ID))
+                if (!team.Value.IsInternal && (!team.Value.Members.Contains(ID) || !team.Value.IsFriendly))
                 {
                     foreach (var id in team.Value.Members)
                     {
-                        opponents.Add(id);
+                        if (id != ID)
+                        {
+                            opponents.Add(id);
+                        }
                     }
                 }
             }
@@ -198,7 +201,10 @@ namespace MBC.Shared
         /// <param name="message">The string to output to the MBC core framework.</param>
         protected void SendMessage(string message)
         {
-            ControllerMessageEvent(message);
+            if (ControllerMessageEvent != null)
+            {
+                ControllerMessageEvent(message);
+            }
         }
     }
 }

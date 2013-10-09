@@ -10,6 +10,7 @@ namespace MBC.Core.Threading
     {
         public Threader()
         {
+            RunThread = new Thread(ThreadRun);
             IsRunning = false;
         }
 

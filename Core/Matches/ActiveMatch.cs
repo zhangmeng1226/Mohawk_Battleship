@@ -23,7 +23,7 @@ namespace MBC.Core.Matches
             ApplyEvent(new MatchBeginEvent(ID));
             SetConfiguration(conf);
 
-            AddEventAction(typeof(MatchAddPlayerEvent), ControllersUpdateRegisters);
+            AddEventAction(typeof(MatchAddPlayerEvent), ControllersUpdate);
             AddEventAction(typeof(MatchRemovePlayerEvent), MatchRemovePlayer);
             AddEventAction(typeof(PlayerTeamAssignEvent), ControllersUpdateTeams);
             AddEventAction(typeof(PlayerTeamUnassignEvent), ControllersUpdateTeams);
@@ -65,6 +65,7 @@ namespace MBC.Core.Matches
                 {
                     controllers[i] = plr;
                     plr.NewMatch();
+                    plr.Match = new MatchConfig(CompiledConfig);
                     ApplyEvent(new MatchAddPlayerEvent(i, plr.GetAttribute<NameAttribute>().ToString()));
                     return;
                 }
@@ -112,6 +113,10 @@ namespace MBC.Core.Matches
                 throw new NotImplementedException("The " + newConfig.GameMode.ToString() + " game mode is not supported.");
             }
             ApplyEvent(new MatchConfigChangedEvent(newConfig));
+            foreach (var ctrl in controllers)
+            {
+                ctrl.Value.Match = new MatchConfig(CompiledConfig);
+            }
         }
 
         public virtual void SetControllerToTeam(IDNumber ctrl, IDNumber team)
@@ -166,13 +171,24 @@ namespace MBC.Core.Matches
             throw new InvalidProgramException("Not supposed to happen.");
         }
 
+        private void ControllersUpdate(Event ev)
+        {
+            ControllersUpdateRegisters(ev);
+            ControllersUpdateTeams(ev);
+        }
+
         private void ControllersUpdateRegisters(Event ev)
         {
             if (Events.AtEnd)
             {
                 foreach (var controller in controllers)
                 {
-                    controller.Value.Registers = (Dictionary<IDNumber, Register>)Registers;
+                    controller.Value.Registers = new Dictionary<IDNumber, Register>();
+                    controller.Value.ID = controller.Key;
+                    foreach (var reg in Registers)
+                    {
+                        controller.Value.Registers.Add(reg.Key, new Register(reg.Value));
+                    }
                 }
             }
         }
@@ -183,7 +199,11 @@ namespace MBC.Core.Matches
             {
                 foreach (var controller in controllers)
                 {
-                    controller.Value.Teams = (Dictionary<IDNumber, Team>)Teams;
+                    controller.Value.Teams = new Dictionary<IDNumber, Team>();
+                    foreach (var team in Teams)
+                    {
+                        controller.Value.Teams.Add(team.Key, new Team(team.Value));
+                    }
                 }
             }
         }
@@ -193,6 +213,7 @@ namespace MBC.Core.Matches
             var removePlayer = (MatchAddPlayerEvent)ev;
             controllers.Remove(removePlayer.PlayerID);
             ControllersUpdateRegisters(ev);
+            ControllersUpdateTeams(ev);
         }
     }
 }

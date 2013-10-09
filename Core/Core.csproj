@@ -44,6 +44,7 @@
   <ItemGroup>
     <Compile Include="Accolades\Accolade.cs" />
     <Compile Include="Accolades\AccoladeGenerator.cs" />
+    <Compile Include="Controllers\TimedController.cs" />
     <Compile Include="Events\PlayerMessageEvent.cs" />
     <Compile Include="Events\StateSave.cs" />
     <Compile Include="Events\PlayerTeamUnassignEvent.cs" />
@@ -57,7 +58,6 @@
     <Compile Include="Matches\ClassicGame.cs" />
     <Compile Include="Matches\MatchReplay.cs" />
     <Compile Include="Matches\AllRoundsMatch.cs" />
-    <Compile Include="Controllers\LocalController.cs" />
     <Compile Include="Threading\LoopingThreader.cs" />
     <Compile Include="Controllers\ControllerSkeleton.cs" />
     <Compile Include="Events\PlayerShipDestroyedEvent.cs" />

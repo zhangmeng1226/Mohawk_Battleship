@@ -31,6 +31,12 @@ namespace MBC.Shared
             set;
         }
 
+        public bool IsFriendly
+        {
+            get;
+            set;
+        }
+
         public bool IsInternal
         {
             get;
