@@ -23,11 +23,11 @@ namespace MBC.Core.Matches
             ApplyEvent(new MatchBeginEvent(ID));
             SetConfiguration(conf);
 
-            AddEventAction(typeof(MatchAddPlayerEvent), ControllersUpdate);
+            AddEventAction(typeof(MatchAddPlayerEvent), MatchAddPlayer);
             AddEventAction(typeof(MatchRemovePlayerEvent), MatchRemovePlayer);
-            AddEventAction(typeof(PlayerTeamAssignEvent), ControllersUpdateTeams);
-            AddEventAction(typeof(PlayerTeamUnassignEvent), ControllersUpdateTeams);
-            AddEventAction(typeof(MatchTeamCreateEvent), ControllersUpdateTeams);
+            AddEventAction(typeof(PlayerTeamAssignEvent), TeamChangeEvent);
+            AddEventAction(typeof(PlayerTeamUnassignEvent), TeamChangeEvent);
+            AddEventAction(typeof(MatchTeamCreateEvent), TeamChangeEvent);
         }
 
         public ActiveMatch()
@@ -114,10 +114,6 @@ namespace MBC.Core.Matches
             }
             newConfig.Random = new Random();
             ApplyEvent(new MatchConfigChangedEvent(newConfig));
-            foreach (var ctrl in controllers)
-            {
-                ctrl.Value.Match = new MatchConfig(CompiledConfig);
-            }
         }
 
         public virtual void SetControllerToTeam(IDNumber ctrl, IDNumber team)
@@ -172,13 +168,15 @@ namespace MBC.Core.Matches
             throw new InvalidProgramException("Not supposed to happen.");
         }
 
-        private void ControllersUpdate(Event ev)
+        private void ControllersUpdateMatch()
         {
-            ControllersUpdateRegisters(ev);
-            ControllersUpdateTeams(ev);
+            foreach (var ctrl in controllers)
+            {
+                ctrl.Value.Match = new MatchConfig(CompiledConfig);
+            }
         }
 
-        private void ControllersUpdateRegisters(Event ev)
+        private void ControllersUpdateRegisters()
         {
             if (Events.AtEnd)
             {
@@ -194,7 +192,7 @@ namespace MBC.Core.Matches
             }
         }
 
-        private void ControllersUpdateTeams(Event ev)
+        private void ControllersUpdateTeams()
         {
             if (Events.AtEnd)
             {
@@ -209,12 +207,24 @@ namespace MBC.Core.Matches
             }
         }
 
+        private void MatchAddPlayer(Event ev)
+        {
+            var playerEvent = (MatchAddPlayerEvent)ev;
+            Controllers[playerEvent.PlayerID].Match = new MatchConfig(CompiledConfig);
+            ControllersUpdateRegisters();
+            ControllersUpdateTeams();
+        }
+
         private void MatchRemovePlayer(Event ev)
         {
             var removePlayer = (MatchAddPlayerEvent)ev;
-            controllers.Remove(removePlayer.PlayerID);
-            ControllersUpdateRegisters(ev);
-            ControllersUpdateTeams(ev);
+            ControllersUpdateRegisters();
+            ControllersUpdateTeams();
+        }
+
+        private void TeamChangeEvent(Event ev)
+        {
+            ControllersUpdateTeams();
         }
     }
 }

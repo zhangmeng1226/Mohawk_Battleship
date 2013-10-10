@@ -50,6 +50,7 @@ namespace MBC.Core.Matches
                 if (Ended)
                 {
                     IsRunning = false;
+                    ApplyEvent(new MatchEndEvent());
                     return;
                 }
                 if (currentGame.Ended)

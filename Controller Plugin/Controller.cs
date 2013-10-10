@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Permissions;
+using MBC.Shared.dep;
 
 namespace MBC.Shared
 {
@@ -60,6 +61,15 @@ namespace MBC.Shared
             }
         }
 
+        [Obsolete("Use alternative fields, properties, and methods provided in this class.")]
+        public ControllerRegister Register
+        {
+            get
+            {
+                return new ControllerRegister(this);
+            }
+        }
+
         public Dictionary<IDNumber, Register> Registers
         {
             get;
@@ -70,6 +80,25 @@ namespace MBC.Shared
         {
             get;
             set;
+        }
+
+        public List<IDNumber> AllOpponents()
+        {
+            var opponents = new HashSet<IDNumber>();
+            foreach (var team in Teams)
+            {
+                if (!team.Value.IsInternal && (!team.Value.Members.Contains(ID) || !team.Value.IsFriendly))
+                {
+                    foreach (var id in team.Value.Members)
+                    {
+                        if (id != ID)
+                        {
+                            opponents.Add(id);
+                        }
+                    }
+                }
+            }
+            return opponents.ToList();
         }
 
         public T GetAttribute<T>()
@@ -147,25 +176,6 @@ namespace MBC.Shared
         /// </summary>
         public virtual void ShotMiss(Shot shot)
         {
-        }
-
-        protected List<IDNumber> AllOpponents()
-        {
-            var opponents = new HashSet<IDNumber>();
-            foreach (var team in Teams)
-            {
-                if (!team.Value.IsInternal && (!team.Value.Members.Contains(ID) || !team.Value.IsFriendly))
-                {
-                    foreach (var id in team.Value.Members)
-                    {
-                        if (id != ID)
-                        {
-                            opponents.Add(id);
-                        }
-                    }
-                }
-            }
-            return opponents.ToList();
         }
 
         protected Shot CreateShot(Coordinates shotCoords)
