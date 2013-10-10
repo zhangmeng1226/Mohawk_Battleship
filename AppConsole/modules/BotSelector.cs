@@ -20,9 +20,7 @@ namespace MBC.App.Terminal.Modules
 
         public BotSelector()
         {
-            selectableBots = ControllerSkeleton.LoadControllerFolder(
-                Configuration.Global.GetValue<string>("app_data_root") + "controllers");
-            selectableBots.AddRange(ControllerSkeleton.LoadControllerFolder(Environment.CurrentDirectory + "\\..\\bots"));
+            LoadControllers();
 
             redList = new VerticalLayout(VerticalLayout.VerticalAlign.Left);
             redList.SetDisplayLine(5);
@@ -63,6 +61,13 @@ namespace MBC.App.Terminal.Modules
             redList.Display();
             blueList.Display();
             buttonConfirmLayout.Display();
+        }
+
+        private void LoadControllers()
+        {
+            selectableBots = ControllerSkeleton.LoadControllerFolder(
+                Configuration.Global.GetValue<string>("app_data_root") + "controllers");
+            selectableBots.AddRange(ControllerSkeleton.LoadControllerFolder(Environment.CurrentDirectory + "\\..\\bots"));
         }
 
         private bool SelectionConfirm(string btn)

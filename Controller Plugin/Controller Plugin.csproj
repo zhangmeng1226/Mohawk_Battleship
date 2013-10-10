@@ -52,6 +52,9 @@
     <Compile Include="Attributes\NameAttribute.cs" />
     <Compile Include="Attributes\VersionAttribute.cs" />
     <Compile Include="Constants.cs" />
+    <Compile Include="dep\ControllerID.cs" />
+    <Compile Include="dep\ControllerRegister.cs" />
+    <Compile Include="dep\MatchInfo.cs" />
     <Compile Include="FieldInfo.cs" />
     <Compile Include="IController.cs" />
     <Compile Include="IDNumber.cs" />

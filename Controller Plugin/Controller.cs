@@ -148,7 +148,16 @@ namespace MBC.Shared
         {
         }
 
-        public abstract ShipList PlaceShips();
+        public virtual ShipList PlaceShips()
+        {
+            return PlaceShips(Match.StartingShips);
+        }
+
+        [Obsolete("initialShips no longer needs to be provided as a parameter. See MatchConfig.StartingShips instead.")]
+        public virtual ShipList PlaceShips(ShipList initialShips)
+        {
+            return null;
+        }
 
         /// <summary>
         /// <see cref="IController.RoundLost()"/>
