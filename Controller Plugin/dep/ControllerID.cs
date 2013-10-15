@@ -8,7 +8,7 @@ namespace MBC.Shared.dep
     [Obsolete("No longer used. Use the generally-labeled class IDNumber instead.")]
     public struct ControllerID
     {
-        private int value;
+        internal int value;
 
         private ControllerID(int value)
         {

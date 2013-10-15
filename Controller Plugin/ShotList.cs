@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using MBC.Shared.dep;
 
 namespace MBC.Shared
 {
@@ -252,10 +253,33 @@ namespace MBC.Shared
         }
 
         /// <summary>
+        /// Creates a new empty internal list for Shot objects for a specific receiver ID.
+        /// </summary>
+        /// <param name="receiver">The ControllerID of the receiver to create the list for.</param>
+        [Obsolete("ControllerID is no longer used. Use IDNumbers instead.")]
+        public void MakeReceiver(ControllerID receiver)
+        {
+            shotsByReceiver[(int)receiver] = new List<Shot>();
+        }
+
+        /// <summary>
         /// Creates a new empty internal list for Shot objects for a list of specific receiver IDs.
         /// </summary>
         /// <param name="receivers">A List of ControllerIDs to create lists for.</param>
         public void MakeReceivers(List<IDNumber> receivers)
+        {
+            foreach (var receiver in receivers)
+            {
+                MakeReceiver(receiver);
+            }
+        }
+
+        /// <summary>
+        /// Creates a new empty internal list for Shot objects for a list of specific receiver IDs.
+        /// </summary>
+        /// <param name="receivers">A List of ControllerIDs to create lists for.</param>
+        [Obsolete("ControllerID is no longer used. Use a list of IDNumbers instead.")]
+        public void MakeReceivers(List<ControllerID> receivers)
         {
             foreach (var receiver in receivers)
             {

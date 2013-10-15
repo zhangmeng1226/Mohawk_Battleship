@@ -65,9 +65,7 @@ namespace MBC.App.Terminal.Modules
 
         private void LoadControllers()
         {
-            selectableBots = ControllerSkeleton.LoadControllerFolder(
-                Configuration.Global.GetValue<string>("app_data_root") + "controllers");
-            selectableBots.AddRange(ControllerSkeleton.LoadControllerFolder(Environment.CurrentDirectory + "\\..\\bots"));
+            selectableBots = ControllerSkeleton.LoadControllerFolder(Environment.CurrentDirectory + "\\..\\bots");
         }
 
         private bool SelectionConfirm(string btn)

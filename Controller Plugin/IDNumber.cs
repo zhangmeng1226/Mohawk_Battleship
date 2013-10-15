@@ -1,4 +1,6 @@
-﻿namespace MBC.Shared
+﻿using MBC.Shared.dep;
+
+namespace MBC.Shared
 {
     /// <summary>
     /// Identical to an integer and can be used exactly as such in code. Used to identify a <see cref="Controller"/>
