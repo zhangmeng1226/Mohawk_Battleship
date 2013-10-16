@@ -31,6 +31,7 @@ namespace MBC.Core.Matches
             currentFields = new Dictionary<IDNumber, FieldInfo>();
             eventActions = new Dictionary<Type, List<MBCEventHandler>>();
             ID = (int)DateTime.Now.Subtract(new DateTime(1970, 1, 1, 0, 0, 0)).TotalSeconds;
+            eventActions[typeof(Event)] = new List<MBCEventHandler>();
 
             AddEventAction(typeof(MatchBeginEvent), MatchBegin);
             AddEventAction(typeof(MatchAddPlayerEvent), MatchAddPlayer);
@@ -84,11 +85,26 @@ namespace MBC.Core.Matches
 
         public void AddEventAction(Type typeOfEvent, MBCEventHandler eventAction)
         {
-            if (!eventActions.ContainsKey(typeOfEvent))
+            if (typeOfEvent == typeof(Event))
             {
-                eventActions[typeOfEvent] = new List<MBCEventHandler>();
+                eventActions[typeof(Event)].Add(eventAction);
+                return;
             }
-            eventActions[typeOfEvent].Add(eventAction);
+            Type baseType = typeOfEvent.BaseType;
+            while (baseType != null)
+            {
+                if (baseType == typeof(Event))
+                {
+                    if (!eventActions.ContainsKey(typeOfEvent))
+                    {
+                        eventActions[typeOfEvent] = new List<MBCEventHandler>();
+                    }
+                    eventActions[typeOfEvent].Add(eventAction);
+                    return;
+                }
+                baseType = baseType.BaseType;
+            }
+            throw new ArgumentException("The type of event must have a base type of Event.");
         }
 
         public abstract void Play();
@@ -115,6 +131,10 @@ namespace MBC.Core.Matches
                 {
                     action(ev);
                 }
+            }
+            foreach (var action in eventActions[typeof(Event)])
+            {
+                action(ev);
             }
         }
 

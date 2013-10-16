@@ -113,11 +113,13 @@ namespace MBC.App.Terminal.Layouts
         protected virtual void DrawSelected(UserControl ctrl)
         {
             module.AlignToLine(displayLine + controls.IndexOf(ctrl));
+            ctrl.RequiresUpdate = false;
         }
 
         protected virtual void DrawUnselected(UserControl ctrl)
         {
             module.AlignToLine(displayLine + controls.IndexOf(ctrl));
+            ctrl.RequiresUpdate = false;
         }
     }
 }

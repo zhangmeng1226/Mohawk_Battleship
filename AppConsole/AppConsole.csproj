@@ -61,6 +61,7 @@
     <Compile Include="modules\BotSelector.cs" />
     <Compile Include="modules\CompetitionOptionsDisplay.cs" />
     <Compile Include="modules\CompetitionRun.cs" />
+    <Compile Include="modules\ConfigurationManager.cs" />
     <Compile Include="modules\MainMenu.cs" />
     <Compile Include="modules\ResultDisplay.cs" />
     <Compile Include="modules\TerminalModule.cs" />

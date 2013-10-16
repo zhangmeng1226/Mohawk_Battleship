@@ -16,7 +16,7 @@ namespace MBC.App.Terminal.Modules
         {
             menuLayout = new VerticalLayout(VerticalLayout.VerticalAlign.Center);
             menuLayout.Add(new ButtonControl("Start a competition", MenuSelectEvent));
-            menuLayout.Add(new ButtonControl("Configuration Manager", MenuSelectEvent));
+            //menuLayout.Add(new ButtonControl("Configuration Manager", MenuSelectEvent));
             menuLayout.Add(new ButtonControl("Exit", MenuSelectEvent));
             AddControlLayout(menuLayout);
         }
@@ -43,7 +43,10 @@ namespace MBC.App.Terminal.Modules
                     return true;
 
                 case "Configuration Manager":
-                    return false;
+                    BattleshipConsole.RemoveModule(this);
+                    BattleshipConsole.AddModule(new ConfigurationManager());
+                    BattleshipConsole.UpdateDisplay();
+                    return true;
 
                 case "Exit":
                     BattleshipConsole.Running = false;

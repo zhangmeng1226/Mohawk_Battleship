@@ -19,14 +19,17 @@ namespace MBC.App.Terminal.Controls
             this.text = "[" + (chk ? "*" : " ") + "] " + text;
         }
 
-        private void SetCheckbox()
+        public bool IsChecked
         {
-            StringBuilder builder = new StringBuilder(Text);
-            builder[1] = isChecked ? '*' : ' ';
-            text = builder.ToString();
+            get
+            {
+                return isChecked;
+            }
         }
 
-        public override void Input(string txt) { }
+        public override void Input(string txt)
+        {
+        }
 
         public override bool KeyPress(ConsoleKeyInfo key)
         {
@@ -40,6 +43,13 @@ namespace MBC.App.Terminal.Controls
                     return true;
             }
             return false;
+        }
+
+        private void SetCheckbox()
+        {
+            StringBuilder builder = new StringBuilder(Text);
+            builder[1] = isChecked ? '*' : ' ';
+            text = builder.ToString();
         }
     }
 }

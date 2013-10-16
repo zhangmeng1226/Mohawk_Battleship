@@ -1,28 +1,42 @@
-﻿using MBC.Core;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using MBC.Core;
 
 namespace MBC.App.Terminal.Controls
 {
     public class StringInputControl : UserControl
     {
-        private string placeholderText;
         private string inputText;
+        private string placeholderText;
 
         public StringInputControl(string placeholder)
         {
-            text = placeholder;
             placeholderText = placeholder;
             inputText = "";
+        }
+
+        public string InputText
+        {
+            get
+            {
+                return inputText;
+            }
+        }
+
+        public string PlaceholderText
+        {
+            get
+            {
+                return placeholderText;
+            }
         }
 
         public override void Input(string txt)
         {
             inputText = txt;
-            text = inputText;
-            RequiresUpdate = true;
+            Update();
         }
 
         public override bool KeyPress(ConsoleKeyInfo key)
@@ -33,24 +47,27 @@ namespace MBC.App.Terminal.Controls
                     if (inputText.Length > 0)
                     {
                         inputText = inputText.Substring(0, inputText.Length - 1);
-                        if (inputText.Length == 0)
-                        {
-                            RequiresUpdate = true;
-                            text = placeholderText;
-                        }
+                        Update();
+                        return true;
                     }
                     break;
+
                 default:
                     if (!Char.IsControl(key.KeyChar))
                     {
                         inputText += key.KeyChar;
-                        text = inputText;
-                        RequiresUpdate = true;
+                        Update();
                         return true;
                     }
                     break;
             }
             return false;
+        }
+
+        private void Update()
+        {
+            text = string.Format("{0} [{1}]", placeholderText, inputText);
+            RequiresUpdate = true;
         }
     }
 }

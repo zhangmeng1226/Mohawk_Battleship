@@ -15,7 +15,9 @@ namespace MBC.App.Terminal.Modules
     public class CompetitionOptionsDisplay : TerminalModule
     {
         private IController blue;
+        private CheckboxControl dumpEventsCheck;
         private VerticalLayout layout;
+        private NumericControl millisecondControl;
         private IController red;
         private NumericControl roundsNumberControl;
 
@@ -25,8 +27,12 @@ namespace MBC.App.Terminal.Modules
             this.blue = blue;
             layout = new VerticalLayout(VerticalLayout.VerticalAlign.Center);
             roundsNumberControl = new NumericControl(new NumericControl.NumericControlParameters("# of rounds", false, 1, 100000, 1, 50));
+            millisecondControl = new NumericControl(new NumericControl.NumericControlParameters("Millisecond delay", false, 0, 10000, 10, 0));
+            dumpEventsCheck = new CheckboxControl("Dump shots to file");
             layout.Add(roundsNumberControl);
-            layout.Add(new CheckboxControl("Play out rounds"));
+            //layout.Add(new CheckboxControl("Play out rounds"));
+            layout.Add(millisecondControl);
+            layout.Add(dumpEventsCheck);
             layout.Add(new ButtonControl("Confirm", ButtonConfirmEvent));
             AddControlLayout(layout);
         }
@@ -62,7 +68,7 @@ namespace MBC.App.Terminal.Modules
             var match = new AllRoundsMatch();
             match.AddController(red);
             match.AddController(blue);
-            CompetitionRun runner = new CompetitionRun(match);
+            CompetitionRun runner = new CompetitionRun(match, millisecondControl.Value, dumpEventsCheck.IsChecked);
             BattleshipConsole.AddModule(runner);
             BattleshipConsole.RemoveModule(this);
             BattleshipConsole.UpdateDisplay();

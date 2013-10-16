@@ -156,7 +156,7 @@ namespace MBC.App.Terminal
 
         private static void Main(string[] args)
         {
-            Configuration.Initialize(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\MBC Data");
+            Configuration.Initialize(Environment.CurrentDirectory + "\\..");
             Console.Title = "Mohawk Battleship Competition";
             Console.Clear();
 

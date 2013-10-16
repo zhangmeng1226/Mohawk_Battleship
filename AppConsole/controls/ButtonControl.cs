@@ -7,15 +7,31 @@ namespace MBC.App.Terminal.Controls
 {
     public class ButtonControl : UserControl
     {
+        private string buttonText;
+
         public ButtonControl(string text, ButtonSelect selectEvent)
         {
             ButtonSelectEvent += selectEvent;
-            this.text = "[" + text + "]";
+            ButtonText = text;
         }
 
         public delegate bool ButtonSelect(string btnText);
 
         public event ButtonSelect ButtonSelectEvent;
+
+        public string ButtonText
+        {
+            get
+            {
+                return buttonText;
+            }
+            set
+            {
+                buttonText = value;
+                text = string.Format("[{0}]", buttonText);
+                RequiresUpdate = true;
+            }
+        }
 
         public override void Input(string txt)
         {
