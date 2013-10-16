@@ -42,6 +42,14 @@ namespace MBC.Core.Events
             }
         }
 
+        public IList<Event> Events
+        {
+            get
+            {
+                return events;
+            }
+        }
+
         public bool IsRunning
         {
             get;

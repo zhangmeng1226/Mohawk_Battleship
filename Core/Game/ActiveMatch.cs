@@ -92,7 +92,7 @@ namespace MBC.Core.Matches
         {
             Config = config;
             var newConfig = new MatchConfig();
-            newConfig.FieldSize = new Coordinates(Config.GetValue<int>("mbc_field_width"), Config.GetValue<int>("mbc_field_height"));
+            newConfig.FieldSize = new Coordinates(Config.GetValue<int>("mbc_field_width") - 1, Config.GetValue<int>("mbc_field_height") - 1);
             newConfig.NumberOfRounds = Config.GetValue<int>("mbc_match_rounds");
 
             newConfig.StartingShips = new ShipList();

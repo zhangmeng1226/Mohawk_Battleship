@@ -47,15 +47,15 @@ namespace MBC.Core.Matches
             IsRunning = true;
             while (IsRunning)
             {
+                if (currentGame.Ended)
+                {
+                    currentGame = CreateNewRound(currentGame.ID + 1);
+                }
                 if (Ended)
                 {
                     IsRunning = false;
                     ApplyEvent(new MatchEndEvent());
                     return;
-                }
-                if (currentGame.Ended)
-                {
-                    currentGame = CreateNewRound(currentGame.ID + 1);
                 }
                 currentGame.Play();
             }
