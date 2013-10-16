@@ -1,11 +1,12 @@
-﻿using MBC.Core.Accolades;
+﻿using System.Runtime.Serialization;
+using MBC.Core.Accolades;
 using MBC.Core.Rounds;
-using System;
+using MBC.Shared;
 
 namespace MBC.Core.Events
 {
     /// <summary>
-    /// Provides information about a <see cref="Round"/> that has an <see cref="Accolade"/> added to it.
+    /// Provides information about a <see cref="GameLogic"/> that has an <see cref="Accolade"/> added to it.
     /// </summary>
     public class RoundAccoladeEvent : RoundEvent
     {
@@ -14,16 +15,17 @@ namespace MBC.Core.Events
         /// <summary>
         /// Passes the <paramref name="round"/> to the base constructor and stores the <paramref name="accolade"/>.
         /// </summary>
-        /// <param name="round">The <see cref="Round"/> that has had the <paramref name="accolade"/> added.</param>
+        /// <param name="round">The <see cref="GameLogic"/> that has had the <paramref name="accolade"/> added.</param>
         /// <param name="accolade">The <see cref="Accolade"/> added to the <paramref name="round"/>.</param>
-        public RoundAccoladeEvent(Accolade accolade)
+        public RoundAccoladeEvent(IDNumber roundID, Accolade accolade)
+            : base(roundID)
         {
             this.accolade = accolade;
         }
 
-        protected internal override void GenerateMessage()
+        public RoundAccoladeEvent(SerializationInfo info, StreamingContext context)
+            : base(info, context)
         {
-
         }
 
         /// <summary>
@@ -35,6 +37,11 @@ namespace MBC.Core.Events
             {
                 return accolade;
             }
+        }
+
+        public override void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            base.GetObjectData(info, context);
         }
     }
 }

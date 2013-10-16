@@ -1,5 +1,4 @@
-﻿using MBC.Core;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,6 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using MBC.Core;
 
 namespace MBC.App.WPF
 {
@@ -32,15 +32,16 @@ namespace MBC.App.WPF
         /// </summary>
         public static DependencyProperty ControllerColorProperty;
 
+        private int controller;
+
+        private List<Ellipse> opponentShots;
+
+        private Dictionary<int, List<Rectangle>> ships;
+
         static FieldControl()
         {
-            ControllerColorProperty = DependencyProperty.Register("ControllerColor", typeof(Color), typeof(FieldControl));            
+            ControllerColorProperty = DependencyProperty.Register("ControllerColor", typeof(Color), typeof(FieldControl));
         }
-
-        private int controller; //The controller index this FieldControl displays information for.
-        //private Field battlefield; //The Field object this FieldControl gets the information from.
-        private Dictionary<int, List<Rectangle>> ships; //A Dictionary containing graphics information for the sizes of ships.
-        private List<Ellipse> opponentShots; //A List of ellipses drawn on the display.
 
         /// <summary>
         /// Constructs a FieldControl. Does not do anything special besides initialize WPF components.
@@ -61,62 +62,15 @@ namespace MBC.App.WPF
             set { SetValue(ControllerColorProperty, value); }
         }
 
-        /// <summary>
-        /// Generates the WPF grid with a specified number of rows and columns. Internally used.
-        /// </summary>
-        /// <param name="rows">The number of rows.</param>
-        /// <param name="cols">The number of columns.</param>
-        private void MakeGrid(int rows, int cols)
+        public void SetController(int ibc)
         {
-            fieldGrid.RowDefinitions.Clear();
-            fieldGrid.ColumnDefinitions.Clear();
-            fieldGrid.Children.Clear();
-            opponentShots.Clear();
-            for (int i = 0; i < rows; i++)
-            {
-                fieldGrid.RowDefinitions.Add(new RowDefinition());
-                if (i == 0)
-                {
-                    continue;
-                }
-                var l = new Line();
-                Grid.SetColumn(l, 0);
-                Grid.SetRow(l, i);
-                Grid.SetColumnSpan(l, cols);
-                Grid.SetZIndex(l, 0);
-                l.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
-                l.VerticalAlignment = System.Windows.VerticalAlignment.Top;
-                l.Stroke = new SolidColorBrush(Colors.DarkGray);
-                l.StrokeThickness = 1;
-                l.StrokeDashArray = new DoubleCollection();
-                l.StrokeDashArray.Add(3);
-                l.StrokeDashArray.Add(5);
-                l.X2 = fieldGrid.ActualWidth;
-                fieldGrid.Children.Add(l);
-            }
-            for (int i = 0; i < cols; i++)
-            {
-                fieldGrid.ColumnDefinitions.Add(new ColumnDefinition());
-                if (i == 0)
-                {
-                    continue;
-                }
-                var l = new Line();
-                Grid.SetColumn(l, i);
-                Grid.SetRow(l, 0);
-                Grid.SetRowSpan(l, rows);
-                Grid.SetZIndex(l, 0);
-                l.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
-                l.VerticalAlignment = System.Windows.VerticalAlignment.Top;
-                l.Stroke = new SolidColorBrush(Colors.DarkGray);
-                l.StrokeThickness = 1;
-                l.StrokeDashArray = new DoubleCollection();
-                l.StrokeDashArray.Add(3);
-                l.StrokeDashArray.Add(5);
-                l.Y2 = fieldGrid.ActualHeight;
-                fieldGrid.Children.Add(l);
-            }
-            fieldGrid.UpdateLayout();
+            controller = ibc;
+        }
+
+        public void UpdateFieldDisplay()
+        {
+            LayShips();
+            LayShots();
         }
 
         /// <summary>
@@ -149,6 +103,17 @@ namespace MBC.App.WPF
                 shipList.Add(r);
             }
              * */
+        }
+
+        /// <summary>
+        /// Invoked when the FieldControl has been loaded into the WPF interface.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void FieldLoaded(object sender, RoutedEventArgs e)
+        {
+            MakeGrid(10, 10); //Just start the grid out with 10 x 10 squares.
+            fieldLabel.Foreground = new SolidColorBrush(ControllerColor);
         }
 
         /// <summary>
@@ -218,25 +183,70 @@ namespace MBC.App.WPF
             }*/
         }
 
+        /// <summary>
+        /// Generates the WPF grid with a specified number of rows and columns. Internally used.
+        /// </summary>
+        /// <param name="rows">The number of rows.</param>
+        /// <param name="cols">The number of columns.</param>
+        private void MakeGrid(int rows, int cols)
+        {
+            fieldGrid.RowDefinitions.Clear();
+            fieldGrid.ColumnDefinitions.Clear();
+            fieldGrid.Children.Clear();
+            opponentShots.Clear();
+            for (int i = 0; i < rows; i++)
+            {
+                fieldGrid.RowDefinitions.Add(new RowDefinition());
+                if (i == 0)
+                {
+                    continue;
+                }
+                var l = new Line();
+                Grid.SetColumn(l, 0);
+                Grid.SetRow(l, i);
+                Grid.SetColumnSpan(l, cols);
+                Grid.SetZIndex(l, 0);
+                l.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
+                l.VerticalAlignment = System.Windows.VerticalAlignment.Top;
+                l.Stroke = new SolidColorBrush(Colors.DarkGray);
+                l.StrokeThickness = 1;
+                l.StrokeDashArray = new DoubleCollection();
+                l.StrokeDashArray.Add(3);
+                l.StrokeDashArray.Add(5);
+                l.X2 = fieldGrid.ActualWidth;
+                fieldGrid.Children.Add(l);
+            }
+            for (int i = 0; i < cols; i++)
+            {
+                fieldGrid.ColumnDefinitions.Add(new ColumnDefinition());
+                if (i == 0)
+                {
+                    continue;
+                }
+                var l = new Line();
+                Grid.SetColumn(l, i);
+                Grid.SetRow(l, 0);
+                Grid.SetRowSpan(l, rows);
+                Grid.SetZIndex(l, 0);
+                l.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
+                l.VerticalAlignment = System.Windows.VerticalAlignment.Top;
+                l.Stroke = new SolidColorBrush(Colors.DarkGray);
+                l.StrokeThickness = 1;
+                l.StrokeDashArray = new DoubleCollection();
+                l.StrokeDashArray.Add(3);
+                l.StrokeDashArray.Add(5);
+                l.Y2 = fieldGrid.ActualHeight;
+                fieldGrid.Children.Add(l);
+            }
+            fieldGrid.UpdateLayout();
+        }
+
         /// <summary>Sets the controller that this FieldControl displays through the internally presented Field.</summary>
         /// <param name="ibc">The index of the battleship controller in the Field to switch to. Refer to the
         /// constants available in the Controller class.</param>
         /// <seealso cref="Field"/>
-
-        public void SetController(int ibc)
-        {
-            controller = ibc;
-        }
-
         /// <summary>Makes this FieldControl update its display to reflect the
         /// current state of the internal Field.</summary>
-
-        public void UpdateFieldDisplay()
-        {
-            LayShips();
-            LayShots();
-        }
-
         /// <summary>Sets the Field this FieldControl will present.</summary>
         /// <param name="field">The Field object to display.</param>
         /// <seealso cref="Field"/>
@@ -251,16 +261,5 @@ namespace MBC.App.WPF
             LayShips();
             LayShots();
         }*/
-
-        /// <summary>
-        /// Invoked when the FieldControl has been loaded into the WPF interface.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void FieldLoaded(object sender, RoutedEventArgs e)
-        {
-            MakeGrid(10, 10); //Just start the grid out with 10 x 10 squares.
-            fieldLabel.Foreground = new SolidColorBrush(ControllerColor);
-        }
     }
 }

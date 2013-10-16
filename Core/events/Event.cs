@@ -1,12 +1,13 @@
 ﻿using System;
-using System.Xml.Serialization;
+using System.Runtime.Serialization;
+
 namespace MBC.Core.Events
 {
     /// <summary>
     /// Defines a method that retrieves and handles an <see cref="Event"/>.
     /// </summary>
     /// <param name="ev">The generated <see cref="Event"/></param>
-    public delegate void MBCEventHandler(Event ev, bool backward);
+    public delegate void MBCEventHandler(Event ev);
 
     /// <summary>
     /// The base class for any event created in the MBC core framework. Provides a message string that
@@ -14,41 +15,26 @@ namespace MBC.Core.Events
     /// </summary>
     /// <seealso cref="MatchEvent"/>
     /// <seealso cref="RoundEvent"/>
-    /// <seealso cref="ControllerEvent"/>
-    public abstract class Event
+    /// <seealso cref="PlayerEvent"/>
+    public abstract class Event : ISerializable
     {
-        [XmlIgnore]
-        private string curMessage = null;
-
-        /// <summary>
-        /// Gets a string representation of the message generated.
-        /// </summary>
-        [XmlIgnore]
-        public string Message
+        public Event()
         {
-            get
-            {
-                if (curMessage == null)
-                {
-                    GenerateMessage();
-                }
-                return curMessage;
-            }
-            protected set
-            {
-                curMessage = value;
-            }
+            Millis = DateTime.Now.Millisecond;
         }
 
-        protected internal abstract void GenerateMessage();
-
-        /// <summary>
-        /// Provides a string representation.
-        /// </summary>
-        /// <returns>The <see cref="Event.Message"/>.</returns>
-        public override string ToString()
+        public Event(SerializationInfo info, StreamingContext context)
         {
-            return Message;
+        }
+
+        public int Millis
+        {
+            get;
+            private set;
+        }
+
+        public virtual void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
         }
     }
 }

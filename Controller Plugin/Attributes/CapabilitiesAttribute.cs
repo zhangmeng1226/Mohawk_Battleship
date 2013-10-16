@@ -6,8 +6,7 @@ namespace MBC.Shared.Attributes
     /// Provides information about the various <see cref="GameMode"/>s that a <see cref="Controller"/> has been
     /// designed for. Causes a <see cref="Controller"/> to be loaded only in the given <see cref="GameMode"/>s.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Class)]
-    public class CapabilitiesAttribute : Attribute
+    public class CapabilitiesAttribute : ControllerAttribute
     {
         private readonly GameMode Capabilities;
 

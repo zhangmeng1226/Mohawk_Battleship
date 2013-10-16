@@ -1,17 +1,15 @@
-﻿using System.Security.Permissions;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Security.Permissions;
+using MBC.Shared.dep;
 
 namespace MBC.Shared
 {
     /// <summary>
-    /// Defines a method that receives a string.
-    /// </summary>
-    /// <param name="message">A string containing the message being passed.</param>
-    public delegate void StringOutputHandler(string message);
-
-    /// <summary>
     /// <para>
     /// Provides a number of overrideable methods that are invoked during a match, and is provided with
-    /// a copy of a <see cref="ControllerRegister"/> for use.
+    /// a copy of a <see cref="Register"/> for use.
     /// </para>
     /// <para>
     /// At a minimum, certain attributes must be set to a deriving class, which are the <see cref="Attributes.NameAttribute"/>,
@@ -20,106 +18,200 @@ namespace MBC.Shared
     /// </para>
     /// </summary>
     [SecurityPermission(SecurityAction.PermitOnly, SerializationFormatter = true)]
-    public abstract class Controller
+    public abstract class Controller : IController
     {
         /// <summary>
-        /// Occurs whenever a string message is generated.
+        /// <see cref="IController.ControllerMessageEvent"/>
         /// </summary>
         public event StringOutputHandler ControllerMessageEvent;
 
-        /// <summary>
-        /// Gets or sets the <see cref="ControllerRegister"/> that is available for manipulation.
-        /// </summary>
-        public ControllerRegister Register { get; set; }
+        public FieldInfo Field { get; set; }
 
-        /// <summary>
-        /// Called when required to create and return a <see cref="Shot"/>. Refer to the rules of the
-        /// <see cref="MatchInfo.GameMode"/> in the <see cref="Controller.Register"/> when creating the
-        /// <see cref="Shot"/>.
-        /// </summary>
-        /// <returns>A <see cref="Shot"/> to be processed by the MBC core framework.</returns>
+        public IDNumber ID { get; set; }
+
+        public MatchConfig Match { get; set; }
+
+        public Register MyRegister
+        {
+            get
+            {
+                foreach (var register in Registers)
+                {
+                    if (register.Value.ID == ID)
+                    {
+                        return register.Value;
+                    }
+                }
+                return null;
+            }
+        }
+
+        public Team MyTeam
+        {
+            get
+            {
+                foreach (var team in Teams)
+                {
+                    if (team.Value.Members.Contains(ID))
+                    {
+                        return team.Value;
+                    }
+                }
+                return null;
+            }
+        }
+
+        [Obsolete("Use alternative fields, properties, and methods provided in this class.")]
+        public ControllerRegister Register
+        {
+            get
+            {
+                return new ControllerRegister(this);
+            }
+        }
+
+        public Dictionary<IDNumber, Register> Registers
+        {
+            get;
+            set;
+        }
+
+        public Dictionary<IDNumber, Team> Teams
+        {
+            get;
+            set;
+        }
+
+        public List<IDNumber> AllOpponents()
+        {
+            var opponents = new HashSet<IDNumber>();
+            foreach (var team in Teams)
+            {
+                if (!team.Value.IsInternal && (!team.Value.Members.Contains(ID) || !team.Value.IsFriendly))
+                {
+                    foreach (var id in team.Value.Members)
+                    {
+                        if (id != ID)
+                        {
+                            opponents.Add(id);
+                        }
+                    }
+                }
+            }
+            return opponents.ToList();
+        }
+
+        public T GetAttribute<T>()
+        {
+            object[] attribute = GetType().GetCustomAttributes(typeof(T), false);
+            if (attribute != null && attribute.Length > 0)
+            {
+                return (T)attribute[0];
+            }
+            return default(T);
+        }
+
         public abstract Shot MakeShot();
 
         /// <summary>
-        /// Called when the match against other <see cref="Controller"/>s is over.
+        /// <see cref="IController.MatchOver()"/>
         /// </summary>
         public virtual void MatchOver()
         {
         }
 
         /// <summary>
-        /// Called when entered in a new match. The <see cref="Controller.Register"/> will have
-        /// been updated with new information.
+        /// <see cref="IController.NewMatch()"/>
         /// </summary>
         public virtual void NewMatch()
         {
         }
 
         /// <summary>
-        /// Called when entered in a new round. The <see cref="Controller.Register"/> <see cref="ControllerRegister.Ships"/>
-        /// will be reset to an unplaced state.
+        /// <see cref="IController.NewRound()"/>
         /// </summary>
         public virtual void NewRound()
         {
         }
 
         /// <summary>
-        /// Called when an opposing <see cref="Controller"/> has had all of their <see cref="Ship"/>s destroyed,
-        /// lost the round, and has been removed from the active <see cref="Controller"/>s in the round.
+        /// <see cref="IController.OpponentDestroyed()"/>
         /// </summary>
-        /// <param name="destroyedID">The <see cref="ControllerID"/> of the <see cref="Controller"/> that
-        /// is no longer an opponent.</param>
-        public virtual void OpponentDestroyed(ControllerID destroyedID)
+        public virtual void OpponentDestroyed(IDNumber destroyedID)
         {
         }
 
         /// <summary>
-        /// Called when an opposing <see cref="Controller"/> in the same match has created a
-        /// <see cref="Shot"/> against this <see cref="Controller"/>.
+        /// <see cref="IController.OpponentShot()"/>
         /// </summary>
-        /// <param name="shot">The <see cref="Shot"/> made by an opposing <see cref="Controller"/></param>
         public virtual void OpponentShot(Shot shot)
         {
         }
 
-        /// <summary>
-        /// Called when the <see cref="ControllerRegister.Ships"/> in the <see cref="Controller.Register"/> must
-        /// be placed. Refer to the rules of the <see cref="MatchInfo.GameMode"/> in the <see cref="Controller.Register"/>.
-        /// </summary>
-        public abstract ShipList PlaceShips(ShipList initialShips);
+        public virtual ShipList PlaceShips()
+        {
+            return PlaceShips(Match.StartingShips);
+        }
+
+        [Obsolete("initialShips no longer needs to be provided as a parameter. See MatchConfig.StartingShips instead.")]
+        public virtual ShipList PlaceShips(ShipList initialShips)
+        {
+            return null;
+        }
 
         /// <summary>
-        /// Called when the round has been lost.
+        /// <see cref="IController.RoundLost()"/>
         /// </summary>
         public virtual void RoundLost()
         {
         }
 
         /// <summary>
-        /// Called when the round has been won.
+        /// <see cref="IController.RoundWon()"/>
         /// </summary>
         public virtual void RoundWon()
         {
         }
 
         /// <summary>
-        /// Called when a <paramref name="shot"/> created earlier hit an opposing <see cref="Controller"/>'s
-        /// <see cref="Ship"/>. Indicates via <paramref name="sunk"/> whether or not the <paramref name="shot"/>
-        /// destroyed the <see cref="Ship"/>.
+        /// <see cref="IController.ShotHit()"/>
         /// </summary>
-        /// <param name="shot">The <see cref="Shot"/> made earlier.</param>
-        /// <param name="sunk">Indicates whether or not the <paramref name="shot"/> destroyed a ship.</param>
         public virtual void ShotHit(Shot shot, bool sunk)
         {
         }
 
         /// <summary>
-        /// Called when a <paramref name="shot"/> created earlier did not hit an opposing <see cref="Controller"/>'s
-        /// <see cref="Ship"/>.
+        /// <see cref="IController.ShotMiss()"/>
         /// </summary>
-        /// <param name="shot">The <see cref="Shot"/> created earlier.</param>
         public virtual void ShotMiss(Shot shot)
         {
+        }
+
+        protected Shot CreateShot(Coordinates shotCoords)
+        {
+            return CreateShot(NextOpponent(), shotCoords);
+        }
+
+        protected Shot CreateShot(int xCoord, int yCoord)
+        {
+            return CreateShot(NextOpponent(), new Coordinates(xCoord, yCoord));
+        }
+
+        protected Shot CreateShot(IDNumber opponent, Coordinates shotCoords)
+        {
+            return new Shot(opponent, shotCoords);
+        }
+
+        protected IDNumber NextOpponent()
+        {
+            foreach (var team in Teams)
+            {
+                if (team.Value.Members.Count > 0 && !team.Value.Members.Contains(ID))
+                {
+                    return team.Value.Members.First();
+                }
+            }
+            return -1;
         }
 
         /// <summary>
@@ -128,7 +220,10 @@ namespace MBC.Shared
         /// <param name="message">The string to output to the MBC core framework.</param>
         protected void SendMessage(string message)
         {
-            ControllerMessageEvent(message);
+            if (ControllerMessageEvent != null)
+            {
+                ControllerMessageEvent(message);
+            }
         }
     }
 }

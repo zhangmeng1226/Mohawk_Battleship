@@ -1,16 +1,33 @@
-﻿using MBC.Core.Matches;
-using System;
+﻿using System.Runtime.Serialization;
+using MBC.Core.Matches;
+using MBC.Shared;
 
 namespace MBC.Core.Events
 {
     /// <summary>
     /// Provides information about a <see cref="Match"/> that has begun.
     /// </summary>
-    public class MatchBeginEvent : MatchEvent
+    public class MatchBeginEvent : Event
     {
-        protected internal override void GenerateMessage()
+        public MatchBeginEvent(IDNumber matchID)
         {
-            Message = "The match has begun.";
+            MatchID = matchID;
+        }
+
+        public MatchBeginEvent(SerializationInfo info, StreamingContext context)
+            : base(info, context)
+        {
+        }
+
+        public IDNumber MatchID
+        {
+            get;
+            private set;
+        }
+
+        public override void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            base.GetObjectData(info, context);
         }
     }
 }

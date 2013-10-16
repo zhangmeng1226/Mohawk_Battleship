@@ -5,8 +5,7 @@ namespace MBC.Shared.Attributes
     /// <summary>
     /// Provides a name to a <see cref="Controller"/>.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Class)]
-    public class NameAttribute : Attribute
+    public class NameAttribute : ControllerAttribute
     {
         /// <summary>
         /// Gets a string that names the <see cref="Controller"/>.
@@ -20,6 +19,11 @@ namespace MBC.Shared.Attributes
         public NameAttribute(string name)
         {
             Name = name;
+        }
+
+        public override string ToString()
+        {
+            return Name;
         }
     }
 }

@@ -28,8 +28,10 @@
     <Image x:Key="AccSlowImg" Source="/mbcwpf;component/media/images/accolades/slow.png" />
 
     <!--
-        ***Control customizations***
+        ***Control customizations*** 
     -->
+
+
 
     <!--
         Lines

@@ -5,8 +5,7 @@ namespace MBC.Shared.Attributes
     /// <summary>
     /// Provides information about the author of a <see cref="Controller"/> at the time of development.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Class)]
-    public class AuthorAttribute : Attribute
+    public class AuthorAttribute : ControllerAttribute
     {
         private string akaName;
         private string biography;

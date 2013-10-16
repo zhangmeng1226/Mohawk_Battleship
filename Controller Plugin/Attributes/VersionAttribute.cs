@@ -6,8 +6,7 @@ namespace MBC.Shared.Attributes
     /// Provides the version of a <see cref="Controller"/>.
     /// </summary>
     /// <seealso cref="System.Version"/>
-    [AttributeUsage(AttributeTargets.Class)]
-    public class VersionAttribute : Attribute
+    public class VersionAttribute : ControllerAttribute
     {
         /// <summary>
         /// Gets the <see cref="System.Version"/> number of the <see cref="Controller"/>.
@@ -65,6 +64,11 @@ namespace MBC.Shared.Attributes
         public VersionAttribute(int major, int minor, int build, int revision)
         {
             Version = new Version(major, minor, build, revision);
+        }
+
+        public override string ToString()
+        {
+            return Version.ToString();
         }
     }
 }

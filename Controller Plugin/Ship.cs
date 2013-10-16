@@ -11,7 +11,6 @@ namespace MBC.Shared
     /// </summary>
     public class Ship : IEquatable<Ship>
     {
-
         private bool isPlaced;
 
         private int length;
@@ -49,7 +48,9 @@ namespace MBC.Shared
             Length = length;
         }
 
-        private Ship() { }
+        private Ship()
+        {
+        }
 
         /// <summary>
         /// Gets a bool that indicates whether or not this <see cref="Ship"/> has been placed.
@@ -96,7 +97,6 @@ namespace MBC.Shared
             set
             {
                 location = value;
-
             }
         }
 

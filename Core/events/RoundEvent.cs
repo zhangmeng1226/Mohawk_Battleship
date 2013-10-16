@@ -1,23 +1,32 @@
-﻿using MBC.Core.Rounds;
-using System;
-using System.Xml.Serialization;
+﻿using System.Runtime.Serialization;
+using MBC.Core.Rounds;
+using MBC.Shared;
 
 namespace MBC.Core.Events
 {
     /// <summary>
-    /// The base class for a series of <see cref="Event"/>s that relate to changes in a <see cref="Round"/>.
+    /// The base class for a series of <see cref="Event"/>s that relate to changes in a <see cref="GameLogic"/>.
     /// </summary>
     public abstract class RoundEvent : Event
     {
-
-        internal virtual void ProcForward(Round round)
+        public RoundEvent(IDNumber roundID)
         {
-
         }
 
-        internal virtual void ProcBackward(Round round)
+        public RoundEvent(SerializationInfo info, StreamingContext context)
+            : base(info, context)
         {
+        }
 
+        public IDNumber RoundID
+        {
+            get;
+            private set;
+        }
+
+        public override void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            base.GetObjectData(info, context);
         }
     }
 }

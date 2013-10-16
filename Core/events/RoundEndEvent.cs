@@ -1,10 +1,11 @@
-﻿using MBC.Core.Rounds;
-using System;
+﻿using System.Runtime.Serialization;
+using MBC.Core.Rounds;
+using MBC.Shared;
 
 namespace MBC.Core.Events
 {
     /// <summary>
-    /// Provides information about a <see cref="Round"/> that has ended.
+    /// Provides information about a <see cref="GameLogic"/> that has ended.
     /// </summary>
     public class RoundEndEvent : RoundEvent
     {
@@ -12,23 +13,26 @@ namespace MBC.Core.Events
         /// Passes the <paramref name="round"/> to the base constructor and generates a <see cref="Event.Message"/>.
         /// </summary>
         /// <param name="round"></param>
-        public RoundEndEvent()
+        public RoundEndEvent(IDNumber roundID)
+            : base(roundID)
+        {
+            RoundID = roundID;
+        }
+
+        public RoundEndEvent(SerializationInfo info, StreamingContext context)
+            : base(info, context)
         {
         }
 
-        protected internal override void GenerateMessage()
+        public IDNumber RoundID
         {
-            Message = "This round has ended.";
+            get;
+            private set;
         }
 
-        internal override void ProcBackward(Round round)
+        public override void GetObjectData(SerializationInfo info, StreamingContext context)
         {
-            round.Ended = false;
-        }
-
-        internal override void ProcForward(Round round)
-        {
-            round.Ended = true;
+            base.GetObjectData(info, context);
         }
     }
 }

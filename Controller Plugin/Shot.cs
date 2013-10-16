@@ -5,12 +5,12 @@ namespace MBC.Shared
     /// <summary>
     /// Provides information about a primary component of a battleship game match; the shot. Contains
     /// the <see cref="Coordinates"/> used to target a <see cref="Ship"/> of a <see cref="Controller"/> associated
-    /// with a certain <see cref="ControllerID"/>.
+    /// with a certain <see cref="IDNumber"/>.
     /// </summary>
     public class Shot : IEquatable<Shot>, IComparable<Shot>
     {
         private Coordinates coords;
-        private ControllerID receiver;
+        private IDNumber receiver;
 
         /// <summary>
         /// Copies an existing <see cref="Shot"/>.
@@ -25,29 +25,20 @@ namespace MBC.Shared
         /// <summary>
         /// Initializes the <see cref="Shot.Coordinates"/> to (-1, -1) and stores the <paramref name="receiver"/>.
         /// </summary>
-        /// <param name="receiver">The receiving <see cref="ControllerRegister"/> of this <see cref="Shot"/>.</param>
-        public Shot(ControllerID receiver)
+        /// <param name="receiver">The receiving <see cref="Register"/> of this <see cref="Shot"/>.</param>
+        public Shot(IDNumber receiver)
+            : this(receiver, new Coordinates(-1, -1))
         {
-            this.coords = new Coordinates(-1, -1);
+        }
+
+        public Shot(IDNumber receiver, Coordinates coords)
+        {
+            this.coords = coords;
             this.receiver = receiver;
         }
 
-        private Shot() { }
-
-        /// <summary>
-        /// Gets or sets the <see cref="ControllerID"/> that identifies the <see cref="ControllerRegister"/>
-        /// receiving this <see cref="Shot"/>.
-        /// </summary>
-        public ControllerID Receiver
+        private Shot()
         {
-            get
-            {
-                return receiver;
-            }
-            set
-            {
-                receiver = value;
-            }
         }
 
         /// <summary>
@@ -63,6 +54,33 @@ namespace MBC.Shared
             {
                 coords = value;
             }
+        }
+
+        /// <summary>
+        /// Gets or sets the <see cref="IDNumber"/> that identifies the <see cref="Register"/>
+        /// receiving this <see cref="Shot"/>.
+        /// </summary>
+        public IDNumber Receiver
+        {
+            get
+            {
+                return receiver;
+            }
+            set
+            {
+                receiver = value;
+            }
+        }
+
+        /// <summary>
+        /// Compares the field values of two <see cref="Shot"/>s.
+        /// </summary>
+        /// <param name="shot1">A <see cref="Shot"/>.</param>
+        /// <param name="shot2">A <see cref="Shot"/>.</param>
+        /// <returns>true if one or more of the fields in both <see cref="Shot"/>s are inequal.</returns>
+        public static bool operator !=(Shot shot1, Shot shot2)
+        {
+            return !(shot1 == shot2);
         }
 
         /// <summary>
@@ -82,17 +100,6 @@ namespace MBC.Shared
                 return false;
             }
             return (shot1.Coordinates == shot2.Coordinates) && (shot1.Receiver == shot2.Receiver);
-        }
-
-        /// <summary>
-        /// Compares the field values of two <see cref="Shot"/>s.
-        /// </summary>
-        /// <param name="shot1">A <see cref="Shot"/>.</param>
-        /// <param name="shot2">A <see cref="Shot"/>.</param>
-        /// <returns>true if one or more of the fields in both <see cref="Shot"/>s are inequal.</returns>
-        public static bool operator !=(Shot shot1, Shot shot2)
-        {
-            return !(shot1 == shot2);
         }
 
         /// <summary>
@@ -121,15 +128,6 @@ namespace MBC.Shared
         }
 
         /// <summary>
-        /// Generates a string representation of this <see cref="Shot"/>.
-        /// </summary>
-        /// <returns>A string representing this <see cref="Shot"/>.</returns>
-        public override string ToString()
-        {
-            return Coordinates.ToString() + "=>[" + Receiver + "]";
-        }
-
-        /// <summary>
         /// Compares the equality of this <see cref="Shot"/> with an object.
         /// </summary>
         /// <param name="obj">The object to compare to.</param>
@@ -150,6 +148,15 @@ namespace MBC.Shared
             hash = hash * 37 + coords.Y;
             hash = hash * 37 + receiver;
             return hash;
+        }
+
+        /// <summary>
+        /// Generates a string representation of this <see cref="Shot"/>.
+        /// </summary>
+        /// <returns>A string representing this <see cref="Shot"/>.</returns>
+        public override string ToString()
+        {
+            return Coordinates.ToString() + "=>[" + Receiver + "]";
         }
     }
 }
