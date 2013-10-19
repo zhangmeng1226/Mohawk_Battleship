@@ -5,7 +5,7 @@ Namespace MBC
     Namespace Controllers
 
         ' This is a controller that uses a pseudo-random number generator to make all of its decisions. This
-        ' controller is highly documented and gives a good idea of how to develop a controller for use in MBC.    
+        ' controller is highly documented and gives a good idea of how to develop a controller for use in MBC.
         ' Every controller must implement the IBattleshipController interface from the shared framework in
         ' order to be detected by the MBC core.
 
@@ -20,7 +20,7 @@ Namespace MBC
 
         ' In this framework, two bots are pitted against each other in a match format of many rounds. By default
         ' both bots will play each other in 1,000 rounds of battleship. Your bot's memory will persist between rounds
-        ' allowing your bot to do long term analysis throughout the remainder of the match. 
+        ' allowing your bot to do long term analysis throughout the remainder of the match.
 
         ' This file is intended to act as a demonstration of how to create a battleship bot, feel free to copy and paste
         ' this file, refactor every occurrence of RandomBot to your own bot name, and use this file as your starting point.
@@ -48,7 +48,6 @@ Namespace MBC
             ' This is a list of shots that this controller has against another controller or controllers.
             ' It will start out being filled with every possible shot made.
             Private shotQueue As ShotList
-
 
             ' This method is called each time the bot begins a new round. This is a good place to initialize
             ' objects that are specific to this game, such as your map and random number generator.
@@ -82,7 +81,6 @@ Namespace MBC
                 ' After all ships has been placed, return myShips back to the framework.
                 Return myShips
             End Function
-
 
             ' This method is called when a shot is available to the controller. The Shot object is a reference
             ' to a copy held by the competition and is expected to be modified to the desired target. By default,
