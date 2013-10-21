@@ -53,7 +53,7 @@ Namespace MBC
             ' objects that are specific to this game, such as your map and random number generator.
             Public Overrides Sub NewRound()
                 SetShots()
-                rand = New Random()
+                rand = Match.Random
             End Sub
 
             ' This method is called when the controller is required to place ships. It is given a collection
@@ -74,7 +74,7 @@ Namespace MBC
                     ' Use the function within the ShipList object "myShips" to place a ship for the controller.
                     ' As explained in the PlaceShip() method of the ShipList, placing a ship at the randomly
                     ' generated coordinates may fail, which is why we loop until we find a valid placement.
-                    myShips.PlaceShip(randomCoords, orientation, Register.Match.FieldSize)
+                    myShips.PlaceShip(randomCoords, orientation, Match.FieldSize)
 
                 End While
 
@@ -140,9 +140,9 @@ Namespace MBC
             ' NOTE: This is a helper method for the random bot and is not required, it here for demonstration
             ' purposes only.
             Private Function RandomCoordinates() As Coordinates
-                Dim xCoord = rand.Next(Register.Match.FieldSize.X + 1)
+                Dim xCoord = rand.Next(Match.FieldSize.X + 1)
 
-                Dim yCoord = rand.Next(Register.Match.FieldSize.Y + 1)
+                Dim yCoord = rand.Next(Match.FieldSize.Y + 1)
 
                 Return New Coordinates(xCoord, yCoord)
             End Function
@@ -175,9 +175,9 @@ Namespace MBC
             Private Sub SetShots()
                 shotQueue = New ShotList()
 
-                shotQueue.MakeReceivers(Register.Opponents)
+                shotQueue.MakeReceivers(AllOpponents())
 
-                shotQueue.Invert(Register.Match.FieldSize)
+                shotQueue.Invert(Match.FieldSize)
             End Sub
 
         End Class

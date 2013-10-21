@@ -80,9 +80,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Controller Plugin\Controller Plugin.csproj">
+    <ProjectReference Include="..\Shared\Shared.csproj">
       <Project>{51fd717f-5965-4c31-9bdd-051da693a729}</Project>
-      <Name>Controller Plugin</Name>
+      <Name>Shared</Name>
     </ProjectReference>
     <ProjectReference Include="..\Core\Core.csproj">
       <Project>{a00f2d39-4bc0-4db9-a17a-2a1a9812bd20}</Project>

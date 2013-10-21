@@ -6,15 +6,20 @@
 
 /bots
 /bin
+/config
 /configs
 /docs
 /work on later
 
 /AppConsole/obj
-/Core/obj
-/Controller Plugin/obj
-/Controllers/obj
-/App3D/obj
-/App3D
 /AppWPF/obj
-/models
+/Core/obj
+/Bots CSharp/obj
+/Bots VB/obj
+/Shared/obj
+/AppConsole/bin
+/AppWPF/bin
+/Core/bin
+/Bots CSharp/bin
+/Bots VB/bin
+/Shared/bin

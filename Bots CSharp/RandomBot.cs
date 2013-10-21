@@ -113,7 +113,7 @@ namespace MBC.Controllers
 
             //Finally, the controller creates a random number generator into the "rand" field defined
             //in this class. It uses the tick count of the system as a seed.
-            rand = new Random();
+            rand = Match.Random;
         }
 
         /// <summary>
@@ -142,10 +142,10 @@ namespace MBC.Controllers
         /// of Ship objects that can be accessed.
         /// </summary>
         /// <param name="ships">A collection of Ship objects to place.</param>
-        public override ShipList PlaceShips(ShipList initialShips)
+        public override ShipList PlaceShips()
         {
             //First we'll refer to the ships given to us through a single variable.
-            var myShips = initialShips;
+            var myShips = Match.StartingShips;
 
             //This loop will continue until all of the Ship objects have been placed.
             while (!myShips.ShipsPlaced)
@@ -159,7 +159,7 @@ namespace MBC.Controllers
                 //Use the function within the ShipList object "myShips" to place a ship for the controller.
                 //As explained in the PlaceShip() method of the ShipList, placing a ship at the randomly
                 //generated coordinates may fail.
-                myShips.PlaceShip(randomCoords, orientation, Register.Match.FieldSize);
+                myShips.PlaceShip(randomCoords, orientation, Match.FieldSize);
             }
 
             return myShips;
@@ -271,11 +271,11 @@ namespace MBC.Controllers
             shotQueue = new ShotList();
 
             //Set up our shot queue with our opponents.
-            shotQueue.MakeReceivers(Register.Opponents);
+            shotQueue.MakeReceivers(AllOpponents());
 
             //Initially, a ShotList is empty when it is constructed, so the ShotList can be filled
             //easily by inverting it up to the size of the field in the game.
-            shotQueue.Invert(Register.Match.FieldSize);
+            shotQueue.Invert(Match.FieldSize);
         }
     }
 }
