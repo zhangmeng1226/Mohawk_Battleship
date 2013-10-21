@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{595E704F-2DD3-42C3-93C2-118D6ED951F2}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>Controllers_VB</RootNamespace>
-    <AssemblyName>Controllers VB</AssemblyName>
+    <RootNamespace>MBC.Controllers</RootNamespace>
+    <AssemblyName>Bots VB</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MyType>Windows</MyType>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
@@ -19,7 +19,8 @@
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
     <OutputPath>..\bots\</OutputPath>
-    <DocumentationFile>Controllers VB.xml</DocumentationFile>
+    <DocumentationFile>
+    </DocumentationFile>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -28,7 +29,8 @@
     <DefineTrace>true</DefineTrace>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DocumentationFile>Controllers VB.xml</DocumentationFile>
+    <DocumentationFile>
+    </DocumentationFile>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
   </PropertyGroup>
   <PropertyGroup>
@@ -100,13 +102,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Controller Plugin\Controller Plugin.csproj">
+    <ProjectReference Include="..\Shared\Shared.csproj">
       <Project>{51fd717f-5965-4c31-9bdd-051da693a729}</Project>
-      <Name>Controller Plugin</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Core\Core.csproj">
-      <Project>{a00f2d39-4bc0-4db9-a17a-2a1a9812bd20}</Project>
-      <Name>Core</Name>
+      <Name>Shared</Name>
+      <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />

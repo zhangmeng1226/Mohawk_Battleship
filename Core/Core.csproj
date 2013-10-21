@@ -87,9 +87,9 @@
     <Compile Include="Util\ConfigurationAttribute.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Controller Plugin\Controller Plugin.csproj">
+    <ProjectReference Include="..\Shared\Shared.csproj">
       <Project>{51FD717F-5965-4C31-9BDD-051DA693A729}</Project>
-      <Name>Controller Plugin</Name>
+      <Name>Shared</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />
