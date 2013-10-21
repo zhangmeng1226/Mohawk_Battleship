@@ -77,7 +77,7 @@ namespace MBC.Core
                         }
                         if (info.GetAttribute<NameAttribute>() == null)
                         {
-                            info.attributes[typeof(NameAttribute)] = new NameAttribute("undefined");
+                            info.attributes[typeof(NameAttribute)] = new NameAttribute(string.Format("!{0}!", cont.Name));
                         }
                         if (info.GetAttribute<VersionAttribute>() == null)
                         {
