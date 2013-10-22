@@ -1,10 +1,10 @@
 /config.ini
 
 /TODO.txt
-/MBC.v11.suo
-/MBC.suo
 /sandcastle_doc.shfbproj_*
 /match*
+/MBC.suo
+/MBC.v11.suo
 
 /bots
 /bin
@@ -14,14 +14,17 @@
 /work on later
 
 /AppConsole/obj
-/AppWPF/obj
 /Core/obj
 /Bots CSharp/obj
 /Bots VB/obj
-/Shared/obj
+/App3D/obj
+/App3D
+/AppWPF/obj
 /AppConsole/bin
-/AppWPF/bin
 /Core/bin
 /Bots CSharp/bin
 /Bots VB/bin
-/Shared/bin
+/App3D/bin
+/App3D
+/AppWPF/bin
+/models
