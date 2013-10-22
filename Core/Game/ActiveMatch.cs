@@ -93,14 +93,15 @@ namespace MBC.Core.Matches
         {
             Config = config;
             var newConfig = new MatchConfig();
-            newConfig.FieldSize = new Coordinates(Config.GetValue<int>("mbc_field_width") - 1, Config.GetValue<int>("mbc_field_height") - 1);
+            newConfig.FieldSize = new Coordinates(Config.GetValue<int>("mbc_field_width"), Config.GetValue<int>("mbc_field_height"));
             newConfig.NumberOfRounds = Config.GetValue<int>("mbc_match_rounds");
 
-            newConfig.StartingShips = new ShipList();
+            var initShips = new ShipList();
             foreach (var length in Config.GetList<int>("mbc_ship_sizes"))
             {
-                newConfig.StartingShips.Add(new Ship(length));
+                initShips.Add(new Ship(length));
             }
+            newConfig.StartingShips = initShips;
 
             newConfig.TimeLimit = Config.GetValue<int>("mbc_player_timeout");
 

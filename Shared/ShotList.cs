@@ -220,9 +220,9 @@ namespace MBC.Shared
                 var invertedShots = new List<Shot>();
 
                 //Populate the inverted shots list for a certain receiver up to the maxCoords.
-                for (var x = 0; x <= maxCoords.X; x++)
+                for (var x = 0; x < maxCoords.X; x++)
                 {
-                    for (var y = 0; y <= maxCoords.Y; y++)
+                    for (var y = 0; y < maxCoords.Y; y++)
                     {
                         var newShot = new Shot(receiverPair.Key);
                         newShot.Coordinates = new Coordinates(x, y);

@@ -247,21 +247,21 @@ namespace MBC.Shared
                 return false;
             }
 
-            if (Location.X < 0 || Location.Y < 0)
+            if (Location < new Coordinates(0, 0))
             {
                 return false;
             }
 
             if (Orientation == ShipOrientation.Horizontal)
             {
-                if (Location.Y >= boardSize.Y || Location.X + Length > boardSize.X)
+                if (new Coordinates(Location.X + Length, Location.Y) >= boardSize)
                 {
                     return false;
                 }
             }
             else
             {
-                if (Location.X >= boardSize.X || Location.Y + Length > boardSize.Y)
+                if (new Coordinates(Location.X, Location.Y) >= boardSize)
                 {
                     return false;
                 }
