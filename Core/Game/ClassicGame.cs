@@ -115,16 +115,22 @@ namespace MBC.Core.Matches
 
         public bool ShipsValid(IDNumber player)
         {
-            return Match.Fields[player].Ships != null &&
+            bool result = Match.Fields[player].Ships != null &&
                 Match.Fields[player].Ships.EqualLengthsAs(Match.CompiledConfig.StartingShips) &&
                 Match.Fields[player].Ships.ShipsPlaced &&
                 Match.Fields[player].Ships.GetConflictingShips().Count == 0;
+            foreach (var ship in Match.Fields[player].Ships)
+            {
+                ship.IsValid(Match.CompiledConfig.FieldSize);
+            }
+
+            return result;
         }
 
         public bool ShotValid(IDNumber shooter, Shot shot)
         {
             return shot != null &&
-                shot.Coordinates <= Match.CompiledConfig.FieldSize &&
+                shot.Coordinates < Match.CompiledConfig.FieldSize &&
                 shot.Coordinates >= new Coordinates(0, 0) &&
                 shooter != shot.Receiver &&
                 !Match.Fields[shooter].Shots.Contains(shot) &&
@@ -141,11 +147,13 @@ namespace MBC.Core.Matches
             if (!Match.Teams[DeadTeam].Members.Contains(CurrentTurnPlayer))
             {
                 ApplyEvent(new PlayerWonEvent(CurrentTurnPlayer));
+                Match.Controllers[CurrentTurnPlayer].RoundWon();
                 turns.Remove(CurrentTurnPlayer);
             }
             foreach (var plr in turns)
             {
                 ApplyEvent(new PlayerLostEvent(plr));
+                Match.Controllers[CurrentTurnPlayer].RoundLost();
             }
             turns.Clear();
             ApplyEvent(new RoundEndEvent(ID));

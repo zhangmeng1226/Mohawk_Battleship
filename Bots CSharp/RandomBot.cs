@@ -237,10 +237,10 @@ namespace MBC.Controllers
         {
             //First generate a random X coordinate. Note that rand.Next() gets a random number that is
             //always less than the given value; we add one to get the full range of the field.
-            var xCoord = rand.Next(Register.Match.FieldSize.X + 1);
+            var xCoord = rand.Next(Match.FieldSize.X);
 
             //Then generate a random Y coordinate.
-            var yCoord = rand.Next(Register.Match.FieldSize.Y + 1);
+            var yCoord = rand.Next(Match.FieldSize.Y);
 
             //Then put the two coordinates together and return it.
             return new Coordinates(xCoord, yCoord);

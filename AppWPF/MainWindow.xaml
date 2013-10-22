@@ -7,7 +7,7 @@
         <ResourceDictionary>
             <BooleanToVisibilityConverter x:Key="btvconvert" />
             <ContextMenu x:Key="SelectorMenu" MenuItem.Click="menuSelector_Click">
-                <MenuItem Header="None" IsEnabled="False"/>
+                <MenuItem Header="None" IsEnabled="False" />
             </ContextMenu>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="ResourceDictionary.xaml" />
@@ -92,7 +92,7 @@
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
                                 <RowDefinition />
-                                <RowDefinition /> 
+                                <RowDefinition />
                             </Grid.RowDefinitions>
                             <TextBox x:Name="txtNumOfRounds" Width="50" Text="0" Grid.Row="0" Grid.Column="0"
                                      Grid.RowSpan="2" VerticalContentAlignment="Center" />

@@ -140,9 +140,9 @@ Namespace MBC
             ' NOTE: This is a helper method for the random bot and is not required, it here for demonstration
             ' purposes only.
             Private Function RandomCoordinates() As Coordinates
-                Dim xCoord = rand.Next(Match.FieldSize.X + 1)
+                Dim xCoord = rand.Next(Match.FieldSize.X)
 
-                Dim yCoord = rand.Next(Match.FieldSize.Y + 1)
+                Dim yCoord = rand.Next(Match.FieldSize.Y)
 
                 Return New Coordinates(xCoord, yCoord)
             End Function
