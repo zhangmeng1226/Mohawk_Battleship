@@ -6,6 +6,8 @@ namespace MBC.Shared
 {
     public class MatchConfig : ISerializable
     {
+        private ShipList startingShips;
+
         public MatchConfig()
         {
         }
@@ -71,8 +73,14 @@ namespace MBC.Shared
         /// </summary>
         public ShipList StartingShips
         {
-            get;
-            set;
+            get
+            {
+                return new ShipList(startingShips);
+            }
+            set
+            {
+                startingShips = value;
+            }
         }
 
         /// <summary>
@@ -86,7 +94,6 @@ namespace MBC.Shared
 
         public void GetObjectData(SerializationInfo info, StreamingContext context)
         {
-            //Do not serialize teams/registers
         }
     }
 }
