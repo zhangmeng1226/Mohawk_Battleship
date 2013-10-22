@@ -37,10 +37,6 @@ namespace MBC.Shared
             this.receiver = receiver;
         }
 
-        private Shot()
-        {
-        }
-
         /// <summary>
         /// Gets or sets the <see cref="Coordinates"/>.
         /// </summary>

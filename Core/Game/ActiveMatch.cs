@@ -28,6 +28,7 @@ namespace MBC.Core.Matches
             AddEventAction(typeof(PlayerTeamAssignEvent), TeamChangeEvent);
             AddEventAction(typeof(PlayerTeamUnassignEvent), TeamChangeEvent);
             AddEventAction(typeof(MatchTeamCreateEvent), TeamChangeEvent);
+            AddEventAction(typeof(MatchEndEvent), MatchEnd);
         }
 
         public ActiveMatch()
@@ -92,14 +93,15 @@ namespace MBC.Core.Matches
         {
             Config = config;
             var newConfig = new MatchConfig();
-            newConfig.FieldSize = new Coordinates(Config.GetValue<int>("mbc_field_width") - 1, Config.GetValue<int>("mbc_field_height") - 1);
+            newConfig.FieldSize = new Coordinates(Config.GetValue<int>("mbc_field_width"), Config.GetValue<int>("mbc_field_height"));
             newConfig.NumberOfRounds = Config.GetValue<int>("mbc_match_rounds");
 
-            newConfig.StartingShips = new ShipList();
+            var initShips = new ShipList();
             foreach (var length in Config.GetList<int>("mbc_ship_sizes"))
             {
-                newConfig.StartingShips.Add(new Ship(length));
+                initShips.Add(new Ship(length));
             }
+            newConfig.StartingShips = initShips;
 
             newConfig.TimeLimit = Config.GetValue<int>("mbc_player_timeout");
 
@@ -213,6 +215,14 @@ namespace MBC.Core.Matches
             Controllers[playerEvent.PlayerID].Match = new MatchConfig(CompiledConfig);
             ControllersUpdateRegisters();
             ControllersUpdateTeams();
+        }
+
+        private void MatchEnd(Event ev)
+        {
+            foreach (var controller in controllers)
+            {
+                controller.Value.MatchOver();
+            }
         }
 
         private void MatchRemovePlayer(Event ev)

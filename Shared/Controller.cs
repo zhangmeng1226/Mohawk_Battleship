@@ -206,9 +206,15 @@ namespace MBC.Shared
         {
             foreach (var team in Teams)
             {
-                if (team.Value.Members.Count > 0 && !team.Value.Members.Contains(ID))
+                if (!team.Value.IsInternal && (!team.Value.Members.Contains(ID) || !team.Value.IsFriendly))
                 {
-                    return team.Value.Members.First();
+                    foreach (var id in team.Value.Members)
+                    {
+                        if (id != ID)
+                        {
+                            return id;
+                        }
+                    }
                 }
             }
             return -1;

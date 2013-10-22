@@ -61,35 +61,38 @@ namespace MBC.Core
 
                 foreach (Type cont in types)
                 {
-                    //Iterating through each class in this assembly.
-                    if (cont.IsSubclassOf(typeof(Controller)))
+                    if (cont.GetInterface("IController", false) != null && !cont.IsAbstract && cont.GetConstructor(Type.EmptyTypes) != null)
                     {
-                        NameAttribute nameAttrib = (NameAttribute)cont.GetCustomAttributes(typeof(NameAttribute), false)[0];
-                        VersionAttribute verAttrib = (VersionAttribute)cont.GetCustomAttributes(typeof(VersionAttribute), false)[0];
-                        CapabilitiesAttribute capAttrib = (CapabilitiesAttribute)cont.GetCustomAttributes(typeof(CapabilitiesAttribute), false)[0];
-                        if (nameAttrib != null && verAttrib != null && capAttrib != null)
-                        {
-                            //Split the absolute path. We only want the name of the DLL file.
-                            string[] pathSplit = filePath.Split('\\');
+                        string[] pathSplit = filePath.Split('\\');
 
-                            ControllerSkeleton info = new ControllerSkeleton();
-                            info.controllerClass = cont;
-                            info.dllFile = pathSplit[pathSplit.Count() - 1];
-                            foreach (var attribute in cont.GetCustomAttributes(false))
+                        ControllerSkeleton info = new ControllerSkeleton();
+                        info.controllerClass = cont;
+                        info.dllFile = pathSplit[pathSplit.Count() - 1];
+                        foreach (var attribute in cont.GetCustomAttributes(false))
+                        {
+                            if (attribute is ControllerAttribute)
                             {
-                                if (attribute is ControllerAttribute)
-                                {
-                                    info.attributes[attribute.GetType()] = (ControllerAttribute)attribute;
-                                }
+                                info.attributes[attribute.GetType()] = (ControllerAttribute)attribute;
                             }
-                            results.Add(info);
                         }
+                        if (info.GetAttribute<NameAttribute>() == null)
+                        {
+                            info.attributes[typeof(NameAttribute)] = new NameAttribute(string.Format("!{0}!", cont.Name));
+                        }
+                        if (info.GetAttribute<VersionAttribute>() == null)
+                        {
+                            info.attributes[typeof(VersionAttribute)] = new VersionAttribute(0, 0);
+                        }
+                        if (info.GetAttribute<CapabilitiesAttribute>() == null)
+                        {
+                            info.attributes[typeof(CapabilitiesAttribute)] = new CapabilitiesAttribute(GameMode.Classic);
+                        }
+                        results.Add(info);
                     }
                 }
             }
             catch
             {
-                //Unable to load a .DLL file; we don't care about this assembly.
             }
             return results;
         }
@@ -125,7 +128,14 @@ namespace MBC.Core
 
         public T GetAttribute<T>()
         {
-            return (T)((object)attributes[typeof(T)]);
+            if (attributes.ContainsKey(typeof(T)))
+            {
+                return (T)((object)attributes[typeof(T)]);
+            }
+            else
+            {
+                return default(T);
+            }
         }
 
         /// <summary>

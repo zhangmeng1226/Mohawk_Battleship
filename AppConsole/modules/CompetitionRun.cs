@@ -130,20 +130,20 @@ namespace MBC.App.Terminal.Modules
 
         private void WriteCurrentEvent()
         {
-            Console.ForegroundColor = ConsoleColor.Green;
-            for (int i = 0; i < 4; i++)
-            {
-                AlignToLine(8 + i);
-                WriteCharRepeat(' ', currentEventString.Length);
-            }
-            AlignToLine(8);
-            WriteCenteredText(currentEventString);
-            if (fileWriter != null)
-            {
-                FileWriteEvent();
-            }
             if (millisDelay > 0)
             {
+                Console.ForegroundColor = ConsoleColor.Green;
+                for (int i = 0; i < 4; i++)
+                {
+                    AlignToLine(8 + i);
+                    WriteCharRepeat(' ', currentEventString.Length);
+                }
+                AlignToLine(8);
+                WriteCenteredText(currentEventString);
+                if (fileWriter != null)
+                {
+                    FileWriteEvent();
+                }
                 Thread.Sleep(millisDelay);
             }
         }

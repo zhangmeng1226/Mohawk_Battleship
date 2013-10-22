@@ -358,7 +358,7 @@ namespace MBC.Shared
             }
             for (var i = 0; i < maxLength; i++)
             {
-                if (ShipAt(searchCoord) != null || searchCoord.X > maxCoords.X || searchCoord.Y > maxCoords.Y)
+                if (ShipAt(searchCoord) != null || searchCoord.X >= maxCoords.X || searchCoord.Y >= maxCoords.Y)
                 {
                     break;
                 }

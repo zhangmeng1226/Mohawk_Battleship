@@ -12,7 +12,7 @@ namespace MBC.Shared
     /// </summary>
     public class ShotList : ICollection<Shot>
     {
-        private List<Shot> shotHistory;
+        private List<Shot> allShots;
         private Dictionary<IDNumber, List<Shot>> shotsByReceiver;
 
         /// <summary>
@@ -22,11 +22,11 @@ namespace MBC.Shared
         public ShotList(ShotList copyList)
         {
             shotsByReceiver = new Dictionary<IDNumber, List<Shot>>();
-            shotHistory = new List<Shot>();
+            allShots = new List<Shot>();
 
             if (copyList != null)
             {
-                foreach (var shot in copyList.shotHistory)
+                foreach (var shot in copyList.allShots)
                 {
                     Add(new Shot(shot));
                 }
@@ -38,7 +38,7 @@ namespace MBC.Shared
         /// </summary>
         public ShotList()
         {
-            shotHistory = new List<Shot>();
+            allShots = new List<Shot>();
             shotsByReceiver = new Dictionary<IDNumber, List<Shot>>();
         }
 
@@ -49,7 +49,7 @@ namespace MBC.Shared
         {
             get
             {
-                return shotHistory.Count;
+                return allShots.Count;
             }
         }
 
@@ -71,7 +71,7 @@ namespace MBC.Shared
         {
             get
             {
-                return shotHistory[idx];
+                return allShots[idx];
             }
         }
 
@@ -105,7 +105,7 @@ namespace MBC.Shared
         /// <param name="shot">The Shot to add.</param>
         public void Add(Shot shot)
         {
-            shotHistory.Add(shot);
+            allShots.Add(shot);
             if (!shotsByReceiver.ContainsKey(shot.Receiver))
             {
                 MakeReceiver(shot.Receiver);
@@ -119,9 +119,9 @@ namespace MBC.Shared
         /// <param name="shots">The ShotList to add.</param>
         public void Add(ShotList shots)
         {
-            foreach (var shot in shots.shotHistory)
+            foreach (var shot in shots.allShots)
             {
-                shotHistory.Add(shot);
+                allShots.Add(shot);
                 shotsByReceiver[shot.Receiver].Add(shot);
             }
         }
@@ -131,7 +131,7 @@ namespace MBC.Shared
         /// </summary>
         public void Clear()
         {
-            shotHistory.Clear();
+            allShots.Clear();
             shotsByReceiver.Clear();
         }
 
@@ -152,7 +152,7 @@ namespace MBC.Shared
         /// <returns>true if at least one Shot in this ShotList has been placed at the given Coordinates.</returns>
         public bool Contains(Coordinates shotCoords)
         {
-            foreach (var shots in shotHistory)
+            foreach (var shots in allShots)
             {
                 if (shots.Coordinates == shotCoords)
                 {
@@ -183,7 +183,7 @@ namespace MBC.Shared
             }
             for (var i = 0; i < Count; i++)
             {
-                array[i + arrayIndex] = shotHistory[i];
+                array[i + arrayIndex] = allShots[i];
             }
         }
 
@@ -220,9 +220,9 @@ namespace MBC.Shared
                 var invertedShots = new List<Shot>();
 
                 //Populate the inverted shots list for a certain receiver up to the maxCoords.
-                for (var x = 0; x <= maxCoords.X; x++)
+                for (var x = 0; x < maxCoords.X; x++)
                 {
-                    for (var y = 0; y <= maxCoords.Y; y++)
+                    for (var y = 0; y < maxCoords.Y; y++)
                     {
                         var newShot = new Shot(receiverPair.Key);
                         newShot.Coordinates = new Coordinates(x, y);
@@ -240,7 +240,7 @@ namespace MBC.Shared
                 totalList.AddRange(invertedShots);
             }
             //Replace the entire shot contents of this ShotList with the inverted one.
-            shotHistory = totalList;
+            allShots = totalList;
         }
 
         /// <summary>
@@ -294,7 +294,7 @@ namespace MBC.Shared
         /// <returns>true if the Shot was in this ShotList and has been removed.</returns>
         public bool Remove(Shot shot)
         {
-            bool result = shotHistory.Remove(shot);
+            bool result = allShots.Remove(shot);
             result &= shotsByReceiver[shot.Receiver].Remove(shot);
             return result;
         }
@@ -305,7 +305,7 @@ namespace MBC.Shared
         /// <param name="shots">The ShotList of Shots to remove.</param>
         public void Remove(ShotList shots)
         {
-            foreach (var shot in shots.shotHistory)
+            foreach (var shot in shots.allShots)
             {
                 Remove(shot);
             }
@@ -317,10 +317,10 @@ namespace MBC.Shared
         public void RemoveDuplicates()
         {
             int count = 0;
-            foreach (var shot1 in shotHistory)
+            foreach (var shot1 in allShots)
             {
                 count = 0;
-                foreach (var shot2 in shotHistory)
+                foreach (var shot2 in allShots)
                 {
                     if (shot1 == shot2)
                     {
@@ -339,8 +339,8 @@ namespace MBC.Shared
         /// </summary>
         public void RemoveLast()
         {
-            var lastShot = shotHistory.Last();
-            shotHistory.RemoveAt(shotHistory.Count - 1);
+            var lastShot = allShots.Last();
+            allShots.RemoveAt(allShots.Count - 1);
 
             var organizedList = shotsByReceiver[lastShot.Receiver];
             if (organizedList.Last() == lastShot)
@@ -357,7 +357,7 @@ namespace MBC.Shared
         public ShotList ShotsFromCoordinates(Coordinates coords)
         {
             ShotList newList = new ShotList();
-            foreach (var shot in shotHistory)
+            foreach (var shot in allShots)
             {
                 if (shot.Coordinates == coords)
                 {
@@ -373,7 +373,7 @@ namespace MBC.Shared
         public ShotList ShotsToReceiver(IDNumber idx)
         {
             ShotList newList = new ShotList();
-            newList.shotHistory = shotHistory;
+            newList.allShots = allShots;
             newList.shotsByReceiver[idx] = shotsByReceiver[idx];
             return newList;
         }

@@ -8,19 +8,16 @@ namespace MBC.Controllers
     /// This is a controller that uses a pseudo-random number generator to make all of its decisions. This
     /// controller is highly documented and gives a good idea of how to develop a controller for use in MBC.
     ///
-    ///
     /// Every controller must implement the IBattleshipController interface from the shared framework in
-    /// order to be detected by the MBC core. See <see cref="Controller"/> for information about
-    /// when each of the methods are called during a competition.
+    /// order to be detected by the MBC core.
     ///
     /// Then, each controller must use at least three attributes to describe itself, which are the NameAttribute
-    /// VersionAttribute, and CapabilitiesAttribute. They are simple to use; look at the attributes set to the RandomBot below to
-    /// get an idea of how to set attributes. You can see which attributes are available by looking in the
-    /// "Controller Plugin" project and opening the "Attributes" folder. Note that you do not need to
+    /// VersionAttribute, and CapabilitiesAttribute. They are simple to use; look at the attributes set to the
+    /// RandomBot below to get an idea of how to set attributes. Note that you do not need to
     /// type out the word "Attribute" after the attribute you wish to use.
     ///
-    /// Note that each controller has a time limit before they lose the round, defined in the <see cref="MatchConfig"/>
-    /// that is given at the beginning of a match. There is even a second time limit that aborts the call
+    /// Note that each controller has a time limit before they lose the round, by default, this time limit is 200
+    /// milliseconds that is given at the beginning of a match. There is even a second time limit that aborts the call
     /// to a controller if they take much longer.
     /// </summary>
     ///
@@ -29,10 +26,14 @@ namespace MBC.Controllers
     [Name("RandomBot C#")]
 
     //Here, a VersionAttribute is defined, stating the version information for this controller.
+    // it is recommended to keep multiple versions of your bot, allowing your latest version to
+    // battle the previous version. If you truly are improving your bot, then the latest version
+    // should almost always beat out the previous version.
     [Version(1, 0)]
 
     //Here, a CapabilitiesAttribute is defined, which defines the game modes that this controller is
-    //able to participate in. See the GameMode.cs for information.
+    //able to participate in. By default the classic game mode is used, and in future editions of our
+    // competition we may add more. For now assume your designing a bot for the classic game rules.
     [Capabilities(GameMode.Classic, GameMode.Salvo, GameMode.Multi)]
 
     //Here, a DescriptionAttribute is defined, giving a short description of this controller about what it does
@@ -50,6 +51,12 @@ namespace MBC.Controllers
     [AcademicInfo("Mohawk College", "Software Development", 1)]
     public class RandomBot : Controller
     {
+        /// <summary>
+        /// This is a Random object that this controller will be using through each match to generate
+        /// random numbers.
+        /// </summary>
+        private Random rand;
+
         /// <summary>
         /// This is a list of shots that this controller has against another controller or controllers.
         /// It will start out being filled with every possible shot made.
@@ -70,16 +77,64 @@ namespace MBC.Controllers
         }
 
         /// <summary>
+        ///  This method is called when the match has completed. You can use this method in order to export
+        ///  debugging information or any reporting information that your bot has been tracking across all
+        ///  games here.
+        /// </summary>
+        public override void MatchOver()
+        {
+            base.MatchOver();
+        }
+
+        /// <summary>
+        /// This method is called when a new match is starting. Note this is not what's called at the start
+        /// of a round which is an individual game of battleship, a match consists of many rounds, by default
+        /// 1,000.
+        ///
+        /// You can use this method to do some initialization routines for your bot that only need to happen at
+        /// the start of a match.
+        /// </summary>
+        public override void NewMatch()
+        {
+            base.NewMatch();
+        }
+
+        /// <summary>
         /// This method is called from the competition whenever this controller is being involved in a new
-        /// matchup against a controller, or controllers. This can be treated similarily like a constructor
+        /// match-up against a controller, or controllers. This can be treated similarly like a constructor
         /// for this controller for simplicity's sake.
         /// </summary>
         /// <param name="thisId">The ControllerID that this controller is given.</param>
-        /// <param name="matchInfo">The information about the matchup.</param>
+        /// <param name="matchInfo">The information about the match-up.</param>
         public override void NewRound()
         {
             //The controller calls the SetShots() method to initialize the shotQueue field.
             SetShots();
+
+            //Finally, the controller creates a random number generator into the "rand" field defined
+            //in this class. It uses the tick count of the system as a seed.
+            rand = Match.Random;
+        }
+
+        /// <summary>
+        /// This method is called when an opponent controller has had all their ships destroyed, and is no longer
+        /// active in the game.
+        /// </summary>
+        /// <param name="destroyedID"></param>
+        public override void OpponentDestroyed(IDNumber destroyedID)
+        {
+            base.OpponentDestroyed(destroyedID);
+        }
+
+        /// <summary>
+        /// This method is called each time an opponent controller fires a shot. You can use this method
+        /// to record the shots your opponent is making against your bot for your own analysis. This information
+        /// is particularly useful for ship placement strategies.
+        /// </summary>
+        /// <param name="shot"></param>
+        public override void OpponentShot(Shot shot)
+        {
+            base.OpponentShot(shot);
         }
 
         /// <summary>
@@ -111,7 +166,8 @@ namespace MBC.Controllers
         }
 
         /// <summary>
-        /// This method is called when the controller lost the round.
+        /// This method is called when the controller lost the round. You can use this method to output
+        /// debugging information, or to store information about the game for future analysis.
         /// </summary>
         public override void RoundLost()
         {
@@ -120,12 +176,35 @@ namespace MBC.Controllers
         }
 
         /// <summary>
-        /// This method is called when this controller won the round.
+        /// This method is called when this controller won the round. You can use this method to output
+        /// debugging information, or to store information about the game for future analysis.
         /// </summary>
         public override void RoundWon()
         {
             //Demonstrating the use of the ControllerMessageEvent by sending a string.
             SendMessage("Yay, I won! What are the chances of that?");
+        }
+
+        /// <summary>
+        /// This method is called each time a shot made by your bot scores a hit against an enemy ship.
+        /// This method is useful for updating your bots mapping information. NOTE: the sunk boolean will
+        /// only let your bot know that a ship has been sunk, it does not indicate which ship has been sunk.
+        /// </summary>
+        /// <param name="shot">The coordinates of the shot that hit</param>
+        /// <param name="sunk">Returns true if the shot caused an enemy ship to sink</param>
+        public override void ShotHit(Shot shot, bool sunk)
+        {
+            base.ShotHit(shot, sunk);
+        }
+
+        /// <summary>
+        /// This method is called each time a shot made by your bot misses. This information is useful for
+        /// updating your bots mapping information.
+        /// </summary>
+        /// <param name="shot">The coordinates of the shot that missed.</param>
+        public override void ShotMiss(Shot shot)
+        {
+            base.ShotMiss(shot);
         }
 
         /// <summary>
@@ -136,7 +215,7 @@ namespace MBC.Controllers
         {
             //First generate a random number which will be the index of a random
             //shot from within the shotQueue.
-            var randomShotIndex = Match.Random.Next(shotQueue.Count);
+            var randomShotIndex = rand.Next(shotQueue.Count);
 
             //Then get the Shot object from the shotQueue at the random index.
             Shot randomShot = shotQueue[randomShotIndex];
@@ -158,10 +237,10 @@ namespace MBC.Controllers
         {
             //First generate a random X coordinate. Note that rand.Next() gets a random number that is
             //always less than the given value; we add one to get the full range of the field.
-            var xCoord = Match.Random.Next(Match.FieldSize.X + 1);
+            var xCoord = rand.Next(Match.FieldSize.X);
 
             //Then generate a random Y coordinate.
-            var yCoord = Match.Random.Next(Match.FieldSize.Y + 1);
+            var yCoord = rand.Next(Match.FieldSize.Y);
 
             //Then put the two coordinates together and return it.
             return new Coordinates(xCoord, yCoord);
@@ -179,7 +258,7 @@ namespace MBC.Controllers
             //Then the controller uses the random number generator "rand" to choose either a 0 or a 1 to
             //pick the index of a ShipOrientation randomly. The ShipOrientation is then returned back to the
             //caller.
-            return orientations[Match.Random.Next(2)];
+            return orientations[rand.Next(2)];
         }
 
         /// <summary>

@@ -133,9 +133,9 @@
       <Project>{A00F2D39-4BC0-4DB9-A17A-2A1A9812BD20}</Project>
       <Name>Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Controller Plugin\Controller Plugin.csproj">
+    <ProjectReference Include="..\Shared\Shared.csproj">
       <Project>{51FD717F-5965-4C31-9BDD-051DA693A729}</Project>
-      <Name>Controller Plugin</Name>
+      <Name>Shared</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
