@@ -28,6 +28,7 @@ namespace MBC.Core.Matches
             AddEventAction(typeof(PlayerTeamAssignEvent), TeamChangeEvent);
             AddEventAction(typeof(PlayerTeamUnassignEvent), TeamChangeEvent);
             AddEventAction(typeof(MatchTeamCreateEvent), TeamChangeEvent);
+            AddEventAction(typeof(MatchEndEvent), MatchEnd);
         }
 
         public ActiveMatch()
@@ -213,6 +214,14 @@ namespace MBC.Core.Matches
             Controllers[playerEvent.PlayerID].Match = new MatchConfig(CompiledConfig);
             ControllersUpdateRegisters();
             ControllersUpdateTeams();
+        }
+
+        private void MatchEnd(Event ev)
+        {
+            foreach (var controller in controllers)
+            {
+                controller.Value.MatchOver();
+            }
         }
 
         private void MatchRemovePlayer(Event ev)

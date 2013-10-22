@@ -141,11 +141,13 @@ namespace MBC.Core.Matches
             if (!Match.Teams[DeadTeam].Members.Contains(CurrentTurnPlayer))
             {
                 ApplyEvent(new PlayerWonEvent(CurrentTurnPlayer));
+                Match.Controllers[CurrentTurnPlayer].RoundWon();
                 turns.Remove(CurrentTurnPlayer);
             }
             foreach (var plr in turns)
             {
                 ApplyEvent(new PlayerLostEvent(plr));
+                Match.Controllers[CurrentTurnPlayer].RoundLost();
             }
             turns.Clear();
             ApplyEvent(new RoundEndEvent(ID));
