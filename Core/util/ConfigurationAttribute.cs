@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace MBC.Core.Util
@@ -43,7 +44,7 @@ namespace MBC.Core.Util
             }
             this.key = key;
 
-            var list = new List<object>();
+            var list = new ArrayList();
             var firstType = values[0].GetType();
             foreach (var valObj in values)
             {

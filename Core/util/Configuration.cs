@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
@@ -562,12 +563,29 @@ namespace MBC.Core.Util
         public List<T> GetList<T>(string key)
         {
             var getValues = new List<T>();
-            var configValues = GetValue<List<object>>(key);
+            var configValues = GetValue<ArrayList>(key);
             foreach (var val in configValues)
             {
                 getValues.Add((T)val);
             }
             return getValues;
+        }
+
+        /// <summary>
+        /// Returns a list of values from the given key of type <typeparamref name="T"/>
+        /// </summary>
+        /// <typeparam name="T">The type of list to cast to</typeparam>
+        /// <param name="key">The key that contains the values</param>
+        /// <returns>A list of all default values in the key.</returns>
+        public static List<T> GetDefaultList<T>(string key)
+        {
+            var result = new List<T>();
+            var defaultVals = GetDefaultValue<ArrayList>(key);
+            foreach (var val in defaultVals)
+            {
+                result.Add((T)val);
+            }
+            return result;
         }
 
         /// <summary>
@@ -596,18 +614,19 @@ namespace MBC.Core.Util
             return (T)compiledConfiguration[key].Value;
         }
 
+
         /// <summary>
         /// Generates a string representation of the value in the given <paramref name="key"/>.
         /// </summary>
         /// <param name="key">The string of the key to look up.</param>
         /// <returns>The string representation of the value associated with <paramref name="key"/>.</returns>
-        public string GetValueString(string key)
+        public string GetValue(string key)
         {
             object result = GetValue<object>(key);
-            if (result.GetType() == typeof(List<object>))
+            if (result.GetType() == typeof(ArrayList))
             {
                 StringBuilder str = new StringBuilder();
-                var objList = (List<object>)result;
+                var objList = (ArrayList)result;
                 str.Append(objList[0].ToString());
                 for (var i = 1; i < objList.Count; i++)
                 {
@@ -619,6 +638,17 @@ namespace MBC.Core.Util
             return result.ToString();
         }
 
+        /// <summary>
+        /// <see cref="GetValue()"/>
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        [Obsolete("Use the non-generic GetValue() method.")]
+        public string GetValueString(string key)
+        {
+            return GetValue(key);
+        }
+
         /// <summary>Saves the keys and values that differ from default values
         /// into a file in the configuration folder as <see cref="Configuration.Name"/>.ini.</summary>
         /// <exception cref="IOException">The file could not be written to.</exception>
@@ -628,7 +658,14 @@ namespace MBC.Core.Util
                 + configName + ".ini", false);
             foreach (var entry in simpleConfig)
             {
-                writer.WriteLine(entry.Key + " = " + entry.Value.ToString());
+                if (entry.Value.GetType() == typeof(ArrayList))
+                {
+                    writer.WriteLine(entry.Key + " = " + string.Join(",", ((ArrayList)entry.Value).ToArray()));
+                }
+                else
+                {
+                    writer.WriteLine(entry.Key + " = " + entry.Value.ToString());
+                }
             }
             writer.Flush();
             writer.Close();
@@ -646,10 +683,10 @@ namespace MBC.Core.Util
         public void SetValue(string key, string val)
         {
             var compiledType = compiledConfiguration[key].Value.GetType();
-            if (compiledType == typeof(List<object>))
+            if (compiledType == typeof(ArrayList))
             {
-                compiledType = ((List<object>)compiledConfiguration[key].Value)[0].GetType();
-                var newList = new List<object>();
+                compiledType = ((ArrayList)compiledConfiguration[key].Value)[0].GetType();
+                var newList = new ArrayList();
                 var valSplit = val.Split(',');
                 foreach (var valToken in valSplit)
                 {
@@ -666,6 +703,17 @@ namespace MBC.Core.Util
             {
                 simpleConfig[key] = ParseString(compiledType, val);
             }
+        }
+
+        public void SetValue(string key, object val)
+        {
+            var compiledType = compiledConfiguration[key].Value.GetType();
+            if (val.GetType() != compiledConfiguration[key].Value.GetType())
+            {
+                throw new InvalidDataException("Cannot set value of type " + val.GetType().Name + 
+                    " to a configuration value of type " + compiledConfiguration[key].Value.GetType().Name);
+            }
+            simpleConfig[key] = val;
         }
 
         /// <summary>

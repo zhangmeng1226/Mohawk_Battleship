@@ -10,7 +10,7 @@ namespace TestCore
     public class ThreadTimeoutAborterTest
     {
         [TestMethod]
-        public void Thread_Timeout_Abort()
+        public void Thread_Timeout_Aborts()
         {
             ThreadTimeoutAborter aborter = new ThreadTimeoutAborter(Thread.CurrentThread, 50);
             try
@@ -29,7 +29,7 @@ namespace TestCore
         }
 
         [TestMethod]
-        public void Thread_FinishBeforeTimeout_Continue()
+        public void Thread_NoTimeout_Continues()
         {
             ThreadTimeoutAborter aborter = new ThreadTimeoutAborter(Thread.CurrentThread, 50);
             try
