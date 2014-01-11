@@ -121,11 +121,20 @@ namespace MBC.Core
             return results;
         }
 
+        /// <summary>
+        /// Creates a <see cref="Controller"/> instance from the type contained in this <see cref="ControllerSkeleton"/>.
+        /// </summary>
+        /// <returns>Returns the created instance.</returns>
         public Controller CreateInstance()
         {
             return (Controller)Activator.CreateInstance(Controller);
         }
 
+        /// <summary>
+        /// Gets an attribute of type <typeparamref name="T"/> set upon a <see cref="Controller"/> type.
+        /// </summary>
+        /// <typeparam name="T">The <see cref="ControllerAttribute"/> to look for.</typeparam>
+        /// <returns><see cref="ControllerAttribute"/> of type <typeparamref name="T"/>.</returns>
         public T GetAttribute<T>()
         {
             if (attributes.ContainsKey(typeof(T)))

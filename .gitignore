@@ -12,6 +12,7 @@
 /configs
 /docs
 /work on later
+/TestResults
 
 /AppConsole/obj
 /Core/obj
@@ -24,6 +25,8 @@
 /Core/bin
 /Bots CSharp/bin
 /Bots VB/bin
+/TestCore/bin
+/TestCore/obj
 /App3D/bin
 /App3D
 /AppWPF/bin

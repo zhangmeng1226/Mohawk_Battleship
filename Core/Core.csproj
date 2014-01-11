@@ -44,6 +44,11 @@
   <ItemGroup>
     <Compile Include="Accolades\Accolade.cs" />
     <Compile Include="Accolades\AccoladeGenerator.cs" />
+    <Compile Include="Game\Active\ActiveMatch.cs" />
+    <Compile Include="Game\Active\AllRoundsMatch.cs" />
+    <Compile Include="Game\Active\ClassicGame.cs" />
+    <Compile Include="Game\Active\GameLogic.cs" />
+    <Compile Include="Threading\ThreadTimeoutAborter.cs" />
     <Compile Include="Controllers\TimedController.cs" />
     <Compile Include="Events\PlayerMessageEvent.cs" />
     <Compile Include="Events\StateSave.cs" />
@@ -54,11 +59,7 @@
     <Compile Include="Events\PlayerTeamAssignEvent.cs" />
     <Compile Include="Events\MatchRemovePlayerEvent.cs" />
     <Compile Include="Events\MatchTeamCreateEvent.cs" />
-    <Compile Include="Game\ActiveMatch.cs" />
-    <Compile Include="Game\ClassicGame.cs" />
     <Compile Include="Game\MatchReplay.cs" />
-    <Compile Include="Game\AllRoundsMatch.cs" />
-    <Compile Include="Threading\LoopingThreader.cs" />
     <Compile Include="Controllers\ControllerSkeleton.cs" />
     <Compile Include="Events\PlayerShipDestroyedEvent.cs" />
     <Compile Include="Events\PlayerHitShipEvent.cs" />
@@ -77,12 +78,7 @@
     <Compile Include="Events\RoundEvent.cs" />
     <Compile Include="Game\Match.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Game\GameLogic.cs" />
-    <Compile Include="Threading\FuncThreader.cs" />
-    <Compile Include="Threading\MethodTimeoutException.cs" />
-    <Compile Include="Threading\MultiMethodThreader.cs" />
-    <Compile Include="Threading\Threader.cs" />
-    <Compile Include="Threading\TimedThreader.cs" />
+    <Compile Include="Exceptions\ControllerTimeoutException.cs" />
     <Compile Include="Util\Configuration.cs" />
     <Compile Include="Util\ConfigurationAttribute.cs" />
   </ItemGroup>

@@ -208,7 +208,7 @@ namespace MBC.Core.Matches
                     Match.Controllers[CurrentTurnPlayer].ShotMiss(shotMade);
                 }
             }
-            catch (MethodTimeoutException ex)
+            catch (ControllerTimeoutException ex)
             {
                 PlayerTimedOut(CurrentTurnPlayer, ex);
             }
@@ -227,7 +227,7 @@ namespace MBC.Core.Matches
                         PlayerLose(controller.Key);
                     }
                 }
-                catch (MethodTimeoutException ex)
+                catch (ControllerTimeoutException ex)
                 {
                     PlayerTimedOut(controller.Key, ex);
                 }
@@ -253,13 +253,13 @@ namespace MBC.Core.Matches
             {
                 Match.Controllers[plr].RoundLost();
             }
-            catch (MethodTimeoutException ex)
+            catch (ControllerTimeoutException ex)
             {
                 ApplyEvent(new PlayerTimeoutEvent(plr, ex));
             }
         }
 
-        private void PlayerTimedOut(IDNumber plr, MethodTimeoutException ex)
+        private void PlayerTimedOut(IDNumber plr, ControllerTimeoutException ex)
         {
             ApplyEvent(new PlayerTimeoutEvent(plr, ex));
             PlayerLose(plr);

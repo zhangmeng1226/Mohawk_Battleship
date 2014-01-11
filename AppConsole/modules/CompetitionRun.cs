@@ -21,7 +21,6 @@ namespace MBC.App.Terminal.Modules
         private int lastMillis;
         private int millisDelay;
         private int roundsRun;
-        private FuncThreader threader;
         private int turns;
 
         public CompetitionRun(ActiveMatch comp, int delay, bool eventsToFile)
@@ -38,7 +37,6 @@ namespace MBC.App.Terminal.Modules
             competition.AddEventAction(typeof(PlayerHitShipEvent), PlayerHit);
             competition.AddEventAction(typeof(MatchEndEvent), MatchEnd);
             competition.AddEventAction(typeof(Event), LastEvent);
-            threader = new FuncThreader();
             if (eventsToFile)
             {
                 fileWriter = new StreamWriter(Environment.CurrentDirectory + "\\..\\match_" + competition.ID + ".txt");
@@ -48,7 +46,7 @@ namespace MBC.App.Terminal.Modules
 
         public void Begin()
         {
-            threader.RunMethod(new Action(competition.Play));
+            new Thread(competition.Play).Start();
         }
 
         protected override void Display()
