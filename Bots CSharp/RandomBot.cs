@@ -5,74 +5,56 @@ using MBC.Shared.Attributes;
 namespace MBC.Controllers
 {
     /// <summary>
-    /// This is a controller that uses a pseudo-random number generator to make all of its decisions. This
-    /// controller is highly documented and gives a good idea of how to develop a controller for use in MBC.
-    ///
-    /// Every controller must implement the IBattleshipController interface from the shared framework in
-    /// order to be detected by the MBC core.
-    ///
-    /// Then, each controller must use at least three attributes to describe itself, which are the NameAttribute
-    /// VersionAttribute, and CapabilitiesAttribute. They are simple to use; look at the attributes set to the
-    /// RandomBot below to get an idea of how to set attributes. Note that you do not need to
-    /// type out the word "Attribute" after the attribute you wish to use.
-    ///
-    /// Note that each controller has a time limit before they lose the round, by default, this time limit is 200
-    /// milliseconds that is given at the beginning of a match. There is even a second time limit that aborts the call
-    /// to a controller if they take much longer.
+    /// This controller places ships in random locations and shoots at random cells. This is an excellent place to start learning about creating a Battleship AI
+    /// 
+    /// Each controller must provide some information about itself. The required attributes are Name, Version and Capabilities.
+    /// These attributes provide information about this controller to the framework.
+    /// 
     /// </summary>
     ///
 
-    //Here, a NameAttribute is defined, stating the name of this controller.
+    // The NameAttribute defines the name of this controller.
     [Name("RandomBot C#")]
 
-    //Here, a VersionAttribute is defined, stating the version information for this controller.
-    // it is recommended to keep multiple versions of your bot, allowing your latest version to
-    // battle the previous version. If you truly are improving your bot, then the latest version
-    // should almost always beat out the previous version.
+    // The VersionAttribute defines the version information for this controller. Keeping multiple versions of your bot is an excellent way to track improvements or regressions.
     [Version(1, 0)]
 
-    //Here, a CapabilitiesAttribute is defined, which defines the game modes that this controller is
-    //able to participate in. By default the classic game mode is used, and in future editions of our
-    // competition we may add more. For now assume your designing a bot for the classic game rules.
+    // The CapabilitiesAttribute defines the game modes that this controller is able to participate in. Currently the default mode is Classic.
     [Capabilities(GameMode.Classic, GameMode.Salvo, GameMode.Multi)]
 
-    //Here, a DescriptionAttribute is defined, giving a short description of this controller about what it does
-    //or how it works. This attribute is optional and can be omitted.
+    // The DescriptionAttribute is a short description of this controller about what it does
+    // or how it works. This attribute is optional and can be omitted.
     [Description("A controller that uses a random number generator to make all of its decisions.")]
 
-    //Here, an AuthorAttribute is defined, which provides information about the author of this controller.
-    //This attribute is optional and can be omitted.
+    // The AuthorAttribute provides information about the author of this controller.
+    // This attribute is optional and can be omitted.
     [Author(FirstName = "Ryan", LastName = "Albert", AKAName = "piknik",
         Biography = "I assisted in the development of the framework =]"
         )]
 
-    //Here, an AcademicInfoAttribute is defined, which provides information about the educational institution
-    //and program that the developer of this controller is in. This attribute is optional and can be omitted.
+    // The AcademicInfoAttribute provides information about the author's educational institution and program.
+    // This attribute is optional and can be omitted.
     [AcademicInfo("Mohawk College", "Software Development", 1)]
+
+    /// <summary>
+    ///  Extending the Controller class exposes essential methods and properties.
+    ///  It also allows your bot to be detected by the MBC core and be used in matches.
+    /// </summary>
     public class RandomBot : Controller
     {
-        /// <summary>
-        /// This is a Random object that this controller will be using through each match to generate
-        /// random numbers.
-        /// </summary>
+        // This object is used to generate random numbers.
         private Random rand;
 
-        /// <summary>
-        /// This is a list of shots that this controller has against another controller or controllers.
-        /// It will start out being filled with every possible shot made.
-        /// </summary>
+        // This is a list of shots that this controller has against another controller or controllers.
         private ShotList shotQueue;
 
         /// <summary>
-        /// This method is called when a shot is available to the controller. The Shot object is a reference
-        /// to a copy held by the competition and is expected to be modified to the desired target. By default,
-        /// the Shot receiver is the next controller in the turn.
+        ///  This method is called when a shot is available to this controller.
         /// </summary>
-        /// <param name="shot">The Shot to modify.</param>
+        /// <returns>A Shot object</returns>
         public override Shot MakeShot()
         {
-            //The controller only cares about modifying the Coordinates. The Coordinates of the next random
-            //shot from the NextRandomShot() method is provided.
+            //Return the result of NextRandomShot() method
             return NextRandomShot();
         }
 
@@ -87,9 +69,9 @@ namespace MBC.Controllers
         }
 
         /// <summary>
-        /// This method is called when a new match is starting. Note this is not what's called at the start
-        /// of a round which is an individual game of battleship, a match consists of many rounds, by default
-        /// 1,000.
+        /// This method is called when a new match is starting. 
+        /// A match is a series of games against an opponent.
+        /// By default a match consists of 1,000 rounds.
         ///
         /// You can use this method to do some initialization routines for your bot that only need to happen at
         /// the start of a match.
@@ -100,9 +82,8 @@ namespace MBC.Controllers
         }
 
         /// <summary>
-        /// This method is called from the competition whenever this controller is being involved in a new
-        /// match-up against a controller, or controllers. This can be treated similarly like a constructor
-        /// for this controller for simplicity's sake.
+        /// This method is called from the competition whenever a new game of battleship begins. For simplicity's sake this method can be treated similarly to a constructor
+        /// for this controller.
         /// </summary>
         /// <param name="thisId">The ControllerID that this controller is given.</param>
         /// <param name="matchInfo">The information about the match-up.</param>
@@ -138,27 +119,26 @@ namespace MBC.Controllers
         }
 
         /// <summary>
-        /// This method is called when the controller is required to place ships. It is given a collection
-        /// of Ship objects that can be accessed.
+        /// This method is called when the controller is required to place ships.
         /// </summary>
-        /// <param name="ships">A collection of Ship objects to place.</param>
+        /// <returns name="ships">A collection of Ship objects</returns>
         public override ShipList PlaceShips()
         {
-            //First we'll refer to the ships given to us through a single variable.
+            // First we'll refer to the ships given to us through a single variable.
             var myShips = Match.StartingShips;
 
-            //This loop will continue until all of the Ship objects have been placed.
+            // This loop will continue until all of the Ship objects have been placed.
             while (!myShips.ShipsPlaced)
             {
-                //Get a random set of coordinates by calling the RandomCoordinates() method created earlier.
+                // Get a random set of coordinates by calling the RandomCoordinates() method created earlier.
                 var randomCoords = RandomCoordinates();
 
-                //Get a random orientation for a ship to place by calling the RandomShipOrientation() method.
+                // Get a random orientation for a ship to place by calling the RandomShipOrientation() method.
                 var orientation = RandomShipOrientation();
 
-                //Use the function within the ShipList object "myShips" to place a ship for the controller.
-                //As explained in the PlaceShip() method of the ShipList, placing a ship at the randomly
-                //generated coordinates may fail.
+                // Use the function within the ShipList object "myShips" to place a ship for the controller.
+                // As explained in the PlaceShip() method of the ShipList, placing a ship at the randomly
+                // generated coordinates may fail.
                 myShips.PlaceShip(randomCoords, orientation, Match.FieldSize);
             }
 
@@ -166,17 +146,17 @@ namespace MBC.Controllers
         }
 
         /// <summary>
-        /// This method is called when the controller lost the round. You can use this method to output
+        /// This method is called when this controller loses a round. This method can be used to output
         /// debugging information, or to store information about the game for future analysis.
         /// </summary>
         public override void RoundLost()
         {
-            //Demonstrating the use of the ControllerMessageEvent by sending a string.
+            // Demonstrating the use of the ControllerMessageEvent by sending a string.
             SendMessage("Unsurprisingly I lost...");
         }
 
         /// <summary>
-        /// This method is called when this controller won the round. You can use this method to output
+        /// This method is called when this controller wins a round. This can be used method to output
         /// debugging information, or to store information about the game for future analysis.
         /// </summary>
         public override void RoundWon()
@@ -187,8 +167,8 @@ namespace MBC.Controllers
 
         /// <summary>
         /// This method is called each time a shot made by your bot scores a hit against an enemy ship.
-        /// This method is useful for updating your bots mapping information. NOTE: the sunk boolean will
-        /// only let your bot know that a ship has been sunk, it does not indicate which ship has been sunk.
+        /// The parameters of this method can be useful for updating your bots mapping information.
+        /// NOTE: This method does not indicate which ship has been sunk.
         /// </summary>
         /// <param name="shot">The coordinates of the shot that hit</param>
         /// <param name="sunk">Returns true if the shot caused an enemy ship to sink</param>
@@ -208,20 +188,20 @@ namespace MBC.Controllers
         }
 
         /// <summary>
-        /// This method gets a random Shot that remains in the shotQueue.
+        /// This method gets a random Shot from the shotQueue.
         /// </summary>
         /// <returns>A random Shot from the shotQueue.</returns>
         private Shot NextRandomShot()
         {
-            //First generate a random number which will be the index of a random
-            //shot from within the shotQueue.
+            // First generate a random number which will be the index of a random
+            // shot from within the shotQueue.
             var randomShotIndex = rand.Next(shotQueue.Count);
 
-            //Then get the Shot object from the shotQueue at the random index.
+            // Then get the Shot object from the shotQueue at the random index.
             Shot randomShot = shotQueue[randomShotIndex];
 
-            //According to the rules of most game modes, a controller cannot make the same shot
-            //twice, so remove this shot from the shotQueue.
+            // According to the rules of most game modes, a controller cannot make the same shot
+            // twice, so remove this shot from the shotQueue.
             shotQueue.Remove(randomShot);
 
             //Then return the random shot back to the caller.
@@ -235,14 +215,13 @@ namespace MBC.Controllers
         /// field boundaries.</returns>
         private Coordinates RandomCoordinates()
         {
-            //First generate a random X coordinate. Note that rand.Next() gets a random number that is
-            //always less than the given value; we add one to get the full range of the field.
+            // First generate a random X coordinate.
             var xCoord = rand.Next(Match.FieldSize.X);
 
-            //Then generate a random Y coordinate.
+            // Then generate a random Y coordinate.
             var yCoord = rand.Next(Match.FieldSize.Y);
 
-            //Then put the two coordinates together and return it.
+            // Then put the two coordinates together and return it.
             return new Coordinates(xCoord, yCoord);
         }
 
@@ -267,14 +246,13 @@ namespace MBC.Controllers
         /// </summary>
         private void SetShots()
         {
-            //Construct a new ShotList object.
+            // Construct a new ShotList object.
             shotQueue = new ShotList();
 
-            //Set up our shot queue with our opponents.
+            // Set up our shot queue with our opponents.
             shotQueue.MakeReceivers(AllOpponents());
 
-            //Initially, a ShotList is empty when it is constructed, so the ShotList can be filled
-            //easily by inverting it up to the size of the field in the game.
+            // Initially, a ShotList is empty when it is constructed, so calling the Invert method will fill it with new shots.
             shotQueue.Invert(Match.FieldSize);
         }
     }
