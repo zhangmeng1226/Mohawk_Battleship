@@ -26,7 +26,7 @@ namespace MBC.App.Terminal.Modules
             this.red = red;
             this.blue = blue;
             layout = new VerticalLayout(VerticalLayout.VerticalAlign.Center);
-            roundsNumberControl = new NumericControl(new NumericControl.NumericControlParameters("# of rounds", false, 1, 100000, 1, 50));
+            roundsNumberControl = new NumericControl(new NumericControl.NumericControlParameters("# of rounds", false, 1, 100000, 1, 1000));
             millisecondControl = new NumericControl(new NumericControl.NumericControlParameters("Millisecond delay", false, 0, 10000, 10, 0));
             dumpEventsCheck = new CheckboxControl("Dump shots to file");
             layout.Add(roundsNumberControl);
