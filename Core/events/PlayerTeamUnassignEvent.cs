@@ -1,8 +1,13 @@
-﻿using System.Runtime.Serialization;
-using MBC.Shared;
+﻿using MBC.Shared;
+using System;
+using System.Runtime.Serialization;
 
 namespace MBC.Core.Events
 {
+    /// <summary>
+    /// Do not use.
+    /// </summary>
+    [Obsolete("Unnecessary event.")]
     public class PlayerTeamUnassignEvent : Event
     {
         public PlayerTeamUnassignEvent(IDNumber player, IDNumber teamAssigned)

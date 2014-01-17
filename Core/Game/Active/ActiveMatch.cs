@@ -1,15 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using MBC.Core.Controllers;
+﻿using MBC.Core.Controllers;
 using MBC.Core.Events;
 using MBC.Core.Rounds;
 using MBC.Core.Util;
 using MBC.Shared;
 using MBC.Shared.Attributes;
+using System;
+using System.Collections.Generic;
+using System.IO;
 
 namespace MBC.Core.Matches
 {
+    [Obsolete]
     public abstract class ActiveMatch : Match
     {
         protected Dictionary<IDNumber, IController> controllers;

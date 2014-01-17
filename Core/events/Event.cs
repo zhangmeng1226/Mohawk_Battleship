@@ -18,19 +18,18 @@ namespace MBC.Core.Events
     /// <seealso cref="PlayerEvent"/>
     public abstract class Event : ISerializable
     {
-        public Event()
+        public Event(SerializationInfo info, StreamingContext context)
         {
-            Millis = DateTime.Now.Millisecond;
         }
 
-        public Event(SerializationInfo info, StreamingContext context)
+        protected Event()
         {
         }
 
         public int Millis
         {
             get;
-            private set;
+            internal set;
         }
 
         public virtual void GetObjectData(SerializationInfo info, StreamingContext context)

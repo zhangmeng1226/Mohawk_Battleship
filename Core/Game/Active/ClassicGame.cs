@@ -1,15 +1,16 @@
-﻿using System;
+﻿using MBC.Core.Events;
+using MBC.Core.Rounds;
+using MBC.Core.Threading;
+using MBC.Shared;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
-using MBC.Core.Events;
-using MBC.Core.Rounds;
-using MBC.Core.Threading;
-using MBC.Shared;
 
 namespace MBC.Core.Matches
 {
+    [Obsolete]
     public class ClassicGame : GameLogic
     {
         private bool shipsPlaced;

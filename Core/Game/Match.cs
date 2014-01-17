@@ -1,23 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using MBC.Core.Events;
+﻿using MBC.Core.Events;
 using MBC.Core.Rounds;
 using MBC.Core.Util;
 using MBC.Shared;
+using System;
+using System.Collections.Generic;
+using System.IO;
 
 namespace MBC.Core.Matches
 {
-    [Configuration("mbc_field_width", 10)]
-    [Configuration("mbc_field_height", 10)]
-    [Configuration("mbc_ship_sizes", 2, 3, 3, 4, 5)]
-    [Configuration("mbc_game_mode", GameMode.Classic, null)]
-    [Configuration("mbc_match_playeradd_init_only", true)]
-    [Configuration("mbc_match_rounds_mode", RoundMode.AllRounds,
-        Description = "Determines the ending behaviour of a match based on a given number of rounds.",
-        DisplayName = "Match Rounds Mode")]
-    [Configuration("mbc_match_rounds", 100)]
-    public abstract class Match
+    public partial class Match
     {
         private Dictionary<IDNumber, FieldInfo> currentFields;
         private Dictionary<Type, List<MBCEventHandler>> eventActions;
@@ -47,12 +38,14 @@ namespace MBC.Core.Matches
             AddEventAction(typeof(RoundBeginEvent), RoundBegin);
         }
 
+        [Obsolete]
         public MatchConfig CompiledConfig
         {
             get;
             private set;
         }
 
+        [Obsolete]
         public IDictionary<IDNumber, FieldInfo> Fields
         {
             get
@@ -67,6 +60,7 @@ namespace MBC.Core.Matches
             private set;
         }
 
+        [Obsolete]
         public IDictionary<IDNumber, Register> Registers
         {
             get
@@ -75,6 +69,7 @@ namespace MBC.Core.Matches
             }
         }
 
+        [Obsolete]
         public IDictionary<IDNumber, Team> Teams
         {
             get
@@ -83,6 +78,7 @@ namespace MBC.Core.Matches
             }
         }
 
+        [Obsolete]
         public void AddEventAction(Type typeOfEvent, MBCEventHandler eventAction)
         {
             if (typeOfEvent == typeof(Event))
@@ -107,8 +103,12 @@ namespace MBC.Core.Matches
             throw new ArgumentException("The type of event must have a base type of Event.");
         }
 
-        public abstract void Play();
+        [Obsolete]
+        public virtual void Play()
+        {
+        }
 
+        [Obsolete]
         public void RemoveEventAction(Type typeOfEvent, MBCEventHandler eventAction)
         {
             if (!eventActions.ContainsKey(typeOfEvent))
@@ -118,10 +118,17 @@ namespace MBC.Core.Matches
             eventActions[typeOfEvent].Remove(eventAction);
         }
 
-        public abstract void SaveToFile(string location);
+        [Obsolete]
+        public virtual void SaveToFile(string location)
+        {
+        }
 
-        public abstract void Stop();
+        [Obsolete]
+        public virtual void Stop()
+        {
+        }
 
+        [Obsolete]
         protected virtual void ReflectEvent(Event ev)
         {
             var eventType = ev.GetType();
@@ -138,6 +145,7 @@ namespace MBC.Core.Matches
             }
         }
 
+        [Obsolete]
         private void MatchAddPlayer(Event ev)
         {
             var addPlayerEvent = (MatchAddPlayerEvent)ev;
@@ -145,16 +153,19 @@ namespace MBC.Core.Matches
             registers[addPlayerEvent.PlayerID] = new Register(addPlayerEvent.PlayerID, addPlayerEvent.PlayerName);
         }
 
+        [Obsolete]
         private void MatchBegin(Event ev)
         {
             ID = ((MatchBeginEvent)ev).MatchID;
         }
 
+        [Obsolete]
         private void MatchConfigChanged(Event ev)
         {
             CompiledConfig = ((MatchConfigChangedEvent)ev).Config;
         }
 
+        [Obsolete]
         private void MatchPlayerAssign(Event ev)
         {
             var assignEvent = (PlayerTeamAssignEvent)ev;
@@ -162,6 +173,7 @@ namespace MBC.Core.Matches
             teams[assignEvent.TeamID].Members.Add(assignEvent.PlayerID);
         }
 
+        [Obsolete]
         private void MatchPlayerUnassign(Event ev)
         {
             var unassignEvent = (PlayerTeamUnassignEvent)ev;
@@ -169,6 +181,7 @@ namespace MBC.Core.Matches
             teams[unassignEvent.TeamID].Members.Remove(unassignEvent.PlayerID);
         }
 
+        [Obsolete]
         private void MatchRemovePlayer(Event ev)
         {
             var removeEvent = (MatchRemovePlayerEvent)ev;
@@ -180,18 +193,21 @@ namespace MBC.Core.Matches
             }
         }
 
+        [Obsolete]
         private void MatchTeamCreate(Event ev)
         {
             var teamCreateEvent = (MatchTeamCreateEvent)ev;
             teams[teamCreateEvent.Team.ID] = new Team(teamCreateEvent.Team.ID, teamCreateEvent.Team.Name);
         }
 
+        [Obsolete]
         private void PlayerShipDestroyed(Event ev)
         {
             var shipDestroyed = (PlayerShipDestroyedEvent)ev;
             currentFields[shipDestroyed.Player].ShipsLeft.Remove(shipDestroyed.DestroyedShip);
         }
 
+        [Obsolete]
         private void PlayerShipsPlaced(Event ev)
         {
             var shipsPlaced = (PlayerShipsPlacedEvent)ev;
@@ -199,6 +215,7 @@ namespace MBC.Core.Matches
             currentFields[shipsPlaced.Player].ShipsLeft = shipsPlaced.Ships;
         }
 
+        [Obsolete]
         private void PlayerShot(Event ev)
         {
             var playerShot = (PlayerShotEvent)ev;
@@ -206,11 +223,13 @@ namespace MBC.Core.Matches
             currentFields[playerShot.Shot.Receiver].ShotsAgainst.Add(playerShot.Shot);
         }
 
+        [Obsolete]
         private void PlayerWon(Event ev)
         {
             registers[((PlayerWonEvent)ev).Player].Score++;
         }
 
+        [Obsolete]
         private void RoundBegin(Event ev)
         {
             foreach (var reg in Registers)
