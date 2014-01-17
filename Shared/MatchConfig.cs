@@ -4,6 +4,7 @@ using System.Runtime.Serialization;
 
 namespace MBC.Shared
 {
+    [Obsolete("Match parameters located within the match object.")]
     public class MatchConfig : ISerializable
     {
         private ShipList startingShips;

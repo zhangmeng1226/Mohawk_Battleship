@@ -8,6 +8,7 @@ namespace MBC.Shared
     /// to an associated <see cref="Controller"/> at respectable times. Most fields may be modified by the
     /// associated <see cref="Controller"/> without causing harm to the logic in the core framework.
     /// </summary>
+    [Obsolete("Use the player class instead.")]
     public class Register : IEquatable<Register>
     {
         public Register(IDNumber id, string name)

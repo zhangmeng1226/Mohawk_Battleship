@@ -3,6 +3,7 @@ using MBC.Core.Util;
 using MBC.Shared;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
@@ -55,9 +56,21 @@ namespace MBC.Core.Game
     [Configuration("mbc_match_rounds", 100)]
     public partial class Match
     {
+        private Coordinates boardSize;
         private List<Event> events;
+        private GameMode gameMode;
+        private Stopwatch gameTimer;
+        private int numberOfRounds;
         private List<Player> players;
+        private Random randObj;
+        private RoundMode rndBehavior;
+        private List<Ship> startingShips;
         private List<Team> teams;
+        private int timeLimit;
+
+        public Match(bool doIt)
+        {
+        }
 
         public event MatchParamChangeHandler OnConfigChange;
 
@@ -94,5 +107,38 @@ namespace MBC.Core.Game
         public event TeamAddHandler OnTeamAdd;
 
         public event TeamRemoveHandler OnTeamRemove;
+
+        public Coordinates FieldSize
+        {
+            get
+            {
+                return boardSize;
+            }
+            set
+            {
+                boardSize = value;
+                MatchConfigChangedEvent ev = new MatchConfigChangedEvent();
+                AppendEvent(ev);
+                if (OnConfigChange != null)
+                {
+                    OnConfigChange(this, );
+                }
+                OnConfigChange(this, new MatchConfigChangedEvent());
+            }
+        }
+
+        public void SetParameters(Configuration conf)
+        {
+        }
+
+        private void AppendEvent(Event ev)
+        {
+            events.Add(ev);
+            ev.Millis = (int)(DateTime.Now.Subtract(new DateTime(1970, 1, 1, 0, 0, 0)).TotalMilliseconds - evTime);
+        }
+
+        private void NotifyParamsChanged()
+        {
+        }
     }
 }

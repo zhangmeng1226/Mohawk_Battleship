@@ -15,6 +15,7 @@ namespace MBC.Core.Matches
         private Dictionary<IDNumber, Register> registers;
         private Dictionary<IDNumber, Team> teams;
 
+        [Obsolete]
         public Match()
         {
             registers = new Dictionary<IDNumber, Register>();
