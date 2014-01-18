@@ -104,7 +104,6 @@ namespace MBC.Core.Matches
             throw new ArgumentException("The type of event must have a base type of Event.");
         }
 
-        [Obsolete]
         public virtual void Play()
         {
         }
@@ -124,7 +123,6 @@ namespace MBC.Core.Matches
         {
         }
 
-        [Obsolete]
         public virtual void Stop()
         {
         }

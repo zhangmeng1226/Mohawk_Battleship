@@ -162,6 +162,21 @@ namespace MBC.Shared
         }
 
         /// <summary>
+        /// Creates a list of ships from a list of integer lengths.
+        /// </summary>
+        /// <param name="lengths"></param>
+        /// <returns></returns>
+        public static List<Ship> ShipsFromLengths(List<int> lengths)
+        {
+            List<Ship> ships = new List<Ship>();
+            foreach (int length in lengths)
+            {
+                ships.Add(new Ship(length));
+            }
+            return ships;
+        }
+
+        /// <summary>
         /// Adds a <see cref="Ship"/> and ensures consistency with the <see cref="ShipList.MaxLength"/> and
         /// <see cref="ShipList.MinLength"/>.
         /// </summary>

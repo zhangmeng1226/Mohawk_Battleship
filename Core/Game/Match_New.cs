@@ -45,6 +45,9 @@ namespace MBC.Core.Game
 
     public delegate void TeamRemoveHandler(Match match, TeamRemoveHandler ev);
 
+    /// <summary>
+    /// This is the new framework part of a match.
+    /// </summary>
     [Configuration("mbc_field_width", 10)]
     [Configuration("mbc_field_height", 10)]
     [Configuration("mbc_ship_sizes", 2, 3, 3, 4, 5)]
@@ -56,9 +59,9 @@ namespace MBC.Core.Game
     [Configuration("mbc_match_rounds", 100)]
     public partial class Match
     {
-        private Coordinates boardSize;
         private List<Event> events;
-        private GameMode gameMode;
+        private Coordinates fieldSize;
+        private List<GameMode> gameModes;
         private Stopwatch gameTimer;
         private int numberOfRounds;
         private List<Player> players;
@@ -68,8 +71,15 @@ namespace MBC.Core.Game
         private List<Team> teams;
         private int timeLimit;
 
-        public Match(bool doIt)
+        public Match(Configuration config)
         {
+            events = new List<Event>();
+            players = new List<Player>();
+            teams = new List<Team>();
+            gameTimer = new Stopwatch();
+            randObj = new Random();
+
+            ApplyParameters(config);
         }
 
         public event MatchParamChangeHandler OnConfigChange;
@@ -112,33 +122,99 @@ namespace MBC.Core.Game
         {
             get
             {
-                return boardSize;
+                return fieldSize;
             }
             set
             {
-                boardSize = value;
-                MatchConfigChangedEvent ev = new MatchConfigChangedEvent();
-                AppendEvent(ev);
-                if (OnConfigChange != null)
-                {
-                    OnConfigChange(this, );
-                }
-                OnConfigChange(this, new MatchConfigChangedEvent());
+                fieldSize = value;
+                NotifyParamsChanged();
+            }
+        }
+
+        public List<GameMode> Modes
+        {
+            get
+            {
+                return gameModes;
+            }
+            set
+            {
+                gameModes = value;
+                NotifyParamsChanged();
+            }
+        }
+
+        public int NumberOfRounds
+        {
+            get
+            {
+                return numberOfRounds;
+            }
+            set
+            {
+                numberOfRounds = value;
+                NotifyParamsChanged();
+            }
+        }
+
+        public RoundMode RoundMode
+        {
+            get
+            {
+                return rndBehavior;
+            }
+            set
+            {
+                rndBehavior = value;
+                NotifyParamsChanged();
+            }
+        }
+
+        public int TimeLimit
+        {
+            get
+            {
+                return timeLimit;
+            }
+            set
+            {
+                timeLimit = value;
+                NotifyParamsChanged();
             }
         }
 
         public void SetParameters(Configuration conf)
         {
+            ApplyParameters(conf);
+            NotifyParamsChanged();
         }
 
-        private void AppendEvent(Event ev)
+        private void AppendEvent(Event ev, long evTime)
         {
             events.Add(ev);
             ev.Millis = (int)(DateTime.Now.Subtract(new DateTime(1970, 1, 1, 0, 0, 0)).TotalMilliseconds - evTime);
         }
 
+        private void ApplyParameters(Configuration conf)
+        {
+            fieldSize = new Coordinates(conf.GetValue<int>("mbc_field_width"), conf.GetValue<int>("mbc_field_height"));
+            numberOfRounds = conf.GetValue<int>("mbc_match_rounds");
+
+            startingShips = ShipList.ShipsFromLengths(conf.GetList<int>("mbc_ship_sizes"));
+            timeLimit = conf.GetValue<int>("mbc_player_timeout");
+
+            gameModes = conf.GetList<GameMode>("mbc_game_mode");
+        }
+
         private void NotifyParamsChanged()
         {
+            MatchConfigChangedEvent ev = new MatchConfigChangedEvent();
+            AppendEvent(ev, gameTimer.ElapsedMilliseconds);
+            if (OnConfigChange != null)
+            {
+                OnConfigChange(this, new MatchConfigChangedEvent());
+            }
+            OnConfigChange(this, new MatchConfigChangedEvent());
         }
     }
 }

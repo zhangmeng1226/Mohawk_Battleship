@@ -13,7 +13,7 @@ namespace MBC.Core.Events
         /// Do not use.
         /// </summary>
         /// <param name="newPlayer"></param>
-        [Obsolete("Not enough information for this event.", true)]
+        [Obsolete("Not enough information for this event.")]
         public MatchRemovePlayerEvent(IDNumber newPlayer)
         {
             PlayerID = newPlayer;
