@@ -10,7 +10,6 @@ namespace MBC.Shared
     public class Shot : IEquatable<Shot>, IComparable<Shot>
     {
         private Coordinates coords;
-        private IDNumber receiver;
 
         /// <summary>
         /// Copies an existing <see cref="Shot"/>.
@@ -19,22 +18,49 @@ namespace MBC.Shared
         public Shot(Shot copyShot)
         {
             coords = copyShot.coords;
-            receiver = copyShot.receiver;
+            ReceiverPlr = copyShot.ReceiverPlr;
         }
 
         /// <summary>
         /// Initializes the <see cref="Shot.Coordinates"/> to (-1, -1) and stores the <paramref name="receiver"/>.
         /// </summary>
         /// <param name="receiver">The receiving <see cref="Register"/> of this <see cref="Shot"/>.</param>
+        [Obsolete("Use live Player objects instead.")]
         public Shot(IDNumber receiver)
             : this(receiver, new Coordinates(-1, -1))
         {
         }
 
+        /// <summary>
+        /// Constructs a shot with a new player based on a receiver IDNumber, and initial coordinates for the shot.
+        /// </summary>
+        /// <param name="receiver"></param>
+        /// <param name="coords"></param>
+        [Obsolete]
         public Shot(IDNumber receiver, Coordinates coords)
         {
             this.coords = coords;
-            this.receiver = receiver;
+            this.ReceiverPlr = new Player(receiver, "placeholder");
+        }
+
+        /// <summary>
+        /// Constructs a shot at (-1, -1), with the given player that the shot is directed at.
+        /// </summary>
+        /// <param name="plr"></param>
+        public Shot(Player receiver)
+            : this(receiver, new Coordinates(-1, -1))
+        {
+        }
+
+        /// <summary>
+        /// Constructs a shot with the given coordinates and the player it is directed at.
+        /// </summary>
+        /// <param name="receiver"></param>
+        /// <param name="coords"></param>
+        public Shot(Player receiver, Coordinates coords)
+        {
+            this.coords = coords;
+            this.ReceiverPlr = receiver;
         }
 
         /// <summary>
@@ -56,16 +82,22 @@ namespace MBC.Shared
         /// Gets or sets the <see cref="IDNumber"/> that identifies the <see cref="Register"/>
         /// receiving this <see cref="Shot"/>.
         /// </summary>
+        [Obsolete("Use the player object directly")]
         public IDNumber Receiver
         {
             get
             {
-                return receiver;
+                return ReceiverPlr.ID;
             }
-            set
-            {
-                receiver = value;
-            }
+        }
+
+        /// <summary>
+        /// Gets the player that the shot is directed at.
+        /// </summary>
+        public Player ReceiverPlr
+        {
+            get;
+            private set;
         }
 
         /// <summary>
@@ -95,7 +127,7 @@ namespace MBC.Shared
             {
                 return false;
             }
-            return (shot1.Coordinates == shot2.Coordinates) && (shot1.Receiver == shot2.Receiver);
+            return (shot1.Coordinates == shot2.Coordinates) && (shot1.ReceiverPlr.ID == shot2.ReceiverPlr.ID);
         }
 
         /// <summary>
@@ -110,7 +142,7 @@ namespace MBC.Shared
                 return 1;
             }
 
-            return coords.CompareTo(shot.coords) + (receiver - shot.receiver);
+            return coords.CompareTo(shot.coords) + (ReceiverPlr.ID - shot.ReceiverPlr.ID);
         }
 
         /// <summary>
@@ -142,7 +174,7 @@ namespace MBC.Shared
             int hash = 23;
             hash = hash * 37 + coords.X;
             hash = hash * 37 + coords.Y;
-            hash = hash * 37 + receiver;
+            hash = hash * 37 + ReceiverPlr.ID;
             return hash;
         }
 
@@ -152,7 +184,7 @@ namespace MBC.Shared
         /// <returns>A string representing this <see cref="Shot"/>.</returns>
         public override string ToString()
         {
-            return Coordinates.ToString() + "=>[" + Receiver + "]";
+            return Coordinates.ToString() + "=>[" + ReceiverPlr.ID + "]";
         }
     }
 }

@@ -7,6 +7,7 @@ namespace MBC.Core.Events
     /// <summary>
     /// Created during a match when a player hits an opposing ship.
     /// </summary>
+    [Obsolete("Use PlayerShotEvent.")]
     public class PlayerHitShipEvent : PlayerEvent
     {
         /// <summary>

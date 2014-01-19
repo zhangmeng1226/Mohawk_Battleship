@@ -13,6 +13,7 @@ namespace MBC.Shared
         public const string PROPERTY_SHOTHITS = "ShotHits";
         public const string PROPERTY_SHOTMISSES = "ShotMisses";
         public const string PROPERTY_TEAM = "Team";
+        public const string PROPERTY_TIMEOUTS = "Timeouts";
         public const string PROPERTY_WINS = "Wins";
         private Boolean active;
 
@@ -34,6 +35,7 @@ namespace MBC.Shared
 
         private Team team;
 
+        private int timeouts;
         private int wins;
 
         /// <summary>
@@ -81,6 +83,17 @@ namespace MBC.Shared
             {
                 active = value;
                 NotifyPropertyChanged(PROPERTY_ACTIVE);
+            }
+        }
+
+        /// <summary>
+        /// Gets the controller that makes decisions for this player.
+        /// </summary>
+        public IController Controller
+        {
+            get
+            {
+                return controller;
             }
         }
 
@@ -141,11 +154,11 @@ namespace MBC.Shared
         /// <summary>
         /// Gets the list of ships this player currently has.
         /// </summary>
-        public List<Ship> Ships
+        public IList<Ship> Ships
         {
             get
             {
-                return new List<Ship>(ships);
+                return ships;
             }
         }
 
@@ -194,6 +207,22 @@ namespace MBC.Shared
             {
                 team = value;
                 NotifyPropertyChanged(PROPERTY_TEAM);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the number of timeouts the controller encountered in the match.
+        /// </summary>
+        public int Timeouts
+        {
+            get
+            {
+                return timeouts;
+            }
+            set
+            {
+                timeouts = value;
+                NotifyPropertyChanged(PROPERTY_TIMEOUTS);
             }
         }
 

@@ -44,6 +44,9 @@
   <ItemGroup>
     <Compile Include="Accolades\Accolade.cs" />
     <Compile Include="Accolades\AccoladeGenerator.cs" />
+    <Compile Include="Events\PlayerRemoveShipEvent.cs" />
+    <Compile Include="Events\PlayerShipAddEvent.cs" />
+    <Compile Include="Events\PlayerShipRemoveEvent.cs" />
     <Compile Include="Game\Active\ActiveMatch.cs" />
     <Compile Include="Game\Active\AllRoundsMatch.cs" />
     <Compile Include="Game\Active\ClassicGame.cs" />

@@ -162,11 +162,29 @@ namespace MBC.Shared
         }
 
         /// <summary>
+        /// Finds a ship at specific coordinates.
+        /// </summary>
+        /// <param name="ships"></param>
+        /// <param name="coord"></param>
+        /// <returns></returns>
+        public static Ship GetShipAt(IEnumerable<Ship> ships, Coordinates coord)
+        {
+            foreach (var ship in ships)
+            {
+                if (ship.IsAt(coord))
+                {
+                    return ship;
+                }
+            }
+            return null;
+        }
+
+        /// <summary>
         /// Creates a list of ships from a list of integer lengths.
         /// </summary>
         /// <param name="lengths"></param>
         /// <returns></returns>
-        public static List<Ship> ShipsFromLengths(List<int> lengths)
+        public static List<Ship> ShipsFromLengths(IEnumerable<int> lengths)
         {
             List<Ship> ships = new List<Ship>();
             foreach (int length in lengths)

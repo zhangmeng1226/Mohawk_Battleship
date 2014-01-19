@@ -23,7 +23,7 @@ namespace MBC.Core.Events
         }
 
         /// <summary>
-        /// Constructs the event with the player who made the shot.
+        /// Constructs the event with the player who made the shot. No ship hit.
         /// </summary>
         /// <param name="player"></param>
         /// <param name="shot"></param>
@@ -34,6 +34,19 @@ namespace MBC.Core.Events
         }
 
         /// <summary>
+        /// Constructs the event with the player who made the shot and hit a ship.
+        /// </summary>
+        /// <param name="player"></param>
+        /// <param name="shot"></param>
+        /// <param name="shipHit"></param>
+        public PlayerShotEvent(Player player, Shot shot, Ship shipHit)
+            : base(player)
+        {
+            Shot = shot;
+            ShipHit = shipHit;
+        }
+
+        /// <summary>
         /// Constructs the event from serialization data.
         /// </summary>
         /// <param name="info"></param>
@@ -41,6 +54,26 @@ namespace MBC.Core.Events
         public PlayerShotEvent(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
+        }
+
+        /// <summary>
+        /// Gets a value indicating if the shot hit a ship.
+        /// </summary>
+        public bool Hit
+        {
+            get
+            {
+                return ShipHit != null;
+            }
+        }
+
+        /// <summary>
+        /// Gets a ship object that the shot hit, if it hit. Otherwise the ship will be null.
+        /// </summary>
+        public Ship ShipHit
+        {
+            get;
+            private set;
         }
 
         /// <summary>

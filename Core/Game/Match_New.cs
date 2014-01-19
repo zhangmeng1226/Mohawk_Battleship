@@ -1,4 +1,5 @@
 ﻿using MBC.Core.Events;
+using MBC.Core.Threading;
 using MBC.Core.Util;
 using MBC.Shared;
 using System;
@@ -17,7 +18,7 @@ namespace MBC.Core.Game
 
     public delegate void MatchParamChangeHandler(Match match, MatchConfigChangedEvent ev);
 
-    public delegate void PlayerHitShipHandler(Match match, PlayerHitShipEvent ev);
+    public delegate void MatchRemovePlayerHandler(Match match, MatchRemovePlayerEvent ev);
 
     public delegate void PlayerLostHandler(Match match, PlayerLostEvent ev);
 
@@ -34,8 +35,6 @@ namespace MBC.Core.Game
     public delegate void PlayerTimeoutHandler(Match match, PlayerTimeoutEvent ev);
 
     public delegate void PlayerWonHandler(Match match, PlayerWonEvent ev);
-
-    public delegate void RemovePlayerHandler(Match match, RemovePlayerHandler ev);
 
     public delegate void RoundBeginHandler(Match match, RoundBeginEvent ev);
 
@@ -90,13 +89,11 @@ namespace MBC.Core.Game
 
         public event MatchAddPlayerHandler OnPlayerAdd;
 
-        public event PlayerHitShipHandler OnPlayerHitShip;
-
         public event PlayerLostHandler OnPlayerLose;
 
         public event PlayerMessageHandler OnPlayerMessage;
 
-        public event RemovePlayerHandler OnPlayerRemove;
+        public event MatchRemovePlayerHandler OnPlayerRemove;
 
         public event PlayerShipDestroyedHandler OnPlayerShipDestruction;
 
@@ -183,16 +180,116 @@ namespace MBC.Core.Game
             }
         }
 
-        public void SetParameters(Configuration conf)
+        public void AddPlayer(Player plr)
         {
-            ApplyParameters(conf);
-            NotifyParamsChanged();
+            players.Add(plr);
+            MatchAddPlayerEvent ev = new MatchAddPlayerEvent(plr);
+            AppendEvent(ev);
+            if (OnPlayerAdd != null)
+            {
+                OnPlayerAdd(this, ev);
+            }
         }
 
-        private void AppendEvent(Event ev, long evTime)
+        public void AddTeam(Team newTeam)
+        {
+            teams.Add(newTeam);
+        }
+
+        public void PlayerLost(Player plr)
+        {
+            plr.Losses++;
+            PlayerLostEvent ev = new PlayerLostEvent(plr);
+            AppendEvent(ev);
+            if (OnPlayerLose != null)
+            {
+                OnPlayerLose(this, ev);
+            }
+        }
+
+        public void PlayerShot(Player plr, Shot shot)
+        {
+            Ship shipHit = ShipList.GetShipAt(shot.ReceiverPlr.Ships, shot.Coordinates);
+            PlayerShotEvent ev = new PlayerShotEvent(plr, shot, shipHit);
+            AppendEvent(ev);
+            if (OnPlayerShot != null)
+            {
+                OnPlayerShot(this, ev);
+            }
+        }
+
+        public void PlayerTeamAssign(Player plr, Team newTeam)
+        {
+            plr.Team = newTeam;
+            PlayerTeamAssignEvent ev = new PlayerTeamAssignEvent(plr, newTeam);
+            AppendEvent(ev);
+            if (OnPlayerTeamAssign != null)
+            {
+                OnPlayerTeamAssign(this, ev);
+            }
+        }
+
+        public void PlayerTimeout(Player plr, ControllerTimeoutException ex)
+        {
+            PlayerTimeoutEvent ev = new PlayerTimeoutEvent(plr, ex);
+            AppendEvent(ev);
+            if (OnPlayerTimeout != null)
+            {
+                OnPlayerTimeout(this, ev);
+            }
+        }
+
+        public void PlayerWin(Player plr)
+        {
+            plr.Wins++;
+            PlayerWonEvent ev = new PlayerWonEvent(plr);
+            AppendEvent(ev);
+            if (OnPlayerWin != null)
+            {
+                OnPlayerWin(this, ev);
+            }
+        }
+
+        public void RemovePlayer(Player plr)
+        {
+            players.Remove(plr);
+            MatchRemovePlayerEvent ev = new MatchRemovePlayerEvent(plr);
+            AppendEvent(ev);
+            if (OnPlayerRemove != null)
+            {
+                OnPlayerRemove(this, ev);
+            }
+        }
+
+        public void RemoveTeam(Team remTeam)
+        {
+            teams.Remove(remTeam);
+        }
+
+        protected void PlayerMessage(Player plr, string msg)
+        {
+            PlayerMessageEvent ev = new PlayerMessageEvent(plr, msg);
+            AppendEvent(ev);
+            if (OnPlayerMessage != null)
+            {
+                OnPlayerMessage(this, ev);
+            }
+        }
+
+        protected void PlayerShipDestroyed(Player plr, Ship destroyedShip)
+        {
+            PlayerShipDestroyedEvent ev = new PlayerShipDestroyedEvent(plr, destroyedShip);
+            AppendEvent(ev);
+            if (OnPlayerShipDestruction != null)
+            {
+                OnPlayerShipDestruction(this, ev);
+            }
+        }
+
+        private void AppendEvent(Event ev)
         {
             events.Add(ev);
-            ev.Millis = (int)(DateTime.Now.Subtract(new DateTime(1970, 1, 1, 0, 0, 0)).TotalMilliseconds - evTime);
+            ev.Millis = (int)(DateTime.Now.Subtract(new DateTime(1970, 1, 1, 0, 0, 0)).TotalMilliseconds - gameTimer.ElapsedMilliseconds);
         }
 
         private void ApplyParameters(Configuration conf)
@@ -209,12 +306,18 @@ namespace MBC.Core.Game
         private void NotifyParamsChanged()
         {
             MatchConfigChangedEvent ev = new MatchConfigChangedEvent();
-            AppendEvent(ev, gameTimer.ElapsedMilliseconds);
+            AppendEvent(ev);
             if (OnConfigChange != null)
             {
                 OnConfigChange(this, new MatchConfigChangedEvent());
             }
             OnConfigChange(this, new MatchConfigChangedEvent());
+        }
+
+        private void SetParameters(Configuration conf)
+        {
+            ApplyParameters(conf);
+            NotifyParamsChanged();
         }
     }
 }
