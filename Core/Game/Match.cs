@@ -104,10 +104,6 @@ namespace MBC.Core.Matches
             throw new ArgumentException("The type of event must have a base type of Event.");
         }
 
-        public virtual void Play()
-        {
-        }
-
         [Obsolete]
         public void RemoveEventAction(Type typeOfEvent, MBCEventHandler eventAction)
         {
@@ -120,10 +116,6 @@ namespace MBC.Core.Matches
 
         [Obsolete]
         public virtual void SaveToFile(string location)
-        {
-        }
-
-        public virtual void Stop()
         {
         }
 

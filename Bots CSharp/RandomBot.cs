@@ -1,6 +1,6 @@
-﻿using System;
-using MBC.Shared;
+﻿using MBC.Shared;
 using MBC.Shared.Attributes;
+using System;
 
 namespace MBC.Controllers
 {
@@ -22,45 +22,18 @@ namespace MBC.Controllers
     /// </summary>
     ///
 
-    //Here, a NameAttribute is defined, stating the name of this controller.
     [Name("RandomBot C#")]
-
-    //Here, a VersionAttribute is defined, stating the version information for this controller.
-    // it is recommended to keep multiple versions of your bot, allowing your latest version to
-    // battle the previous version. If you truly are improving your bot, then the latest version
-    // should almost always beat out the previous version.
     [Version(1, 0)]
-
-    //Here, a CapabilitiesAttribute is defined, which defines the game modes that this controller is
-    //able to participate in. By default the classic game mode is used, and in future editions of our
-    // competition we may add more. For now assume your designing a bot for the classic game rules.
     [Capabilities(GameMode.Classic, GameMode.Salvo, GameMode.Multi)]
-
-    //Here, a DescriptionAttribute is defined, giving a short description of this controller about what it does
-    //or how it works. This attribute is optional and can be omitted.
     [Description("A controller that uses a random number generator to make all of its decisions.")]
-
-    //Here, an AuthorAttribute is defined, which provides information about the author of this controller.
-    //This attribute is optional and can be omitted.
     [Author(FirstName = "Ryan", LastName = "Albert", AKAName = "piknik",
         Biography = "I assisted in the development of the framework =]"
         )]
-
-    //Here, an AcademicInfoAttribute is defined, which provides information about the educational institution
-    //and program that the developer of this controller is in. This attribute is optional and can be omitted.
-    [AcademicInfo("Mohawk College", "Software Development", 1)]
+    [AcademicInfo("Mohawk College", "Software Development", 2)]
     public class RandomBot : Controller
     {
-        /// <summary>
-        /// This is a Random object that this controller will be using through each match to generate
-        /// random numbers.
-        /// </summary>
         private Random rand;
 
-        /// <summary>
-        /// This is a list of shots that this controller has against another controller or controllers.
-        /// It will start out being filled with every possible shot made.
-        /// </summary>
         private ShotList shotQueue;
 
         /// <summary>
@@ -71,8 +44,6 @@ namespace MBC.Controllers
         /// <param name="shot">The Shot to modify.</param>
         public override Shot MakeShot()
         {
-            //The controller only cares about modifying the Coordinates. The Coordinates of the next random
-            //shot from the NextRandomShot() method is provided.
             return NextRandomShot();
         }
 
@@ -108,11 +79,8 @@ namespace MBC.Controllers
         /// <param name="matchInfo">The information about the match-up.</param>
         public override void NewRound()
         {
-            //The controller calls the SetShots() method to initialize the shotQueue field.
             SetShots();
 
-            //Finally, the controller creates a random number generator into the "rand" field defined
-            //in this class. It uses the tick count of the system as a seed.
             rand = Match.Random;
         }
 
@@ -144,21 +112,14 @@ namespace MBC.Controllers
         /// <param name="ships">A collection of Ship objects to place.</param>
         public override ShipList PlaceShips()
         {
-            //First we'll refer to the ships given to us through a single variable.
             var myShips = Match.StartingShips;
 
-            //This loop will continue until all of the Ship objects have been placed.
             while (!myShips.ShipsPlaced)
             {
-                //Get a random set of coordinates by calling the RandomCoordinates() method created earlier.
                 var randomCoords = RandomCoordinates();
 
-                //Get a random orientation for a ship to place by calling the RandomShipOrientation() method.
                 var orientation = RandomShipOrientation();
 
-                //Use the function within the ShipList object "myShips" to place a ship for the controller.
-                //As explained in the PlaceShip() method of the ShipList, placing a ship at the randomly
-                //generated coordinates may fail.
                 myShips.PlaceShip(randomCoords, orientation, Match.FieldSize);
             }
 
@@ -171,7 +132,6 @@ namespace MBC.Controllers
         /// </summary>
         public override void RoundLost()
         {
-            //Demonstrating the use of the ControllerMessageEvent by sending a string.
             SendMessage("Unsurprisingly I lost...");
         }
 
@@ -181,7 +141,6 @@ namespace MBC.Controllers
         /// </summary>
         public override void RoundWon()
         {
-            //Demonstrating the use of the ControllerMessageEvent by sending a string.
             SendMessage("Yay, I won! What are the chances of that?");
         }
 
@@ -213,18 +172,12 @@ namespace MBC.Controllers
         /// <returns>A random Shot from the shotQueue.</returns>
         private Shot NextRandomShot()
         {
-            //First generate a random number which will be the index of a random
-            //shot from within the shotQueue.
             var randomShotIndex = rand.Next(shotQueue.Count);
 
-            //Then get the Shot object from the shotQueue at the random index.
             Shot randomShot = shotQueue[randomShotIndex];
 
-            //According to the rules of most game modes, a controller cannot make the same shot
-            //twice, so remove this shot from the shotQueue.
             shotQueue.Remove(randomShot);
 
-            //Then return the random shot back to the caller.
             return randomShot;
         }
 
@@ -235,14 +188,10 @@ namespace MBC.Controllers
         /// field boundaries.</returns>
         private Coordinates RandomCoordinates()
         {
-            //First generate a random X coordinate. Note that rand.Next() gets a random number that is
-            //always less than the given value; we add one to get the full range of the field.
             var xCoord = rand.Next(Match.FieldSize.X);
 
-            //Then generate a random Y coordinate.
             var yCoord = rand.Next(Match.FieldSize.Y);
 
-            //Then put the two coordinates together and return it.
             return new Coordinates(xCoord, yCoord);
         }
 
@@ -252,12 +201,8 @@ namespace MBC.Controllers
         /// <returns>A randomly selected ShipOrientation.</returns>
         private ShipOrientation RandomShipOrientation()
         {
-            //The controller first makes a two-element array that contains the two possible orientations.
             var orientations = new ShipOrientation[] { ShipOrientation.Horizontal, ShipOrientation.Vertical };
 
-            //Then the controller uses the random number generator "rand" to choose either a 0 or a 1 to
-            //pick the index of a ShipOrientation randomly. The ShipOrientation is then returned back to the
-            //caller.
             return orientations[rand.Next(2)];
         }
 
@@ -267,14 +212,10 @@ namespace MBC.Controllers
         /// </summary>
         private void SetShots()
         {
-            //Construct a new ShotList object.
             shotQueue = new ShotList();
 
-            //Set up our shot queue with our opponents.
             shotQueue.MakeReceivers(AllOpponents());
 
-            //Initially, a ShotList is empty when it is constructed, so the ShotList can be filled
-            //easily by inverting it up to the size of the field in the game.
             shotQueue.Invert(Match.FieldSize);
         }
     }

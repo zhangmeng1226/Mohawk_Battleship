@@ -4,6 +4,7 @@ using MBC.Core.Util;
 using MBC.Shared;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -40,9 +41,9 @@ namespace MBC.Core.Game
 
     public delegate void RoundEndHandler(Match match, RoundEndEvent ev);
 
-    public delegate void TeamAddHandler(Match match, TeamAddHandler ev);
+    public delegate void TeamAddHandler(Match match, MatchTeamCreateEvent ev);
 
-    public delegate void TeamRemoveHandler(Match match, TeamRemoveHandler ev);
+    public delegate void TeamRemoveHandler(Match match, MatchTeamRemoveEvent ev);
 
     /// <summary>
     /// This is the new framework part of a match.
@@ -58,6 +59,7 @@ namespace MBC.Core.Game
     [Configuration("mbc_match_rounds", 100)]
     public partial class Match
     {
+        private int currentRound;
         private List<Event> events;
         private Coordinates fieldSize;
         private List<GameMode> gameModes;
@@ -70,6 +72,10 @@ namespace MBC.Core.Game
         private List<Team> teams;
         private int timeLimit;
 
+        /// <summary>
+        /// Creates a match with parameters loaded from a configuration.
+        /// </summary>
+        /// <param name="config"></param>
         public Match(Configuration config)
         {
             events = new List<Event>();
@@ -81,40 +87,108 @@ namespace MBC.Core.Game
             ApplyParameters(config);
         }
 
-        public event MatchParamChangeHandler OnConfigChange;
-
+        /// <summary>
+        /// Called when the match begins. Called before any rounds begin.
+        /// </summary>
         public event MatchBeginHandler OnMatchBegin;
 
+        /// <summary>
+        /// Called when the match ends. Called after all rounds have ended and the
+        /// match conditions have been met.
+        /// </summary>
         public event MatchEndHandler OnMatchEnd;
 
+        /// <summary>
+        /// Called when the match parameters have changed.
+        /// </summary>
+        public event MatchParamChangeHandler OnParamChange;
+
+        /// <summary>
+        /// Called when a player is added to the match.
+        /// </summary>
         public event MatchAddPlayerHandler OnPlayerAdd;
 
+        /// <summary>
+        /// Called when a players loses during the match.
+        /// </summary>
         public event PlayerLostHandler OnPlayerLose;
 
+        /// <summary>
+        /// Called when a player outputs a message.
+        /// </summary>
         public event PlayerMessageHandler OnPlayerMessage;
 
+        /// <summary>
+        /// Called when a player is removed from the match.
+        /// </summary>
         public event MatchRemovePlayerHandler OnPlayerRemove;
 
+        /// <summary>
+        /// Called when a player's ship has been hit completely, and has been
+        /// removed from the player's list of ships.
+        /// </summary>
         public event PlayerShipDestroyedHandler OnPlayerShipDestruction;
 
+        /// <summary>
+        /// Called when a player finalizes their ship placement in the beginning of a round,
+        /// or when the position of any of the ships move during a round.
+        /// </summary>
         public event PlayerShipsPlacedHandler OnPlayerShipsPlaced;
 
+        /// <summary>
+        /// Called when a player makes a shot against an opponent.
+        /// </summary>
         public event PlayerShotHandler OnPlayerShot;
 
+        /// <summary>
+        /// Called when a player is assigned to a team.
+        /// </summary>
         public event PlayerTeamAssignHandler OnPlayerTeamAssign;
 
+        /// <summary>
+        /// Called when a player times out during their turn.
+        /// </summary>
         public event PlayerTimeoutHandler OnPlayerTimeout;
 
+        /// <summary>
+        /// Called when a player wins a round.
+        /// </summary>
         public event PlayerWonHandler OnPlayerWin;
 
+        /// <summary>
+        /// Called when a round begins.
+        /// </summary>
         public event RoundBeginHandler OnRoundBegin;
 
+        /// <summary>
+        /// Called when a round ends.
+        /// </summary>
         public event RoundEndHandler OnRoundEnd;
 
+        /// <summary>
+        /// Called when a team has been added to the match.
+        /// </summary>
         public event TeamAddHandler OnTeamAdd;
 
+        /// <summary>
+        /// Called when a team has been removed from the match.
+        /// </summary>
         public event TeamRemoveHandler OnTeamRemove;
 
+        /// <summary>
+        /// Gets the current round in progress in the match.
+        /// </summary>
+        public int CurrentRound
+        {
+            get
+            {
+                return currentRound;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the field size parameter of the match.
+        /// </summary>
         public Coordinates FieldSize
         {
             get
@@ -128,6 +202,9 @@ namespace MBC.Core.Game
             }
         }
 
+        /// <summary>
+        /// Gets or sets the game mode of the match.
+        /// </summary>
         public List<GameMode> Modes
         {
             get
@@ -141,6 +218,9 @@ namespace MBC.Core.Game
             }
         }
 
+        /// <summary>
+        /// Gets or sets the number of rounds to satisfy in the match.
+        /// </summary>
         public int NumberOfRounds
         {
             get
@@ -154,6 +234,9 @@ namespace MBC.Core.Game
             }
         }
 
+        /// <summary>
+        /// Gets or sets the round mode for the match.
+        /// </summary>
         public RoundMode RoundMode
         {
             get
@@ -167,6 +250,9 @@ namespace MBC.Core.Game
             }
         }
 
+        /// <summary>
+        /// Gets or sets the time limit allowed for each decision in the match.
+        /// </summary>
         public int TimeLimit
         {
             get
@@ -180,9 +266,14 @@ namespace MBC.Core.Game
             }
         }
 
+        /// <summary>
+        /// Adds a player to the match.
+        /// </summary>
+        /// <param name="plr"></param>
         public void AddPlayer(Player plr)
         {
             players.Add(plr);
+            plr.PropertyChanged += PlayerPropertyChange;
             MatchAddPlayerEvent ev = new MatchAddPlayerEvent(plr);
             AppendEvent(ev);
             if (OnPlayerAdd != null)
@@ -191,11 +282,32 @@ namespace MBC.Core.Game
             }
         }
 
+        /// <summary>
+        /// Adds a team to the match.
+        /// </summary>
+        /// <param name="newTeam"></param>
         public void AddTeam(Team newTeam)
         {
             teams.Add(newTeam);
+            MatchTeamCreateEvent ev = new MatchTeamCreateEvent(newTeam);
+            AppendEvent(ev);
+            if (OnTeamAdd != null)
+            {
+                OnTeamAdd(this, ev);
+            }
         }
 
+        /// <summary>
+        /// Moves the match progress forward at a normal pace.
+        /// </summary>
+        public virtual void Play()
+        {
+        }
+
+        /// <summary>
+        /// Marks a player as a loser in the current round and increases their losing score.
+        /// </summary>
+        /// <param name="plr"></param>
         public void PlayerLost(Player plr)
         {
             plr.Losses++;
@@ -207,6 +319,11 @@ namespace MBC.Core.Game
             }
         }
 
+        /// <summary>
+        /// Use when a player shoots.
+        /// </summary>
+        /// <param name="plr"></param>
+        /// <param name="shot"></param>
         public void PlayerShot(Player plr, Shot shot)
         {
             Ship shipHit = ShipList.GetShipAt(shot.ReceiverPlr.Ships, shot.Coordinates);
@@ -218,6 +335,11 @@ namespace MBC.Core.Game
             }
         }
 
+        /// <summary>
+        /// Assign a player to a team.
+        /// </summary>
+        /// <param name="plr"></param>
+        /// <param name="newTeam"></param>
         public void PlayerTeamAssign(Player plr, Team newTeam)
         {
             plr.Team = newTeam;
@@ -229,6 +351,11 @@ namespace MBC.Core.Game
             }
         }
 
+        /// <summary>
+        /// Call when a player has timed out.
+        /// </summary>
+        /// <param name="plr"></param>
+        /// <param name="ex"></param>
         public void PlayerTimeout(Player plr, ControllerTimeoutException ex)
         {
             PlayerTimeoutEvent ev = new PlayerTimeoutEvent(plr, ex);
@@ -239,6 +366,10 @@ namespace MBC.Core.Game
             }
         }
 
+        /// <summary>
+        /// Call ehwn a player has won a round.
+        /// </summary>
+        /// <param name="plr"></param>
         public void PlayerWin(Player plr)
         {
             plr.Wins++;
@@ -250,6 +381,10 @@ namespace MBC.Core.Game
             }
         }
 
+        /// <summary>
+        /// Call when a player is to be removed from the match.
+        /// </summary>
+        /// <param name="plr"></param>
         public void RemovePlayer(Player plr)
         {
             players.Remove(plr);
@@ -261,11 +396,43 @@ namespace MBC.Core.Game
             }
         }
 
+        /// <summary>
+        /// Call when a team is to be removed from the match.
+        /// </summary>
+        /// <param name="remTeam"></param>
         public void RemoveTeam(Team remTeam)
         {
             teams.Remove(remTeam);
+            MatchTeamRemoveEvent ev = new MatchTeamRemoveEvent(remTeam);
+            AppendEvent(ev);
+            if (OnTeamRemove != null)
+            {
+                OnTeamRemove(this, ev);
+            }
         }
 
+        /// <summary>
+        /// Changes the match parameters to reflect the configuration given.
+        /// </summary>
+        /// <param name="conf"></param>
+        public void SetParameters(Configuration conf)
+        {
+            ApplyParameters(conf);
+            NotifyParamsChanged();
+        }
+
+        /// <summary>
+        /// Stops progression of the match.
+        /// </summary>
+        public virtual void Stop()
+        {
+        }
+
+        /// <summary>
+        /// Call when a player is outputting a message.
+        /// </summary>
+        /// <param name="plr"></param>
+        /// <param name="msg"></param>
         protected void PlayerMessage(Player plr, string msg)
         {
             PlayerMessageEvent ev = new PlayerMessageEvent(plr, msg);
@@ -276,6 +443,11 @@ namespace MBC.Core.Game
             }
         }
 
+        /// <summary>
+        /// Call when a ship from a player has been destroyed.
+        /// </summary>
+        /// <param name="plr"></param>
+        /// <param name="destroyedShip"></param>
         protected void PlayerShipDestroyed(Player plr, Ship destroyedShip)
         {
             PlayerShipDestroyedEvent ev = new PlayerShipDestroyedEvent(plr, destroyedShip);
@@ -286,12 +458,20 @@ namespace MBC.Core.Game
             }
         }
 
+        /// <summary>
+        /// Appends an event to the list of events of the match, with a proper timestamp.
+        /// </summary>
+        /// <param name="ev"></param>
         private void AppendEvent(Event ev)
         {
             events.Add(ev);
             ev.Millis = (int)(DateTime.Now.Subtract(new DateTime(1970, 1, 1, 0, 0, 0)).TotalMilliseconds - gameTimer.ElapsedMilliseconds);
         }
 
+        /// <summary>
+        /// Applies a configuration to the match.
+        /// </summary>
+        /// <param name="conf"></param>
         private void ApplyParameters(Configuration conf)
         {
             fieldSize = new Coordinates(conf.GetValue<int>("mbc_field_width"), conf.GetValue<int>("mbc_field_height"));
@@ -303,21 +483,59 @@ namespace MBC.Core.Game
             gameModes = conf.GetList<GameMode>("mbc_game_mode");
         }
 
+        /// <summary>
+        /// Notifies the end of a round.
+        /// </summary>
+        private void EndRound()
+        {
+            RoundEndEvent ev = new RoundEndEvent(CurrentRound);
+            AppendEvent(ev);
+            if (OnRoundEnd != null)
+            {
+                OnRoundEnd(this, ev);
+            }
+        }
+
+        /// <summary>
+        /// Notifies a new round beginning.
+        /// </summary>
+        private void NewRound()
+        {
+            RoundBeginEvent ev = new RoundBeginEvent(CurrentRound);
+            AppendEvent(ev);
+            if (OnRoundBegin != null)
+            {
+                OnRoundBegin(this, ev);
+            }
+        }
+
+        /// <summary>
+        /// Notifies match parameter changes.
+        /// </summary>
         private void NotifyParamsChanged()
         {
             MatchConfigChangedEvent ev = new MatchConfigChangedEvent();
             AppendEvent(ev);
-            if (OnConfigChange != null)
+            if (OnParamChange != null)
             {
-                OnConfigChange(this, new MatchConfigChangedEvent());
+                OnParamChange(this, new MatchConfigChangedEvent());
             }
-            OnConfigChange(this, new MatchConfigChangedEvent());
+            OnParamChange(this, new MatchConfigChangedEvent());
         }
 
-        private void SetParameters(Configuration conf)
+        /// <summary>
+        /// Called when a player in the match has had a property changed.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void PlayerPropertyChange(object sender, PropertyChangedEventArgs e)
         {
-            ApplyParameters(conf);
-            NotifyParamsChanged();
+            var player = sender as Player;
+            switch (e.PropertyName)
+            {
+                case Player.PROPERTY_TEAM:
+                    break;
+            }
         }
     }
 }
