@@ -45,6 +45,7 @@
     <Compile Include="Accolades\Accolade.cs" />
     <Compile Include="Accolades\AccoladeGenerator.cs" />
     <Compile Include="Events\MatchTeamRemoveEvent.cs" />
+    <Compile Include="Events\PlayerTurnSwitchEvent.cs" />
     <Compile Include="Game\Active\ActiveMatch.cs" />
     <Compile Include="Game\Active\AllRoundsMatch.cs" />
     <Compile Include="Game\Active\ClassicGame.cs" />

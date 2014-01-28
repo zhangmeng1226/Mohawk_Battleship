@@ -8,6 +8,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Threading;
 
 namespace MBC.Core.Game
 {
@@ -34,6 +35,8 @@ namespace MBC.Core.Game
     public delegate void PlayerTeamAssignHandler(Match match, PlayerTeamAssignEvent ev);
 
     public delegate void PlayerTimeoutHandler(Match match, PlayerTimeoutEvent ev);
+
+    public delegate void PlayerTurnSwitchHandler(Match match, PlayerTurnSwitchEvent ev);
 
     public delegate void PlayerWonHandler(Match match, PlayerWonEvent ev);
 
@@ -149,6 +152,11 @@ namespace MBC.Core.Game
         /// Called when a player times out during their turn.
         /// </summary>
         public event PlayerTimeoutHandler OnPlayerTimeout;
+
+        /// <summary>
+        /// Called when a player turn switches to another player.
+        /// </summary>
+        public event PlayerTurnSwitchHandler OnPlayerTurnSwitch;
 
         /// <summary>
         /// Called when a player wins a round.
@@ -298,7 +306,7 @@ namespace MBC.Core.Game
         }
 
         /// <summary>
-        /// Moves the match progress forward at a normal pace.
+        /// Moves the match progress forward at a standard pace.
         /// </summary>
         public virtual void Play()
         {
