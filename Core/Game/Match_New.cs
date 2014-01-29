@@ -68,11 +68,11 @@ namespace MBC.Core.Game
         private List<GameMode> gameModes;
         private Stopwatch gameTimer;
         private int numberOfRounds;
-        private List<Player> players;
+        private HashSet<Player> players;
         private Random randObj;
         private RoundMode rndBehavior;
         private List<Ship> startingShips;
-        private List<Team> teams;
+        private HashSet<Team> teams;
         private int timeLimit;
 
         /// <summary>
@@ -82,8 +82,8 @@ namespace MBC.Core.Game
         public Match(Configuration config)
         {
             events = new List<Event>();
-            players = new List<Player>();
-            teams = new List<Team>();
+            players = new HashSet<Player>();
+            teams = new HashSet<Team>();
             gameTimer = new Stopwatch();
             randObj = new Random();
 
@@ -278,31 +278,41 @@ namespace MBC.Core.Game
         /// Adds a player to the match.
         /// </summary>
         /// <param name="plr"></param>
-        public void AddPlayer(Player plr)
+        /// <returns></returns>
+        public bool AddPlayer(Player plr)
         {
-            players.Add(plr);
-            plr.PropertyChanged += PlayerPropertyChange;
-            MatchAddPlayerEvent ev = new MatchAddPlayerEvent(plr);
-            AppendEvent(ev);
-            if (OnPlayerAdd != null)
+            if (players.Add(plr))
             {
-                OnPlayerAdd(this, ev);
+                plr.PropertyChanged += PlayerPropertyChange;
+                MatchAddPlayerEvent ev = new MatchAddPlayerEvent(plr);
+                AppendEvent(ev);
+                if (OnPlayerAdd != null)
+                {
+                    OnPlayerAdd(this, ev);
+                }
+                return true;
             }
+            return false;
         }
 
         /// <summary>
         /// Adds a team to the match.
         /// </summary>
         /// <param name="newTeam"></param>
-        public void AddTeam(Team newTeam)
+        /// <returns></returns>
+        public bool AddTeam(Team newTeam)
         {
-            teams.Add(newTeam);
-            MatchTeamCreateEvent ev = new MatchTeamCreateEvent(newTeam);
-            AppendEvent(ev);
-            if (OnTeamAdd != null)
+            if (teams.Add(newTeam))
             {
-                OnTeamAdd(this, ev);
+                MatchTeamCreateEvent ev = new MatchTeamCreateEvent(newTeam);
+                AppendEvent(ev);
+                if (OnTeamAdd != null)
+                {
+                    OnTeamAdd(this, ev);
+                }
+                return true;
             }
+            return false;
         }
 
         /// <summary>
@@ -314,17 +324,23 @@ namespace MBC.Core.Game
 
         /// <summary>
         /// Marks a player as a loser in the current round and increases their losing score.
+        /// Player must be active in order to lose, otherwise this method returns false.
         /// </summary>
         /// <param name="plr"></param>
-        public void PlayerLost(Player plr)
+        public bool PlayerLost(Player plr)
         {
-            plr.Losses++;
-            PlayerLostEvent ev = new PlayerLostEvent(plr);
-            AppendEvent(ev);
-            if (OnPlayerLose != null)
+            if (plr.Active)
             {
-                OnPlayerLose(this, ev);
+                plr.Losses++;
+                PlayerLostEvent ev = new PlayerLostEvent(plr);
+                AppendEvent(ev);
+                if (OnPlayerLose != null)
+                {
+                    OnPlayerLose(this, ev);
+                }
+                return true;
             }
+            return false;
         }
 
         /// <summary>
@@ -332,15 +348,20 @@ namespace MBC.Core.Game
         /// </summary>
         /// <param name="plr"></param>
         /// <param name="shot"></param>
-        public void PlayerShot(Player plr, Shot shot)
+        public bool PlayerShot(Player plr, Shot shot)
         {
-            Ship shipHit = ShipList.GetShipAt(shot.ReceiverPlr.Ships, shot.Coordinates);
-            PlayerShotEvent ev = new PlayerShotEvent(plr, shot, shipHit);
-            AppendEvent(ev);
-            if (OnPlayerShot != null)
+            if (IsShotValid(shot))
             {
-                OnPlayerShot(this, ev);
+                Ship shipHit = ShipList.GetShipAt(shot.ReceiverPlr.Ships, shot.Coordinates);
+                PlayerShotEvent ev = new PlayerShotEvent(plr, shot, shipHit);
+                AppendEvent(ev);
+                if (OnPlayerShot != null)
+                {
+                    OnPlayerShot(this, ev);
+                }
+                return true;
             }
+            return false;
         }
 
         /// <summary>
@@ -434,6 +455,18 @@ namespace MBC.Core.Game
         /// </summary>
         public virtual void Stop()
         {
+        }
+
+        /// <summary>
+        /// Determines whether or not a given shot is valid within the parameters of the match.
+        /// </summary>
+        /// <param name="plr"></param>
+        /// <param name="shot"></param>
+        /// <returns></returns>
+        protected virtual bool IsShotValid(Shot shot)
+        {
+            return players.Contains(shot.ReceiverPlr) ||
+                (shot.Coordinates < fieldSize && shot.Coordinates >= new Coordinates(0, 0));
         }
 
         /// <summary>
