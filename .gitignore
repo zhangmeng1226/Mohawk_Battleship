@@ -30,3 +30,5 @@
 /Shared/obj
 /Shared/bin
 /models
+TestCore/obj/Debug/
+CoreUnitTests/obj/Debug/
