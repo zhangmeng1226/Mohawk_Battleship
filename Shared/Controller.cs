@@ -25,12 +25,24 @@ namespace MBC.Shared
         /// </summary>
         public event StringOutputHandler ControllerMessageEvent;
 
+        /// <summary>
+        /// The field that represents the current match.
+        /// </summary>
         public FieldInfo Field { get; set; }
 
+        /// <summary>
+        /// Gets the identification number assigned to this controller through the match.
+        /// </summary>
         public IDNumber ID { get; set; }
 
+        /// <summary>
+        /// Gets the match parameters set in the match.
+        /// </summary>
         public MatchConfig Match { get; set; }
 
+        /// <summary>
+        /// Gets the register object associated with this controller.
+        /// </summary>
         public Register MyRegister
         {
             get
@@ -46,6 +58,9 @@ namespace MBC.Shared
             }
         }
 
+        /// <summary>
+        /// Gets the team this controller is a member of.
+        /// </summary>
         public Team MyTeam
         {
             get
@@ -61,6 +76,10 @@ namespace MBC.Shared
             }
         }
 
+        /// <summary>
+        /// Gets the ControllerRegister object associated with this controller. You
+        /// should not use this.
+        /// </summary>
         [Obsolete("Use alternative fields, properties, and methods provided in this class.")]
         public ControllerRegister Register
         {
@@ -70,18 +89,28 @@ namespace MBC.Shared
             }
         }
 
+        /// <summary>
+        /// Gets the registers in the match.
+        /// </summary>
         public Dictionary<IDNumber, Register> Registers
         {
             get;
             set;
         }
 
+        /// <summary>
+        /// Gets the teams created within the match.
+        /// </summary>
         public Dictionary<IDNumber, Team> Teams
         {
             get;
             set;
         }
 
+        /// <summary>
+        /// Gets all of the opponents of this controller (not part of the same team)
+        /// </summary>
+        /// <returns>Identification numbers of all of the opponent controllers.</returns>
         public List<IDNumber> AllOpponents()
         {
             var opponents = new HashSet<IDNumber>();
@@ -101,6 +130,11 @@ namespace MBC.Shared
             return opponents.ToList();
         }
 
+        /// <summary>
+        /// Gets an attribute that has been set upon a controller.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
         public T GetAttribute<T>()
         {
             object[] attribute = GetType().GetCustomAttributes(typeof(T), false);
@@ -111,6 +145,10 @@ namespace MBC.Shared
             return default(T);
         }
 
+        /// <summary>
+        /// Called when
+        /// </summary>
+        /// <returns></returns>
         public abstract Shot MakeShot();
 
         /// <summary>

@@ -369,15 +369,20 @@ namespace MBC.Core.Game
         /// </summary>
         /// <param name="plr"></param>
         /// <param name="newTeam"></param>
-        public void PlayerTeamAssign(Player plr, Team newTeam)
+        public bool PlayerTeamAssign(Player plr, Team newTeam)
         {
-            plr.Team = newTeam;
-            PlayerTeamAssignEvent ev = new PlayerTeamAssignEvent(plr, newTeam);
-            AppendEvent(ev);
-            if (OnPlayerTeamAssign != null)
+            if (plr.Team != newTeam)
             {
-                OnPlayerTeamAssign(this, ev);
+                plr.Team = newTeam;
+                PlayerTeamAssignEvent ev = new PlayerTeamAssignEvent(plr, newTeam);
+                AppendEvent(ev);
+                if (OnPlayerTeamAssign != null)
+                {
+                    OnPlayerTeamAssign(this, ev);
+                }
+                return true;
             }
+            return false;
         }
 
         /// <summary>
@@ -396,7 +401,7 @@ namespace MBC.Core.Game
         }
 
         /// <summary>
-        /// Call ehwn a player has won a round.
+        /// Call when a player has won a round.
         /// </summary>
         /// <param name="plr"></param>
         public void PlayerWin(Player plr)
@@ -414,40 +419,38 @@ namespace MBC.Core.Game
         /// Call when a player is to be removed from the match.
         /// </summary>
         /// <param name="plr"></param>
-        public void RemovePlayer(Player plr)
+        public bool RemovePlayer(Player plr)
         {
-            players.Remove(plr);
-            MatchRemovePlayerEvent ev = new MatchRemovePlayerEvent(plr);
-            AppendEvent(ev);
-            if (OnPlayerRemove != null)
+            if (players.Remove(plr))
             {
-                OnPlayerRemove(this, ev);
+                MatchRemovePlayerEvent ev = new MatchRemovePlayerEvent(plr);
+                AppendEvent(ev);
+                if (OnPlayerRemove != null)
+                {
+                    OnPlayerRemove(this, ev);
+                }
+                return true;
             }
+            return false;
         }
 
         /// <summary>
         /// Call when a team is to be removed from the match.
         /// </summary>
         /// <param name="remTeam"></param>
-        public void RemoveTeam(Team remTeam)
+        public bool RemoveTeam(Team remTeam)
         {
-            teams.Remove(remTeam);
-            MatchTeamRemoveEvent ev = new MatchTeamRemoveEvent(remTeam);
-            AppendEvent(ev);
-            if (OnTeamRemove != null)
+            if (teams.Remove(remTeam))
             {
-                OnTeamRemove(this, ev);
+                MatchTeamRemoveEvent ev = new MatchTeamRemoveEvent(remTeam);
+                AppendEvent(ev);
+                if (OnTeamRemove != null)
+                {
+                    OnTeamRemove(this, ev);
+                }
+                return true;
             }
-        }
-
-        /// <summary>
-        /// Changes the match parameters to reflect the configuration given.
-        /// </summary>
-        /// <param name="conf"></param>
-        public void SetParameters(Configuration conf)
-        {
-            ApplyParameters(conf);
-            NotifyParamsChanged();
+            return false;
         }
 
         /// <summary>
@@ -497,6 +500,16 @@ namespace MBC.Core.Game
             {
                 OnPlayerShipDestruction(this, ev);
             }
+        }
+
+        /// <summary>
+        /// Changes the match parameters to reflect the configuration given.
+        /// </summary>
+        /// <param name="conf"></param>
+        protected void SetParameters(Configuration conf)
+        {
+            ApplyParameters(conf);
+            NotifyParamsChanged();
         }
 
         /// <summary>
