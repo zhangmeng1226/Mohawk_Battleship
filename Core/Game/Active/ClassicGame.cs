@@ -1,5 +1,4 @@
 ﻿using MBC.Core.Events;
-using MBC.Core.Rounds;
 using MBC.Core.Threading;
 using MBC.Shared;
 using System;
@@ -8,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 
-namespace MBC.Core.Matches
+namespace MBC.Core.Game
 {
     [Obsolete]
     public class ClassicGame : GameLogic

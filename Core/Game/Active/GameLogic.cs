@@ -1,10 +1,10 @@
 ﻿using MBC.Core.Events;
-using MBC.Core.Matches;
+using MBC.Core.Game;
 using MBC.Shared;
 using System;
 using System.Collections.Generic;
 
-namespace MBC.Core.Rounds
+namespace MBC.Core.Game
 {
     [Obsolete]
     public abstract class GameLogic

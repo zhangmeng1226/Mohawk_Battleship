@@ -502,6 +502,10 @@ namespace MBC.Core.Game
             }
         }
 
+        protected virtual void PlayLogic()
+        {
+        }
+
         /// <summary>
         /// Changes the match parameters to reflect the configuration given.
         /// </summary>

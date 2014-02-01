@@ -1,13 +1,13 @@
-﻿using System;
+﻿using MBC.Core;
+using MBC.Core.Game;
+using MBC.Core.Util;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using MBC.Core;
-using MBC.Core.Matches;
-using MBC.Core.Util;
 
 namespace MBC.App.WPF
 {

@@ -1,6 +1,6 @@
-﻿using System;
-using MBC.Core.Matches;
+﻿using MBC.Core.Game;
 using MBC.Core.Util;
+using System;
 
 namespace MBC.App.BattleshipConsole
 {

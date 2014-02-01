@@ -1,6 +1,6 @@
-﻿using System;
+﻿using MBC.Core.Game;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using MBC.Core.Matches;
+using System;
 
 namespace TestCore
 {
@@ -8,9 +8,9 @@ namespace TestCore
     public class MatchTest
     {
         private Match match;
+
         public MatchTest()
         {
-            
         }
 
         [TestMethod]

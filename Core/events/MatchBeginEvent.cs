@@ -1,4 +1,4 @@
-﻿using MBC.Core.Matches;
+﻿using MBC.Core.Game;
 using MBC.Shared;
 using System;
 using System.Runtime.Serialization;

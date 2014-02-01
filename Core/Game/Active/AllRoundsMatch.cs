@@ -1,10 +1,9 @@
 ﻿using MBC.Core.Events;
-using MBC.Core.Rounds;
 using MBC.Core.Util;
 using MBC.Shared;
 using System;
 
-namespace MBC.Core.Matches
+namespace MBC.Core.Game
 {
     [Obsolete]
     public class AllRoundsMatch : ActiveMatch

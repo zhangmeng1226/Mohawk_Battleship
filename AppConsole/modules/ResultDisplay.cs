@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using MBC.App.Terminal.Controls;
+﻿using MBC.App.Terminal.Controls;
 using MBC.App.Terminal.Layouts;
 using MBC.Core;
 using MBC.Core.Events;
-using MBC.Core.Matches;
+using MBC.Core.Game;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
 namespace MBC.App.Terminal.Modules
 {

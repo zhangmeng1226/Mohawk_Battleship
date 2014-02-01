@@ -1,6 +1,5 @@
 ﻿using MBC.Core.Controllers;
 using MBC.Core.Events;
-using MBC.Core.Rounds;
 using MBC.Core.Util;
 using MBC.Shared;
 using MBC.Shared.Attributes;
@@ -8,7 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace MBC.Core.Matches
+namespace MBC.Core.Game
 {
     [Obsolete]
     public abstract class ActiveMatch : Match
@@ -16,6 +15,7 @@ namespace MBC.Core.Matches
         protected Dictionary<IDNumber, IController> controllers;
 
         public ActiveMatch(Configuration conf)
+            : base()
         {
             Events = new EventDriver();
             Events.EventApplied += ReflectEvent;

@@ -1,14 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using MBC.App.Terminal.Controls;
+﻿using MBC.App.Terminal.Controls;
 using MBC.App.Terminal.Layouts;
 using MBC.Core;
-using MBC.Core.Matches;
+using MBC.Core.Game;
 using MBC.Core.Util;
 using MBC.Shared;
 using MBC.Shared.Attributes;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
 namespace MBC.App.Terminal.Modules
 {

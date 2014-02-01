@@ -1,25 +1,24 @@
 ﻿using MBC.Core.Events;
-using MBC.Core.Rounds;
 using MBC.Core.Util;
 using MBC.Shared;
 using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace MBC.Core.Matches
+namespace MBC.Core.Game
 {
     public partial class Match
     {
         private Dictionary<IDNumber, FieldInfo> currentFields;
         private Dictionary<Type, List<MBCEventHandler>> eventActions;
         private Dictionary<IDNumber, Register> registers;
-        private Dictionary<IDNumber, Team> teams;
+        private Dictionary<IDNumber, Team> teams_old;
 
         [Obsolete]
         public Match()
         {
             registers = new Dictionary<IDNumber, Register>();
-            teams = new Dictionary<IDNumber, Team>();
+            teams_old = new Dictionary<IDNumber, Team>();
             currentFields = new Dictionary<IDNumber, FieldInfo>();
             eventActions = new Dictionary<Type, List<MBCEventHandler>>();
             ID = (int)DateTime.Now.Subtract(new DateTime(1970, 1, 1, 0, 0, 0)).TotalSeconds;
@@ -75,7 +74,7 @@ namespace MBC.Core.Matches
         {
             get
             {
-                return teams;
+                return teams_old;
             }
         }
 
@@ -161,7 +160,7 @@ namespace MBC.Core.Matches
         {
             var assignEvent = (PlayerTeamAssignEvent)ev;
 
-            teams[assignEvent.TeamID].Members.Add(assignEvent.PlayerID);
+            teams_old[assignEvent.TeamID].Members.Add(assignEvent.PlayerID);
         }
 
         [Obsolete]
@@ -169,7 +168,7 @@ namespace MBC.Core.Matches
         {
             var unassignEvent = (PlayerTeamUnassignEvent)ev;
 
-            teams[unassignEvent.TeamID].Members.Remove(unassignEvent.PlayerID);
+            teams_old[unassignEvent.TeamID].Members.Remove(unassignEvent.PlayerID);
         }
 
         [Obsolete]
@@ -178,7 +177,7 @@ namespace MBC.Core.Matches
             var removeEvent = (MatchRemovePlayerEvent)ev;
 
             registers.Remove(removeEvent.PlayerID);
-            foreach (var team in teams)
+            foreach (var team in teams_old)
             {
                 team.Value.Members.Remove(removeEvent.PlayerID);
             }
@@ -188,7 +187,7 @@ namespace MBC.Core.Matches
         private void MatchTeamCreate(Event ev)
         {
             var teamCreateEvent = (MatchTeamCreateEvent)ev;
-            teams[teamCreateEvent.Team.ID] = new Team(teamCreateEvent.Team.ID, teamCreateEvent.Team.Name);
+            teams_old[teamCreateEvent.Team.ID] = new Team(teamCreateEvent.Team.ID, teamCreateEvent.Team.Name);
         }
 
         [Obsolete]

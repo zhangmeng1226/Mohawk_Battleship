@@ -64,7 +64,6 @@
     <Compile Include="Events\PlayerTeamAssignEvent.cs" />
     <Compile Include="Events\MatchRemovePlayerEvent.cs" />
     <Compile Include="Events\MatchTeamCreateEvent.cs" />
-    <Compile Include="Game\MatchReplay.cs" />
     <Compile Include="Controllers\ControllerSkeleton.cs" />
     <Compile Include="Events\PlayerShipDestroyedEvent.cs" />
     <Compile Include="Events\PlayerHitShipEvent.cs" />

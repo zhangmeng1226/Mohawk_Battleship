@@ -1,6 +1,4 @@
-﻿using MBC.Core.Rounds;
-
-namespace MBC.Core.Accolades
+﻿namespace MBC.Core.Accolades
 {
     /// <summary>
     /// Analyses the <see cref="MBC.Core.Events.Event"/>s that are generated from within a <see cref="GameLogic"/>, generates
@@ -9,12 +7,5 @@ namespace MBC.Core.Accolades
     /// </summary>
     public class AccoladeGenerator
     {
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="round"></param>
-        public AccoladeGenerator(GameLogic round)
-        {
-        }
     }
 }

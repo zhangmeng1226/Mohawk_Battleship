@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MBC.Shared;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,11 +12,34 @@ namespace MBC.Core.Game
     public class ClassicMatch : Match
     {
         /// <summary>
+        /// An enum that
+        /// </summary>
+        public enum Phase
+        {
+            Placement,
+            Turn
+        }
+
+        public Phase CurrentPhase
+        {
+            get;
+            protected set;
+        }
+
+        /// <summary>
+        /// Gets the player that has the turn.
+        /// </summary>
+        public Player CurrentPlayer
+        {
+            get;
+            protected set;
+        }
+
+        /// <summary>
         ///
         /// </summary>
-        public override void Play()
+        protected override void PlayLogic()
         {
-            base.Play();
         }
     }
 }

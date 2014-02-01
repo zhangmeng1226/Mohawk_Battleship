@@ -1,4 +1,4 @@
-﻿using MBC.Core.Matches;
+﻿using MBC.Core.Game;
 using System.Runtime.Serialization;
 
 namespace MBC.Core.Events

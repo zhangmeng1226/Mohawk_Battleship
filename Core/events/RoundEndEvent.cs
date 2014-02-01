@@ -1,5 +1,4 @@
-﻿using MBC.Core.Rounds;
-using MBC.Shared;
+﻿using MBC.Shared;
 using System.Runtime.Serialization;
 
 namespace MBC.Core.Events
