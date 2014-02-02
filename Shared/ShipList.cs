@@ -161,6 +161,11 @@ namespace MBC.Shared
             }
         }
 
+        public static bool AreEquivalentLengths(IEnumerable<Ship> ships1, IEnumerable<Ship> ships2)
+        {
+            return false;
+        }
+
         /// <summary>
         /// Finds a ship at specific coordinates.
         /// </summary>
@@ -177,6 +182,16 @@ namespace MBC.Shared
                 }
             }
             return null;
+        }
+
+        public static Dictionary<int, int> ShipLengthCount(IEnumerable<Ship> ships)
+        {
+            Dictionary<int, int> lengthCount = new Dictionary<int, int>();
+            foreach (Ship ship in ships)
+            {
+                lengthCount[ship.Length]++;
+            }
+            return lengthCount;
         }
 
         /// <summary>

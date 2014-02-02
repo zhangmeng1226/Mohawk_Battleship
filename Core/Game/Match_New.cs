@@ -243,6 +243,17 @@ namespace MBC.Core.Game
         }
 
         /// <summary>
+        /// Gets the players involved with the match.
+        /// </summary>
+        public IEnumerable<Player> Players
+        {
+            get
+            {
+                return players;
+            }
+        }
+
+        /// <summary>
         /// Gets or sets the round mode for the match.
         /// </summary>
         public RoundMode RoundMode
@@ -255,6 +266,34 @@ namespace MBC.Core.Game
             {
                 rndBehavior = value;
                 NotifyParamsChanged();
+            }
+        }
+
+        /// <summary>
+        /// Gets a generated list of ships that define the ships that are to be placed at the
+        /// start of a round.
+        /// </summary>
+        public IList<Ship> StartingShips
+        {
+            get
+            {
+                List<Ship> ships = new List<Ship>();
+                foreach (Ship ship in startingShips)
+                {
+                    ships.Add(new Ship(ship));
+                }
+                return ships;
+            }
+        }
+
+        /// <summary>
+        /// Gets the teams that exist within the match.
+        /// </summary>
+        public IEnumerable<Team> Teams
+        {
+            get
+            {
+                return teams;
             }
         }
 
@@ -279,11 +318,10 @@ namespace MBC.Core.Game
         /// </summary>
         /// <param name="plr"></param>
         /// <returns></returns>
-        public bool AddPlayer(Player plr)
+        public virtual bool AddPlayer(Player plr)
         {
             if (players.Add(plr))
             {
-                plr.PropertyChanged += PlayerPropertyChange;
                 MatchAddPlayerEvent ev = new MatchAddPlayerEvent(plr);
                 AppendEvent(ev);
                 if (OnPlayerAdd != null)
@@ -300,7 +338,7 @@ namespace MBC.Core.Game
         /// </summary>
         /// <param name="newTeam"></param>
         /// <returns></returns>
-        public bool AddTeam(Team newTeam)
+        public virtual bool AddTeam(Team newTeam)
         {
             if (teams.Add(newTeam))
             {
@@ -327,7 +365,7 @@ namespace MBC.Core.Game
         /// Player must be active in order to lose, otherwise this method returns false.
         /// </summary>
         /// <param name="plr"></param>
-        public bool PlayerLost(Player plr)
+        public virtual bool PlayerLost(Player plr)
         {
             if (plr.Active)
             {
@@ -348,7 +386,7 @@ namespace MBC.Core.Game
         /// </summary>
         /// <param name="plr"></param>
         /// <param name="shot"></param>
-        public bool PlayerShot(Player plr, Shot shot)
+        public virtual bool PlayerShot(Player plr, Shot shot)
         {
             if (IsShotValid(shot))
             {
@@ -369,7 +407,7 @@ namespace MBC.Core.Game
         /// </summary>
         /// <param name="plr"></param>
         /// <param name="newTeam"></param>
-        public bool PlayerTeamAssign(Player plr, Team newTeam)
+        public virtual bool PlayerTeamAssign(Player plr, Team newTeam)
         {
             if (plr.Team != newTeam)
             {
@@ -390,7 +428,7 @@ namespace MBC.Core.Game
         /// </summary>
         /// <param name="plr"></param>
         /// <param name="ex"></param>
-        public void PlayerTimeout(Player plr, ControllerTimeoutException ex)
+        public virtual void PlayerTimeout(Player plr, ControllerTimeoutException ex)
         {
             PlayerTimeoutEvent ev = new PlayerTimeoutEvent(plr, ex);
             AppendEvent(ev);
@@ -404,7 +442,7 @@ namespace MBC.Core.Game
         /// Call when a player has won a round.
         /// </summary>
         /// <param name="plr"></param>
-        public void PlayerWin(Player plr)
+        public virtual void PlayerWin(Player plr)
         {
             plr.Wins++;
             PlayerWonEvent ev = new PlayerWonEvent(plr);
@@ -419,7 +457,7 @@ namespace MBC.Core.Game
         /// Call when a player is to be removed from the match.
         /// </summary>
         /// <param name="plr"></param>
-        public bool RemovePlayer(Player plr)
+        public virtual bool RemovePlayer(Player plr)
         {
             if (players.Remove(plr))
             {
@@ -438,7 +476,7 @@ namespace MBC.Core.Game
         /// Call when a team is to be removed from the match.
         /// </summary>
         /// <param name="remTeam"></param>
-        public bool RemoveTeam(Team remTeam)
+        public virtual bool RemoveTeam(Team remTeam)
         {
             if (teams.Remove(remTeam))
             {
@@ -477,7 +515,7 @@ namespace MBC.Core.Game
         /// </summary>
         /// <param name="plr"></param>
         /// <param name="msg"></param>
-        protected void PlayerMessage(Player plr, string msg)
+        protected virtual void PlayerMessage(Player plr, string msg)
         {
             PlayerMessageEvent ev = new PlayerMessageEvent(plr, msg);
             AppendEvent(ev);
@@ -492,7 +530,7 @@ namespace MBC.Core.Game
         /// </summary>
         /// <param name="plr"></param>
         /// <param name="destroyedShip"></param>
-        protected void PlayerShipDestroyed(Player plr, Ship destroyedShip)
+        protected virtual void PlayerShipDestroyed(Player plr, Ship destroyedShip)
         {
             PlayerShipDestroyedEvent ev = new PlayerShipDestroyedEvent(plr, destroyedShip);
             AppendEvent(ev);

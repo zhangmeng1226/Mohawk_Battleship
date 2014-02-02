@@ -71,7 +71,7 @@ namespace MBC.Core.Game
             for (int i = 1; i < turns.Count; i++)
             {
                 IDNumber plr = turns[(currentTurnIdx + i) % turns.Count];
-                if (Match.Teams[DeadTeam].Members.Contains(plr)) continue;
+                if (Match.OLD_Teams[DeadTeam].Members.Contains(plr)) continue;
                 return plr;
             }
             return CurrentTurnPlayer;
@@ -134,7 +134,7 @@ namespace MBC.Core.Game
                 shot.Coordinates >= new Coordinates(0, 0) &&
                 shooter != shot.Receiver &&
                 !Match.Fields[shooter].Shots.Contains(shot) &&
-                !Match.Teams[DeadTeam].Members.Contains(shot.Receiver);
+                !Match.OLD_Teams[DeadTeam].Members.Contains(shot.Receiver);
         }
 
         public override void Stop()
@@ -144,7 +144,7 @@ namespace MBC.Core.Game
 
         private void EndLogic()
         {
-            if (!Match.Teams[DeadTeam].Members.Contains(CurrentTurnPlayer))
+            if (!Match.OLD_Teams[DeadTeam].Members.Contains(CurrentTurnPlayer))
             {
                 ApplyEvent(new PlayerWonEvent(CurrentTurnPlayer));
                 Match.Controllers[CurrentTurnPlayer].RoundWon();
@@ -162,7 +162,7 @@ namespace MBC.Core.Game
         private void FormTeams()
         {
             FFATeam = Match.GetTeam("Free-For-All");
-            Match.Teams[FFATeam].IsFriendly = false;
+            Match.OLD_Teams[FFATeam].IsFriendly = false;
             DeadTeam = Match.GetTeam(Constants.TEAM_DEAD_NAME, true);
             foreach (var reg in Match.Registers)
             {
@@ -236,17 +236,17 @@ namespace MBC.Core.Game
 
         private void PlayerDead(IDNumber plr)
         {
-            Match.Teams[DeadTeam].Members.Add(plr);
+            Match.OLD_Teams[DeadTeam].Members.Add(plr);
         }
 
         private void PlayerInit(Event ev)
         {
-            Match.Teams[FFATeam].Members.Add(((MatchAddPlayerEvent)ev).PlayerID);
+            Match.OLD_Teams[FFATeam].Members.Add(((MatchAddPlayerEvent)ev).PlayerID);
         }
 
         private void PlayerLose(IDNumber plr)
         {
-            Match.Teams[DeadTeam].Members.Add(plr);
+            Match.OLD_Teams[DeadTeam].Members.Add(plr);
             turns.Remove(plr);
             ApplyEvent(new PlayerLostEvent(plr));
             try

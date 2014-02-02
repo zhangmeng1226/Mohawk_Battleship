@@ -61,20 +61,20 @@ namespace MBC.Core.Game
         }
 
         [Obsolete]
+        public IDictionary<IDNumber, Team> OLD_Teams
+        {
+            get
+            {
+                return teams_old;
+            }
+        }
+
+        [Obsolete]
         public IDictionary<IDNumber, Register> Registers
         {
             get
             {
                 return registers;
-            }
-        }
-
-        [Obsolete]
-        public IDictionary<IDNumber, Team> Teams
-        {
-            get
-            {
-                return teams_old;
             }
         }
 

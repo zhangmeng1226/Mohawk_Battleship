@@ -125,7 +125,7 @@ namespace MBC.Core.Game
             {
                 throw new ArgumentException("Controller ID number " + ctrl + " does not exist in the current match.");
             }
-            if (!Teams.ContainsKey(team))
+            if (!OLD_Teams.ContainsKey(team))
             {
                 throw new ArgumentException("Team ID number " + team + " does not exist in the current match.");
             }
@@ -138,7 +138,7 @@ namespace MBC.Core.Game
             {
                 throw new ArgumentException("Controller ID number " + ctrl + " does not exist in the current match.");
             }
-            if (!Teams.ContainsKey(team))
+            if (!OLD_Teams.ContainsKey(team))
             {
                 throw new ArgumentException("Team ID number " + team + " does not exist in the current match.");
             }
@@ -152,7 +152,7 @@ namespace MBC.Core.Game
 
         protected internal IDNumber GetTeam(string name, bool internalTeam)
         {
-            foreach (var team in Teams)
+            foreach (var team in OLD_Teams)
             {
                 if (team.Value.Name == name)
                 {
@@ -162,7 +162,7 @@ namespace MBC.Core.Game
             }
             for (int i = 0; i <= Teams.Count; i++)
             {
-                if (!Teams.ContainsKey(i))
+                if (!OLD_Teams.ContainsKey(i))
                 {
                     ApplyEvent(new MatchTeamCreateEvent(new Team(i, name, internalTeam)));
                     return i;
@@ -202,7 +202,7 @@ namespace MBC.Core.Game
                 foreach (var controller in controllers)
                 {
                     controller.Value.Teams = new Dictionary<IDNumber, Team>();
-                    foreach (var team in Teams)
+                    foreach (var team in OLD_Teams)
                     {
                         controller.Value.Teams.Add(team.Key, new Team(team.Value));
                     }
