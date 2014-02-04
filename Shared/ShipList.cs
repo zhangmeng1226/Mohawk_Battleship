@@ -161,9 +161,80 @@ namespace MBC.Shared
             }
         }
 
+        /// <summary>
+        /// Compares the equivalency of lengths of two collections of ships.
+        /// </summary>
+        /// <param name="ships1"></param>
+        /// <param name="ships2"></param>
+        /// <returns></returns>
         public static bool AreEquivalentLengths(IEnumerable<Ship> ships1, IEnumerable<Ship> ships2)
         {
-            return false;
+            Dictionary<int, int> shipLengths1 = ShipLengthCount(ships1), shiplengths2 = ShipLengthCount(ships2);
+            foreach (int length in shipLengths1.Keys)
+            {
+                if (!shiplengths2.ContainsKey(length) || shipLengths1[length] != shiplengths2[length])
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// Checks if all of the ships in a collection are placed.
+        /// </summary>
+        /// <param name="ships"></param>
+        /// <returns></returns>
+        public static bool AreShipsPlaced(IEnumerable<Ship> ships)
+        {
+            foreach (var ship in ships)
+            {
+                if (!ship.IsPlaced)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// Checks the placement
+        /// </summary>
+        /// <param name="ships"></param>
+        /// <param name="maxFieldSize"></param>
+        /// <returns></returns>
+        public static bool AreShipsValid(IEnumerable<Ship> ships, Coordinates maxFieldSize)
+        {
+            foreach (var ship in ships)
+            {
+                if (!ship.IsValid(maxFieldSize))
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// Generates a collection of ships that are conflicting with one another.
+        /// </summary>
+        /// <param name="ships"></param>
+        /// <returns></returns>
+        public static IEnumerable<Ship> GetConflictingShips(IEnumerable<Ship> ships)
+        {
+            var conflictingShips = new List<Ship>();
+            foreach (var ship in ships)
+            {
+                foreach (var ship2 in ships)
+                {
+                    if (ship != ship2 && ship.ConflictsWith(ship2))
+                    {
+                        conflictingShips.Add(ship);
+                        break;
+                    }
+                }
+            }
+            return conflictingShips;
         }
 
         /// <summary>
@@ -184,10 +255,15 @@ namespace MBC.Shared
             return null;
         }
 
+        /// <summary>
+        /// Generates a map of the lengths of ships there are and their counts.
+        /// </summary>
+        /// <param name="ships"></param>
+        /// <returns></returns>
         public static Dictionary<int, int> ShipLengthCount(IEnumerable<Ship> ships)
         {
-            Dictionary<int, int> lengthCount = new Dictionary<int, int>();
-            foreach (Ship ship in ships)
+            var lengthCount = new Dictionary<int, int>();
+            foreach (var ship in ships)
             {
                 lengthCount[ship.Length]++;
             }
@@ -201,8 +277,8 @@ namespace MBC.Shared
         /// <returns></returns>
         public static List<Ship> ShipsFromLengths(IEnumerable<int> lengths)
         {
-            List<Ship> ships = new List<Ship>();
-            foreach (int length in lengths)
+            var ships = new List<Ship>();
+            foreach (var length in lengths)
             {
                 ships.Add(new Ship(length));
             }

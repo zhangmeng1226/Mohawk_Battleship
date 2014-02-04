@@ -160,7 +160,7 @@ namespace MBC.Core.Game
                     return team.Key;
                 }
             }
-            for (int i = 0; i <= Teams.Count; i++)
+            for (int i = 0; i <= OLD_Teams.Count; i++)
             {
                 if (!OLD_Teams.ContainsKey(i))
                 {

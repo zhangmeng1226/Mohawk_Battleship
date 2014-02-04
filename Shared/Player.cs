@@ -49,6 +49,15 @@ namespace MBC.Shared
         }
 
         /// <summary>
+        /// Gets or sets the number of disqualifications this player accumulated.
+        /// </summary>
+        public int Disqualifications
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// Gets the id number of this player.
         /// </summary>
         public IDNumber ID

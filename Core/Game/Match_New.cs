@@ -22,6 +22,8 @@ namespace MBC.Core.Game
 
     public delegate void MatchRemovePlayerHandler(Match match, MatchRemovePlayerEvent ev);
 
+    public delegate void PlayerDisqualifiedHandler(Match match, PlayerDisqualifiedEvent ev);
+
     public delegate void PlayerLostHandler(Match match, PlayerLostEvent ev);
 
     public delegate void PlayerMessageHandler(Match match, PlayerMessageEvent ev);
@@ -110,6 +112,11 @@ namespace MBC.Core.Game
         /// Called when a player is added to the match.
         /// </summary>
         public event MatchAddPlayerHandler OnPlayerAdd;
+
+        /// <summary>
+        /// Called when a player is disqualified for some reason.
+        /// </summary>
+        public event PlayerDisqualifiedHandler OnPlayerDisqualified;
 
         /// <summary>
         /// Called when a players loses during the match.
@@ -361,6 +368,28 @@ namespace MBC.Core.Game
         }
 
         /// <summary>
+        /// Signals a disqualification event against a player for a specific reason.
+        /// </summary>
+        /// <param name="plr"></param>
+        /// <param name="reason"></param>
+        /// <returns></returns>
+        public virtual bool PlayerDisqualified(Player plr, string reason)
+        {
+            if (players.Contains(plr))
+            {
+                plr.Disqualifications++;
+                PlayerDisqualifiedEvent ev = new PlayerDisqualifiedEvent(plr, reason);
+                AppendEvent(ev);
+                if (OnPlayerDisqualified != null)
+                {
+                    OnPlayerDisqualified(this, ev);
+                }
+                return true;
+            }
+            return false;
+        }
+
+        /// <summary>
         /// Marks a player as a loser in the current round and increases their losing score.
         /// Player must be active in order to lose, otherwise this method returns false.
         /// </summary>
@@ -492,6 +521,19 @@ namespace MBC.Core.Game
         }
 
         /// <summary>
+        /// Checks if a player's ship are placed, and are valid within the parameters of the match.
+        /// </summary>
+        /// <param name="player"></param>
+        /// <returns></returns>
+        public bool ShipsValid(Player player)
+        {
+            return player.Ships != null &&
+                ShipList.AreEquivalentLengths(player.Ships, StartingShips) &&
+                ShipList.AreShipsValid(player.Ships, FieldSize) &&
+                ShipList.GetConflictingShips(player.Ships).Count() == 0;
+        }
+
+        /// <summary>
         /// Stops progression of the match.
         /// </summary>
         public virtual void Stop()
@@ -540,8 +582,9 @@ namespace MBC.Core.Game
             }
         }
 
-        protected virtual void PlayLogic()
+        protected virtual bool PlayLogic()
         {
+            return false;
         }
 
         /// <summary>
@@ -617,21 +660,6 @@ namespace MBC.Core.Game
                 OnParamChange(this, new MatchConfigChangedEvent());
             }
             OnParamChange(this, new MatchConfigChangedEvent());
-        }
-
-        /// <summary>
-        /// Called when a player in the match has had a property changed.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void PlayerPropertyChange(object sender, PropertyChangedEventArgs e)
-        {
-            var player = sender as Player;
-            switch (e.PropertyName)
-            {
-                case Player.PROPERTY_TEAM:
-                    break;
-            }
         }
     }
 }

@@ -58,6 +58,7 @@
     <Compile Include="FieldInfo.cs" />
     <Compile Include="IController.cs" />
     <Compile Include="IDNumber.cs" />
+    <Compile Include="CollectionUtils.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Register.cs" />
     <Compile Include="MatchConfig.cs" />

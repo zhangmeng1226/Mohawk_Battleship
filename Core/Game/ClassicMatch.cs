@@ -1,4 +1,5 @@
-﻿using MBC.Core.Util;
+﻿using MBC.Core.Threading;
+using MBC.Core.Util;
 using MBC.Shared;
 using System;
 using System.Collections.Generic;
@@ -12,6 +13,11 @@ namespace MBC.Core.Game
     /// </summary>
     public class ClassicMatch : Match
     {
+        private const string REASON_PLACEMENT = "The player controller placed an invalid ship formation.";
+        private const string REASON_TIMEOUT = "The player controller timed out.";
+        private List<Player> activePlayers;
+        private int currentIteration;
+
         /// <summary>
         /// Constructs a match with a specific configuration.
         /// </summary>
@@ -36,8 +42,17 @@ namespace MBC.Core.Game
         public enum Phase
         {
             Init,
+            NewRoundNotify,
             Placement,
             Turn
+        }
+
+        public IEnumerable<Player> ActivePlayers
+        {
+            get
+            {
+                return activePlayers;
+            }
         }
 
         /// <summary>
@@ -59,43 +74,130 @@ namespace MBC.Core.Game
         }
 
         /// <summary>
+        /// Adds a player to the match, and ensures that it is inactive until the next round.
+        /// </summary>
+        /// <param name="plr"></param>
+        /// <returns></returns>
+        public override bool AddPlayer(Player plr)
+        {
+            plr.Active = false;
+            return base.AddPlayer(plr);
+        }
+
+        /// <summary>
+        /// Switches the current player to the next player in the iteration.
+        /// </summary>
+        /// <returns></returns>
+        public bool SwitchNextPlayer()
+        {
+            if (activePlayers.Count > 0)
+            {
+                if (CurrentPlayer == activePlayers[currentIteration])
+                {
+                    currentIteration = ++currentIteration % activePlayers.Count;
+                }
+                CurrentPlayer = activePlayers[currentIteration];
+                return true;
+            }
+            return false;
+        }
+
+        /// <summary>
         /// Plays through the current state of the match, in one iteration.
         /// </summary>
-        protected override void PlayLogic()
+        protected override bool PlayLogic()
         {
-            switch (CurrentPhase)
+            try
             {
-                case Phase.Init:
-                    Initialization();
-                    break;
+                switch (CurrentPhase)
+                {
+                    case Phase.Init:
+                        return Initialization();
 
-                case Phase.Placement:
-                    Placement();
-                    break;
+                    case Phase.NewRoundNotify:
+                        CurrentPlayer.Controller.NewRound();
+                        return SwitchNextPlayer();
 
-                case Phase.Turn:
-                    Turn();
-                    break;
+                    case Phase.Placement:
+                        return Placement();
+
+                    case Phase.Turn:
+                        return Turn();
+                }
+                return false;
+            }
+            catch (ControllerTimeoutException ex)
+            {
+                PlayerDisqualified(FindPlayerFromController(ex.Controller), REASON_TIMEOUT);
+                return SwitchNextPlayer();
             }
         }
 
-        private void Initialization()
+        /// <summary>
+        /// Finds the player with a specific controller interface.
+        /// </summary>
+        /// <param name="playerController"></param>
+        /// <returns></returns>
+        private Player FindPlayerFromController(IController playerController)
         {
-            foreach (Player plr in Players)
+            foreach (var player in Players)
+            {
+                if (player.Controller == playerController)
+                {
+                    return player;
+                }
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// The initialization phase.
+        /// </summary>
+        /// <returns></returns>
+        private bool Initialization()
+        {
+            if (Players.Count() < 2)
+            {
+                return false;
+            }
+            currentIteration = 0;
+            activePlayers = new List<Player>();
+            foreach (var plr in Players)
             {
                 plr.Active = true;
                 plr.Ships = StartingShips;
+                activePlayers.Add(plr);
             }
+            CollectionUtils.RandomizeList(activePlayers);
             CurrentPhase = Phase.Placement;
+            return SwitchNextPlayer();
         }
 
-        private void Placement()
+        /// <summary>
+        /// The ship placement phase for one iteration of a player.
+        /// </summary>
+        /// <returns></returns>
+        private bool Placement()
         {
-            CurrentPhase = Phase.Turn;
+            CurrentPlayer.Ships = CurrentPlayer.Controller.PlaceShips().ToList();
+            if (!ShipsValid(CurrentPlayer))
+            {
+                PlayerDisqualified(CurrentPlayer, REASON_PLACEMENT);
+            }
+            if (activePlayers.Count > 0 && ShipList.AreShipsPlaced(activePlayers[currentIteration + 1].Ships))
+            {
+                CurrentPhase = Phase.Turn;
+            }
+            return SwitchNextPlayer();
         }
 
-        private void Turn()
+        /// <summary>
+        /// The player shot phase for one iteration of a player.
+        /// </summary>
+        /// <returns></returns>
+        private bool Turn()
         {
+            return true;
         }
     }
 }
