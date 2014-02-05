@@ -15,6 +15,7 @@ namespace MBC.Core.Game
     {
         private const string REASON_PLACEMENT = "The player controller placed an invalid ship formation.";
         private const string REASON_TIMEOUT = "The player controller timed out.";
+        private const string REASON_SHOT = "The player controller made an invalid shot.";
         private List<Player> activePlayers;
         private int currentIteration;
 
@@ -43,7 +44,8 @@ namespace MBC.Core.Game
         {
             Init,
             Placement,
-            Turn
+            Turn,
+            End
         }
 
         public IEnumerable<Player> ActivePlayers
@@ -96,6 +98,10 @@ namespace MBC.Core.Game
                 return false;
             }
             plr.Active = false;
+            foreach (Player player in activePlayers)
+            {
+
+            }
             return base.PlayerDisqualified(plr, reason);
         }
 
@@ -117,8 +123,23 @@ namespace MBC.Core.Game
             }
             else if (activePlayers.Count == 1)
             {
-                activePlayers[0].Controller.RoundWon();
-                PlayerWin(activePlayers[0]);
+                CurrentPhase = Phase.End;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Logic that deals with ending the round due to the number of players reaching 1 or 0.
+        /// </summary>
+        /// <returns></returns>
+        private bool End()
+        {
+            if (activePlayers.Count == 1)
+            {
+                Player winner = activePlayers[0];
+                activePlayers.Clear();
+                winner.Controller.RoundWon();
+                PlayerWin(winner);
             }
             return false;
         }
@@ -140,6 +161,9 @@ namespace MBC.Core.Game
 
                     case Phase.Turn:
                         return Turn();
+
+                    case Phase.End:
+                        return End();
                 }
                 return false;
             }
@@ -235,8 +259,17 @@ namespace MBC.Core.Game
         /// <returns></returns>
         private bool Turn()
         {
-            var player = Players.ElementAt(0);
-            return true;
+            var shotMade = CurrentPlayer.Controller.MakeShot();
+            var shipHit = ShipList.GetShipAt(shotMade.ReceiverPlr.Ships, shotMade.Coordinates);
+            PlayerShot(CurrentPlayer, shotMade, shipHit);
+            if (!IsShotValid(shotMade))
+            {
+                PlayerDisqualified(CurrentPlayer, REASON_SHOT);
+                return SwitchNextPlayer();
+            }
+            shotMade.ReceiverPlr.Controller.OpponentShot(shotMade);
+
+            return SwitchNextPlayer();
         }
     }
 }

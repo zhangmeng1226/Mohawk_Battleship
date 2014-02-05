@@ -434,9 +434,20 @@ namespace MBC.Core.Game
         /// <param name="shot"></param>
         public virtual bool PlayerShot(Player plr, Shot shot)
         {
-            if (IsShotValid(shot))
+            return PlayerShot(plr, shot, null);
+        }
+
+        /// <summary>
+        /// Use when a player shoots and hits a ship.
+        /// </summary>
+        /// <param name="plr"></param>
+        /// <param name="shot"></param>
+        /// <param name="shipHit"></param>
+        /// <returns></returns>
+        public virtual bool PlayerShot(Player plr, Shot shot, Ship shipHit)
+        {
+            if (!players.Contains(plr))
             {
-                Ship shipHit = ShipList.GetShipAt(shot.ReceiverPlr.Ships, shot.Coordinates);
                 PlayerShotEvent ev = new PlayerShotEvent(plr, shot, shipHit);
                 AppendEvent(ev);
                 if (OnPlayerShot != null)
