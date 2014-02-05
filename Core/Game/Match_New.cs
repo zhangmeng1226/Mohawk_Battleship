@@ -411,6 +411,23 @@ namespace MBC.Core.Game
         }
 
         /// <summary>
+        /// Sets the ships that are assigned to a player.
+        /// </summary>
+        /// <param name="plr"></param>
+        /// <param name="ships"></param>
+        /// <returns></returns>
+        public virtual bool PlayerSetShips(Player plr, IList<Ship> ships)
+        {
+            if (players.Contains(plr))
+            {
+                plr.Ships = ships;
+
+                return true;
+            }
+            return false;
+        }
+
+        /// <summary>
         /// Use when a player shoots.
         /// </summary>
         /// <param name="plr"></param>

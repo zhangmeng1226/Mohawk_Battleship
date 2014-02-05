@@ -42,7 +42,6 @@ namespace MBC.Core.Game
         public enum Phase
         {
             Init,
-            NewRoundNotify,
             Placement,
             Turn
         }
@@ -85,12 +84,29 @@ namespace MBC.Core.Game
         }
 
         /// <summary>
-        /// Switches the current player to the next player in the iteration.
+        /// Disqualifies a player from the match and removes it from the active players list.
+        /// </summary>
+        /// <param name="plr"></param>
+        /// <param name="reason"></param>
+        /// <returns></returns>
+        public override bool PlayerDisqualified(Player plr, string reason)
+        {
+            if (!activePlayers.Remove(plr))
+            {
+                return false;
+            }
+            plr.Active = false;
+            return base.PlayerDisqualified(plr, reason);
+        }
+
+        /// <summary>
+        /// Switches the current player to the next player in the iteration. Returns true if the
+        /// round may continue, false if there is a winner, or no active players left.
         /// </summary>
         /// <returns></returns>
         public bool SwitchNextPlayer()
         {
-            if (activePlayers.Count > 0)
+            if (activePlayers.Count > 1)
             {
                 if (CurrentPlayer == activePlayers[currentIteration])
                 {
@@ -98,6 +114,11 @@ namespace MBC.Core.Game
                 }
                 CurrentPlayer = activePlayers[currentIteration];
                 return true;
+            }
+            else if (activePlayers.Count == 1)
+            {
+                activePlayers[0].Controller.RoundWon();
+                PlayerWin(activePlayers[0]);
             }
             return false;
         }
@@ -113,10 +134,6 @@ namespace MBC.Core.Game
                 {
                     case Phase.Init:
                         return Initialization();
-
-                    case Phase.NewRoundNotify:
-                        CurrentPlayer.Controller.NewRound();
-                        return SwitchNextPlayer();
 
                     case Phase.Placement:
                         return Placement();
@@ -164,9 +181,17 @@ namespace MBC.Core.Game
             activePlayers = new List<Player>();
             foreach (var plr in Players)
             {
-                plr.Active = true;
-                plr.Ships = StartingShips;
-                activePlayers.Add(plr);
+                try
+                {
+                    plr.Active = true;
+                    plr.Ships = StartingShips;
+                    activePlayers.Add(plr);
+                    plr.Controller.NewRound();
+                }
+                catch (ControllerTimeoutException ex)
+                {
+                    PlayerDisqualified(FindPlayerFromController(ex.Controller), REASON_TIMEOUT);
+                }
             }
             CollectionUtils.RandomizeList(activePlayers);
             CurrentPhase = Phase.Placement;
@@ -179,7 +204,20 @@ namespace MBC.Core.Game
         /// <returns></returns>
         private bool Placement()
         {
-            CurrentPlayer.Ships = CurrentPlayer.Controller.PlaceShips().ToList();
+            if (ShipList.AreShipsPlaced(CurrentPlayer.Ships))
+            {
+                CurrentPhase = Phase.Turn;
+                return true;
+            }
+            else
+            {
+                CurrentPlayer.Ships = CurrentPlayer.Controller.PlaceShips().ToList();
+
+                if (!ShipsValid(CurrentPlayer))
+                {
+                    PlayerDisqualified(CurrentPlayer, REASON_PLACEMENT);
+                }
+            }
             if (!ShipsValid(CurrentPlayer))
             {
                 PlayerDisqualified(CurrentPlayer, REASON_PLACEMENT);
@@ -197,6 +235,7 @@ namespace MBC.Core.Game
         /// <returns></returns>
         private bool Turn()
         {
+            var player = Players.ElementAt(0);
             return true;
         }
     }

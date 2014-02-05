@@ -60,6 +60,10 @@
       <Project>{a00f2d39-4bc0-4db9-a17a-2a1a9812bd20}</Project>
       <Name>Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Shared\Shared.csproj">
+      <Project>{51fd717f-5965-4c31-9bdd-051da693a729}</Project>
+      <Name>Shared</Name>
+    </ProjectReference>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
