@@ -19,6 +19,8 @@ namespace MBC.Shared
 
         private ShipOrientation orientation;
 
+        private bool[] shots;
+
         /// <summary>
         /// Copies an existing <see cref="Ship"/>.
         /// </summary>
@@ -69,7 +71,8 @@ namespace MBC.Shared
         }
 
         /// <summary>
-        /// Gets the length by number of cells occupied.
+        /// Gets the length by number of cells occupied. When set, sets the array of
+        /// shots made against this ship to the value.
         /// </summary>
         [XmlIgnore]
         public int Length
@@ -81,6 +84,7 @@ namespace MBC.Shared
             set
             {
                 length = value;
+                shots = new bool[length];
             }
         }
 
@@ -217,6 +221,37 @@ namespace MBC.Shared
             }
         }
 
+        /// <summary>
+        /// Checks whether the hit flag has been set at the specific coordinates.
+        /// </summary>
+        /// <param name="coords"></param>
+        /// <returns></returns>
+        public bool IsHitAt(Coordinates coords)
+        {
+            if (IsAt(coords))
+            {
+                switch (orientation)
+                {
+                    case ShipOrientation.Horizontal:
+                        return IsHitAt(location.X - coords.X);
+
+                    case ShipOrientation.Vertical:
+                        return IsHitAt(location.Y - coords.Y);
+                }
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Checks whether the hit flag has been set at the specific ship location index.
+        /// </summary>
+        /// <param name="idx"></param>
+        /// <returns></returns>
+        public bool IsHitAt(int idx)
+        {
+            return shots[idx];
+        }
+
         /// <summary>Checks if the given list of Coordinates completely occupy the cells this Ship occupies. This
         /// is used to determine if shots have sunk this Ship.</summary>
         /// <param name="shots">A list of Coordinates that represent shots made.</param>
@@ -282,6 +317,32 @@ namespace MBC.Shared
             Location = location;
             Orientation = orientation;
             IsPlaced = true;
+        }
+
+        public void SetShotHit(Coordinates coords, bool hit)
+        {
+            if (IsAt(coords))
+            {
+                switch (orientation)
+                {
+                    case ShipOrientation.Horizontal:
+                        SetShotHit(location.X - coords.X, hit);
+                        break;
+
+                    case ShipOrientation.Vertical:
+                        SetShotHit(location.Y - coords.Y, hit);
+                        break;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Sets the
+        /// </summary>
+        /// <param name="idx"></param>
+        /// <param name="hit"></param>
+        public void SetShotHit(int idx, bool hit)
+        {
         }
 
         /// <summary>

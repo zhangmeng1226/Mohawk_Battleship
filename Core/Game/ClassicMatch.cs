@@ -14,8 +14,8 @@ namespace MBC.Core.Game
     public class ClassicMatch : Match
     {
         private const string REASON_PLACEMENT = "The player controller placed an invalid ship formation.";
-        private const string REASON_TIMEOUT = "The player controller timed out.";
         private const string REASON_SHOT = "The player controller made an invalid shot.";
+        private const string REASON_TIMEOUT = "The player controller timed out.";
         private List<Player> activePlayers;
         private int currentIteration;
 
@@ -100,7 +100,6 @@ namespace MBC.Core.Game
             plr.Active = false;
             foreach (Player player in activePlayers)
             {
-
             }
             return base.PlayerDisqualified(plr, reason);
         }
@@ -124,22 +123,6 @@ namespace MBC.Core.Game
             else if (activePlayers.Count == 1)
             {
                 CurrentPhase = Phase.End;
-            }
-            return false;
-        }
-
-        /// <summary>
-        /// Logic that deals with ending the round due to the number of players reaching 1 or 0.
-        /// </summary>
-        /// <returns></returns>
-        private bool End()
-        {
-            if (activePlayers.Count == 1)
-            {
-                Player winner = activePlayers[0];
-                activePlayers.Clear();
-                winner.Controller.RoundWon();
-                PlayerWin(winner);
             }
             return false;
         }
@@ -172,6 +155,22 @@ namespace MBC.Core.Game
                 PlayerDisqualified(FindPlayerFromController(ex.Controller), REASON_TIMEOUT);
                 return SwitchNextPlayer();
             }
+        }
+
+        /// <summary>
+        /// Logic that deals with ending the round due to the number of players reaching 1 or 0.
+        /// </summary>
+        /// <returns></returns>
+        private bool End()
+        {
+            if (activePlayers.Count == 1)
+            {
+                Player winner = activePlayers[0];
+                activePlayers.Clear();
+                winner.Controller.RoundWon();
+                PlayerWin(winner);
+            }
+            return false;
         }
 
         /// <summary>
@@ -268,6 +267,10 @@ namespace MBC.Core.Game
                 return SwitchNextPlayer();
             }
             shotMade.ReceiverPlr.Controller.OpponentShot(shotMade);
+
+            if (shipHit != null)
+            {
+            }
 
             return SwitchNextPlayer();
         }
