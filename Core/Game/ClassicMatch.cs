@@ -86,6 +86,33 @@ namespace MBC.Core.Game
         }
 
         /// <summary>
+        /// Makes a player lose the round and removes them from the list of active players.
+        /// </summary>
+        /// <param name="plr"></param>
+        /// <returns></returns>
+        public override bool PlayerLost(Player plr)
+        {
+            if (!activePlayers.Remove(plr))
+            {
+                return false;
+            }
+            plr.Active = false;
+            plr.Controller.RoundLost();
+            foreach (Player activePlayer in activePlayers)
+            {
+                try
+                {
+                    activePlayer.Controller.OpponentDestroyed(plr.ID);
+                }
+                catch (ControllerTimeoutException ex)
+                {
+                    PlayerDisqualified(FindPlayerFromController(ex.Controller), REASON_TIMEOUT);
+                }
+            }
+            return base.PlayerLost(plr);
+        }
+
+        /// <summary>
         /// Disqualifies a player from the match and removes it from the active players list.
         /// </summary>
         /// <param name="plr"></param>
@@ -100,6 +127,14 @@ namespace MBC.Core.Game
             plr.Active = false;
             foreach (Player player in activePlayers)
             {
+                try
+                {
+                    player.Controller.OpponentDestroyed(plr.ID);
+                }
+                catch (ControllerTimeoutException ex)
+                {
+                    PlayerDisqualified(FindPlayerFromController(ex.Controller), REASON_TIMEOUT);
+                }
             }
             return base.PlayerDisqualified(plr, reason);
         }
@@ -268,10 +303,25 @@ namespace MBC.Core.Game
             }
             shotMade.ReceiverPlr.Controller.OpponentShot(shotMade);
 
+            shipHit.SetShotHit(shotMade.Coordinates, true);
+
             if (shipHit != null)
             {
+                var sunk = shipHit.IsSunk();
+                CurrentPlayer.Controller.ShotHit(shotMade, sunk);
+                if (sunk)
+                {
+                    PlayerShipDestroyed(shotMade.ReceiverPlr, shipHit);
+                    if (shotMade.ReceiverPlr.Ships.All(ship => ship.IsSunk()))
+                    {
+                        PlayerLost(shotMade.ReceiverPlr);
+                    }
+                }
             }
-
+            else
+            {
+                CurrentPlayer.Controller.ShotMiss(shotMade);
+            }
             return SwitchNextPlayer();
         }
     }

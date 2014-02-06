@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Xml.Serialization;
 
@@ -267,6 +268,16 @@ namespace MBC.Shared
             }
 
             return true;
+        }
+
+        /// <summary>
+        /// Checks if the shot hits made against this ship via SetShotHit are all true, which
+        /// indicates a sunken ship.
+        /// </summary>
+        /// <returns></returns>
+        public bool IsSunk()
+        {
+            return shots.Where(hit => hit == true).Count() > 0;
         }
 
         /// <summary>
