@@ -191,6 +191,16 @@ namespace MBC.Core.Game
         public event TeamRemoveHandler OnTeamRemove;
 
         /// <summary>
+        /// Gets a boolean value indicating whether or not the match is at the end and cannot
+        /// progress further.
+        /// </summary>
+        public bool AtEnd
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
         /// Gets the current round in progress in the match.
         /// </summary>
         public int CurrentRound
@@ -215,6 +225,12 @@ namespace MBC.Core.Game
                 fieldSize = value;
                 NotifyParamsChanged();
             }
+        }
+
+        public bool IsRunning
+        {
+            get;
+            private set;
         }
 
         /// <summary>
@@ -365,6 +381,25 @@ namespace MBC.Core.Game
         /// </summary>
         public virtual void Play()
         {
+            if (!IsRunning)
+            {
+                IsRunning = true;
+                while (IsRunning && !AtEnd)
+                {
+                    var isRoundPlaying = PlayLogic();
+                    if ((!isRoundPlaying) && (NumberOfRounds - currentRound == 0))
+                    {
+                        MatchEnd();
+                        break;
+                    }
+                    else if (!isRoundPlaying)
+                    {
+                        EndRound();
+                        currentRound++;
+                        NewRound();
+                    }
+                }
+            }
         }
 
         /// <summary>
@@ -566,6 +601,7 @@ namespace MBC.Core.Game
         /// </summary>
         public virtual void Stop()
         {
+            IsRunning = false;
         }
 
         /// <summary>
@@ -661,6 +697,26 @@ namespace MBC.Core.Game
             {
                 OnRoundEnd(this, ev);
             }
+        }
+
+        /// <summary>
+        /// Called when the match ends.
+        /// </summary>
+        /// <returns></returns>
+        private bool MatchEnd()
+        {
+            if (!AtEnd)
+            {
+                AtEnd = true;
+                MatchEndEvent ev = new MatchEndEvent();
+                AppendEvent(ev);
+                if (OnMatchEnd != null)
+                {
+                    OnMatchEnd(this, ev);
+                }
+                return true;
+            }
+            return false;
         }
 
         /// <summary>
