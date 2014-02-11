@@ -10,16 +10,6 @@ namespace MBC.Core.Events
     public class MatchConfigChangedEvent : Event
     {
         /// <summary>
-        /// Deprecated. Do not use.
-        /// </summary>
-        /// <param name="config"></param>
-        [Obsolete("MatchConfig is deprecated. Match parameters located in the match object itself.")]
-        public MatchConfigChangedEvent(MatchConfig config)
-        {
-            Config = config;
-        }
-
-        /// <summary>
         /// Constructs this event.
         /// </summary>
         public MatchConfigChangedEvent()
@@ -34,16 +24,6 @@ namespace MBC.Core.Events
         public MatchConfigChangedEvent(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
-        }
-
-        /// <summary>
-        /// Deprecated. Do not use
-        /// </summary>
-        [Obsolete("MatchConfig is deprecated.")]
-        public MatchConfig Config
-        {
-            get;
-            private set;
         }
 
         /// <summary>

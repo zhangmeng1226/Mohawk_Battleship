@@ -53,7 +53,7 @@
     <Compile Include="Game\Active\GameLogic.cs" />
     <Compile Include="Game\ClassicMatch.cs" />
     <Compile Include="Game\Match.cs" />
-    <Compile Include="Game\Match_New.cs" />
+    <Compile Include="Game\MatchCore.cs" />
     <Compile Include="Threading\ThreadTimeoutAborter.cs" />
     <Compile Include="Controllers\TimedController.cs" />
     <Compile Include="Events\PlayerMessageEvent.cs" />

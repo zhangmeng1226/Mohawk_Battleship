@@ -10,19 +10,6 @@ namespace MBC.Core.Events
     public class PlayerShotEvent : PlayerEvent
     {
         /// <summary>
-        /// Passes the <paramref name="register"/> to the base constructor, stores the <paramref name="shot"/>,
-        /// and generates a <see cref="Event.Message"/>.
-        /// </summary>
-        /// <param name="register">A <see cref="Register"/> making the <paramref name="shot"/></param>
-        /// <param name="shot">The <see cref="Shot"/> made by the <paramref name="register"/>.</param>
-        [Obsolete("Old framework")]
-        public PlayerShotEvent(IDNumber shooter, Shot shot)
-            : base(shooter)
-        {
-            Shot = shot;
-        }
-
-        /// <summary>
         /// Constructs the event with the player who made the shot. No ship hit.
         /// </summary>
         /// <param name="player"></param>

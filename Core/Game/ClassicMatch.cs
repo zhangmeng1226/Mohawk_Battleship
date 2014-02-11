@@ -11,7 +11,7 @@ namespace MBC.Core.Game
     /// <summary>
     /// A type of match that uses the standard rules of battleship as logic.
     /// </summary>
-    public class ClassicMatch : Match
+    public class ClassicMatch : MatchCore
     {
         private const string REASON_PLACEMENT = "The player controller placed an invalid ship formation.";
         private const string REASON_SHOT = "The player controller made an invalid shot.";

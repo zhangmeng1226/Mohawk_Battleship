@@ -11,19 +11,6 @@ namespace MBC.Core.Events
     public class PlayerShipDestroyedEvent : PlayerEvent
     {
         /// <summary>
-        /// Deprecated. Constructs the event with the player ID who owns the destroyed ship.
-        /// </summary>
-        /// <param name="register">The <see cref="Register"/> that destroyed the <see cref="Ship"/>.</param>
-        /// <param name="shipOwner">The <see cref="Register"/> that owns the destroyed <see cref="Ship"/></param>
-        /// <param name="destroyedShip">The destroyed <see cref="Ship"/>.</param>
-        [Obsolete("Old framework")]
-        public PlayerShipDestroyedEvent(IDNumber owner, Ship destroyedShip)
-            : base(owner)
-        {
-            DestroyedShip = destroyedShip;
-        }
-
-        /// <summary>
         /// Constructs this event with the player who owns the destroyed ship.
         /// </summary>
         /// <param name="owner"></param>

@@ -14,14 +14,14 @@ namespace MBC.App.Terminal.Modules
 {
     public class CompetitionOptionsDisplay : TerminalModule
     {
-        private IController blue;
+        private ControllerSkeleton blue;
         private CheckboxControl dumpEventsCheck;
         private VerticalLayout layout;
         private NumericControl millisecondControl;
-        private IController red;
+        private ControllerSkeleton red;
         private NumericControl roundsNumberControl;
 
-        public CompetitionOptionsDisplay(IController red, IController blue)
+        public CompetitionOptionsDisplay(ControllerSkeleton red, ControllerSkeleton blue)
         {
             this.red = red;
             this.blue = blue;
@@ -65,9 +65,9 @@ namespace MBC.App.Terminal.Modules
         private bool ButtonConfirmEvent(string btn)
         {
             Configuration.Global.SetValue("mbc_match_rounds", roundsNumberControl.Value.ToString());
-            var match = new AllRoundsMatch();
-            match.AddController(red);
-            match.AddController(blue);
+            var match = new ClassicMatch();
+            match.AddPlayer(red);
+            match.AddPlayer(blue);
             CompetitionRun runner = new CompetitionRun(match, millisecondControl.Value, dumpEventsCheck.IsChecked);
             BattleshipConsole.AddModule(runner);
             BattleshipConsole.RemoveModule(this);

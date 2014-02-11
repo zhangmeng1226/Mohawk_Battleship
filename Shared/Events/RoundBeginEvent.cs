@@ -13,7 +13,7 @@ namespace MBC.Core.Events
         /// based on the <see cref="MBC.Shared.Register"/>s that are involved in it.
         /// </summary>
         /// <param name="round">The associated <see cref="GameLogic"/>.</param>
-        public RoundBeginEvent(int roundNumber)
+        public RoundBeginEvent(IDNumber roundNumber)
         {
             Round = roundNumber;
         }
@@ -31,7 +31,7 @@ namespace MBC.Core.Events
         /// <summary>
         /// Gets the round number.
         /// </summary>
-        public int Round
+        public IDNumber Round
         {
             get;
             private set;

@@ -12,22 +12,12 @@ namespace MBC.Core.Events
     public abstract class PlayerEvent : Event
     {
         /// <summary>
-        /// Do not use.
-        /// </summary>
-        /// <param name="plrID"></param>
-        [Obsolete("Old Framework")]
-        public PlayerEvent(IDNumber plrID)
-        {
-            PlayerObj = new Player(plrID, "placeholder");
-        }
-
-        /// <summary>
         /// Constructs this event with the given player.
         /// </summary>
         /// <param name="player"></param>
         public PlayerEvent(Player player)
         {
-            PlayerObj = player;
+            Player = player;
         }
 
         /// <summary>
@@ -41,21 +31,9 @@ namespace MBC.Core.Events
         }
 
         /// <summary>
-        /// Deprecated. Gets the ID number of the player in this event.
-        /// </summary>
-        [Obsolete("Get the player object and get the ID from there instead.")]
-        public IDNumber Player
-        {
-            get
-            {
-                return PlayerObj.ID;
-            }
-        }
-
-        /// <summary>
         /// Gets the player associated with this event.
         /// </summary>
-        public Player PlayerObj
+        public Player Player
         {
             get;
             private set;

@@ -1,29 +1,21 @@
-﻿using MBC.Core.Game;
-using MBC.Shared;
+﻿using MBC.Shared;
 using System;
 using System.Runtime.Serialization;
 
 namespace MBC.Core.Events
 {
     /// <summary>
-    /// Provides information about a <see cref="Match"/> that has begun.
+    /// Created during a match when a player is removed.
     /// </summary>
-    public class MatchBeginEvent : Event
+    public class MatchRemovePlayerEvent : Event
     {
         /// <summary>
-        /// Deprecated. Constructs this event.
+        /// Constructs this event with the player being removed.
         /// </summary>
-        /// <param name="matchID"></param>
-        [Obsolete("IDNumber is not necessary.")]
-        public MatchBeginEvent(IDNumber matchID)
+        /// <param name="player"></param>
+        public MatchRemovePlayerEvent(Player player)
         {
-        }
-
-        /// <summary>
-        /// Constructs this event
-        /// </summary>
-        public MatchBeginEvent()
-        {
+            Player = player;
         }
 
         /// <summary>
@@ -31,23 +23,22 @@ namespace MBC.Core.Events
         /// </summary>
         /// <param name="info"></param>
         /// <param name="context"></param>
-        public MatchBeginEvent(SerializationInfo info, StreamingContext context)
+        public MatchRemovePlayerEvent(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
         }
 
         /// <summary>
-        /// Deprecated. Returns null
+        /// Gets the player that has been removed.
         /// </summary>
-        [Obsolete("IDNumber is not necessary.")]
-        public IDNumber MatchID
+        public Player Player
         {
             get;
             private set;
         }
 
         /// <summary>
-        /// Gets the serialization data from the event.
+        /// Gets the serialization data from the event
         /// </summary>
         /// <param name="info"></param>
         /// <param name="context"></param>

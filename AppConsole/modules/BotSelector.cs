@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using MBC.App.Terminal.Controls;
+﻿using MBC.App.Terminal.Controls;
 using MBC.App.Terminal.Layouts;
 using MBC.Core;
 using MBC.Core.Util;
 using MBC.Shared;
 using MBC.Shared.Attributes;
+using System;
+using System.Collections.Generic;
 
 namespace MBC.App.Terminal.Modules
 {
@@ -70,17 +70,17 @@ namespace MBC.App.Terminal.Modules
 
         private bool SelectionConfirm(string btn)
         {
-            IController red = null, blue = null;
+            ControllerSkeleton red = null, blue = null;
             foreach (var bot in selectableBots)
             {
                 var botName = bot.GetAttribute<NameAttribute>().Name;
                 if (red == null && redGroup.GetSelected() == botName)
                 {
-                    red = bot.CreateInstance();
+                    red = bot;
                 }
                 if (blue == null && blueGroup.GetSelected() == botName)
                 {
-                    blue = bot.CreateInstance();
+                    blue = bot;
                 }
                 if (red != null && blue != null)
                 {

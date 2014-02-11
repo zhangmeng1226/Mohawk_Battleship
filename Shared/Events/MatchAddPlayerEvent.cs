@@ -5,25 +5,15 @@ using System.Runtime.Serialization;
 namespace MBC.Core.Events
 {
     /// <summary>
-    /// Created during a match when a player is removed.
+    /// Event created when a player has been added to a match.
     /// </summary>
-    public class MatchRemovePlayerEvent : Event
+    public class MatchAddPlayerEvent : Event
     {
         /// <summary>
-        /// Do not use.
-        /// </summary>
-        /// <param name="newPlayer"></param>
-        [Obsolete("Not enough information for this event.")]
-        public MatchRemovePlayerEvent(IDNumber newPlayer)
-        {
-            PlayerID = newPlayer;
-        }
-
-        /// <summary>
-        /// Constructs this event with the player being removed.
+        /// Constructs this event with the given player.
         /// </summary>
         /// <param name="player"></param>
-        public MatchRemovePlayerEvent(Player player)
+        public MatchAddPlayerEvent(Player player)
         {
             Player = player;
         }
@@ -33,13 +23,13 @@ namespace MBC.Core.Events
         /// </summary>
         /// <param name="info"></param>
         /// <param name="context"></param>
-        public MatchRemovePlayerEvent(SerializationInfo info, StreamingContext context)
+        public MatchAddPlayerEvent(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
         }
 
         /// <summary>
-        /// Gets the player that has been removed.
+        /// The player associated with this event.
         /// </summary>
         public Player Player
         {
@@ -48,16 +38,7 @@ namespace MBC.Core.Events
         }
 
         /// <summary>
-        /// Gets the ID number of the player.
-        /// </summary>
-        public IDNumber PlayerID
-        {
-            get;
-            private set;
-        }
-
-        /// <summary>
-        /// Gets the serialization data from the event
+        /// Gets serialization data from this event.
         /// </summary>
         /// <param name="info"></param>
         /// <param name="context"></param>

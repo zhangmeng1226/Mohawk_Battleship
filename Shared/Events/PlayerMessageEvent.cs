@@ -13,18 +13,6 @@ namespace MBC.Core.Events
     public class PlayerMessageEvent : PlayerEvent
     {
         /// <summary>
-        /// Deprecated. Constructs this event with the player ID and message it created.
-        /// </summary>
-        /// <param name="playerID"></param>
-        /// <param name="message"></param>
-        [Obsolete("Old framework")]
-        public PlayerMessageEvent(IDNumber playerID, string message)
-            : base(playerID)
-        {
-            Message = message;
-        }
-
-        /// <summary>
         /// Constructs this event with the player and message it created.
         /// </summary>
         /// <param name="player"></param>
@@ -49,16 +37,6 @@ namespace MBC.Core.Events
         /// Gets the message string that was generated from the player.
         /// </summary>
         public string Message
-        {
-            get;
-            private set;
-        }
-
-        /// <summary>
-        /// Deprecated. Gets the player ID that sent the message.
-        /// </summary>
-        [Obsolete("Use the player object directly instead.")]
-        public IDNumber PlayerID
         {
             get;
             private set;

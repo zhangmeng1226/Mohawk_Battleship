@@ -5,26 +5,16 @@ using System.Runtime.Serialization;
 namespace MBC.Core.Events
 {
     /// <summary>
-    /// Provides information about a <see cref="Register"/> that had lost a <see cref="GameLogic"/>.
+    /// Provides information about a <see cref="Register"/> that had won a <see cref="GameLogic"/>.
     /// </summary>
-    public class PlayerLostEvent : PlayerEvent
+    public class PlayerWonEvent : PlayerEvent
     {
         /// <summary>
-        /// Deprecated. Constructs the event with the player ID that lost.
+        /// Constructs the event with the player that won.
         /// </summary>
-        /// <param name="loser"></param>
-        [Obsolete("Old framework")]
-        public PlayerLostEvent(IDNumber loser)
-            : base(loser)
-        {
-        }
-
-        /// <summary>
-        /// Constructs the event with the player that lost.
-        /// </summary>
-        /// <param name="loser"></param>
-        public PlayerLostEvent(Player loser)
-            : base(loser)
+        /// <param name="player"></param>
+        public PlayerWonEvent(Player player)
+            : base(player)
         {
         }
 
@@ -33,7 +23,7 @@ namespace MBC.Core.Events
         /// </summary>
         /// <param name="info"></param>
         /// <param name="context"></param>
-        public PlayerLostEvent(SerializationInfo info, StreamingContext context)
+        public PlayerWonEvent(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
         }
