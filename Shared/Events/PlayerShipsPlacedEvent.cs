@@ -25,16 +25,6 @@ namespace MBC.Core.Events
         }
 
         /// <summary>
-        /// Constructs the event from serialization data.
-        /// </summary>
-        /// <param name="info"></param>
-        /// <param name="context"></param>
-        public PlayerShipsPlacedEvent(SerializationInfo info, StreamingContext context)
-            : base(info, context)
-        {
-        }
-
-        /// <summary>
         /// Gets a list of ships placed.
         /// </summary>
         public IList<Ship> ShipsList
@@ -43,16 +33,6 @@ namespace MBC.Core.Events
             {
                 return new List<Ship>(shipList);
             }
-        }
-
-        /// <summary>
-        /// Gets the serialization data from the event.
-        /// </summary>
-        /// <param name="info"></param>
-        /// <param name="context"></param>
-        public override void GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            base.GetObjectData(info, context);
         }
     }
 }

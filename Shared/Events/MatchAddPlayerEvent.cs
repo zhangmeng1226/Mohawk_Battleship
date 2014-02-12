@@ -19,32 +19,12 @@ namespace MBC.Core.Events
         }
 
         /// <summary>
-        /// Constructs this event from serialization data.
-        /// </summary>
-        /// <param name="info"></param>
-        /// <param name="context"></param>
-        public MatchAddPlayerEvent(SerializationInfo info, StreamingContext context)
-            : base(info, context)
-        {
-        }
-
-        /// <summary>
         /// The player associated with this event.
         /// </summary>
         public Player Player
         {
             get;
             private set;
-        }
-
-        /// <summary>
-        /// Gets serialization data from this event.
-        /// </summary>
-        /// <param name="info"></param>
-        /// <param name="context"></param>
-        public override void GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            base.GetObjectData(info, context);
         }
     }
 }

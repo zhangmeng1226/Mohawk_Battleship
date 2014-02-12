@@ -22,32 +22,12 @@ namespace MBC.Core.Events
         }
 
         /// <summary>
-        /// Constructs the event from serialization data.
-        /// </summary>
-        /// <param name="info"></param>
-        /// <param name="context"></param>
-        public PlayerShipDestroyedEvent(SerializationInfo info, StreamingContext context)
-            : base(info, context)
-        {
-        }
-
-        /// <summary>
         /// Gets the <see cref="Ship"/> that was destroyed.
         /// </summary>
         public Ship DestroyedShip
         {
             get;
             private set;
-        }
-
-        /// <summary>
-        /// Gets the serialization data from the event.
-        /// </summary>
-        /// <param name="info"></param>
-        /// <param name="context"></param>
-        public override void GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            base.GetObjectData(info, context);
         }
     }
 }

@@ -65,7 +65,7 @@ namespace MBC.Shared
         /// <summary>
         /// Called when the match begins. Called before any rounds begin.
         /// </summary>
-        public event MatchBeginHandler OnMatchBegin;
+        public event EventHandler<MatchBeginEvent> OnMatchBegin;
 
         /// <summary>
         /// Called when the match ends. Called after all rounds have ended and the

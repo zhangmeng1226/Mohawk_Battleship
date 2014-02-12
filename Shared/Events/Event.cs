@@ -16,12 +16,8 @@ namespace MBC.Core.Events
     /// <seealso cref="MatchEvent"/>
     /// <seealso cref="RoundEvent"/>
     /// <seealso cref="PlayerEvent"/>
-    public abstract class Event : ISerializable
+    public abstract class Event : EventArgs
     {
-        public Event(SerializationInfo info, StreamingContext context)
-        {
-        }
-
         protected Event()
         {
         }
@@ -30,10 +26,6 @@ namespace MBC.Core.Events
         {
             get;
             internal set;
-        }
-
-        public virtual void GetObjectData(SerializationInfo info, StreamingContext context)
-        {
         }
     }
 }

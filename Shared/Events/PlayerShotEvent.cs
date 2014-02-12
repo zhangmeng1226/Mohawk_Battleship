@@ -34,16 +34,6 @@ namespace MBC.Core.Events
         }
 
         /// <summary>
-        /// Constructs the event from serialization data.
-        /// </summary>
-        /// <param name="info"></param>
-        /// <param name="context"></param>
-        public PlayerShotEvent(SerializationInfo info, StreamingContext context)
-            : base(info, context)
-        {
-        }
-
-        /// <summary>
         /// Gets a value indicating if the shot hit a ship.
         /// </summary>
         public bool Hit
@@ -70,11 +60,6 @@ namespace MBC.Core.Events
         {
             get;
             private set;
-        }
-
-        public override void GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            base.GetObjectData(info, context);
         }
     }
 }

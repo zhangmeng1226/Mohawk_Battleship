@@ -19,32 +19,12 @@ namespace MBC.Core.Events
         }
 
         /// <summary>
-        /// Constructs the event from serialization data.
-        /// </summary>
-        /// <param name="info"></param>
-        /// <param name="context"></param>
-        public RoundBeginEvent(SerializationInfo info, StreamingContext context)
-            : base(info, context)
-        {
-        }
-
-        /// <summary>
         /// Gets the round number.
         /// </summary>
         public IDNumber Round
         {
             get;
             private set;
-        }
-
-        /// <summary>
-        /// Gets the serialization data from the event.
-        /// </summary>
-        /// <param name="info"></param>
-        /// <param name="context"></param>
-        public override void GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            base.GetObjectData(info, context);
         }
     }
 }

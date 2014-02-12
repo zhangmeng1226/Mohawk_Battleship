@@ -23,32 +23,12 @@ namespace MBC.Core.Events
         }
 
         /// <summary>
-        /// Constructs the event from serialization data.
-        /// </summary>
-        /// <param name="info"></param>
-        /// <param name="context"></param>
-        public PlayerTurnSwitchEvent(SerializationInfo info, StreamingContext context)
-            : base(info, context)
-        {
-        }
-
-        /// <summary>
         /// Gets the player who will have the next turn.
         /// </summary>
         public Player NextPlayer
         {
             get;
             private set;
-        }
-
-        /// <summary>
-        /// Gets the serialization data from the event
-        /// </summary>
-        /// <param name="info"></param>
-        /// <param name="context"></param>
-        public override void GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            base.GetObjectData(info, context);
         }
     }
 }
