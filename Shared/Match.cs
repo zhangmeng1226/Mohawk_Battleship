@@ -49,19 +49,6 @@ namespace MBC.Shared
     /// </summary>
     public class Match
     {
-        protected int currentRound;
-        protected List<Event> events;
-        protected Coordinates fieldSize;
-        protected List<GameMode> gameModes;
-        protected Stopwatch gameTimer;
-        protected int numberOfRounds;
-        protected HashSet<Player> players;
-        protected Random randObj;
-        protected RoundMode rndBehavior;
-        protected List<Ship> startingShips;
-        protected HashSet<Team> teams;
-        protected int timeLimit;
-
         /// <summary>
         /// Called when the match begins. Called before any rounds begin.
         /// </summary>
@@ -167,7 +154,7 @@ namespace MBC.Shared
         public bool AtEnd
         {
             get;
-            private set;
+            protected set;
         }
 
         /// <summary>
@@ -175,10 +162,17 @@ namespace MBC.Shared
         /// </summary>
         public int CurrentRound
         {
-            get
-            {
-                return currentRound;
-            }
+            get;
+            protected set;
+        }
+
+        /// <summary>
+        /// Gets the events that have been generated within the match.
+        /// </summary>
+        public List<Event> Events
+        {
+            get;
+            protected set;
         }
 
         /// <summary>
@@ -186,21 +180,8 @@ namespace MBC.Shared
         /// </summary>
         public Coordinates FieldSize
         {
-            get
-            {
-                return fieldSize;
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the game mode of the match.
-        /// </summary>
-        public List<GameMode> Modes
-        {
-            get
-            {
-                return gameModes;
-            }
+            get;
+            protected set;
         }
 
         /// <summary>
@@ -208,21 +189,26 @@ namespace MBC.Shared
         /// </summary>
         public int NumberOfRounds
         {
-            get
-            {
-                return numberOfRounds;
-            }
+            get;
+            protected set;
         }
 
         /// <summary>
         /// Gets the players involved with the match.
         /// </summary>
-        public IEnumerable<Player> Players
+        public HashSet<Player> Players
         {
-            get
-            {
-                return players;
-            }
+            get;
+            protected set;
+        }
+
+        /// <summary>
+        /// Gets the random number generator available to the match.
+        /// </summary>
+        public Random Random
+        {
+            get;
+            protected set;
         }
 
         /// <summary>
@@ -230,38 +216,27 @@ namespace MBC.Shared
         /// </summary>
         public RoundMode RoundMode
         {
-            get
-            {
-                return rndBehavior;
-            }
+            get;
+            protected set;
         }
 
         /// <summary>
         /// Gets a generated list of ships that define the ships that are to be placed at the
         /// start of a round.
         /// </summary>
-        public IList<Ship> StartingShips
+        public HashSet<Ship> StartingShips
         {
-            get
-            {
-                List<Ship> ships = new List<Ship>();
-                foreach (Ship ship in startingShips)
-                {
-                    ships.Add(new Ship(ship));
-                }
-                return ships;
-            }
+            get;
+            protected set;
         }
 
         /// <summary>
         /// Gets the teams that exist within the match.
         /// </summary>
-        public IEnumerable<Team> Teams
+        public HashSet<Team> Teams
         {
-            get
-            {
-                return teams;
-            }
+            get;
+            protected set;
         }
 
         /// <summary>
@@ -269,10 +244,8 @@ namespace MBC.Shared
         /// </summary>
         public int TimeLimit
         {
-            get
-            {
-                return timeLimit;
-            }
+            get;
+            protected set;
         }
 
         /// <summary>
@@ -632,16 +605,6 @@ namespace MBC.Shared
                 return true;
             }
             return false;
-        }
-
-        /// <summary>
-        /// Appends an event to the list of events of the match, with a proper timestamp.
-        /// </summary>
-        /// <param name="ev"></param>
-        private void AppendEvent(Event ev)
-        {
-            events.Add(ev);
-            ev.Millis = (int)(DateTime.Now.Subtract(new DateTime(1970, 1, 1, 0, 0, 0)).TotalMilliseconds - gameTimer.ElapsedMilliseconds);
         }
     }
 }
