@@ -275,9 +275,9 @@ namespace MBC.Shared
         /// </summary>
         /// <param name="lengths"></param>
         /// <returns></returns>
-        public static List<Ship> ShipsFromLengths(IEnumerable<int> lengths)
+        public static HashSet<Ship> ShipsFromLengths(IEnumerable<int> lengths)
         {
-            var ships = new List<Ship>();
+            var ships = new HashSet<Ship>();
             foreach (var length in lengths)
             {
                 ships.Add(new Ship(length));
