@@ -1,5 +1,4 @@
-﻿using MBC.Core.Game;
-using System.Runtime.Serialization;
+﻿using System.Runtime.Serialization;
 
 namespace MBC.Core.Events
 {

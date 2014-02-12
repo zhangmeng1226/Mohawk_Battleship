@@ -1,5 +1,4 @@
-﻿using MBC.Core.Game;
-using MBC.Shared;
+﻿using MBC.Shared;
 using System;
 using System.Runtime.Serialization;
 
