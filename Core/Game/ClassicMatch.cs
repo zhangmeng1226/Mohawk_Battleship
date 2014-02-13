@@ -271,12 +271,12 @@ namespace MBC.Core.Game
             {
                 CurrentPlayer.Ships = CurrentPlayer.Controller.PlaceShips().ToList();
 
-                if (!ShipsValid(CurrentPlayer))
+                if (!AreShipsValid(CurrentPlayer))
                 {
                     PlayerDisqualified(CurrentPlayer, REASON_PLACEMENT);
                 }
             }
-            if (!ShipsValid(CurrentPlayer))
+            if (!AreShipsValid(CurrentPlayer))
             {
                 PlayerDisqualified(CurrentPlayer, REASON_PLACEMENT);
             }

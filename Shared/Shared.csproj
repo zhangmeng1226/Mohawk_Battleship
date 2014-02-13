@@ -56,10 +56,8 @@
     <Compile Include="dep\ControllerRegister.cs" />
     <Compile Include="dep\MatchInfo.cs" />
     <Compile Include="Events\Event.cs" />
-    <Compile Include="Events\EventDriver.cs" />
     <Compile Include="Events\MatchAddPlayerEvent.cs" />
     <Compile Include="Events\MatchBeginEvent.cs" />
-    <Compile Include="Events\MatchConfigChangedEvent.cs" />
     <Compile Include="Events\MatchEndEvent.cs" />
     <Compile Include="Events\MatchRemovePlayerEvent.cs" />
     <Compile Include="Events\MatchTeamRemoveEvent.cs" />
@@ -76,7 +74,6 @@
     <Compile Include="Events\PlayerWonEvent.cs" />
     <Compile Include="Events\RoundBeginEvent.cs" />
     <Compile Include="Events\RoundEndEvent.cs" />
-    <Compile Include="Events\StateSave.cs" />
     <Compile Include="FieldInfo.cs" />
     <Compile Include="IController.cs" />
     <Compile Include="IController2.cs" />

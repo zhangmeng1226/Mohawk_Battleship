@@ -310,19 +310,19 @@ namespace MBC.Core.Game
             IsRunning = false;
         }
 
-        protected virtual bool PlayLogic()
-        {
-            return false;
-        }
-
         /// <summary>
         /// Appends an event to the list of events of the match, with a proper timestamp.
         /// </summary>
         /// <param name="ev"></param>
-        private void AppendEvent(Event ev)
+        protected virtual void AppendEvent(Event ev)
         {
-            Events.Add(ev);
-            ev.Millis = (int)(DateTime.Now.Subtract(new DateTime(1970, 1, 1, 0, 0, 0)).TotalMilliseconds - gameTimer.ElapsedMilliseconds);
+            ev.Millis = (int)(gameTimer.ElapsedMilliseconds);
+            base.AppendEvent(ev);
+        }
+
+        protected virtual bool PlayLogic()
+        {
+            return false;
         }
 
         /// <summary>
@@ -336,8 +336,6 @@ namespace MBC.Core.Game
 
             StartingShips = ShipList.ShipsFromLengths(conf.GetList<int>("mbc_ship_sizes"));
             TimeLimit = conf.GetValue<int>("mbc_player_timeout");
-
-            GameModes = conf.GetList<GameMode>("mbc_game_mode");
         }
 
         /// <summary>
@@ -347,7 +345,7 @@ namespace MBC.Core.Game
         private int FindFirstEmptyPlayerID()
         {
             var numberSet = new HashSet<int>();
-            foreach (var plr in players)
+            foreach (var plr in Players)
             {
                 numberSet.Add(plr.ID);
             }
