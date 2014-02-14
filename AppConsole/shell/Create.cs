@@ -1,8 +1,9 @@
 ﻿using MBC.Core;
 using MBC.Core.Controllers;
-using MBC.Core.Events;
 using MBC.Core.Game;
 using MBC.Core.Util;
+using MBC.Shared;
+using MBC.Shared.Events;
 using System;
 using System.Collections.Generic;
 
@@ -54,9 +55,8 @@ namespace MBC.App.BattleshipConsole
             }
             try
             {
-                var newMatch = new AllRoundsMatch();
+                var newMatch = new MatchCore();
                 MatchRun.CurrentMatch = newMatch;
-                MatchRun.CurrentMatch.AddEventAction(typeof(Event), EventOutput.EventGenerated);
 
                 if (Configuration.Global.GetValue<bool>("mbc_console_create_events"))
                 {
@@ -69,7 +69,7 @@ namespace MBC.App.BattleshipConsole
                 Console.WriteLine("Match created with:");
                 foreach (var controller in playControllers)
                 {
-                    newMatch.AddController(new TimedController(controller.CreateInstance()));
+                    newMatch.AddPlayer(controller);
                     Console.WriteLine(controller);
                 }
             }

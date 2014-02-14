@@ -1,5 +1,6 @@
 ﻿using MBC.Core.Game;
 using MBC.Core.Util;
+using MBC.Shared;
 using System;
 
 namespace MBC.App.BattleshipConsole
@@ -13,7 +14,7 @@ namespace MBC.App.BattleshipConsole
         /// <summary>
         /// Gets or sets <see cref="Match"/> that is currently being used in the application.
         /// </summary>
-        public static Match CurrentMatch { get; set; }
+        public static MatchCore CurrentMatch { get; set; }
 
         /// <summary>
         /// Begins running the <see cref="MatchRun.CurrentMatch"/> continuously until it ends, or

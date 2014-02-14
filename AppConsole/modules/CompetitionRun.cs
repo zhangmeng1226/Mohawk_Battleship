@@ -1,10 +1,10 @@
 ﻿using MBC.App.Terminal.Layouts;
 using MBC.App.Terminal.Modules;
 using MBC.Core;
-using MBC.Core.Events;
 using MBC.Core.Game;
 using MBC.Core.Threading;
 using MBC.Shared;
+using MBC.Shared.Events;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -16,14 +16,14 @@ namespace MBC.App.Terminal.Modules
 {
     public class CompetitionRun : TerminalModule
     {
-        private Match competition;
+        private MatchCore competition;
         private string currentEventString;
         private StreamWriter fileWriter;
         private int millisDelay;
         private int roundsRun;
         private int turns;
 
-        public CompetitionRun(Match comp, int delay, bool eventsToFile)
+        public CompetitionRun(MatchCore comp, int delay, bool eventsToFile)
         {
             turns = 0;
             roundsRun = 0;
@@ -35,11 +35,12 @@ namespace MBC.App.Terminal.Modules
             comp.OnPlayerShot += PlayerShot;
             comp.OnPlayerTurnSwitch += RoundTurn;
             comp.OnPlayerShipDestruction += ShipDestroyed;
+            /*
             if (eventsToFile)
             {
                 fileWriter = new StreamWriter(Environment.CurrentDirectory + "\\..\\match_" + competition.ID + ".txt");
                 fileWriter.WriteLine("START OF MATCH " + competition.ID);
-            }
+            }*/
         }
 
         public void Begin()
@@ -61,7 +62,7 @@ namespace MBC.App.Terminal.Modules
             fileWriter.WriteLine(currentEventString);
         }
 
-        private void MatchEnd(Match match, MatchEndEvent ev)
+        private void MatchEnd(object match, MatchEndEvent ev)
         {
             BattleshipConsole.RemoveModule(this);
             BattleshipConsole.AddModule(new ResultDisplay(competition));
@@ -72,12 +73,12 @@ namespace MBC.App.Terminal.Modules
             }
         }
 
-        private void PlayerShot(Match match, PlayerShotEvent ev)
+        private void PlayerShot(object match, PlayerShotEvent ev)
         {
             if (ev.Hit)
             {
                 currentEventString = string.Format("{0} hit {1}'s ship ({2}) at {3}",
-                    ev.PlayerObj,
+                    ev.Player,
                     ev.Shot.ReceiverPlr,
                     ShipList.GetShipAt(ev.Shot.ReceiverPlr.Ships, ev.Shot.Coordinates),
                     ev.Shot.Coordinates);
@@ -85,14 +86,14 @@ namespace MBC.App.Terminal.Modules
             else
             {
                 currentEventString = string.Format("{0} made a shot at {1} at coords {2}",
-                    ev.PlayerObj,
+                    ev.Player,
                     ev.Shot.ReceiverPlr,
                     ev.Shot.Coordinates);
             }
             WriteCurrentEvent();
         }
 
-        private void RoundEnd(Match match, RoundEndEvent ev)
+        private void RoundEnd(object match, RoundEndEvent ev)
         {
             turns = 0;
             roundsRun++;
@@ -100,16 +101,16 @@ namespace MBC.App.Terminal.Modules
             currentEventString = "!!!New round!!!";
         }
 
-        private void RoundTurn(Match match, PlayerTurnSwitchEvent ev)
+        private void RoundTurn(object match, PlayerTurnSwitchEvent ev)
         {
             turns++;
             WriteTurns();
         }
 
-        private void ShipDestroyed(Match match, PlayerShipDestroyedEvent ev)
+        private void ShipDestroyed(object match, PlayerShipDestroyedEvent ev)
         {
             currentEventString = string.Format("{0}'s ship ({1}) is destroyed",
-                ev.PlayerObj,
+                ev.Player,
                 ev.DestroyedShip);
             WriteCurrentEvent();
         }

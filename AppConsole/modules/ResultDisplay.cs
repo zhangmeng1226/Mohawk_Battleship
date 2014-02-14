@@ -1,8 +1,8 @@
 ﻿using MBC.App.Terminal.Controls;
 using MBC.App.Terminal.Layouts;
 using MBC.Core;
-using MBC.Core.Events;
 using MBC.Core.Game;
+using MBC.Shared.Events;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,9 +13,9 @@ namespace MBC.App.Terminal.Modules
     public class ResultDisplay : TerminalModule
     {
         private VerticalLayout buttonLayout;
-        private Match competition;
+        private MatchCore competition;
 
-        public ResultDisplay(Match comp)
+        public ResultDisplay(MatchCore comp)
         {
             competition = comp;
 
@@ -31,9 +31,9 @@ namespace MBC.App.Terminal.Modules
             WriteCenteredText("=====COMPETITION RESULTS=====");
             NewLine(2);
 
-            WriteCenteredText(string.Format("{0}                 vs.               {1}", competition.Registers[0].Name, competition.Registers[1].Name));
+            WriteCenteredText(string.Format("{0}                 vs.               {1}", competition.Players.First(), competition.Players.Last()));
             NewLine();
-            WriteCenteredText(string.Format("{0} wins                                  {1} wins", competition.Registers[0].Score, competition.Registers[1].Score));
+            WriteCenteredText(string.Format("{0} wins                                  {1} wins", competition.Players.First(), competition.Players.Last()));
 
             NewLine();
 
@@ -44,7 +44,7 @@ namespace MBC.App.Terminal.Modules
             Console.BackgroundColor = ConsoleColor.Black;
             Console.ForegroundColor = ConsoleColor.White;
 
-            WriteCenteredText(string.Format("{0} total games played", competition.CompiledConfig.NumberOfRounds));
+            WriteCenteredText(string.Format("{0} total games played", competition.NumberOfRounds));
             NewLine();
 
             var shotBots = new List<int>();
@@ -52,22 +52,23 @@ namespace MBC.App.Terminal.Modules
             shotBots.AddRange(new int[] { 0, 0 });
             hitBots.AddRange(new int[] { 0, 0 });
             Event lastEvent = null;
-            foreach (var ev in ((ActiveMatch)competition).Events.Events)
+            foreach (var ev in competition.Events)
             {
-                if (ev is PlayerShotEvent)
+                var shotEvent = ev as PlayerShotEvent;
+                if (shotEvent != null)
                 {
-                    shotBots[((PlayerShotEvent)ev).Player]++;
-                }
-                else if (ev is PlayerHitShipEvent)
-                {
-                    hitBots[((PlayerHitShipEvent)ev).Player]++;
+                    shotBots[shotEvent.Player.ID]++;
+                    if (shotEvent.ShipHit != null)
+                    {
+                        hitBots[shotEvent.Player.ID]++;
+                    }
                 }
                 lastEvent = ev;
             }
             for (int i = 0; i < 2; i++)
             {
-                shotBots[i] /= competition.CompiledConfig.NumberOfRounds;
-                hitBots[i] /= competition.CompiledConfig.NumberOfRounds;
+                shotBots[i] /= competition.NumberOfRounds;
+                hitBots[i] /= competition.NumberOfRounds;
             }
             WriteCenteredText(string.Format("{0}     shots on average     {1}", shotBots[0], shotBots[1]));
             NewLine();

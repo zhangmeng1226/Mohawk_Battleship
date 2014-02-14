@@ -11,14 +11,14 @@ namespace MBC.Shared.Events
     /// </summary>
     public class PlayerShipsPlacedEvent : PlayerEvent
     {
-        private IList<Ship> shipList;
+        private ISet<Ship> shipList;
 
         /// <summary>
         /// Constructs the event with the player that placed ships.
         /// </summary>
         /// <param name="player"></param>
         /// <param name="newShips"></param>
-        public PlayerShipsPlacedEvent(Player player, IList<Ship> newShips)
+        public PlayerShipsPlacedEvent(Player player, ISet<Ship> newShips)
             : base(player)
         {
             shipList = newShips;
@@ -27,11 +27,11 @@ namespace MBC.Shared.Events
         /// <summary>
         /// Gets a list of ships placed.
         /// </summary>
-        public IList<Ship> ShipsList
+        public ISet<Ship> ShipsList
         {
             get
             {
-                return new List<Ship>(shipList);
+                return new HashSet<Ship>(shipList);
             }
         }
 

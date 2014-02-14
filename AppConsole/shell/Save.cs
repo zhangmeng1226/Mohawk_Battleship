@@ -1,5 +1,5 @@
-﻿using System;
-using MBC.Core.Util;
+﻿using MBC.Core.Util;
+using System;
 
 namespace MBC.App.BattleshipConsole
 {
@@ -27,8 +27,8 @@ namespace MBC.App.BattleshipConsole
         public static void Match(int idx, params string[] param)
         {
             var fileName = param[idx++];
-            MatchRun.CurrentMatch.SaveToFile(fileName);
-            Console.WriteLine("Saved the current match as " + fileName);
+            //MatchRun.CurrentMatch.SaveToFile(fileName);
+            //Console.WriteLine("Saved the current match as " + fileName);
         }
     }
 }

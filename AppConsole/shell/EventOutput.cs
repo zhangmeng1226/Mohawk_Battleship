@@ -1,6 +1,6 @@
-﻿using System;
+﻿using MBC.Shared.Events;
+using System;
 using System.Collections.Generic;
-using MBC.Core.Events;
 
 namespace MBC.App.BattleshipConsole
 {

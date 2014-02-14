@@ -275,7 +275,7 @@ namespace MBC.Core.Game
             }
             else
             {
-                CurrentPlayer.Ships = CurrentPlayer.Controller.PlaceShips().ToList();
+                CurrentPlayer.Ships = new HashSet<Ship>(CurrentPlayer.Controller.PlaceShips().ToList());
 
                 if (!AreShipsValid(CurrentPlayer))
                 {

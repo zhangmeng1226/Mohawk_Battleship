@@ -33,6 +33,11 @@ namespace MBC.Core.Game
             ApplyParameters(config);
         }
 
+        public MatchCore()
+            : this(Configuration.Global)
+        {
+        }
+
         public int CurrentEvent
         {
             get;
@@ -97,6 +102,11 @@ namespace MBC.Core.Game
         public virtual bool EndRound()
         {
             return AppendEvent(new RoundEndEvent(this, CurrentRound));
+        }
+
+        public bool IsShotValid(Shot shot)
+        {
+            return false;
         }
 
         /// <summary>
@@ -166,7 +176,7 @@ namespace MBC.Core.Game
         /// <param name="plr"></param>
         /// <param name="ships"></param>
         /// <returns></returns>
-        public virtual bool PlacePlayerShips(Player plr, IList<Ship> ships)
+        public virtual bool PlacePlayerShips(Player plr, ISet<Ship> ships)
         {
             return AppendEvent(new PlayerShipsPlacedEvent(plr, ships));
         }
@@ -199,6 +209,11 @@ namespace MBC.Core.Game
                     }
                 }
             }
+        }
+
+        public virtual bool PlayerShipDestroyed(Player plr, Ship destroyedShip)
+        {
+            return false;
         }
 
         public bool PlayToEvent(int eventIdx)
@@ -302,11 +317,20 @@ namespace MBC.Core.Game
             return AppendEvent(new PlayerDisqualifiedEvent(plr, reason));
         }
 
+        /// <summary>
+        /// Must be overriden by the sub class that provides round functionality.
+        /// </summary>
+        /// <returns></returns>
         protected virtual bool PlayLogic()
         {
             return false;
         }
 
+        /// <summary>
+        /// Moves the current event index to the last event, and applies the given event.
+        /// </summary>
+        /// <param name="ev"></param>
+        /// <returns></returns>
         private bool AppendEvent(Event ev)
         {
             if (PlayToLastEvent() && ev.ApplyForward())
