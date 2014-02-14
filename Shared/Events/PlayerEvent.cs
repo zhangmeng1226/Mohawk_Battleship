@@ -2,7 +2,7 @@
 using System;
 using System.Runtime.Serialization;
 
-namespace MBC.Core.Events
+namespace MBC.Shared.Events
 {
     /// <summary>
     /// The base class for a series of <see cref="Event"/>s that provide information on the actions

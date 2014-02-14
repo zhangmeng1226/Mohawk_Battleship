@@ -1,8 +1,9 @@
 ﻿using MBC.Shared;
 using System;
+using System.Linq;
 using System.Runtime.Serialization;
 
-namespace MBC.Core.Events
+namespace MBC.Shared.Events
 {
     /// <summary>
     /// Provides information about a <see cref="Shot"/> that was made by a <see cref="Register"/>.
@@ -60,6 +61,22 @@ namespace MBC.Core.Events
         {
             get;
             private set;
+        }
+
+        public override bool ApplyBackward()
+        {
+            if (Player.ShotsMade.Last() == Shot)
+            {
+                Player.ShotsMade.Remove(Player.ShotsMade.Last());
+                return true;
+            }
+            return false;
+        }
+
+        public override bool ApplyForward()
+        {
+            Player.ShotsMade.Add(Shot);
+            return true;
         }
     }
 }

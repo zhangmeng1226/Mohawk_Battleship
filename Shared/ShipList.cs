@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace MBC.Shared
 {
@@ -212,7 +213,7 @@ namespace MBC.Shared
                     return false;
                 }
             }
-            return true;
+            return GetConflictingShips(ships).Count() == 0;
         }
 
         /// <summary>

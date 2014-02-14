@@ -96,7 +96,7 @@ namespace MBC.Shared
         /// <summary>
         /// Gets the list of ships this player currently has.
         /// </summary>
-        public IList<Ship> Ships
+        public ISet<Ship> Ships
         {
             get;
             set;
@@ -115,6 +115,12 @@ namespace MBC.Shared
         /// Gets or sets the number of shot misses
         /// </summary>
         public int ShotMisses
+        {
+            get;
+            set;
+        }
+
+        public IList<Shot> ShotsMade
         {
             get;
             set;

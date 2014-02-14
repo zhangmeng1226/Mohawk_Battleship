@@ -1,19 +1,20 @@
 ﻿using MBC.Shared;
 using System.Runtime.Serialization;
 
-namespace MBC.Core.Events
+namespace MBC.Shared.Events
 {
     /// <summary>
     /// Provides information about a <see cref="GameLogic"/> that has begun.
     /// </summary>
-    public class RoundBeginEvent : Event
+    public class RoundBeginEvent : MatchEvent
     {
         /// <summary>
         /// Passes the <paramref name="round"/> to the base constructor
         /// based on the <see cref="MBC.Shared.Register"/>s that are involved in it.
         /// </summary>
         /// <param name="round">The associated <see cref="GameLogic"/>.</param>
-        public RoundBeginEvent(IDNumber roundNumber)
+        public RoundBeginEvent(Match match, IDNumber roundNumber)
+            : base(match)
         {
             Round = roundNumber;
         }
@@ -25,6 +26,26 @@ namespace MBC.Core.Events
         {
             get;
             private set;
+        }
+
+        public override bool ApplyBackward()
+        {
+            if ((Match.CurrentRound - 1) == Round)
+            {
+                Match.CurrentRound--;
+                return true;
+            }
+            return false;
+        }
+
+        public override bool ApplyForward()
+        {
+            if ((Match.CurrentRound + 1) == Round)
+            {
+                Match.CurrentRound++;
+                return true;
+            }
+            return false;
         }
     }
 }

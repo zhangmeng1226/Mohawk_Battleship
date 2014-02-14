@@ -5,7 +5,7 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
 
-namespace MBC.Core.Events
+namespace MBC.Shared.Events
 {
     /// <summary>
     /// Created during a match when a player's turn has ended and is being switched to another player.
@@ -18,14 +18,14 @@ namespace MBC.Core.Events
         /// <param name="prevPlayer"></param>
         /// <param name="nextPlayer"></param>
         public PlayerTurnSwitchEvent(Player prevPlayer, Player nextPlayer)
-            : base(prevPlayer)
+            : base(nextPlayer)
         {
         }
 
         /// <summary>
         /// Gets the player who will have the next turn.
         /// </summary>
-        public Player NextPlayer
+        public Player PrevPlayer
         {
             get;
             private set;

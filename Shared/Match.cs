@@ -1,4 +1,4 @@
-﻿using MBC.Core.Events;
+﻿using MBC.Shared.Events;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -111,7 +111,7 @@ namespace MBC.Shared
         public bool AtEnd
         {
             get;
-            protected set;
+            protected internal set;
         }
 
         /// <summary>
@@ -120,16 +120,7 @@ namespace MBC.Shared
         public int CurrentRound
         {
             get;
-            protected set;
-        }
-
-        /// <summary>
-        /// Gets the events that have been generated within the match.
-        /// </summary>
-        public List<Event> Events
-        {
-            get;
-            protected set;
+            protected internal set;
         }
 
         /// <summary>
@@ -138,7 +129,7 @@ namespace MBC.Shared
         public Coordinates FieldSize
         {
             get;
-            protected set;
+            protected internal set;
         }
 
         /// <summary>
@@ -147,7 +138,7 @@ namespace MBC.Shared
         public int NumberOfRounds
         {
             get;
-            protected set;
+            protected internal set;
         }
 
         /// <summary>
@@ -156,7 +147,7 @@ namespace MBC.Shared
         public HashSet<Player> Players
         {
             get;
-            protected set;
+            protected internal set;
         }
 
         /// <summary>
@@ -165,7 +156,7 @@ namespace MBC.Shared
         public Random Random
         {
             get;
-            protected set;
+            protected internal set;
         }
 
         /// <summary>
@@ -174,7 +165,7 @@ namespace MBC.Shared
         public RoundMode RoundMode
         {
             get;
-            protected set;
+            protected internal set;
         }
 
         /// <summary>
@@ -184,7 +175,7 @@ namespace MBC.Shared
         public HashSet<Ship> StartingShips
         {
             get;
-            protected set;
+            protected internal set;
         }
 
         /// <summary>
@@ -193,7 +184,7 @@ namespace MBC.Shared
         public HashSet<Team> Teams
         {
             get;
-            protected set;
+            protected internal set;
         }
 
         /// <summary>
@@ -202,7 +193,7 @@ namespace MBC.Shared
         public int TimeLimit
         {
             get;
-            protected set;
+            protected internal set;
         }
 
         /// <summary>
@@ -214,30 +205,99 @@ namespace MBC.Shared
         {
             return player.Ships != null &&
                 ShipList.AreEquivalentLengths(player.Ships, StartingShips) &&
-                ShipList.AreShipsValid(player.Ships, FieldSize) &&
-                ShipList.GetConflictingShips(player.Ships).Count() == 0;
+                ShipList.AreShipsValid(player.Ships, FieldSize);
         }
 
-        protected virtual void AppendEvent(Event e)
+        protected virtual void NotifyEvent(Event e)
         {
-            Events.Add(e);
-        }
-
-        protected virtual bool ApplyEvent(Event e)
-        {
-            bool result = false;
-            if (e is MatchAddPlayerEvent)
+            if (e is PlayerTurnSwitchEvent)
             {
-                var evCast = (MatchAddPlayerEvent)e;
-                result = Players.Add(evCast.Player);
+                if (OnPlayerTurnSwitch != null)
+                {
+                    OnPlayerTurnSwitch(this, (PlayerTurnSwitchEvent)e);
+                }
+            }
+            else if (e is PlayerShotEvent)
+            {
+                if (OnPlayerShot != null)
+                {
+                    OnPlayerShot(this, (PlayerShotEvent)e);
+                }
+            }
+            else if (e is PlayerShipDestroyedEvent)
+            {
+                if (OnPlayerShipDestruction != null)
+                {
+                    OnPlayerShipDestruction(this, (PlayerShipDestroyedEvent)e);
+                }
+            }
+            else if (e is PlayerLostEvent)
+            {
+                if (OnPlayerLose != null)
+                {
+                    OnPlayerLose(this, (PlayerLostEvent)e);
+                }
+            }
+            else if (e is PlayerWonEvent)
+            {
+                if (OnPlayerWin != null)
+                {
+                    OnPlayerWin(this, (PlayerWonEvent)e);
+                }
+            }
+            else if (e is PlayerShipsPlacedEvent)
+            {
+                if (OnPlayerShipsPlaced != null)
+                {
+                    OnPlayerShipsPlaced(this, (PlayerShipsPlacedEvent)e);
+                }
+            }
+            else if (e is PlayerMessageEvent)
+            {
+                if (OnPlayerMessage != null)
+                {
+                    OnPlayerMessage(this, (PlayerMessageEvent)e);
+                }
+            }
+            else if (e is PlayerTimeoutEvent)
+            {
+                if (OnPlayerTimeout != null)
+                {
+                    OnPlayerTimeout(this, (PlayerTimeoutEvent)e);
+                }
+            }
+            else if (e is RoundBeginEvent)
+            {
+                if (OnRoundBegin != null)
+                {
+                    OnRoundBegin(this, (RoundBeginEvent)e);
+                }
+            }
+            else if (e is RoundEndEvent)
+            {
+                if (OnRoundEnd != null)
+                {
+                    OnRoundEnd(this, (RoundEndEvent)e);
+                }
+            }
+            else if (e is PlayerDisqualifiedEvent)
+            {
+                if (OnPlayerDisqualified != null)
+                {
+                    OnPlayerDisqualified(this, (PlayerDisqualifiedEvent)e);
+                }
+            }
+            else if (e is MatchAddPlayerEvent)
+            {
                 if (OnPlayerAdd != null)
                 {
-                    OnPlayerAdd(this, evCast);
+                    OnPlayerAdd(this, (MatchAddPlayerEvent)e);
                 }
             }
             else if (e is MatchBeginEvent)
             {
                 var evCast = (MatchBeginEvent)e;
+
                 if (OnMatchBegin != null)
                 {
                     OnMatchBegin(this, (MatchBeginEvent)e);
@@ -271,48 +331,6 @@ namespace MBC.Shared
                     OnTeamRemove(this, (MatchTeamRemoveEvent)e);
                 }
             }
-            else if (e is PlayerDisqualifiedEvent)
-            {
-                if (OnPlayerDisqualified != null)
-                {
-                    OnPlayerDisqualified(this, (PlayerDisqualifiedEvent)e);
-                }
-            }
-            else if (e is PlayerLostEvent)
-            {
-                if (OnPlayerLose != null)
-                {
-                    OnPlayerLose(this, (PlayerLostEvent)e);
-                }
-            }
-            else if (e is PlayerMessageEvent)
-            {
-                if (OnPlayerMessage != null)
-                {
-                    OnPlayerMessage(this, (PlayerMessageEvent)e);
-                }
-            }
-            else if (e is PlayerShipDestroyedEvent)
-            {
-                if (OnPlayerShipDestruction != null)
-                {
-                    OnPlayerShipDestruction(this, (PlayerShipDestroyedEvent)e);
-                }
-            }
-            else if (e is PlayerShipsPlacedEvent)
-            {
-                if (OnPlayerShipsPlaced != null)
-                {
-                    OnPlayerShipsPlaced(this, (PlayerShipsPlacedEvent)e);
-                }
-            }
-            else if (e is PlayerShotEvent)
-            {
-                if (OnPlayerShot != null)
-                {
-                    OnPlayerShot(this, (PlayerShotEvent)e);
-                }
-            }
             else if (e is PlayerTeamAssignEvent)
             {
                 if (OnPlayerTeamAssign != null)
@@ -320,42 +338,6 @@ namespace MBC.Shared
                     OnPlayerTeamAssign(this, (PlayerTeamAssignEvent)e);
                 }
             }
-            else if (e is PlayerTimeoutEvent)
-            {
-                if (OnPlayerTimeout != null)
-                {
-                    OnPlayerTimeout(this, (PlayerTimeoutEvent)e);
-                }
-            }
-            else if (e is PlayerTurnSwitchEvent)
-            {
-                if (OnPlayerTurnSwitch != null)
-                {
-                    OnPlayerTurnSwitch(this, (PlayerTurnSwitchEvent)e);
-                }
-            }
-            else if (e is PlayerWonEvent)
-            {
-                if (OnPlayerWin != null)
-                {
-                    OnPlayerWin(this, (PlayerWonEvent)e);
-                }
-            }
-            else if (e is RoundBeginEvent)
-            {
-                if (OnRoundBegin != null)
-                {
-                    OnRoundBegin(this, (RoundBeginEvent)e);
-                }
-            }
-            else if (e is RoundEndEvent)
-            {
-                if (OnRoundEnd != null)
-                {
-                    OnRoundEnd(this, (RoundEndEvent)e);
-                }
-            }
-            return result;
         }
     }
 }

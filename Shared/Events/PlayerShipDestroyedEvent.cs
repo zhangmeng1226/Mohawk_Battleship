@@ -2,7 +2,7 @@
 using System;
 using System.Runtime.Serialization;
 
-namespace MBC.Core.Events
+namespace MBC.Shared.Events
 {
     /// <summary>
     /// Provides information about a <see cref="Register"/>'s <see cref="Ship"/> that has
@@ -28,6 +28,16 @@ namespace MBC.Core.Events
         {
             get;
             private set;
+        }
+
+        public override bool ApplyBackward()
+        {
+            return DestroyedShip.IsSunk();
+        }
+
+        public override bool ApplyForward()
+        {
+            return !DestroyedShip.IsSunk();
         }
     }
 }

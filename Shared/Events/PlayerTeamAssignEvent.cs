@@ -2,7 +2,7 @@
 using System;
 using System.Runtime.Serialization;
 
-namespace MBC.Core.Events
+namespace MBC.Shared.Events
 {
     /// <summary>
     /// Created during a match when a player has been assigned to a team.
@@ -27,6 +27,22 @@ namespace MBC.Core.Events
         {
             get;
             private set;
+        }
+
+        public override bool ApplyBackward()
+        {
+            //TODO: Get previous team from previous events.
+            return false;
+        }
+
+        public override bool ApplyForward()
+        {
+            if (Player.Team != Team)
+            {
+                Player.Team = Team;
+                return true;
+            }
+            return false;
         }
     }
 }

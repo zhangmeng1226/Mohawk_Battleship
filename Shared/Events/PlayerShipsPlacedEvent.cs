@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 
-namespace MBC.Core.Events
+namespace MBC.Shared.Events
 {
     /// <summary>
     /// Provides information about a <see cref="Register"/>'s <see cref="ShipList"/> that had
@@ -33,6 +33,18 @@ namespace MBC.Core.Events
             {
                 return new List<Ship>(shipList);
             }
+        }
+
+        public override bool ApplyBackward()
+        {
+            //TODO: Apply the previous ship placement.
+            return true;
+        }
+
+        public override bool ApplyForward()
+        {
+            Player.Ships = ShipsList;
+            return true;
         }
     }
 }

@@ -2,18 +2,19 @@
 using System;
 using System.Runtime.Serialization;
 
-namespace MBC.Core.Events
+namespace MBC.Shared.Events
 {
     /// <summary>
     /// Created during a match when a player is removed.
     /// </summary>
-    public class MatchRemovePlayerEvent : Event
+    public class MatchRemovePlayerEvent : MatchEvent
     {
         /// <summary>
         /// Constructs this event with the player being removed.
         /// </summary>
         /// <param name="player"></param>
-        public MatchRemovePlayerEvent(Player player)
+        public MatchRemovePlayerEvent(Match match, Player player)
+            : base(match)
         {
             Player = player;
         }
@@ -25,6 +26,16 @@ namespace MBC.Core.Events
         {
             get;
             private set;
+        }
+
+        public override bool ApplyBackward()
+        {
+            return Match.Players.Add(Player);
+        }
+
+        public override bool ApplyForward()
+        {
+            return Match.Players.Remove(Player);
         }
     }
 }

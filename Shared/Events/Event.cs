@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace MBC.Core.Events
+namespace MBC.Shared.Events
 {
     /// <summary>
     /// Defines a method that retrieves and handles an <see cref="Event"/>.
@@ -25,7 +25,17 @@ namespace MBC.Core.Events
         public int Millis
         {
             get;
-            internal set;
+            set;
+        }
+
+        public virtual bool ApplyBackward()
+        {
+            return true;
+        }
+
+        public virtual bool ApplyForward()
+        {
+            return true;
         }
     }
 }

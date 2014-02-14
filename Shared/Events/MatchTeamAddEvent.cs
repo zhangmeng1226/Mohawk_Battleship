@@ -1,18 +1,19 @@
 ﻿using MBC.Shared;
 using System.Runtime.Serialization;
 
-namespace MBC.Core.Events
+namespace MBC.Shared.Events
 {
     /// <summary>
     /// Created during a match when a team has been created.
     /// </summary>
-    public class MatchTeamAddEvent : Event
+    public class MatchTeamAddEvent : MatchEvent
     {
         /// <summary>
         /// Constructs the event with the new team.
         /// </summary>
         /// <param name="team"></param>
-        public MatchTeamAddEvent(Team team)
+        public MatchTeamAddEvent(Match match, Team team)
+            : base(match)
         {
             Team = team;
         }
@@ -24,6 +25,16 @@ namespace MBC.Core.Events
         {
             get;
             private set;
+        }
+
+        public override bool ApplyBackward()
+        {
+            return Match.Teams.Remove(Team);
+        }
+
+        public override bool ApplyForward()
+        {
+            return Match.Teams.Add(Team);
         }
     }
 }

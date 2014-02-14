@@ -1,5 +1,8 @@
-﻿namespace MBC.Shared
+﻿using System;
+
+namespace MBC.Shared
 {
+    [Obsolete("This information is available within the Player class.")]
     public class FieldInfo
     {
         public FieldInfo()

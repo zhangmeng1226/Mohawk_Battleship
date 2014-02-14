@@ -59,6 +59,7 @@
     <Compile Include="Events\MatchAddPlayerEvent.cs" />
     <Compile Include="Events\MatchBeginEvent.cs" />
     <Compile Include="Events\MatchEndEvent.cs" />
+    <Compile Include="Events\MatchEvent.cs" />
     <Compile Include="Events\MatchRemovePlayerEvent.cs" />
     <Compile Include="Events\MatchTeamRemoveEvent.cs" />
     <Compile Include="Events\PlayerDisqualifiedEvent.cs" />

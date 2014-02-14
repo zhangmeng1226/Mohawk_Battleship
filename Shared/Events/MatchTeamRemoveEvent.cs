@@ -5,18 +5,19 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
 
-namespace MBC.Core.Events
+namespace MBC.Shared.Events
 {
     /// <summary>
     /// Created during a match when a team has been created.
     /// </summary>
-    public class MatchTeamRemoveEvent : Event
+    public class MatchTeamRemoveEvent : MatchEvent
     {
         /// <summary>
         /// Constructs the event with the team to be removed.
         /// </summary>
         /// <param name="team"></param>
-        public MatchTeamRemoveEvent(Team team)
+        public MatchTeamRemoveEvent(Match match, Team team)
+            : base(match)
         {
             Team = team;
         }
@@ -28,6 +29,16 @@ namespace MBC.Core.Events
         {
             get;
             private set;
+        }
+
+        public override bool ApplyBackward()
+        {
+            return Match.Teams.Add(Team);
+        }
+
+        public override bool ApplyForward()
+        {
+            return Match.Teams.Remove(Team);
         }
     }
 }

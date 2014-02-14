@@ -2,7 +2,7 @@
 using System;
 using System.Runtime.Serialization;
 
-namespace MBC.Core.Events
+namespace MBC.Shared.Events
 {
     /// <summary>
     /// Provides information about a <see cref="Register"/> that had lost a <see cref="GameLogic"/>.
@@ -16,6 +16,18 @@ namespace MBC.Core.Events
         public PlayerLostEvent(Player loser)
             : base(loser)
         {
+        }
+
+        public override bool ApplyBackward()
+        {
+            Player.Losses--;
+            return true;
+        }
+
+        public override bool ApplyForward()
+        {
+            Player.Losses++;
+            return true;
         }
     }
 }

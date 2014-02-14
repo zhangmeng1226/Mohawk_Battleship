@@ -2,7 +2,7 @@
 using System;
 using System.Runtime.Serialization;
 
-namespace MBC.Core.Events
+namespace MBC.Shared.Events
 {
     /// <summary>
     /// Provides information about a <see cref="Register"/> that had taken too long to return from
@@ -30,4 +30,17 @@ namespace MBC.Core.Events
             get;
             private set;
         }
+
+        public override bool ApplyBackward()
+        {
+            Player.Timeouts--;
+            return false;
+        }
+
+        public override bool ApplyForward()
+        {
+            Player.Timeouts++;
+            return true;
+        }
+    }
 }

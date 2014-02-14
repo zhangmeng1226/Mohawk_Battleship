@@ -74,15 +74,10 @@ namespace MBC.Core.Game
             protected set;
         }
 
-        /// <summary>
-        /// Adds a player to the match, and ensures that it is inactive until the next round.
-        /// </summary>
-        /// <param name="plr"></param>
-        /// <returns></returns>
-        public override bool AddPlayer(Player plr)
+        public override bool EndRound()
         {
-            plr.Active = false;
-            return base.AddPlayer(plr);
+            CurrentPhase = Phase.End;
+            return base.EndRound();
         }
 
         /// <summary>
@@ -90,7 +85,7 @@ namespace MBC.Core.Game
         /// </summary>
         /// <param name="plr"></param>
         /// <returns></returns>
-        public override bool PlayerLost(Player plr)
+        public override bool MakePlayerLose(Player plr)
         {
             if (!activePlayers.Remove(plr))
             {
@@ -109,34 +104,7 @@ namespace MBC.Core.Game
                     PlayerDisqualified(FindPlayerFromController(ex.Controller), REASON_TIMEOUT);
                 }
             }
-            return base.PlayerLost(plr);
-        }
-
-        /// <summary>
-        /// Disqualifies a player from the match and removes it from the active players list.
-        /// </summary>
-        /// <param name="plr"></param>
-        /// <param name="reason"></param>
-        /// <returns></returns>
-        public override bool PlayerDisqualified(Player plr, string reason)
-        {
-            if (!activePlayers.Remove(plr))
-            {
-                return false;
-            }
-            plr.Active = false;
-            foreach (Player player in activePlayers)
-            {
-                try
-                {
-                    player.Controller.OpponentDestroyed(plr.ID);
-                }
-                catch (ControllerTimeoutException ex)
-                {
-                    PlayerDisqualified(FindPlayerFromController(ex.Controller), REASON_TIMEOUT);
-                }
-            }
-            return base.PlayerDisqualified(plr, reason);
+            return base.MakePlayerLose(plr);
         }
 
         /// <summary>
@@ -160,6 +128,44 @@ namespace MBC.Core.Game
                 CurrentPhase = Phase.End;
             }
             return false;
+        }
+
+        /// <summary>
+        /// Adds a player to the match, and ensures that it is inactive until the next round.
+        /// </summary>
+        /// <param name="plr"></param>
+        /// <returns></returns>
+        protected override bool AddPlayer(Player plr)
+        {
+            plr.Active = false;
+            return base.AddPlayer(plr);
+        }
+
+        /// <summary>
+        /// Disqualifies a player from the match and removes it from the active players list.
+        /// </summary>
+        /// <param name="plr"></param>
+        /// <param name="reason"></param>
+        /// <returns></returns>
+        protected override bool PlayerDisqualified(Player plr, string reason)
+        {
+            if (!activePlayers.Remove(plr))
+            {
+                return false;
+            }
+            plr.Active = false;
+            foreach (Player player in activePlayers)
+            {
+                try
+                {
+                    player.Controller.OpponentDestroyed(plr.ID);
+                }
+                catch (ControllerTimeoutException ex)
+                {
+                    PlayerDisqualified(FindPlayerFromController(ex.Controller), REASON_TIMEOUT);
+                }
+            }
+            return base.PlayerDisqualified(plr, reason);
         }
 
         /// <summary>
@@ -203,7 +209,7 @@ namespace MBC.Core.Game
                 Player winner = activePlayers[0];
                 activePlayers.Clear();
                 winner.Controller.RoundWon();
-                PlayerWin(winner);
+                MakePlayerWin(winner);
             }
             return false;
         }
@@ -295,7 +301,7 @@ namespace MBC.Core.Game
         {
             var shotMade = CurrentPlayer.Controller.MakeShot();
             var shipHit = ShipList.GetShipAt(shotMade.ReceiverPlr.Ships, shotMade.Coordinates);
-            PlayerShot(CurrentPlayer, shotMade, shipHit);
+            MakePlayerShot(CurrentPlayer, shotMade, shipHit);
             if (!IsShotValid(shotMade))
             {
                 PlayerDisqualified(CurrentPlayer, REASON_SHOT);
@@ -314,7 +320,7 @@ namespace MBC.Core.Game
                     PlayerShipDestroyed(shotMade.ReceiverPlr, shipHit);
                     if (shotMade.ReceiverPlr.Ships.All(ship => ship.IsSunk()))
                     {
-                        PlayerLost(shotMade.ReceiverPlr);
+                        MakePlayerLose(shotMade.ReceiverPlr);
                     }
                 }
             }

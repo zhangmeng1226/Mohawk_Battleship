@@ -3,17 +3,18 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 
-namespace MBC.Core.Events
+namespace MBC.Shared.Events
 {
     /// <summary>
     /// Provides information about a <see cref="Match"/> that has begun.
     /// </summary>
-    public class MatchBeginEvent : Event
+    public class MatchBeginEvent : MatchEvent
     {
         /// <summary>
         /// Constructs this event
         /// </summary>
         public MatchBeginEvent(Match copyParams)
+            : base(copyParams)
         {
             CurrentRound = copyParams.CurrentRound;
             FieldSize = copyParams.FieldSize;
@@ -86,6 +87,23 @@ namespace MBC.Core.Events
         {
             get;
             protected set;
+        }
+
+        public override bool ApplyBackward()
+        {
+            return ApplyForward();
+        }
+
+        public override bool ApplyForward()
+        {
+            Match.CurrentRound = CurrentRound;
+            Match.FieldSize = FieldSize;
+            Match.NumberOfRounds = NumberOfRounds;
+            Match.Random = Random;
+            Match.RoundMode = RoundMode;
+            Match.StartingShips = StartingShips;
+            Match.TimeLimit = TimeLimit;
+            return true;
         }
     }
 }
