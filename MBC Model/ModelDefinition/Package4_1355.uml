@@ -1,0 +1,311 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" xmlns:dm1="http://schemas.microsoft.com/dsltools/Kernel" xmlns:dm2="http://schemas.microsoft.com/dsltools/Component" xmlns:dm3="http://schemas.microsoft.com/dsltools/UseCase" xmlns:dm4="http://schemas.microsoft.com/dsltools/Activity" xmlns:dm5="http://schemas.microsoft.com/dsltools/Interaction" xmlns:dm6="http://schemas.microsoft.com/dsltools/UmlModelLibrary" xmlns:dm7="http://schemas.microsoft.com/dsltools/UmlDiagrams" xmlns:dm8="http://schemas.microsoft.com/dsltools/LogicalClassDesigner"
+  dslVersion="1.0.0.0"
+  Id="9e778ef7-a799-4fe3-9fda-1243542ec0ed"
+  name="Shared"
+  visibility="Private" xmlns="http://schemas.microsoft.com/dsltools/ModelStore">
+  <referencesInternal>
+    <reference
+      Id="4fbef5cb-d011-4273-a758-362beb67c552"
+      handle="viewcode://./CodeSchema_Namespace?Namespace%3DMBC.Shared"
+      tag="ViewCode" />
+  </referencesInternal>
+  <packagedElements>
+    <packageHasNamedElement>
+      <class
+        Id="41767e86-4cfc-4500-b040-31dcae4f09c5"
+        name="Player"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false">
+        <referencesInternal>
+          <reference
+            Id="dab86637-7f46-4843-87e5-3aadf73c4014"
+            handle="viewcode://./CodeSchema_Class?Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fctrlplugin.dll&quot; Namespace%3DMBC.Shared Type%3DPlayer"
+            tag="ViewCode" />
+        </referencesInternal>
+        <appliedStereotypesInternal>
+          <stereotypeInstance
+            Id="9bfc8b51-9b35-4b80-b0f5-27a03729696d"
+            name="class"
+            profile="CSharpProfile">
+            <propertyInstances>
+              <stereotypeInstanceHasPropertyInstances
+                Id="5d3b7deb-aa15-4040-859d-9759b390780b">
+                <propertyInstance
+                  Id="7c77c31c-af57-4e71-97c0-62d1e5c03d10"
+                  name="ClrAttributes" />
+              </stereotypeInstanceHasPropertyInstances>
+              <stereotypeInstanceHasPropertyInstances
+                Id="981a9838-5b47-44dc-8df9-fb644d259091">
+                <propertyInstance
+                  Id="e6f17ab0-e8b5-4ecb-a171-3af62f774bd6"
+                  name="IsPartial"
+                  value="false" />
+              </stereotypeInstanceHasPropertyInstances>
+              <stereotypeInstanceHasPropertyInstances
+                Id="1f435dd1-a5c7-40da-98e0-b2a6226f9e5b">
+                <propertyInstance
+                  Id="1dd4b6b3-7691-4683-b25f-e48e3d07c3c0"
+                  name="IsStatic"
+                  value="False" />
+              </stereotypeInstanceHasPropertyInstances>
+              <stereotypeInstanceHasPropertyInstances
+                Id="dc4b80e5-fb2f-4f99-853a-027aae11d38c">
+                <propertyInstance
+                  Id="92c6bf28-d153-4e8c-98e2-e0cba1316fdf"
+                  name="IsUnsafe"
+                  value="false" />
+              </stereotypeInstanceHasPropertyInstances>
+              <stereotypeInstanceHasPropertyInstances
+                Id="0833fa9c-9dff-4869-8ce5-2a884f4c36ad">
+                <propertyInstance
+                  Id="176f8998-ce96-4df8-9a88-68cc7a9e2ba3"
+                  name="PackageVisibility"
+                  value="internal" />
+              </stereotypeInstanceHasPropertyInstances>
+            </propertyInstances>
+          </stereotypeInstance>
+        </appliedStereotypesInternal>
+      </class>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <class
+        Id="0ec091d3-25d6-49e8-9fd0-6f774c43b76d"
+        name="Team"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false">
+        <referencesInternal>
+          <reference
+            Id="4ead631a-2613-4241-b99f-45cde00d6434"
+            handle="viewcode://./CodeSchema_Class?Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fctrlplugin.dll&quot; Namespace%3DMBC.Shared Type%3DTeam"
+            tag="ViewCode" />
+        </referencesInternal>
+        <appliedStereotypesInternal>
+          <stereotypeInstance
+            Id="e42e0b16-db16-4a92-b6e1-d6a4aa99d4b3"
+            name="class"
+            profile="CSharpProfile">
+            <propertyInstances>
+              <stereotypeInstanceHasPropertyInstances
+                Id="f213f123-9337-403d-a3d9-cded9d2ab046">
+                <propertyInstance
+                  Id="3ee9ec2a-b3b6-4c14-9b19-c8cbabb8af06"
+                  name="ClrAttributes" />
+              </stereotypeInstanceHasPropertyInstances>
+              <stereotypeInstanceHasPropertyInstances
+                Id="f7ee0137-e95f-4d89-8074-d13a98d53893">
+                <propertyInstance
+                  Id="7e9eb096-005d-40c8-aadc-b557c13a8513"
+                  name="IsPartial"
+                  value="false" />
+              </stereotypeInstanceHasPropertyInstances>
+              <stereotypeInstanceHasPropertyInstances
+                Id="016dcbf6-6941-4f34-901c-d733f9aa6e48">
+                <propertyInstance
+                  Id="3708dae4-dc7e-4017-8832-31ed97fcf6d8"
+                  name="IsStatic"
+                  value="False" />
+              </stereotypeInstanceHasPropertyInstances>
+              <stereotypeInstanceHasPropertyInstances
+                Id="0fd89f21-d952-497e-9969-17f8e28b4681">
+                <propertyInstance
+                  Id="ec415942-3aa2-4702-ab5d-ea009c72b2f6"
+                  name="IsUnsafe"
+                  value="false" />
+              </stereotypeInstanceHasPropertyInstances>
+              <stereotypeInstanceHasPropertyInstances
+                Id="3cf3a0dc-140f-4493-b797-633be9106964">
+                <propertyInstance
+                  Id="95c8b9fc-53fb-49f5-b523-40f2a7da7267"
+                  name="PackageVisibility"
+                  value="internal" />
+              </stereotypeInstanceHasPropertyInstances>
+            </propertyInstances>
+          </stereotypeInstance>
+        </appliedStereotypesInternal>
+      </class>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <class
+        Id="38df87f4-470a-49f9-be90-011b29f1d31c"
+        name="Shot"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false">
+        <referencesInternal>
+          <reference
+            Id="fb34893a-394a-4f88-925a-6db54c307cd7"
+            handle="viewcode://./CodeSchema_Class?Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fctrlplugin.dll&quot; Namespace%3DMBC.Shared Type%3DShot"
+            tag="ViewCode" />
+        </referencesInternal>
+        <appliedStereotypesInternal>
+          <stereotypeInstance
+            Id="c182177f-68c5-4ffa-8ab8-8230132049bd"
+            name="class"
+            profile="CSharpProfile">
+            <propertyInstances>
+              <stereotypeInstanceHasPropertyInstances
+                Id="079c38c0-5136-451a-9a67-abb3e778e060">
+                <propertyInstance
+                  Id="04ba59f7-a972-42c2-8a45-f48370c565ac"
+                  name="ClrAttributes" />
+              </stereotypeInstanceHasPropertyInstances>
+              <stereotypeInstanceHasPropertyInstances
+                Id="df6e1841-0679-4ae1-ac5e-20349611618e">
+                <propertyInstance
+                  Id="fc57e02d-a36e-4cfc-bd68-cff1215ad47f"
+                  name="IsPartial"
+                  value="false" />
+              </stereotypeInstanceHasPropertyInstances>
+              <stereotypeInstanceHasPropertyInstances
+                Id="aff57a3b-aa1a-482a-b288-503c6c3714b2">
+                <propertyInstance
+                  Id="3b68913c-e49b-494e-8b78-4b72173f903c"
+                  name="IsStatic"
+                  value="False" />
+              </stereotypeInstanceHasPropertyInstances>
+              <stereotypeInstanceHasPropertyInstances
+                Id="478ac211-fec4-4f84-b78b-62366da0e952">
+                <propertyInstance
+                  Id="a1e65401-1f41-4139-8a07-170503f1ef07"
+                  name="IsUnsafe"
+                  value="false" />
+              </stereotypeInstanceHasPropertyInstances>
+              <stereotypeInstanceHasPropertyInstances
+                Id="51ac5a8d-1ba3-4f24-bb0a-d410317e7213">
+                <propertyInstance
+                  Id="4b56d637-8b13-4fe0-a633-98602c8b7ec8"
+                  name="PackageVisibility"
+                  value="internal" />
+              </stereotypeInstanceHasPropertyInstances>
+            </propertyInstances>
+          </stereotypeInstance>
+        </appliedStereotypesInternal>
+      </class>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <class
+        Id="41ae42a3-4565-4512-a824-d5fb86aa8728"
+        name="Ship"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false">
+        <referencesInternal>
+          <reference
+            Id="0d7909a8-315c-4705-8747-b73d39a84682"
+            handle="viewcode://./CodeSchema_Class?Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fctrlplugin.dll&quot; Namespace%3DMBC.Shared Type%3DShip"
+            tag="ViewCode" />
+        </referencesInternal>
+        <appliedStereotypesInternal>
+          <stereotypeInstance
+            Id="44ccc623-6531-4779-95c8-b5d21e6e33cb"
+            name="class"
+            profile="CSharpProfile">
+            <propertyInstances>
+              <stereotypeInstanceHasPropertyInstances
+                Id="c7300e66-da27-4c48-b2b1-5dfe8220d80b">
+                <propertyInstance
+                  Id="081a7b6e-d429-4258-9f0b-7756536a4ba9"
+                  name="ClrAttributes" />
+              </stereotypeInstanceHasPropertyInstances>
+              <stereotypeInstanceHasPropertyInstances
+                Id="7fcca114-a03a-484a-a721-0927b0eac996">
+                <propertyInstance
+                  Id="ef7e8a9a-8756-407c-b9f7-cacf66d1cf9b"
+                  name="IsPartial"
+                  value="false" />
+              </stereotypeInstanceHasPropertyInstances>
+              <stereotypeInstanceHasPropertyInstances
+                Id="6110764d-6d4c-4301-a377-210fd0e52a6b">
+                <propertyInstance
+                  Id="f00286a3-ff94-41e3-b9a8-4ce41b66f3f4"
+                  name="IsStatic"
+                  value="False" />
+              </stereotypeInstanceHasPropertyInstances>
+              <stereotypeInstanceHasPropertyInstances
+                Id="715751fb-8b2b-4daa-8905-5c6423c9b03f">
+                <propertyInstance
+                  Id="24e1a763-618d-4744-9c80-d5136a4e4e6e"
+                  name="IsUnsafe"
+                  value="false" />
+              </stereotypeInstanceHasPropertyInstances>
+              <stereotypeInstanceHasPropertyInstances
+                Id="105a12dd-894c-471d-be17-1001bc7238c4">
+                <propertyInstance
+                  Id="93724b37-516f-4125-ad5f-fff1588cb6fa"
+                  name="PackageVisibility"
+                  value="internal" />
+              </stereotypeInstanceHasPropertyInstances>
+            </propertyInstances>
+          </stereotypeInstance>
+        </appliedStereotypesInternal>
+      </class>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <packageMoniker
+        Id="625564ab-4ded-4835-b054-d80ac6fa4231"
+        LastKnownName="Events"
+        LastKnownLocation="Package8_1355.uml" />
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <class
+        Id="8006b780-4e56-4074-b777-c480c665859b"
+        name="Match"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false">
+        <referencesInternal>
+          <reference
+            Id="f5c008f9-87a5-4bb4-bec3-c3e3816efe09"
+            handle="viewcode://./CodeSchema_Class?Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fctrlplugin.dll&quot; Namespace%3DMBC.Shared Type%3DMatch"
+            tag="ViewCode" />
+        </referencesInternal>
+        <appliedStereotypesInternal>
+          <stereotypeInstance
+            Id="db98f50f-0896-4ff8-9b66-515054fdca77"
+            name="class"
+            profile="CSharpProfile">
+            <propertyInstances>
+              <stereotypeInstanceHasPropertyInstances
+                Id="2d60ce17-c338-4b01-ac9e-4e8ce7649629">
+                <propertyInstance
+                  Id="baee98f3-2c58-488b-beba-3fc5a6a65b5c"
+                  name="ClrAttributes" />
+              </stereotypeInstanceHasPropertyInstances>
+              <stereotypeInstanceHasPropertyInstances
+                Id="bebf857a-a3f2-42f0-9553-215fdb6eec0e">
+                <propertyInstance
+                  Id="a3361630-bbc2-443a-b002-560bf624885c"
+                  name="IsPartial"
+                  value="false" />
+              </stereotypeInstanceHasPropertyInstances>
+              <stereotypeInstanceHasPropertyInstances
+                Id="9115d7de-3480-46ab-b897-e07faeec00cd">
+                <propertyInstance
+                  Id="6de4dddb-6ac6-4cdc-b7b3-556a85a44d8c"
+                  name="IsStatic"
+                  value="False" />
+              </stereotypeInstanceHasPropertyInstances>
+              <stereotypeInstanceHasPropertyInstances
+                Id="8e417d3b-c08b-4513-8065-7d4a0525cf31">
+                <propertyInstance
+                  Id="a264d7d6-cc0c-4b91-9518-9de0eb470c6a"
+                  name="IsUnsafe"
+                  value="false" />
+              </stereotypeInstanceHasPropertyInstances>
+              <stereotypeInstanceHasPropertyInstances
+                Id="afc83683-f3a2-426b-85cd-9e7ba19ef376">
+                <propertyInstance
+                  Id="3d564c9a-fcf7-46c9-b27d-bc78b3bd9179"
+                  name="PackageVisibility"
+                  value="internal" />
+              </stereotypeInstanceHasPropertyInstances>
+            </propertyInstances>
+          </stereotypeInstance>
+        </appliedStereotypesInternal>
+      </class>
+    </packageHasNamedElement>
+  </packagedElements>
+</package>

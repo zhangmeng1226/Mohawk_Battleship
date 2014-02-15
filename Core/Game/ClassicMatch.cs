@@ -107,6 +107,12 @@ namespace MBC.Core.Game
             return base.MakePlayerLose(plr);
         }
 
+        public override bool NewRound()
+        {
+            CurrentPhase = Phase.Init;
+            return base.NewRound();
+        }
+
         /// <summary>
         /// Switches the current player to the next player in the iteration. Returns true if the
         /// round may continue, false if there is a winner, or no active players left.
@@ -317,7 +323,7 @@ namespace MBC.Core.Game
                 CurrentPlayer.Controller.ShotHit(shotMade, sunk);
                 if (sunk)
                 {
-                    PlayerShipDestroyed(shotMade.ReceiverPlr, shipHit);
+                    MakePlayerShipDestroyed(shotMade.ReceiverPlr, shipHit);
                     if (shotMade.ReceiverPlr.Ships.All(ship => ship.IsSunk()))
                     {
                         MakePlayerLose(shotMade.ReceiverPlr);

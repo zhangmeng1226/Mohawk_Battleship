@@ -1,8 +1,8 @@
-﻿using System;
+﻿using MBC.Shared.dep;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using MBC.Shared.dep;
 
 namespace MBC.Shared
 {
@@ -73,6 +73,24 @@ namespace MBC.Shared
             {
                 return allShots[idx];
             }
+        }
+
+        /// <summary>
+        /// Searches through a list of shots for a specific shot.
+        /// </summary>
+        /// <param name="shots"></param>
+        /// <param name="specificShot"></param>
+        /// <returns></returns>
+        public static bool IsShotMade(IList<Shot> shots, Shot specificShot)
+        {
+            foreach (var shot in shots)
+            {
+                if (shot == specificShot)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         /// <summary>

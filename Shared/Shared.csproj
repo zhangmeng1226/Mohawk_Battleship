@@ -75,7 +75,7 @@
     <Compile Include="Events\PlayerWonEvent.cs" />
     <Compile Include="Events\RoundBeginEvent.cs" />
     <Compile Include="Events\RoundEndEvent.cs" />
-    <Compile Include="FieldInfo.cs" />
+    <Compile Include="dep\FieldInfo.cs" />
     <Compile Include="IController.cs" />
     <Compile Include="IController2.cs" />
     <Compile Include="IDNumber.cs" />
@@ -84,7 +84,7 @@
     <Compile Include="Events\MatchTeamAddEvent.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Register.cs" />
-    <Compile Include="MatchConfig.cs" />
+    <Compile Include="dep\MatchConfig.cs" />
     <Compile Include="GameMode.cs" />
     <Compile Include="RoundMode.cs" />
     <Compile Include="ShipList.cs" />

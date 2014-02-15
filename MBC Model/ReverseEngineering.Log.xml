@@ -1,0 +1,98 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="file:///C:/PROGRAM FILES (X86)/MICROSOFT VISUAL STUDIO 12.0/COMMON7/IDE/EXTENSIONS/MICROSOFT/ARCHITECTURE TOOLS/EXTENSIBILITY/Logging/ReverseEngineeringLog.xslt"?>
+<Log xmlns="http://schemas.microsoft.com/VisualStudio/2010/CodeGen.RE.Log" Label="Code Generation/Text Transformation Log">
+  <MessageClass Name="Message" Label="Message" Option="Show informational messages" />
+  <MessageClass Name="Warning" Label="Warning" Option="Show warnings" />
+  <MessageClass Name="Error" Label="Error" Option="Show errors" />
+  <MessageClass Name="Property" Label="Property" Option="Show metadata" />
+  <MessageClass Name="Diagnostic" Label="Message" Option="Show diagnostic messages" />
+  <Message Timestamp="2014-02-15T13:55:28" Importance="High" Text="Reverse Engineering Started." />
+  <Message Timestamp="2014-02-15T13:55:33" Importance="Diagnostic" Text="Element reverse engineered into the UML model: '5271c642-2ac9-40ed-9ed0-a2ded443bd20' -  (ClassifierTemplateParameter)" />
+  <Message Timestamp="2014-02-15T13:55:33" Importance="Diagnostic" Text="Element reverse engineered into the UML model: '59edfffa-e3e9-4094-865d-c54b6a32ee0e' -  (ClassifierTemplateParameter)" />
+  <Message Timestamp="2014-02-15T13:55:33" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Boolean' -  (PrimitiveType)" />
+  <Message Timestamp="2014-02-15T13:55:33" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'Integer' -  (PrimitiveType)" />
+  <Message Timestamp="2014-02-15T13:55:33" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'MBC Model::MBC' -  (Package)" />
+  <Message Timestamp="2014-02-15T13:55:33" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'MBC Model::MBC::Core' -  (Package)" />
+  <Message Timestamp="2014-02-15T13:55:33" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'MBC Model::MBC::Core::ControllerSkeleton' -  (Class)   (partially reverse engineered - definition not updated) " />
+  <Message Timestamp="2014-02-15T13:55:33" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'MBC Model::MBC::Core::Game' -  (Package)" />
+  <Message Timestamp="2014-02-15T13:55:33" Importance="Medium" Text="Element reverse engineered into the UML model: 'MBC Model::MBC::Core::Game::MatchCore' -  (Class)" />
+  <Message Timestamp="2014-02-15T13:55:33" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'MBC Model::MBC::Core::Game::MatchCore::AddPlayer' -  (Operation)" />
+  <Message Timestamp="2014-02-15T13:55:33" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'MBC Model::MBC::Core::Game::MatchCore::AddPlayer::playerAdd' -  (Parameter)" />
+  <Message Timestamp="2014-02-15T13:55:33" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'MBC Model::MBC::Core::Game::MatchCore::AddPlayer::skeleton' -  (Parameter)" />
+  <Message Timestamp="2014-02-15T13:55:33" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'MBC Model::MBC::Core::Game::MatchCore::AddTeam' -  (Operation)" />
+  <Message Timestamp="2014-02-15T13:55:33" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'MBC Model::MBC::Core::Game::MatchCore::AddTeam::addTeam' -  (Parameter)" />
+  <Message Timestamp="2014-02-15T13:55:33" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'MBC Model::MBC::Core::Game::MatchCore::AppendEvent' -  (Operation)" />
+  <Message Timestamp="2014-02-15T13:55:33" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'MBC Model::MBC::Core::Game::MatchCore::AppendEvent::ev' -  (Parameter)" />
+  <Message Timestamp="2014-02-15T13:55:33" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'MBC Model::MBC::Core::Game::MatchCore::ApplyParameters' -  (Operation)" />
+  <Message Timestamp="2014-02-15T13:55:33" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'MBC Model::MBC::Core::Game::MatchCore::ApplyParameters::conf' -  (Parameter)" />
+  <Message Timestamp="2014-02-15T13:55:33" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'MBC Model::MBC::Core::Game::MatchCore::AssignPlayerTeam' -  (Operation)" />
+  <Message Timestamp="2014-02-15T13:55:33" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'MBC Model::MBC::Core::Game::MatchCore::AssignPlayerTeam::newTeam' -  (Parameter)" />
+  <Message Timestamp="2014-02-15T13:55:33" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'MBC Model::MBC::Core::Game::MatchCore::AssignPlayerTeam::plr' -  (Parameter)" />
+  <Message Timestamp="2014-02-15T13:55:33" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'MBC Model::MBC::Core::Game::MatchCore::CurrentEvent' -  (Property)" />
+  <Message Timestamp="2014-02-15T13:55:33" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'MBC Model::MBC::Core::Game::MatchCore::EndMatch' -  (Operation)" />
+  <Message Timestamp="2014-02-15T13:55:33" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'MBC Model::MBC::Core::Game::MatchCore::EndRound' -  (Operation)" />
+  <Message Timestamp="2014-02-15T13:55:33" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'MBC Model::MBC::Core::Game::MatchCore::Events' -  (Property)" />
+  <Message Timestamp="2014-02-15T13:55:33" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'MBC Model::MBC::Core::Game::MatchCore::FindFirstEmptyPlayerID' -  (Operation)" />
+  <Message Timestamp="2014-02-15T13:55:33" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'MBC Model::MBC::Core::Game::MatchCore::GameTimer' -  (Property)" />
+  <Message Timestamp="2014-02-15T13:55:33" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'MBC Model::MBC::Core::Game::MatchCore::IsRunning' -  (Property)" />
+  <Message Timestamp="2014-02-15T13:55:33" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'MBC Model::MBC::Core::Game::MatchCore::IsShotValid' -  (Operation)" />
+  <Message Timestamp="2014-02-15T13:55:33" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'MBC Model::MBC::Core::Game::MatchCore::IsShotValid::shot' -  (Parameter)" />
+  <Message Timestamp="2014-02-15T13:55:33" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'MBC Model::MBC::Core::Game::MatchCore::MakePlayerLose' -  (Operation)" />
+  <Message Timestamp="2014-02-15T13:55:33" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'MBC Model::MBC::Core::Game::MatchCore::MakePlayerLose::plr' -  (Parameter)" />
+  <Message Timestamp="2014-02-15T13:55:33" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'MBC Model::MBC::Core::Game::MatchCore::MakePlayerShot' -  (Operation)" />
+  <Message Timestamp="2014-02-15T13:55:33" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'MBC Model::MBC::Core::Game::MatchCore::MakePlayerShot::plr' -  (Parameter)" />
+  <Message Timestamp="2014-02-15T13:55:33" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'MBC Model::MBC::Core::Game::MatchCore::MakePlayerShot::shipHit' -  (Parameter)" />
+  <Message Timestamp="2014-02-15T13:55:33" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'MBC Model::MBC::Core::Game::MatchCore::MakePlayerShot::shot' -  (Parameter)" />
+  <Message Timestamp="2014-02-15T13:55:33" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'MBC Model::MBC::Core::Game::MatchCore::MakePlayerTimeout' -  (Operation)" />
+  <Message Timestamp="2014-02-15T13:55:33" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'MBC Model::MBC::Core::Game::MatchCore::MakePlayerTimeout::method' -  (Parameter)" />
+  <Message Timestamp="2014-02-15T13:55:33" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'MBC Model::MBC::Core::Game::MatchCore::MakePlayerTimeout::plr' -  (Parameter)" />
+  <Message Timestamp="2014-02-15T13:55:33" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'MBC Model::MBC::Core::Game::MatchCore::MakePlayerWin' -  (Operation)" />
+  <Message Timestamp="2014-02-15T13:55:33" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'MBC Model::MBC::Core::Game::MatchCore::MakePlayerWin::plr' -  (Parameter)" />
+  <Message Timestamp="2014-02-15T13:55:33" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'MBC Model::MBC::Core::Game::MatchCore::MatchCore' -  (Operation)" />
+  <Message Timestamp="2014-02-15T13:55:33" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'MBC Model::MBC::Core::Game::MatchCore::MatchCore::config' -  (Parameter)" />
+  <Message Timestamp="2014-02-15T13:55:33" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'MBC Model::MBC::Core::Game::MatchCore::NewRound' -  (Operation)" />
+  <Message Timestamp="2014-02-15T13:55:33" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'MBC Model::MBC::Core::Game::MatchCore::PlacePlayerShips' -  (Operation)" />
+  <Message Timestamp="2014-02-15T13:55:33" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'MBC Model::MBC::Core::Game::MatchCore::PlacePlayerShips::plr' -  (Parameter)" />
+  <Message Timestamp="2014-02-15T13:55:33" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'MBC Model::MBC::Core::Game::MatchCore::PlacePlayerShips::ships' -  (Parameter)" />
+  <Message Timestamp="2014-02-15T13:55:33" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'MBC Model::MBC::Core::Game::MatchCore::Play' -  (Operation)" />
+  <Message Timestamp="2014-02-15T13:55:33" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'MBC Model::MBC::Core::Game::MatchCore::PlayerDisqualified' -  (Operation)" />
+  <Message Timestamp="2014-02-15T13:55:33" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'MBC Model::MBC::Core::Game::MatchCore::PlayerDisqualified::plr' -  (Parameter)" />
+  <Message Timestamp="2014-02-15T13:55:33" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'MBC Model::MBC::Core::Game::MatchCore::PlayerDisqualified::reason' -  (Parameter)" />
+  <Message Timestamp="2014-02-15T13:55:33" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'MBC Model::MBC::Core::Game::MatchCore::PlayerShipDestroyed' -  (Operation)" />
+  <Message Timestamp="2014-02-15T13:55:33" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'MBC Model::MBC::Core::Game::MatchCore::PlayerShipDestroyed::destroyedShip' -  (Parameter)" />
+  <Message Timestamp="2014-02-15T13:55:33" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'MBC Model::MBC::Core::Game::MatchCore::PlayerShipDestroyed::plr' -  (Parameter)" />
+  <Message Timestamp="2014-02-15T13:55:33" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'MBC Model::MBC::Core::Game::MatchCore::PlayLogic' -  (Operation)" />
+  <Message Timestamp="2014-02-15T13:55:33" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'MBC Model::MBC::Core::Game::MatchCore::PlayToEvent' -  (Operation)" />
+  <Message Timestamp="2014-02-15T13:55:33" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'MBC Model::MBC::Core::Game::MatchCore::PlayToEvent::eventIdx' -  (Parameter)" />
+  <Message Timestamp="2014-02-15T13:55:33" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'MBC Model::MBC::Core::Game::MatchCore::PlayToLastEvent' -  (Operation)" />
+  <Message Timestamp="2014-02-15T13:55:33" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'MBC Model::MBC::Core::Game::MatchCore::RemovePlayer' -  (Operation)" />
+  <Message Timestamp="2014-02-15T13:55:33" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'MBC Model::MBC::Core::Game::MatchCore::RemovePlayer::plr' -  (Parameter)" />
+  <Message Timestamp="2014-02-15T13:55:33" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'MBC Model::MBC::Core::Game::MatchCore::RemoveTeam' -  (Operation)" />
+  <Message Timestamp="2014-02-15T13:55:33" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'MBC Model::MBC::Core::Game::MatchCore::RemoveTeam::remTeam' -  (Parameter)" />
+  <Message Timestamp="2014-02-15T13:55:33" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'MBC Model::MBC::Core::Game::MatchCore::Stop' -  (Operation)" />
+  <Message Timestamp="2014-02-15T13:55:33" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'MBC Model::MBC::Core::Util' -  (Package)" />
+  <Message Timestamp="2014-02-15T13:55:33" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'MBC Model::MBC::Core::Util::Configuration' -  (Class)   (partially reverse engineered - definition not updated) " />
+  <Message Timestamp="2014-02-15T13:55:33" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'MBC Model::MBC::Shared' -  (Package)" />
+  <Message Timestamp="2014-02-15T13:55:33" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'MBC Model::MBC::Shared::Events' -  (Package)" />
+  <Message Timestamp="2014-02-15T13:55:33" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'MBC Model::MBC::Shared::Events::Event' -  (Class)   (partially reverse engineered - definition not updated) " />
+  <Message Timestamp="2014-02-15T13:55:33" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'MBC Model::MBC::Shared::Match' -  (Class)   (partially reverse engineered - definition not updated) " />
+  <Message Timestamp="2014-02-15T13:55:33" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'MBC Model::MBC::Shared::Player' -  (Class)   (partially reverse engineered - definition not updated) " />
+  <Message Timestamp="2014-02-15T13:55:33" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'MBC Model::MBC::Shared::Ship' -  (Class)   (partially reverse engineered - definition not updated) " />
+  <Message Timestamp="2014-02-15T13:55:33" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'MBC Model::MBC::Shared::Shot' -  (Class)   (partially reverse engineered - definition not updated) " />
+  <Message Timestamp="2014-02-15T13:55:33" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'MBC Model::MBC::Shared::Team' -  (Class)   (partially reverse engineered - definition not updated) " />
+  <Message Timestamp="2014-02-15T13:55:33" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'MBC Model::System' -  (Package)" />
+  <Message Timestamp="2014-02-15T13:55:33" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'MBC Model::System::Collections' -  (Package)" />
+  <Message Timestamp="2014-02-15T13:55:33" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'MBC Model::System::Collections::Generic' -  (Package)" />
+  <Message Timestamp="2014-02-15T13:55:33" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'MBC Model::System::Collections::Generic::ISet' -  (Interface)   (partially reverse engineered - definition not updated) " />
+  <Message Timestamp="2014-02-15T13:55:33" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'MBC Model::System::Collections::Generic::ISet&lt;Ship‎&gt;' -  (Interface)   (partially reverse engineered - definition not updated) " />
+  <Message Timestamp="2014-02-15T13:55:33" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'MBC Model::System::Collections::Generic::List' -  (Class)   (partially reverse engineered - definition not updated) " />
+  <Message Timestamp="2014-02-15T13:55:33" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'MBC Model::System::Collections::Generic::List&lt;Event‎&gt;' -  (Class)   (partially reverse engineered - definition not updated) " />
+  <Message Timestamp="2014-02-15T13:55:33" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'MBC Model::System::Diagnostics' -  (Package)" />
+  <Message Timestamp="2014-02-15T13:55:33" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'MBC Model::System::Diagnostics::Stopwatch' -  (Class)   (partially reverse engineered - definition not updated) " />
+  <Message Timestamp="2014-02-15T13:55:33" Importance="Diagnostic" Text="Element reverse engineered into the UML model: 'String' -  (PrimitiveType)" />
+  <Message Timestamp="2014-02-15T13:55:33" Importance="Diagnostic" Text="Relationship reverse engineered into the UML model: MBC Model::MBC::Core::Game::MatchCore to MBC Model::System::Collections::Generic::List&lt;Event‎&gt; (Association)" />
+  <Message Timestamp="2014-02-15T13:55:33" Importance="Diagnostic" Text="Relationship reverse engineered into the UML model: MBC Model::MBC::Core::Game::MatchCore to MBC Model::MBC::Shared::Match (Generalization)" />
+  <Message Timestamp="2014-02-15T13:55:33" Importance="High" Text="(1) type(s) fully reverse engineered." />
+  <Message Timestamp="2014-02-15T13:55:33" Importance="High" Text="(13) type(s) partially reverse engineered.  These types were not included in the original selection so their full definitions are not reverse engineered.  Instead, this shallow operation has simply ensured these types exist in the UML model because they are needed in order to fully describe other elements." />
+  <Message Timestamp="2014-02-15T13:55:33" Importance="High" Text="The reverse engineering operation completed with (0) error(s), and (0) warning(s)." />
+</Log>

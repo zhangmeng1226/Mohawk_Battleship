@@ -36,7 +36,7 @@ namespace MBC.Shared
         public bool Active
         {
             get;
-            set;
+            internal set;
         }
 
         /// <summary>
@@ -45,7 +45,7 @@ namespace MBC.Shared
         public IController Controller
         {
             get;
-            set;
+            internal set;
         }
 
         /// <summary>
@@ -54,7 +54,7 @@ namespace MBC.Shared
         public int Disqualifications
         {
             get;
-            set;
+            internal set;
         }
 
         /// <summary>
@@ -63,7 +63,7 @@ namespace MBC.Shared
         public IDNumber ID
         {
             get;
-            set;
+            internal set;
         }
 
         /// <summary>
@@ -72,7 +72,7 @@ namespace MBC.Shared
         public int Losses
         {
             get;
-            set;
+            internal set;
         }
 
         /// <summary>
@@ -81,7 +81,7 @@ namespace MBC.Shared
         public string Name
         {
             get;
-            set;
+            internal set;
         }
 
         /// <summary>
@@ -90,7 +90,7 @@ namespace MBC.Shared
         public int Score
         {
             get;
-            set;
+            internal set;
         }
 
         /// <summary>
@@ -99,7 +99,7 @@ namespace MBC.Shared
         public ISet<Ship> Ships
         {
             get;
-            set;
+            internal set;
         }
 
         /// <summary>
@@ -108,7 +108,7 @@ namespace MBC.Shared
         public int ShotHits
         {
             get;
-            set;
+            internal set;
         }
 
         /// <summary>
@@ -117,13 +117,13 @@ namespace MBC.Shared
         public int ShotMisses
         {
             get;
-            set;
+            internal set;
         }
 
         public IList<Shot> ShotsMade
         {
             get;
-            set;
+            internal set;
         }
 
         /// <summary>
@@ -132,7 +132,7 @@ namespace MBC.Shared
         public Team Team
         {
             get;
-            set;
+            internal set;
         }
 
         /// <summary>
@@ -141,7 +141,7 @@ namespace MBC.Shared
         public int Timeouts
         {
             get;
-            set;
+            internal set;
         }
 
         /// <summary>
@@ -150,7 +150,7 @@ namespace MBC.Shared
         public int Wins
         {
             get;
-            set;
+            internal set;
         }
     }
 }

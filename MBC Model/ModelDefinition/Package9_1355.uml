@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" xmlns:dm1="http://schemas.microsoft.com/dsltools/Kernel" xmlns:dm2="http://schemas.microsoft.com/dsltools/Component" xmlns:dm3="http://schemas.microsoft.com/dsltools/UseCase" xmlns:dm4="http://schemas.microsoft.com/dsltools/Activity" xmlns:dm5="http://schemas.microsoft.com/dsltools/Interaction" xmlns:dm6="http://schemas.microsoft.com/dsltools/UmlModelLibrary" xmlns:dm7="http://schemas.microsoft.com/dsltools/UmlDiagrams" xmlns:dm8="http://schemas.microsoft.com/dsltools/LogicalClassDesigner"
+  dslVersion="1.0.0.0"
+  Id="8d18e7d8-96a1-4a29-905e-00e788ab77a2"
+  name="Diagnostics"
+  visibility="Private" xmlns="http://schemas.microsoft.com/dsltools/ModelStore">
+  <referencesInternal>
+    <reference
+      Id="5930d6d7-73af-4ea8-94ef-a47df432f5ec"
+      handle="viewcode://./CodeSchema_Namespace?Namespace%3DSystem.Diagnostics"
+      tag="ViewCode" />
+  </referencesInternal>
+  <packagedElements>
+    <packageHasNamedElement>
+      <class
+        Id="ab058140-a18e-46b5-9114-4a66fccc1d26"
+        name="Stopwatch"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false">
+        <referencesInternal>
+          <reference
+            Id="69d998fd-3fd3-4af0-a2bb-691277437aba"
+            handle="viewcode://./CodeSchema_Class?Assembly%3D&quot;file:%2F%2F%2FC:%2FProgram Files (x86)%2FReference Assemblies%2FMicrosoft%2FFramework%2F.NETFramework%2Fv4.0%2FSystem.dll&quot; Namespace%3DSystem.Diagnostics Type%3DStopwatch"
+            tag="ViewCode" />
+        </referencesInternal>
+        <appliedStereotypesInternal>
+          <stereotypeInstance
+            Id="06ed08f8-b820-4266-b5cd-c7dd2865bfb6"
+            name="class"
+            profile="CSharpProfile">
+            <propertyInstances>
+              <stereotypeInstanceHasPropertyInstances
+                Id="96d34fcc-a279-403f-a97d-2c484b0a8ba0">
+                <propertyInstance
+                  Id="5cfe78e8-3a7f-4bb5-9bbb-08bbc2431193"
+                  name="ClrAttributes" />
+              </stereotypeInstanceHasPropertyInstances>
+              <stereotypeInstanceHasPropertyInstances
+                Id="4afa0941-9695-44bd-828b-a86e2fa4b96c">
+                <propertyInstance
+                  Id="382f8b4e-32f0-4640-83bd-a296038523ab"
+                  name="IsPartial"
+                  value="false" />
+              </stereotypeInstanceHasPropertyInstances>
+              <stereotypeInstanceHasPropertyInstances
+                Id="87d10780-56eb-4bd2-82f1-2698b4fabb84">
+                <propertyInstance
+                  Id="6b72fa5e-64a9-4017-ba86-aa606e13e14b"
+                  name="IsStatic"
+                  value="False" />
+              </stereotypeInstanceHasPropertyInstances>
+              <stereotypeInstanceHasPropertyInstances
+                Id="d88a412f-532c-422f-8f23-0a3fd310a37d">
+                <propertyInstance
+                  Id="51fd8f3d-09cd-44ff-b5e8-12fc6924b6a2"
+                  name="IsUnsafe"
+                  value="false" />
+              </stereotypeInstanceHasPropertyInstances>
+              <stereotypeInstanceHasPropertyInstances
+                Id="6dfe83be-f3f7-4bc5-ade2-c338b6d9142f">
+                <propertyInstance
+                  Id="e3352d16-4240-40e2-8035-97399787c7c6"
+                  name="PackageVisibility"
+                  value="internal" />
+              </stereotypeInstanceHasPropertyInstances>
+            </propertyInstances>
+          </stereotypeInstance>
+        </appliedStereotypesInternal>
+      </class>
+    </packageHasNamedElement>
+  </packagedElements>
+</package>

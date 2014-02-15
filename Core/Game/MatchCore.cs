@@ -1,4 +1,5 @@
-﻿using MBC.Core.Util;
+﻿using MBC.Core.Controllers;
+using MBC.Core.Util;
 using MBC.Shared;
 using MBC.Shared.Attributes;
 using MBC.Shared.Events;
@@ -17,6 +18,8 @@ namespace MBC.Core.Game
     /// </summary>
     public class MatchCore : Match
     {
+        public const Coordinates COORDS_ZERO = new Coordinates(0, 0);
+
         /// <summary>
         /// Creates a match with parameters loaded from a configuration.
         /// </summary>
@@ -73,7 +76,7 @@ namespace MBC.Core.Game
         /// <returns></returns>
         public virtual bool AddPlayer(ControllerSkeleton skeleton)
         {
-            return AddPlayer(new Player(FindFirstEmptyPlayerID(), skeleton.GetAttribute<NameAttribute>().Name, skeleton.CreateInstance()));
+            return AddPlayer(new Player(FindFirstEmptyPlayerID(), skeleton.GetAttribute<NameAttribute>().Name, new TimedController(skeleton.CreateInstance())));
         }
 
         /// <summary>
@@ -104,9 +107,17 @@ namespace MBC.Core.Game
             return AppendEvent(new RoundEndEvent(this, CurrentRound));
         }
 
-        public bool IsShotValid(Shot shot)
+        /// <summary>
+        /// Determines whether or not a shot made by a player is valid.
+        /// </summary>
+        /// <param name="shooter"></param>
+        /// <param name="shot"></param>
+        /// <returns></returns>
+        public bool IsShotValid(Player shooter, Shot shot)
         {
-            return false;
+            return ShotList.IsShotMade(shooter.ShotsMade, shot) &&
+                shot.Coordinates > COORDS_ZERO &&
+                shot.Coordinates < FieldSize;
         }
 
         /// <summary>
@@ -117,6 +128,17 @@ namespace MBC.Core.Game
         public virtual bool MakePlayerLose(Player plr)
         {
             return AppendEvent(new PlayerLostEvent(plr));
+        }
+
+        /// <summary>
+        /// Call when a player ship has been destroyed.
+        /// </summary>
+        /// <param name="plr"></param>
+        /// <param name="destroyedShip"></param>
+        /// <returns></returns>
+        public virtual bool MakePlayerShipDestroyed(Player plr, Ship destroyedShip)
+        {
+            return AppendEvent(new PlayerShipDestroyedEvent(plr, destroyedShip));
         }
 
         /// <summary>
@@ -191,7 +213,10 @@ namespace MBC.Core.Game
                 IsRunning = true;
                 if (CurrentRound == -1)
                 {
-                    AppendEvent(new RoundBeginEvent(this, CurrentRound + 1));
+                    if (!AppendEvent(new RoundBeginEvent(this, CurrentRound + 1)))
+                    {
+                        IsRunning = false;
+                    }
                 }
                 while (IsRunning && !AtEnd)
                 {
@@ -211,11 +236,12 @@ namespace MBC.Core.Game
             }
         }
 
-        public virtual bool PlayerShipDestroyed(Player plr, Ship destroyedShip)
-        {
-            return false;
-        }
-
+        /// <summary>
+        /// Plays the match events either forward or backward to a specific
+        /// event index.
+        /// </summary>
+        /// <param name="eventIdx"></param>
+        /// <returns></returns>
         public bool PlayToEvent(int eventIdx)
         {
             if (eventIdx < 0 || eventIdx >= Events.Count)
@@ -255,6 +281,10 @@ namespace MBC.Core.Game
             return true;
         }
 
+        /// <summary>
+        /// Plays the match through to the last event that was generated.
+        /// </summary>
+        /// <returns></returns>
         public bool PlayToLastEvent()
         {
             return PlayToEvent(Events.Count - 1);

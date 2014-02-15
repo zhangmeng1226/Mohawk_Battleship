@@ -1,0 +1,3142 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" xmlns:dm1="http://schemas.microsoft.com/dsltools/Kernel" xmlns:dm2="http://schemas.microsoft.com/dsltools/Component" xmlns:dm3="http://schemas.microsoft.com/dsltools/UseCase" xmlns:dm4="http://schemas.microsoft.com/dsltools/Activity" xmlns:dm5="http://schemas.microsoft.com/dsltools/Interaction" xmlns:dm6="http://schemas.microsoft.com/dsltools/UmlModelLibrary" xmlns:dm7="http://schemas.microsoft.com/dsltools/UmlDiagrams" xmlns:dm8="http://schemas.microsoft.com/dsltools/LogicalClassDesigner"
+  dslVersion="1.0.0.0"
+  Id="89c472d1-6313-49dd-adba-96e3089d7039"
+  name="Game"
+  visibility="Private" xmlns="http://schemas.microsoft.com/dsltools/ModelStore">
+  <referencesInternal>
+    <reference
+      Id="f171dd3d-83ce-42b2-b0cd-be6bc248c6f9"
+      handle="viewcode://./CodeSchema_Namespace?Namespace%3DMBC.Core.Game"
+      tag="ViewCode" />
+  </referencesInternal>
+  <packagedElements>
+    <packageHasNamedElement>
+      <class
+        Id="3b0f7f90-e836-428f-97bf-76563ca41e58"
+        name="MatchCore"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false">
+        <referencesInternal>
+          <reference
+            Id="2fabe3ea-c6a4-471c-98dd-1d67f87925c2"
+            handle="viewcode://./CodeSchema_Class?Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fmbc_core.dll&quot; Namespace%3DMBC.Core.Game Type%3DMatchCore"
+            tag="ViewCode" />
+        </referencesInternal>
+        <appliedStereotypesInternal>
+          <stereotypeInstance
+            Id="895a30e7-bbd8-4970-8bfc-dc51acb1b008"
+            name="class"
+            profile="CSharpProfile">
+            <propertyInstances>
+              <stereotypeInstanceHasPropertyInstances
+                Id="bf3a1a40-6b95-47f1-83c4-d2803b361fed">
+                <propertyInstance
+                  Id="a234f4f4-527e-436d-8335-58ed23e2bc1c"
+                  name="ClrAttributes" />
+              </stereotypeInstanceHasPropertyInstances>
+              <stereotypeInstanceHasPropertyInstances
+                Id="dffe5dd4-6463-444b-a563-11bee43716a1">
+                <propertyInstance
+                  Id="59b363f4-0679-4c70-b484-6612d0340440"
+                  name="IsPartial"
+                  value="false" />
+              </stereotypeInstanceHasPropertyInstances>
+              <stereotypeInstanceHasPropertyInstances
+                Id="27aa32eb-32df-4d29-9c3e-0c2fa4b8060d">
+                <propertyInstance
+                  Id="ac15e4f7-460e-437b-8818-e788ed2d4f96"
+                  name="IsStatic"
+                  value="False" />
+              </stereotypeInstanceHasPropertyInstances>
+              <stereotypeInstanceHasPropertyInstances
+                Id="4665d4b2-585a-4a00-a7c9-e0d3695c0aa4">
+                <propertyInstance
+                  Id="2cb49817-a96a-4e13-88b9-7814d0195397"
+                  name="IsUnsafe"
+                  value="false" />
+              </stereotypeInstanceHasPropertyInstances>
+              <stereotypeInstanceHasPropertyInstances
+                Id="a2fb815d-4e0b-4ca0-a2af-6600385e0352">
+                <propertyInstance
+                  Id="2478ec57-3697-466b-9d39-74e488a9cdba"
+                  name="PackageVisibility"
+                  value="internal" />
+              </stereotypeInstanceHasPropertyInstances>
+            </propertyInstances>
+          </stereotypeInstance>
+        </appliedStereotypesInternal>
+        <generalsInternal>
+          <generalization
+            Id="3e8beaa4-6f7a-4fab-9c5b-12b73c2cfca8"
+            isSubstitutable="false">
+            <classMoniker
+              Id="8006b780-4e56-4074-b777-c480c665859b"
+              LastKnownName="Match"
+              LastKnownLocation="Package4_1355.uml" />
+          </generalization>
+        </generalsInternal>
+        <targetEnds>
+          <association
+            Id="c4e51a5d-4995-44f3-9c0f-66b608c9652d"
+            isDerived="false"
+            sourceEndRoleName="MatchCore"
+            targetEndRoleName="Events"
+            isLeaf="false"
+            isAbstract="false">
+            <classMoniker
+              Id="0ba2a7dd-bd2c-4714-9bf0-e608c62ba02f"
+              LastKnownName="List&lt;Event‎&gt;"
+              LastKnownLocation="Package7_1355.uml" />
+            <description>Property Events references type List&lt;Event‎&gt;.</description>
+            <relationshipOwnedElementsInternal>
+              <associationHasOwnedEnds>
+                <memberEnd
+                  Id="a3d0291b-6e12-479c-b33d-8070b3c071e0"
+                  name="MatchCore"
+                  isLeaf="false"
+                  isStatic="false"
+                  isReadOnly="false"
+                  isDerived="false"
+                  isDerivedUnion="false"
+                  aggregation="None"
+                  isComposite="false"
+                  isNavigableOwned="false">
+                  <lowerValueInternal>
+                    <literalString
+                      Id="b79614f6-ad9d-432d-86f8-20dec15df64d"
+                      name="Lower"
+                      value="*" />
+                  </lowerValueInternal>
+                  <upperValueInternal>
+                    <literalString
+                      Id="e491388a-4be8-4840-a85c-31103ca7fecd"
+                      name="Upper"
+                      value="*" />
+                  </upperValueInternal>
+                </memberEnd>
+              </associationHasOwnedEnds>
+              <associationHasOwnedEnds>
+                <memberEnd
+                  Id="f4e944f1-032c-4c86-809e-28c71cb37de1"
+                  name="Events"
+                  isLeaf="false"
+                  isStatic="false"
+                  isReadOnly="false"
+                  isDerived="false"
+                  isDerivedUnion="false"
+                  aggregation="None"
+                  isComposite="false">
+                  <lowerValueInternal>
+                    <literalString
+                      Id="c99e2415-9958-429b-a5cd-ddbafbce0efb"
+                      name="Lower"
+                      value="1" />
+                  </lowerValueInternal>
+                  <upperValueInternal>
+                    <literalString
+                      Id="725b4091-080a-4503-a07d-ea0432b8d868"
+                      name="Upper"
+                      value="1" />
+                  </upperValueInternal>
+                </memberEnd>
+              </associationHasOwnedEnds>
+            </relationshipOwnedElementsInternal>
+          </association>
+        </targetEnds>
+        <ownedAttributesInternal>
+          <property
+            Id="baba558f-35f7-4c91-8682-c2eb9417e0df"
+            name="CurrentEvent"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false">
+            <referencesInternal>
+              <reference
+                Id="8a761fa9-016a-486f-8d53-6fbb6b81ee97"
+                handle="viewcode://./CodeSchema_Property?Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fmbc_core.dll&quot; Namespace%3DMBC.Core.Game Type%3DMatchCore Member%3DCurrentEvent"
+                tag="ViewCode" />
+            </referencesInternal>
+            <appliedStereotypesInternal>
+              <stereotypeInstance
+                Id="f40f04f3-a9fb-45af-8618-335d3361c786"
+                name="property"
+                profile="CSharpProfile">
+                <propertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="f787c494-2f11-4db8-a0e4-13f0dadd0125">
+                    <propertyInstance
+                      Id="1c4b998b-1ff0-49cc-929c-6b2b7d15fad5"
+                      name="ClrAttributes" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="e4e60e13-5c98-4311-8e41-ec925042fdee">
+                    <propertyInstance
+                      Id="f9d8b11c-3ef7-4b6c-9b70-cc8bfd439a11"
+                      name="Get"
+                      value="public" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="b404fec5-ef4c-4d1d-9161-9bdaa16e3da6">
+                    <propertyInstance
+                      Id="f8c3fa11-8885-4891-a0aa-f13e5bd3b592"
+                      name="HasBody"
+                      value="false" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="a2c08534-0b92-4c33-b9df-917de18e83c9">
+                    <propertyInstance
+                      Id="46beb847-fb43-4d0d-a626-b9870d7d542a"
+                      name="IsUnsafe"
+                      value="false" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="29f57ee2-274f-4a07-8384-add02fac740f">
+                    <propertyInstance
+                      Id="dd20403d-fbb1-4487-9ce4-594b686c0c60"
+                      name="Inheritance"
+                      value="none" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="15899a15-bd17-4eab-91fa-d6af45eb5190">
+                    <propertyInstance
+                      Id="4bb60e3a-b9d2-4acb-b120-7893b209be09"
+                      name="PackageVisibility"
+                      value="internal" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="4c3921e9-1d9e-4874-89e0-94dd1f1d472d">
+                    <propertyInstance
+                      Id="aec76445-55b0-4a5d-ab42-2eb9ac7e8463"
+                      name="Set"
+                      value="public" />
+                  </stereotypeInstanceHasPropertyInstances>
+                </propertyInstances>
+              </stereotypeInstance>
+            </appliedStereotypesInternal>
+            <type_NamedElement>
+              <primitiveTypeMoniker
+                Id="220a3521-e091-4221-bae9-3ef9018e845c"
+                LastKnownName="Integer"
+                LastKnownLocation="MBC Model.uml" />
+            </type_NamedElement>
+          </property>
+          <property
+            Id="a2170e8b-180a-44d9-a777-5c348e2e0e65"
+            name="Events"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false">
+            <referencesInternal>
+              <reference
+                Id="957e5935-00c2-4ad7-8d57-d1c2665c9687"
+                handle="viewcode://./CodeSchema_Property?Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fmbc_core.dll&quot; Namespace%3DMBC.Core.Game Type%3DMatchCore Member%3DEvents"
+                tag="ViewCode" />
+            </referencesInternal>
+            <appliedStereotypesInternal>
+              <stereotypeInstance
+                Id="5087c565-3935-47c2-8d14-3a8aa7e8d80a"
+                name="property"
+                profile="CSharpProfile">
+                <propertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="e4606aec-997c-41bd-88b0-2a5f755912be">
+                    <propertyInstance
+                      Id="36b617c6-dd81-44d5-9e0f-a0643e0be617"
+                      name="ClrAttributes" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="5d2e7583-c674-4bda-8466-444201a8f418">
+                    <propertyInstance
+                      Id="346ca306-69fe-4983-b3fb-e1773520752c"
+                      name="Get"
+                      value="public" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="a2f24ca4-cea7-47b2-8373-40e971d4e6c2">
+                    <propertyInstance
+                      Id="09b11332-17eb-4ed8-a207-7858f4f2e250"
+                      name="HasBody"
+                      value="false" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="f1cac218-880b-4e71-bd5c-ba9521a132cb">
+                    <propertyInstance
+                      Id="4b8104a1-7b55-4d19-96e0-dab459fe1f14"
+                      name="IsUnsafe"
+                      value="false" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="8e0c8a5f-1322-4918-b810-8ef88119cff5">
+                    <propertyInstance
+                      Id="bd12f0ea-c41e-43e7-aeb5-a1256b6e627c"
+                      name="Inheritance"
+                      value="none" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="ffbeacb3-57b3-431f-8791-aaa00155b96c">
+                    <propertyInstance
+                      Id="1cec1e83-be7d-44a7-abdf-df5a6b3bbd65"
+                      name="PackageVisibility"
+                      value="internal" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="04fe8594-8f55-4ba5-b333-4c6b3cacc9ef">
+                    <propertyInstance
+                      Id="b2d40d5d-e943-4071-956f-b35d73140158"
+                      name="Set"
+                      value="public" />
+                  </stereotypeInstanceHasPropertyInstances>
+                </propertyInstances>
+              </stereotypeInstance>
+            </appliedStereotypesInternal>
+            <type_NamedElement>
+              <classMoniker
+                Id="0ba2a7dd-bd2c-4714-9bf0-e608c62ba02f"
+                LastKnownName="List&lt;Event‎&gt;"
+                LastKnownLocation="Package7_1355.uml" />
+            </type_NamedElement>
+          </property>
+          <property
+            Id="7a4b8bf3-75be-4b49-9ec5-1c1d40d1a53f"
+            name="IsRunning"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false">
+            <referencesInternal>
+              <reference
+                Id="eb4aa8b5-bdf1-474c-9431-bf5bf9673f64"
+                handle="viewcode://./CodeSchema_Property?Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fmbc_core.dll&quot; Namespace%3DMBC.Core.Game Type%3DMatchCore Member%3DIsRunning"
+                tag="ViewCode" />
+            </referencesInternal>
+            <appliedStereotypesInternal>
+              <stereotypeInstance
+                Id="fbac4ffc-96da-4c4a-9252-40a274044844"
+                name="property"
+                profile="CSharpProfile">
+                <propertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="84038376-5470-485b-ae4d-96f367170292">
+                    <propertyInstance
+                      Id="0374a145-1aba-4fed-90fb-7bc4cc2e7765"
+                      name="ClrAttributes" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="a864f471-bad8-4e7a-af88-e9dc6419e23f">
+                    <propertyInstance
+                      Id="064aedf9-ca46-4b28-b758-4f66e2012302"
+                      name="Get"
+                      value="public" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="fa1987d1-990d-4a41-8069-b66833cc9cc5">
+                    <propertyInstance
+                      Id="f245e5a2-88b0-4cfd-94c9-228728f82c74"
+                      name="HasBody"
+                      value="false" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="806c4a66-a2a5-40e0-af36-2c89883ee685">
+                    <propertyInstance
+                      Id="eaa62f2b-457c-41ce-9b12-3867edf24c1d"
+                      name="IsUnsafe"
+                      value="false" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="a33010b9-b608-4e2b-88d7-6566ddd2527a">
+                    <propertyInstance
+                      Id="88ea7493-1042-4d27-8001-ce4b75918d8f"
+                      name="Inheritance"
+                      value="none" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="15a91f70-5e14-46cd-a280-4c326b79130c">
+                    <propertyInstance
+                      Id="93c6082e-e713-4777-8bce-ab8b10e23c7a"
+                      name="PackageVisibility"
+                      value="internal" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="869e3c34-8952-4bec-a6c5-b0d7b2ae2e73">
+                    <propertyInstance
+                      Id="8e2ef4ee-81bc-4156-873e-f19515237d7d"
+                      name="Set"
+                      value="public" />
+                  </stereotypeInstanceHasPropertyInstances>
+                </propertyInstances>
+              </stereotypeInstance>
+            </appliedStereotypesInternal>
+            <type_NamedElement>
+              <primitiveTypeMoniker
+                Id="8943dc84-709e-4f62-b15a-a3273aa6f165"
+                LastKnownName="Boolean"
+                LastKnownLocation="MBC Model.uml" />
+            </type_NamedElement>
+          </property>
+          <property
+            Id="1290dc7a-5751-4791-9d41-cfe41271b435"
+            name="GameTimer"
+            visibility="Protected"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false">
+            <referencesInternal>
+              <reference
+                Id="d074c2f3-6795-4cae-982d-38cb72769dfb"
+                handle="viewcode://./CodeSchema_Property?Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fmbc_core.dll&quot; Namespace%3DMBC.Core.Game Type%3DMatchCore Member%3DGameTimer"
+                tag="ViewCode" />
+            </referencesInternal>
+            <appliedStereotypesInternal>
+              <stereotypeInstance
+                Id="6c89035b-5eaa-4405-9df4-4f24f37220fa"
+                name="property"
+                profile="CSharpProfile">
+                <propertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="fbe8a6fc-4790-47ee-8350-69b6b53e24e1">
+                    <propertyInstance
+                      Id="98dca505-1a5d-4447-ab53-c09302df84c4"
+                      name="ClrAttributes" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="97599994-8a7a-4978-ac10-81a29032cd3e">
+                    <propertyInstance
+                      Id="19a7cc84-3c83-4dc7-b935-96a99282e9bc"
+                      name="Get"
+                      value="protected" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="2218d6a9-24f6-4ac5-89d8-76d63d52b4db">
+                    <propertyInstance
+                      Id="0da8755a-625e-4a4d-8273-b341bb147d53"
+                      name="HasBody"
+                      value="false" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="08d8e4bb-1bc2-4260-a34e-b06c42e15ab5">
+                    <propertyInstance
+                      Id="47204b0c-c985-46fb-9e41-ee76d34243bd"
+                      name="IsUnsafe"
+                      value="false" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="9e9156d0-b39b-4147-a0ea-efd0ae4d675e">
+                    <propertyInstance
+                      Id="29f44fdf-c8aa-410c-85ca-02bf337d8e84"
+                      name="Inheritance"
+                      value="none" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="126da39b-93df-426b-bd48-8d1c46e9d723">
+                    <propertyInstance
+                      Id="efd584e9-31fc-4ee4-96a1-9c58a25bcaf7"
+                      name="PackageVisibility"
+                      value="internal" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="fa274340-c945-4c13-8ea5-35a034a358e5">
+                    <propertyInstance
+                      Id="4b1b416d-f17a-4bc7-b544-9e8e3a38f62a"
+                      name="Set"
+                      value="protected" />
+                  </stereotypeInstanceHasPropertyInstances>
+                </propertyInstances>
+              </stereotypeInstance>
+            </appliedStereotypesInternal>
+            <type_NamedElement>
+              <classMoniker
+                Id="ab058140-a18e-46b5-9114-4a66fccc1d26"
+                LastKnownName="Stopwatch"
+                LastKnownLocation="Package9_1355.uml" />
+            </type_NamedElement>
+          </property>
+        </ownedAttributesInternal>
+        <ownedOperationsInternal>
+          <operation
+            Id="a674f1f2-6f31-46b9-8aab-e4a5c1589c92"
+            name="MatchCore"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="false"
+            concurrency="Sequential"
+            isQuery="false">
+            <referencesInternal>
+              <reference
+                Id="5bcf4f29-5507-4de7-88b9-e82e2011b4dc"
+                handle="viewcode://./CodeSchema_Method?Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fmbc_core.dll&quot; Namespace%3DMBC.Core.Game Type%3DMatchCore Member%3D(Name%3D.ctor OverloadingParameters%3D[(Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fmbc_core.dll&quot; Namespace%3DMBC.Core.Util Type%3DConfiguration)])"
+                tag="ViewCode" />
+            </referencesInternal>
+            <appliedStereotypesInternal>
+              <stereotypeInstance
+                Id="90cd6c8c-9eb7-459f-87ed-3c3a5616b7ef"
+                name="method"
+                profile="CSharpProfile">
+                <propertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="94d0e06a-d6d1-471d-8aa4-6109867096c0">
+                    <propertyInstance
+                      Id="7504e109-92b5-41cd-97a1-6957df835c96"
+                      name="ClrAttributes" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="25e5610e-ebe9-40e9-8211-32978bfb5c45">
+                    <propertyInstance
+                      Id="2401857d-12dd-4c28-9b0f-f91f1cb9616b"
+                      name="IsPartial"
+                      value="false" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="3b3b1471-0d63-4c27-a1d4-1ff51c08dda4">
+                    <propertyInstance
+                      Id="358eff1c-9624-4bae-a8b5-f549c2362182"
+                      name="IsUnsafe"
+                      value="false" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="d1cd8940-e691-4d65-b08a-ad57842c4d29">
+                    <propertyInstance
+                      Id="5f80dca1-6687-42ee-a655-fb7708cd2ab3"
+                      name="Inheritance"
+                      value="none" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="0599cd1a-eaae-45c5-b585-e5f6d55bc642">
+                    <propertyInstance
+                      Id="b18200eb-86ff-44c2-b368-010cb6308b3f"
+                      name="PackageVisibility"
+                      value="internal" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="a4f3d431-c5f2-42ec-8eab-c82f8200c9cb">
+                    <propertyInstance
+                      Id="0903d88a-495c-4e35-8095-a69e09213a52"
+                      name="params"
+                      value="false" />
+                  </stereotypeInstanceHasPropertyInstances>
+                </propertyInstances>
+              </stereotypeInstance>
+            </appliedStereotypesInternal>
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="de77109f-4db8-4c91-8fc0-91605969372f"
+                  name="config"
+                  direction="In">
+                  <referencesInternal>
+                    <reference
+                      Id="4312937b-7d7c-4c5c-b732-7cf63d441fe1"
+                      handle="viewcode://./CodeSchema_Parameter?Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fmbc_core.dll&quot; Namespace%3DMBC.Core.Game Type%3DMatchCore Member%3D(Name%3D.ctor OverloadingParameters%3D[(Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fmbc_core.dll&quot; Namespace%3DMBC.Core.Util Type%3DConfiguration)]) ParameterIdentifier%3Dconfig"
+                      tag="ViewCode" />
+                  </referencesInternal>
+                  <type_NamedElement>
+                    <classMoniker
+                      Id="9b6d1c8b-7283-4d88-9db5-af6b10cc476c"
+                      LastKnownName="Configuration"
+                      LastKnownLocation="Package3_1355.uml" />
+                  </type_NamedElement>
+                </parameter>
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+          <operation
+            Id="c2407cde-7442-4b6b-a871-3815d05d9b1d"
+            name="MatchCore"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="false"
+            concurrency="Sequential"
+            isQuery="false">
+            <referencesInternal>
+              <reference
+                Id="f0dbbd09-b5b3-4fe5-92fd-3763aa90219c"
+                handle="viewcode://./CodeSchema_Method?Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fmbc_core.dll&quot; Namespace%3DMBC.Core.Game Type%3DMatchCore Member%3D.ctor"
+                tag="ViewCode" />
+            </referencesInternal>
+            <appliedStereotypesInternal>
+              <stereotypeInstance
+                Id="194eab25-16b7-4c8e-8398-9c2d087b6c83"
+                name="method"
+                profile="CSharpProfile">
+                <propertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="fe0ae215-242d-46f3-b410-cb6ceb782d0a">
+                    <propertyInstance
+                      Id="312a68ce-fbcd-46b9-bc28-2068d794e562"
+                      name="ClrAttributes" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="9520574b-f4b7-46b3-b2f0-1c510c81b8cd">
+                    <propertyInstance
+                      Id="f56ade6d-03a8-48da-8888-504efaf057ad"
+                      name="IsPartial"
+                      value="false" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="10fef0e9-c0ae-495a-a805-c2cf5d5c53a4">
+                    <propertyInstance
+                      Id="9769e8d1-a0e0-4b65-b12f-0f53b7ca485a"
+                      name="IsUnsafe"
+                      value="false" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="9d90525f-caa6-4fe9-a4ec-1d2a29710e5a">
+                    <propertyInstance
+                      Id="28b473c4-4346-42b9-a4f0-ed77d951ed4c"
+                      name="Inheritance"
+                      value="none" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="c1053628-6f79-4d58-b8cd-bcca1d231526">
+                    <propertyInstance
+                      Id="abafb254-0e31-450e-93f6-2b60d94c7f5b"
+                      name="PackageVisibility"
+                      value="internal" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="7f5a47e3-626c-486a-9bd3-767eae1f78fe">
+                    <propertyInstance
+                      Id="3c0817b9-71e1-4f9d-861a-26f85fe86d8d"
+                      name="params"
+                      value="false" />
+                  </stereotypeInstanceHasPropertyInstances>
+                </propertyInstances>
+              </stereotypeInstance>
+            </appliedStereotypesInternal>
+          </operation>
+          <operation
+            Id="c58fb413-2a07-45ac-90e2-e336d068b503"
+            name="AddPlayer"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="false"
+            concurrency="Sequential"
+            isQuery="false">
+            <referencesInternal>
+              <reference
+                Id="ada86c04-d267-4ed3-b089-a643611a0ed8"
+                handle="viewcode://./CodeSchema_Method?Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fmbc_core.dll&quot; Namespace%3DMBC.Core.Game Type%3DMatchCore Member%3D(Name%3DAddPlayer OverloadingParameters%3D[(Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fmbc_core.dll&quot; Namespace%3DMBC.Core Type%3DControllerSkeleton)])"
+                tag="ViewCode" />
+            </referencesInternal>
+            <appliedStereotypesInternal>
+              <stereotypeInstance
+                Id="e0c1cbaf-b4a8-4057-9f46-506fe92c214a"
+                name="method"
+                profile="CSharpProfile">
+                <propertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="cbbd31ab-8da0-424f-ab7a-c9494c2a4390">
+                    <propertyInstance
+                      Id="c93750eb-05fa-4c54-a74f-28db86d8cc97"
+                      name="ClrAttributes" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="3c828027-d0b6-415c-bf59-10d39d5d2fd5">
+                    <propertyInstance
+                      Id="3eb1004d-ebd1-481a-8aec-fba7d5b085f7"
+                      name="IsPartial"
+                      value="false" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="311babdd-0e52-4d3f-9068-7d30db7770af">
+                    <propertyInstance
+                      Id="2b97c623-6d17-45e9-9b02-f49b3680e1bc"
+                      name="IsUnsafe"
+                      value="false" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="3e7438d6-8972-4abe-b388-345cd22e2d67">
+                    <propertyInstance
+                      Id="f9970444-1336-402d-bcab-65bca5f54e3e"
+                      name="Inheritance"
+                      value="none" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="c839d566-71d8-4cf7-bfb2-c4d9e9756998">
+                    <propertyInstance
+                      Id="2cf4dc66-a1f2-4dd7-bcbc-7cd3e5d3d5f3"
+                      name="PackageVisibility"
+                      value="internal" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="dc26274f-b925-4640-80fd-892fd8e88c1c">
+                    <propertyInstance
+                      Id="7210275f-1c0a-45dc-96fb-87b3f6ae9f9f"
+                      name="params"
+                      value="false" />
+                  </stereotypeInstanceHasPropertyInstances>
+                </propertyInstances>
+              </stereotypeInstance>
+            </appliedStereotypesInternal>
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="5a4a3176-c4a4-4511-aebb-49c7fecc2087"
+                  direction="Return">
+                  <type_NamedElement>
+                    <primitiveTypeMoniker
+                      Id="8943dc84-709e-4f62-b15a-a3273aa6f165"
+                      LastKnownName="Boolean"
+                      LastKnownLocation="MBC Model.uml" />
+                  </type_NamedElement>
+                </parameter>
+              </operationHasOwnedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="919dd9ab-ef46-4863-9017-4c8158b0bdaf"
+                  name="skeleton"
+                  direction="In">
+                  <referencesInternal>
+                    <reference
+                      Id="2d52a9c5-be04-49e4-b2f8-92f75c55162c"
+                      handle="viewcode://./CodeSchema_Parameter?Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fmbc_core.dll&quot; Namespace%3DMBC.Core.Game Type%3DMatchCore Member%3D(Name%3DAddPlayer OverloadingParameters%3D[(Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fmbc_core.dll&quot; Namespace%3DMBC.Core Type%3DControllerSkeleton)]) ParameterIdentifier%3Dskeleton"
+                      tag="ViewCode" />
+                  </referencesInternal>
+                  <type_NamedElement>
+                    <classMoniker
+                      Id="1def70f8-b700-4042-9fbf-0c8eb1eca724"
+                      LastKnownName="ControllerSkeleton"
+                      LastKnownLocation="Package1_1355.uml" />
+                  </type_NamedElement>
+                </parameter>
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+          <operation
+            Id="238828e2-2898-4a5c-91f0-0d3bcb6b6b11"
+            name="AssignPlayerTeam"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="false"
+            concurrency="Sequential"
+            isQuery="false">
+            <referencesInternal>
+              <reference
+                Id="f2121791-8f49-49de-a818-db98c1bccae3"
+                handle="viewcode://./CodeSchema_Method?Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fmbc_core.dll&quot; Namespace%3DMBC.Core.Game Type%3DMatchCore Member%3D(Name%3DAssignPlayerTeam OverloadingParameters%3D[(Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fctrlplugin.dll&quot; Namespace%3DMBC.Shared Type%3DPlayer)%2C(Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fctrlplugin.dll&quot; Namespace%3DMBC.Shared Type%3DTeam)])"
+                tag="ViewCode" />
+            </referencesInternal>
+            <appliedStereotypesInternal>
+              <stereotypeInstance
+                Id="6248b8be-026b-4456-a6a9-e1da450f5651"
+                name="method"
+                profile="CSharpProfile">
+                <propertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="b3b3a201-e069-4b42-a4ea-4389bcd0bc5c">
+                    <propertyInstance
+                      Id="7b944cae-6594-4a74-988e-91e8a42f27b0"
+                      name="ClrAttributes" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="587d6759-3552-4647-a308-c3b24bd54b2f">
+                    <propertyInstance
+                      Id="b933b094-e4b8-4ae9-9e03-06a6bac8a5e2"
+                      name="IsPartial"
+                      value="false" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="33a0f33d-de99-4406-a24c-9a56fe2ce756">
+                    <propertyInstance
+                      Id="fb35e589-2b9d-4c82-b140-273bb20ce5d2"
+                      name="IsUnsafe"
+                      value="false" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="19f61183-bb88-4c21-86b4-9485186854eb">
+                    <propertyInstance
+                      Id="91c4342f-889e-40cf-b90d-3e36ae4fad1f"
+                      name="Inheritance"
+                      value="none" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="82fa35e2-6438-4eb9-adb5-251c68a2f225">
+                    <propertyInstance
+                      Id="d17b44e5-4ff3-4fc6-a558-1640f13f25db"
+                      name="PackageVisibility"
+                      value="internal" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="c74ec1b9-11fc-461e-8365-c884fd05ade7">
+                    <propertyInstance
+                      Id="8d1704e3-5262-459b-89b2-2bfc6b4d808f"
+                      name="params"
+                      value="false" />
+                  </stereotypeInstanceHasPropertyInstances>
+                </propertyInstances>
+              </stereotypeInstance>
+            </appliedStereotypesInternal>
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="1c1cdf2d-f901-4f36-bea0-84adb2ad9e85"
+                  direction="Return">
+                  <type_NamedElement>
+                    <primitiveTypeMoniker
+                      Id="8943dc84-709e-4f62-b15a-a3273aa6f165"
+                      LastKnownName="Boolean"
+                      LastKnownLocation="MBC Model.uml" />
+                  </type_NamedElement>
+                </parameter>
+              </operationHasOwnedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="8dc28c26-68a3-4841-a874-f2f338459a54"
+                  name="plr"
+                  direction="In">
+                  <referencesInternal>
+                    <reference
+                      Id="b9d9e7e0-1ef6-4413-9b9c-5508e659ab56"
+                      handle="viewcode://./CodeSchema_Parameter?Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fmbc_core.dll&quot; Namespace%3DMBC.Core.Game Type%3DMatchCore Member%3D(Name%3DAssignPlayerTeam OverloadingParameters%3D[(Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fctrlplugin.dll&quot; Namespace%3DMBC.Shared Type%3DPlayer)%2C(Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fctrlplugin.dll&quot; Namespace%3DMBC.Shared Type%3DTeam)]) ParameterIdentifier%3Dplr"
+                      tag="ViewCode" />
+                  </referencesInternal>
+                  <type_NamedElement>
+                    <classMoniker
+                      Id="41767e86-4cfc-4500-b040-31dcae4f09c5"
+                      LastKnownName="Player"
+                      LastKnownLocation="Package4_1355.uml" />
+                  </type_NamedElement>
+                </parameter>
+              </operationHasOwnedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="e185711e-6025-420c-94e3-e58cfe1e3006"
+                  name="newTeam"
+                  direction="In">
+                  <referencesInternal>
+                    <reference
+                      Id="3982450d-4211-468c-ae89-4c1613ca3323"
+                      handle="viewcode://./CodeSchema_Parameter?Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fmbc_core.dll&quot; Namespace%3DMBC.Core.Game Type%3DMatchCore Member%3D(Name%3DAssignPlayerTeam OverloadingParameters%3D[(Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fctrlplugin.dll&quot; Namespace%3DMBC.Shared Type%3DPlayer)%2C(Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fctrlplugin.dll&quot; Namespace%3DMBC.Shared Type%3DTeam)]) ParameterIdentifier%3DnewTeam"
+                      tag="ViewCode" />
+                  </referencesInternal>
+                  <type_NamedElement>
+                    <classMoniker
+                      Id="0ec091d3-25d6-49e8-9fd0-6f774c43b76d"
+                      LastKnownName="Team"
+                      LastKnownLocation="Package4_1355.uml" />
+                  </type_NamedElement>
+                </parameter>
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+          <operation
+            Id="bcfde738-e5bb-4aa5-9bf0-2e1dcd9f2282"
+            name="EndMatch"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="false"
+            concurrency="Sequential"
+            isQuery="false">
+            <referencesInternal>
+              <reference
+                Id="148f6862-462e-4451-b64d-cda8a8bd2a1d"
+                handle="viewcode://./CodeSchema_Method?Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fmbc_core.dll&quot; Namespace%3DMBC.Core.Game Type%3DMatchCore Member%3DEndMatch"
+                tag="ViewCode" />
+            </referencesInternal>
+            <appliedStereotypesInternal>
+              <stereotypeInstance
+                Id="9794fb4d-377c-449c-864a-bd6b79199d6d"
+                name="method"
+                profile="CSharpProfile">
+                <propertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="65da749e-6a66-410d-be1c-a782feeba15c">
+                    <propertyInstance
+                      Id="05fe187b-54ca-41ce-be25-600eb311d0cd"
+                      name="ClrAttributes" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="6395ec7c-8b55-44c4-a497-e7f661db2621">
+                    <propertyInstance
+                      Id="09dc35e7-0034-40dd-82cb-0007c65f41cf"
+                      name="IsPartial"
+                      value="false" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="00a58cd8-ebde-4188-98f4-31dcd61379f8">
+                    <propertyInstance
+                      Id="b9336ab9-c754-4408-8137-d0921cd896e3"
+                      name="IsUnsafe"
+                      value="false" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="3b9fbec0-74b0-4432-a7b7-b427f5ecce21">
+                    <propertyInstance
+                      Id="28fbb25c-55d0-4664-b4b5-5bc48c4e65e2"
+                      name="Inheritance"
+                      value="none" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="f1e446b8-e1a3-4095-bf4c-9f38042b3b56">
+                    <propertyInstance
+                      Id="d525a729-6542-40d4-9b12-a4e911e156d6"
+                      name="PackageVisibility"
+                      value="internal" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="155e5dd4-073b-4f7e-9edf-be6baf52bd1c">
+                    <propertyInstance
+                      Id="25c1910d-10bc-47dd-841c-bed8607efd13"
+                      name="params"
+                      value="false" />
+                  </stereotypeInstanceHasPropertyInstances>
+                </propertyInstances>
+              </stereotypeInstance>
+            </appliedStereotypesInternal>
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="adbf17ac-f1b1-40f3-9ef3-4b7fbac614c1"
+                  direction="Return">
+                  <type_NamedElement>
+                    <primitiveTypeMoniker
+                      Id="8943dc84-709e-4f62-b15a-a3273aa6f165"
+                      LastKnownName="Boolean"
+                      LastKnownLocation="MBC Model.uml" />
+                  </type_NamedElement>
+                </parameter>
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+          <operation
+            Id="8ad0533f-6a1c-44da-970d-20e4b8bb1965"
+            name="EndRound"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="false"
+            concurrency="Sequential"
+            isQuery="false">
+            <referencesInternal>
+              <reference
+                Id="df3075e1-ef94-4622-b478-a41a80e12b83"
+                handle="viewcode://./CodeSchema_Method?Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fmbc_core.dll&quot; Namespace%3DMBC.Core.Game Type%3DMatchCore Member%3DEndRound"
+                tag="ViewCode" />
+            </referencesInternal>
+            <appliedStereotypesInternal>
+              <stereotypeInstance
+                Id="7d33ef1a-2bb2-487b-a983-5bcbc40752fa"
+                name="method"
+                profile="CSharpProfile">
+                <propertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="5d45fb48-6d4c-47d2-ae4e-7b48c60a4403">
+                    <propertyInstance
+                      Id="b91053a6-a1fa-4b57-bdc5-9616add5240a"
+                      name="ClrAttributes" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="a028a28c-44c3-4e2a-8188-33e2995a4351">
+                    <propertyInstance
+                      Id="f827efa4-2953-40c3-aa1c-cda0e0d357d4"
+                      name="IsPartial"
+                      value="false" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="d1781509-568b-497a-b710-ce2f5d1ec573">
+                    <propertyInstance
+                      Id="13d879cd-4ba4-4d6f-8249-0db61d0874f8"
+                      name="IsUnsafe"
+                      value="false" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="ff1a5b22-e1e2-46cb-9d8a-f2aae5ef9351">
+                    <propertyInstance
+                      Id="5a6aef3f-248f-4e92-a8f3-1b29e44cc394"
+                      name="Inheritance"
+                      value="none" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="c297f595-e60c-4cbd-9abc-b2bd711eca6e">
+                    <propertyInstance
+                      Id="211e65e9-3060-4c46-8eb8-f4ca3bc452df"
+                      name="PackageVisibility"
+                      value="internal" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="20011843-a8ab-4ace-a554-50bac18843f9">
+                    <propertyInstance
+                      Id="44103be3-cf49-4bd9-ab1e-9bf44858ef3a"
+                      name="params"
+                      value="false" />
+                  </stereotypeInstanceHasPropertyInstances>
+                </propertyInstances>
+              </stereotypeInstance>
+            </appliedStereotypesInternal>
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="79165888-d974-4e8e-8481-3c18317e0b8c"
+                  direction="Return">
+                  <type_NamedElement>
+                    <primitiveTypeMoniker
+                      Id="8943dc84-709e-4f62-b15a-a3273aa6f165"
+                      LastKnownName="Boolean"
+                      LastKnownLocation="MBC Model.uml" />
+                  </type_NamedElement>
+                </parameter>
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+          <operation
+            Id="87cb1e00-b592-482c-abb5-abd4ff098f50"
+            name="IsShotValid"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="false"
+            concurrency="Sequential"
+            isQuery="false">
+            <referencesInternal>
+              <reference
+                Id="6ad7d95e-6ee3-4dd0-be57-e60e935420b5"
+                handle="viewcode://./CodeSchema_Method?Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fmbc_core.dll&quot; Namespace%3DMBC.Core.Game Type%3DMatchCore Member%3D(Name%3DIsShotValid OverloadingParameters%3D[(Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fctrlplugin.dll&quot; Namespace%3DMBC.Shared Type%3DShot)])"
+                tag="ViewCode" />
+            </referencesInternal>
+            <appliedStereotypesInternal>
+              <stereotypeInstance
+                Id="85cff91f-1dc6-4d83-a323-d4cff19f7ab4"
+                name="method"
+                profile="CSharpProfile">
+                <propertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="ad72473e-7117-4690-b7e8-1ab4b12e6c8d">
+                    <propertyInstance
+                      Id="6fbd6fe6-8580-47fd-baf8-48a0083cff03"
+                      name="ClrAttributes" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="dc2e33a2-6c1f-4dda-935b-1f950130e477">
+                    <propertyInstance
+                      Id="ed4b118e-dc57-448f-afb3-d6d7d5d9548a"
+                      name="IsPartial"
+                      value="false" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="aa7c629a-3a6e-4377-8d8e-832c6c73a99f">
+                    <propertyInstance
+                      Id="dd265854-65ae-4f9f-9657-260a16438097"
+                      name="IsUnsafe"
+                      value="false" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="61d8ab96-37b0-4426-bbb1-f842aadd9b7e">
+                    <propertyInstance
+                      Id="e3a6c25b-0bde-415a-976e-8518ab5c4f12"
+                      name="Inheritance"
+                      value="none" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="6548347d-a582-4d4a-b533-aeeef88a7c0b">
+                    <propertyInstance
+                      Id="f80edd0a-c0b2-4983-8da6-9764dc4dd08c"
+                      name="PackageVisibility"
+                      value="internal" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="aa903bff-4c15-4511-bb53-d99bc58ec0d9">
+                    <propertyInstance
+                      Id="a645c2df-638b-410a-9cf5-f8e6db4e07af"
+                      name="params"
+                      value="false" />
+                  </stereotypeInstanceHasPropertyInstances>
+                </propertyInstances>
+              </stereotypeInstance>
+            </appliedStereotypesInternal>
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="1ca675e2-d083-431e-b9a4-d2b8a1bc3a02"
+                  direction="Return">
+                  <type_NamedElement>
+                    <primitiveTypeMoniker
+                      Id="8943dc84-709e-4f62-b15a-a3273aa6f165"
+                      LastKnownName="Boolean"
+                      LastKnownLocation="MBC Model.uml" />
+                  </type_NamedElement>
+                </parameter>
+              </operationHasOwnedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="ba87e73f-05a2-46b9-8550-a2a0c9023a02"
+                  name="shot"
+                  direction="In">
+                  <referencesInternal>
+                    <reference
+                      Id="6a206268-fe3e-4b97-b0be-c450f7b4f861"
+                      handle="viewcode://./CodeSchema_Parameter?Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fmbc_core.dll&quot; Namespace%3DMBC.Core.Game Type%3DMatchCore Member%3D(Name%3DIsShotValid OverloadingParameters%3D[(Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fctrlplugin.dll&quot; Namespace%3DMBC.Shared Type%3DShot)]) ParameterIdentifier%3Dshot"
+                      tag="ViewCode" />
+                  </referencesInternal>
+                  <type_NamedElement>
+                    <classMoniker
+                      Id="38df87f4-470a-49f9-be90-011b29f1d31c"
+                      LastKnownName="Shot"
+                      LastKnownLocation="Package4_1355.uml" />
+                  </type_NamedElement>
+                </parameter>
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+          <operation
+            Id="7bbfdbc7-e723-4abf-bff9-bbeff9815834"
+            name="MakePlayerLose"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="false"
+            concurrency="Sequential"
+            isQuery="false">
+            <referencesInternal>
+              <reference
+                Id="ed1c3e2b-9bfb-400d-bb66-8c6903621b25"
+                handle="viewcode://./CodeSchema_Method?Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fmbc_core.dll&quot; Namespace%3DMBC.Core.Game Type%3DMatchCore Member%3D(Name%3DMakePlayerLose OverloadingParameters%3D[(Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fctrlplugin.dll&quot; Namespace%3DMBC.Shared Type%3DPlayer)])"
+                tag="ViewCode" />
+            </referencesInternal>
+            <appliedStereotypesInternal>
+              <stereotypeInstance
+                Id="9300ec2a-1b84-4829-b2bc-809557779d8e"
+                name="method"
+                profile="CSharpProfile">
+                <propertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="f658dd90-70f8-4773-8b62-68b77a01c3d1">
+                    <propertyInstance
+                      Id="d11c4a53-ad3f-418c-9773-abfcdb5fd07d"
+                      name="ClrAttributes" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="0f9f53b6-87e7-4a77-89f1-ed78107f44be">
+                    <propertyInstance
+                      Id="f05dcbdb-868b-464e-b64c-5a729c31affa"
+                      name="IsPartial"
+                      value="false" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="427d9bbf-4ff1-48a2-90b5-e70d7bbb1af5">
+                    <propertyInstance
+                      Id="d902e113-8872-41cc-b293-25b36047287e"
+                      name="IsUnsafe"
+                      value="false" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="f784d59e-b139-4aaa-90e3-99460c623662">
+                    <propertyInstance
+                      Id="f7ca0b53-d431-4cfb-9c8c-c27f83d38c89"
+                      name="Inheritance"
+                      value="none" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="3806259b-3403-4298-8353-a2e13557a7e0">
+                    <propertyInstance
+                      Id="f178d152-90df-43c0-b31e-3683d185024f"
+                      name="PackageVisibility"
+                      value="internal" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="582c0c75-8bab-475f-8aa4-02808d872891">
+                    <propertyInstance
+                      Id="f7b4db2b-4f26-49c6-a54c-6a807d665ca8"
+                      name="params"
+                      value="false" />
+                  </stereotypeInstanceHasPropertyInstances>
+                </propertyInstances>
+              </stereotypeInstance>
+            </appliedStereotypesInternal>
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="5496956f-5830-46db-93bf-88edd3cbe499"
+                  direction="Return">
+                  <type_NamedElement>
+                    <primitiveTypeMoniker
+                      Id="8943dc84-709e-4f62-b15a-a3273aa6f165"
+                      LastKnownName="Boolean"
+                      LastKnownLocation="MBC Model.uml" />
+                  </type_NamedElement>
+                </parameter>
+              </operationHasOwnedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="923433b9-2a01-413c-ad0f-3d60d5d33a14"
+                  name="plr"
+                  direction="In">
+                  <referencesInternal>
+                    <reference
+                      Id="162aa50b-26ff-4e0b-bdec-abe556dd70f7"
+                      handle="viewcode://./CodeSchema_Parameter?Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fmbc_core.dll&quot; Namespace%3DMBC.Core.Game Type%3DMatchCore Member%3D(Name%3DMakePlayerLose OverloadingParameters%3D[(Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fctrlplugin.dll&quot; Namespace%3DMBC.Shared Type%3DPlayer)]) ParameterIdentifier%3Dplr"
+                      tag="ViewCode" />
+                  </referencesInternal>
+                  <type_NamedElement>
+                    <classMoniker
+                      Id="41767e86-4cfc-4500-b040-31dcae4f09c5"
+                      LastKnownName="Player"
+                      LastKnownLocation="Package4_1355.uml" />
+                  </type_NamedElement>
+                </parameter>
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+          <operation
+            Id="4a3a8a68-4b25-4b2e-a84c-edb7663a3cc1"
+            name="MakePlayerShot"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="false"
+            concurrency="Sequential"
+            isQuery="false">
+            <referencesInternal>
+              <reference
+                Id="e99ca847-5a05-4cdb-baad-a1f689a89d14"
+                handle="viewcode://./CodeSchema_Method?Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fmbc_core.dll&quot; Namespace%3DMBC.Core.Game Type%3DMatchCore Member%3D(Name%3DMakePlayerShot OverloadingParameters%3D[(Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fctrlplugin.dll&quot; Namespace%3DMBC.Shared Type%3DPlayer)%2C(Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fctrlplugin.dll&quot; Namespace%3DMBC.Shared Type%3DShot)])"
+                tag="ViewCode" />
+            </referencesInternal>
+            <appliedStereotypesInternal>
+              <stereotypeInstance
+                Id="2bf0e476-9f05-437f-8640-735cf770edbf"
+                name="method"
+                profile="CSharpProfile">
+                <propertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="77677a69-5390-4b9d-ba1a-4ec90ca1ce34">
+                    <propertyInstance
+                      Id="61adb344-ca16-45c3-886a-a3fb19c747f9"
+                      name="ClrAttributes" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="1ab29866-97b8-4185-9f2c-e6783830eee9">
+                    <propertyInstance
+                      Id="2ff0f454-1c86-449b-8c4b-9044497c63ec"
+                      name="IsPartial"
+                      value="false" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="247ea3f0-1b88-42c2-8c59-c82808435585">
+                    <propertyInstance
+                      Id="947bbe78-6973-4fca-b373-5671d03f6a69"
+                      name="IsUnsafe"
+                      value="false" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="1561dc93-b23e-48f7-bde2-eb799d9cd067">
+                    <propertyInstance
+                      Id="35fdd610-6776-4fe9-b0a7-71f9a714aa31"
+                      name="Inheritance"
+                      value="none" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="817e38ed-fd0f-4e2b-ac8d-d6bbba38d5bf">
+                    <propertyInstance
+                      Id="1f35327b-ec38-4455-8f0e-8aa4ccf162ef"
+                      name="PackageVisibility"
+                      value="internal" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="8b4289c5-7c5b-41cf-8b64-2520a27414d6">
+                    <propertyInstance
+                      Id="a38c9ac6-2deb-4ae2-a5aa-d2f1eb0d08f7"
+                      name="params"
+                      value="false" />
+                  </stereotypeInstanceHasPropertyInstances>
+                </propertyInstances>
+              </stereotypeInstance>
+            </appliedStereotypesInternal>
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="9d7b40c0-7759-4c3b-9265-d5ddc921f635"
+                  direction="Return">
+                  <type_NamedElement>
+                    <primitiveTypeMoniker
+                      Id="8943dc84-709e-4f62-b15a-a3273aa6f165"
+                      LastKnownName="Boolean"
+                      LastKnownLocation="MBC Model.uml" />
+                  </type_NamedElement>
+                </parameter>
+              </operationHasOwnedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="a5f9e392-a9d8-47a2-b5b9-3eeac3528734"
+                  name="plr"
+                  direction="In">
+                  <referencesInternal>
+                    <reference
+                      Id="5b23fdba-2d71-41e5-b8ec-d131cb5086a8"
+                      handle="viewcode://./CodeSchema_Parameter?Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fmbc_core.dll&quot; Namespace%3DMBC.Core.Game Type%3DMatchCore Member%3D(Name%3DMakePlayerShot OverloadingParameters%3D[(Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fctrlplugin.dll&quot; Namespace%3DMBC.Shared Type%3DPlayer)%2C(Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fctrlplugin.dll&quot; Namespace%3DMBC.Shared Type%3DShot)]) ParameterIdentifier%3Dplr"
+                      tag="ViewCode" />
+                  </referencesInternal>
+                  <type_NamedElement>
+                    <classMoniker
+                      Id="41767e86-4cfc-4500-b040-31dcae4f09c5"
+                      LastKnownName="Player"
+                      LastKnownLocation="Package4_1355.uml" />
+                  </type_NamedElement>
+                </parameter>
+              </operationHasOwnedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="8208345e-33df-49d9-8d82-39e3564ff839"
+                  name="shot"
+                  direction="In">
+                  <referencesInternal>
+                    <reference
+                      Id="994ef721-1957-4048-871c-6d3da6f9a407"
+                      handle="viewcode://./CodeSchema_Parameter?Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fmbc_core.dll&quot; Namespace%3DMBC.Core.Game Type%3DMatchCore Member%3D(Name%3DMakePlayerShot OverloadingParameters%3D[(Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fctrlplugin.dll&quot; Namespace%3DMBC.Shared Type%3DPlayer)%2C(Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fctrlplugin.dll&quot; Namespace%3DMBC.Shared Type%3DShot)]) ParameterIdentifier%3Dshot"
+                      tag="ViewCode" />
+                  </referencesInternal>
+                  <type_NamedElement>
+                    <classMoniker
+                      Id="38df87f4-470a-49f9-be90-011b29f1d31c"
+                      LastKnownName="Shot"
+                      LastKnownLocation="Package4_1355.uml" />
+                  </type_NamedElement>
+                </parameter>
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+          <operation
+            Id="b8e0c31f-f7b0-4228-8039-1a59ed2a089f"
+            name="MakePlayerShot"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="false"
+            concurrency="Sequential"
+            isQuery="false">
+            <referencesInternal>
+              <reference
+                Id="1f4bb6e3-815b-497a-9e0a-398613c89e1a"
+                handle="viewcode://./CodeSchema_Method?Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fmbc_core.dll&quot; Namespace%3DMBC.Core.Game Type%3DMatchCore Member%3D(Name%3DMakePlayerShot OverloadingParameters%3D[(Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fctrlplugin.dll&quot; Namespace%3DMBC.Shared Type%3DPlayer)%2C(Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fctrlplugin.dll&quot; Namespace%3DMBC.Shared Type%3DShot)%2C(Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fctrlplugin.dll&quot; Namespace%3DMBC.Shared Type%3DShip)])"
+                tag="ViewCode" />
+            </referencesInternal>
+            <appliedStereotypesInternal>
+              <stereotypeInstance
+                Id="f1c5e069-a66a-43fe-81b8-9bc2fe37576b"
+                name="method"
+                profile="CSharpProfile">
+                <propertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="0aab4fe0-bc20-4dff-99a7-bbd5f6e90b4b">
+                    <propertyInstance
+                      Id="11320724-6da2-4fec-94c8-866054a4a3cb"
+                      name="ClrAttributes" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="ccd689b2-be84-4034-bf1f-4239394d18dd">
+                    <propertyInstance
+                      Id="87188ead-9f3a-45a6-97ed-c85c8920f8a0"
+                      name="IsPartial"
+                      value="false" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="a74ee68c-df6b-45c5-bdd5-1514c71f77a8">
+                    <propertyInstance
+                      Id="caf309e9-c18e-487e-bf5d-fb91a7fa8c84"
+                      name="IsUnsafe"
+                      value="false" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="e17e9444-9d17-4064-9e80-25fb64ba7569">
+                    <propertyInstance
+                      Id="8d51b486-64c9-438a-a838-a51ac8493746"
+                      name="Inheritance"
+                      value="none" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="5c75847f-0410-4ef5-8f23-e4e21f3c6be2">
+                    <propertyInstance
+                      Id="10f426f7-1c05-40cf-8be4-7802bbb8e496"
+                      name="PackageVisibility"
+                      value="internal" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="31acadbf-fca1-4cce-afa8-f17e1d69407e">
+                    <propertyInstance
+                      Id="18587503-c36f-40d2-9f37-f0be5d5fe2b0"
+                      name="params"
+                      value="false" />
+                  </stereotypeInstanceHasPropertyInstances>
+                </propertyInstances>
+              </stereotypeInstance>
+            </appliedStereotypesInternal>
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="74839f82-0ca8-40a1-b403-48b373bb15f5"
+                  direction="Return">
+                  <type_NamedElement>
+                    <primitiveTypeMoniker
+                      Id="8943dc84-709e-4f62-b15a-a3273aa6f165"
+                      LastKnownName="Boolean"
+                      LastKnownLocation="MBC Model.uml" />
+                  </type_NamedElement>
+                </parameter>
+              </operationHasOwnedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="9038e290-5020-42ce-bfb0-32ed24a0a55c"
+                  name="plr"
+                  direction="In">
+                  <referencesInternal>
+                    <reference
+                      Id="a7274cef-2694-4b3b-9158-0efe39d6cac3"
+                      handle="viewcode://./CodeSchema_Parameter?Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fmbc_core.dll&quot; Namespace%3DMBC.Core.Game Type%3DMatchCore Member%3D(Name%3DMakePlayerShot OverloadingParameters%3D[(Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fctrlplugin.dll&quot; Namespace%3DMBC.Shared Type%3DPlayer)%2C(Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fctrlplugin.dll&quot; Namespace%3DMBC.Shared Type%3DShot)%2C(Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fctrlplugin.dll&quot; Namespace%3DMBC.Shared Type%3DShip)]) ParameterIdentifier%3Dplr"
+                      tag="ViewCode" />
+                  </referencesInternal>
+                  <type_NamedElement>
+                    <classMoniker
+                      Id="41767e86-4cfc-4500-b040-31dcae4f09c5"
+                      LastKnownName="Player"
+                      LastKnownLocation="Package4_1355.uml" />
+                  </type_NamedElement>
+                </parameter>
+              </operationHasOwnedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="2e77f727-1d5a-4c6e-8a8e-472cfa70df64"
+                  name="shot"
+                  direction="In">
+                  <referencesInternal>
+                    <reference
+                      Id="7b90e763-3e71-4337-b5f8-337af0d7c434"
+                      handle="viewcode://./CodeSchema_Parameter?Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fmbc_core.dll&quot; Namespace%3DMBC.Core.Game Type%3DMatchCore Member%3D(Name%3DMakePlayerShot OverloadingParameters%3D[(Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fctrlplugin.dll&quot; Namespace%3DMBC.Shared Type%3DPlayer)%2C(Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fctrlplugin.dll&quot; Namespace%3DMBC.Shared Type%3DShot)%2C(Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fctrlplugin.dll&quot; Namespace%3DMBC.Shared Type%3DShip)]) ParameterIdentifier%3Dshot"
+                      tag="ViewCode" />
+                  </referencesInternal>
+                  <type_NamedElement>
+                    <classMoniker
+                      Id="38df87f4-470a-49f9-be90-011b29f1d31c"
+                      LastKnownName="Shot"
+                      LastKnownLocation="Package4_1355.uml" />
+                  </type_NamedElement>
+                </parameter>
+              </operationHasOwnedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="8d834254-2eb8-4629-a87b-1abb4c146027"
+                  name="shipHit"
+                  direction="In">
+                  <referencesInternal>
+                    <reference
+                      Id="6750ff74-3623-49c1-95de-26b595a61aa9"
+                      handle="viewcode://./CodeSchema_Parameter?Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fmbc_core.dll&quot; Namespace%3DMBC.Core.Game Type%3DMatchCore Member%3D(Name%3DMakePlayerShot OverloadingParameters%3D[(Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fctrlplugin.dll&quot; Namespace%3DMBC.Shared Type%3DPlayer)%2C(Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fctrlplugin.dll&quot; Namespace%3DMBC.Shared Type%3DShot)%2C(Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fctrlplugin.dll&quot; Namespace%3DMBC.Shared Type%3DShip)]) ParameterIdentifier%3DshipHit"
+                      tag="ViewCode" />
+                  </referencesInternal>
+                  <type_NamedElement>
+                    <classMoniker
+                      Id="41ae42a3-4565-4512-a824-d5fb86aa8728"
+                      LastKnownName="Ship"
+                      LastKnownLocation="Package4_1355.uml" />
+                  </type_NamedElement>
+                </parameter>
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+          <operation
+            Id="d05215d7-f524-4802-9425-0134fffdad3b"
+            name="MakePlayerTimeout"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="false"
+            concurrency="Sequential"
+            isQuery="false">
+            <referencesInternal>
+              <reference
+                Id="f586eb21-3640-42cc-8aac-7561c6520887"
+                handle="viewcode://./CodeSchema_Method?Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fmbc_core.dll&quot; Namespace%3DMBC.Core.Game Type%3DMatchCore Member%3D(Name%3DMakePlayerTimeout OverloadingParameters%3D[(Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fctrlplugin.dll&quot; Namespace%3DMBC.Shared Type%3DPlayer)%2C(Assembly%3D&quot;file:%2F%2F%2FC:%2FProgram Files (x86)%2FReference Assemblies%2FMicrosoft%2FFramework%2F.NETFramework%2Fv4.0%2Fmscorlib.dll&quot; Namespace%3DSystem Type%3DString)])"
+                tag="ViewCode" />
+            </referencesInternal>
+            <appliedStereotypesInternal>
+              <stereotypeInstance
+                Id="8e4f395b-7ff7-4ac5-aec6-0122cbdb2bbd"
+                name="method"
+                profile="CSharpProfile">
+                <propertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="e0787a38-d8c2-4729-ad2e-7a5154e520a9">
+                    <propertyInstance
+                      Id="f75df08a-03e0-4b26-a516-9242730c3a62"
+                      name="ClrAttributes" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="b5788285-4445-49ec-832d-55d1072b3f54">
+                    <propertyInstance
+                      Id="efdbe99c-c326-4621-bac5-f1a66be182ec"
+                      name="IsPartial"
+                      value="false" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="2977ee71-ccba-4d31-9f2e-1214f87bda2a">
+                    <propertyInstance
+                      Id="1ad82a5e-18ca-40fa-99f0-0268b9fd8b9f"
+                      name="IsUnsafe"
+                      value="false" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="94018bb4-f55b-41f9-9d96-40a9815d1ed2">
+                    <propertyInstance
+                      Id="c149992f-534f-4a6c-9585-caa2e4d699b7"
+                      name="Inheritance"
+                      value="none" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="3dd3285a-1e5d-41d4-ba34-f821c9af40c2">
+                    <propertyInstance
+                      Id="e96d213e-35db-4e35-bf38-87b623b98a52"
+                      name="PackageVisibility"
+                      value="internal" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="55ff2feb-7ffc-4ea0-8dbc-e076427b3188">
+                    <propertyInstance
+                      Id="33512981-ac98-4899-9bd7-f0fe4c6bcfe0"
+                      name="params"
+                      value="false" />
+                  </stereotypeInstanceHasPropertyInstances>
+                </propertyInstances>
+              </stereotypeInstance>
+            </appliedStereotypesInternal>
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="1f311650-cc21-41e2-a5f6-9337ac73490a"
+                  direction="Return">
+                  <type_NamedElement>
+                    <primitiveTypeMoniker
+                      Id="8943dc84-709e-4f62-b15a-a3273aa6f165"
+                      LastKnownName="Boolean"
+                      LastKnownLocation="MBC Model.uml" />
+                  </type_NamedElement>
+                </parameter>
+              </operationHasOwnedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="617f2e3a-0551-490a-8c3d-a632085cf3c0"
+                  name="plr"
+                  direction="In">
+                  <referencesInternal>
+                    <reference
+                      Id="8c5d2490-56ee-4881-8143-c1ad3980deaf"
+                      handle="viewcode://./CodeSchema_Parameter?Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fmbc_core.dll&quot; Namespace%3DMBC.Core.Game Type%3DMatchCore Member%3D(Name%3DMakePlayerTimeout OverloadingParameters%3D[(Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fctrlplugin.dll&quot; Namespace%3DMBC.Shared Type%3DPlayer)%2C(Assembly%3D&quot;file:%2F%2F%2FC:%2FProgram Files (x86)%2FReference Assemblies%2FMicrosoft%2FFramework%2F.NETFramework%2Fv4.0%2Fmscorlib.dll&quot; Namespace%3DSystem Type%3DString)]) ParameterIdentifier%3Dplr"
+                      tag="ViewCode" />
+                  </referencesInternal>
+                  <type_NamedElement>
+                    <classMoniker
+                      Id="41767e86-4cfc-4500-b040-31dcae4f09c5"
+                      LastKnownName="Player"
+                      LastKnownLocation="Package4_1355.uml" />
+                  </type_NamedElement>
+                </parameter>
+              </operationHasOwnedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="8a02ab1f-99c3-479d-a820-505974012365"
+                  name="method"
+                  direction="In">
+                  <referencesInternal>
+                    <reference
+                      Id="ebb5a895-3206-442e-9be1-cfb3ce4b3430"
+                      handle="viewcode://./CodeSchema_Parameter?Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fmbc_core.dll&quot; Namespace%3DMBC.Core.Game Type%3DMatchCore Member%3D(Name%3DMakePlayerTimeout OverloadingParameters%3D[(Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fctrlplugin.dll&quot; Namespace%3DMBC.Shared Type%3DPlayer)%2C(Assembly%3D&quot;file:%2F%2F%2FC:%2FProgram Files (x86)%2FReference Assemblies%2FMicrosoft%2FFramework%2F.NETFramework%2Fv4.0%2Fmscorlib.dll&quot; Namespace%3DSystem Type%3DString)]) ParameterIdentifier%3Dmethod"
+                      tag="ViewCode" />
+                  </referencesInternal>
+                  <type_NamedElement>
+                    <primitiveTypeMoniker
+                      Id="59259974-6d55-42c6-b7bd-763d77ac8ef9"
+                      LastKnownName="String"
+                      LastKnownLocation="MBC Model.uml" />
+                  </type_NamedElement>
+                </parameter>
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+          <operation
+            Id="fb6dec92-ae97-414e-9741-29468ac6310b"
+            name="MakePlayerWin"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="false"
+            concurrency="Sequential"
+            isQuery="false">
+            <referencesInternal>
+              <reference
+                Id="80c759a7-8f23-4511-ab5e-5a42d2ec5067"
+                handle="viewcode://./CodeSchema_Method?Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fmbc_core.dll&quot; Namespace%3DMBC.Core.Game Type%3DMatchCore Member%3D(Name%3DMakePlayerWin OverloadingParameters%3D[(Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fctrlplugin.dll&quot; Namespace%3DMBC.Shared Type%3DPlayer)])"
+                tag="ViewCode" />
+            </referencesInternal>
+            <appliedStereotypesInternal>
+              <stereotypeInstance
+                Id="44672795-cba2-4881-8db0-0f10b1ddc84c"
+                name="method"
+                profile="CSharpProfile">
+                <propertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="aabe4d03-f0c1-4b48-86a4-93195748954c">
+                    <propertyInstance
+                      Id="29d4f39e-3bdf-455b-ade4-edec118a1272"
+                      name="ClrAttributes" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="b850e0fb-385d-4937-afa9-03b8d5cb4791">
+                    <propertyInstance
+                      Id="4c24e3d4-713b-47f8-a011-2f06c550d476"
+                      name="IsPartial"
+                      value="false" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="a4534f9c-6371-4b39-9e03-0fcd4040ef54">
+                    <propertyInstance
+                      Id="7428217c-a092-4db1-9db5-fc4e7e1d59f2"
+                      name="IsUnsafe"
+                      value="false" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="cb166ea0-826c-4a88-adcf-543c0766272c">
+                    <propertyInstance
+                      Id="32c8a2ee-4d62-4201-a324-15b551b31e2c"
+                      name="Inheritance"
+                      value="none" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="265b8fa7-4d4b-4634-91a2-029bda3a889b">
+                    <propertyInstance
+                      Id="280950a3-49f8-4fe2-b078-0f0c1a7f6ea3"
+                      name="PackageVisibility"
+                      value="internal" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="0122299d-cff8-4603-8746-8f86cd7a2704">
+                    <propertyInstance
+                      Id="2b615ecc-1016-4ea0-a321-0d428ebd4f69"
+                      name="params"
+                      value="false" />
+                  </stereotypeInstanceHasPropertyInstances>
+                </propertyInstances>
+              </stereotypeInstance>
+            </appliedStereotypesInternal>
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="60e2e6f2-329f-4444-af57-ad4ce67bcdeb"
+                  direction="Return">
+                  <type_NamedElement>
+                    <primitiveTypeMoniker
+                      Id="8943dc84-709e-4f62-b15a-a3273aa6f165"
+                      LastKnownName="Boolean"
+                      LastKnownLocation="MBC Model.uml" />
+                  </type_NamedElement>
+                </parameter>
+              </operationHasOwnedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="76030e55-0119-4a56-b455-53dafc78a56d"
+                  name="plr"
+                  direction="In">
+                  <referencesInternal>
+                    <reference
+                      Id="aff220af-e5ad-4a90-8185-24394ddd6f44"
+                      handle="viewcode://./CodeSchema_Parameter?Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fmbc_core.dll&quot; Namespace%3DMBC.Core.Game Type%3DMatchCore Member%3D(Name%3DMakePlayerWin OverloadingParameters%3D[(Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fctrlplugin.dll&quot; Namespace%3DMBC.Shared Type%3DPlayer)]) ParameterIdentifier%3Dplr"
+                      tag="ViewCode" />
+                  </referencesInternal>
+                  <type_NamedElement>
+                    <classMoniker
+                      Id="41767e86-4cfc-4500-b040-31dcae4f09c5"
+                      LastKnownName="Player"
+                      LastKnownLocation="Package4_1355.uml" />
+                  </type_NamedElement>
+                </parameter>
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+          <operation
+            Id="4d7d7bf5-f900-44e5-bfe7-b6ce05ec64d2"
+            name="NewRound"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="false"
+            concurrency="Sequential"
+            isQuery="false">
+            <referencesInternal>
+              <reference
+                Id="6911ac35-5864-416a-9f11-9d2d942b517e"
+                handle="viewcode://./CodeSchema_Method?Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fmbc_core.dll&quot; Namespace%3DMBC.Core.Game Type%3DMatchCore Member%3DNewRound"
+                tag="ViewCode" />
+            </referencesInternal>
+            <appliedStereotypesInternal>
+              <stereotypeInstance
+                Id="11816f8e-d4a2-4152-9ae1-732be4855ab9"
+                name="method"
+                profile="CSharpProfile">
+                <propertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="0a4d7826-469d-47fc-89aa-c5a23eac030c">
+                    <propertyInstance
+                      Id="9ef61b7a-0a5e-4047-ac59-8b70e07ad6ca"
+                      name="ClrAttributes" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="19505298-1c3b-4b64-82a2-e71a58f70a87">
+                    <propertyInstance
+                      Id="e7fed97c-6b60-4827-aa94-67762db7515f"
+                      name="IsPartial"
+                      value="false" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="9c525153-a810-4693-92e2-d3d9b4f2c9ea">
+                    <propertyInstance
+                      Id="8080d7db-6fd8-4d3e-8ffb-e28452e14e54"
+                      name="IsUnsafe"
+                      value="false" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="e6d11c2e-f009-4247-96a2-18e3f213ed92">
+                    <propertyInstance
+                      Id="7edb3831-bded-4c77-92fa-2b62f02a4b20"
+                      name="Inheritance"
+                      value="none" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="80e7a1c4-ff89-4a06-96fe-36572b72e1d5">
+                    <propertyInstance
+                      Id="21435073-ebf5-4f65-bc1f-87a5e3ba0bc0"
+                      name="PackageVisibility"
+                      value="internal" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="0a2b972d-d37f-4820-b9d9-17a87fdbf476">
+                    <propertyInstance
+                      Id="9ff05451-2a4d-461f-aaa3-e0c00f0e3c86"
+                      name="params"
+                      value="false" />
+                  </stereotypeInstanceHasPropertyInstances>
+                </propertyInstances>
+              </stereotypeInstance>
+            </appliedStereotypesInternal>
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="4aac01d7-0ee6-4cd3-893d-563e2e9ccc89"
+                  direction="Return">
+                  <type_NamedElement>
+                    <primitiveTypeMoniker
+                      Id="8943dc84-709e-4f62-b15a-a3273aa6f165"
+                      LastKnownName="Boolean"
+                      LastKnownLocation="MBC Model.uml" />
+                  </type_NamedElement>
+                </parameter>
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+          <operation
+            Id="db3debf0-a096-4f3e-9d38-ca69a6e0ceac"
+            name="PlacePlayerShips"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="false"
+            concurrency="Sequential"
+            isQuery="false">
+            <referencesInternal>
+              <reference
+                Id="724d4307-9568-411c-a591-826680024ab7"
+                handle="viewcode://./CodeSchema_Method?Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fmbc_core.dll&quot; Namespace%3DMBC.Core.Game Type%3DMatchCore Member%3D(Name%3DPlacePlayerShips OverloadingParameters%3D[(Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fctrlplugin.dll&quot; Namespace%3DMBC.Shared Type%3DPlayer)%2C(Assembly%3D&quot;file:%2F%2F%2FC:%2FProgram Files (x86)%2FReference Assemblies%2FMicrosoft%2FFramework%2F.NETFramework%2Fv4.0%2FSystem.dll&quot; Namespace%3DSystem.Collections.Generic Type%3D(Name%3DISet GenericParameterCount%3D1 GenericArguments%3D[(Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fctrlplugin.dll&quot; Namespace%3DMBC.Shared Type%3DShip)]))])"
+                tag="ViewCode" />
+            </referencesInternal>
+            <appliedStereotypesInternal>
+              <stereotypeInstance
+                Id="97ec50b1-e8ff-4b5c-9719-bfd505a3d0d7"
+                name="method"
+                profile="CSharpProfile">
+                <propertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="716c4b21-bce6-43a9-9a03-21dd5eba1fa5">
+                    <propertyInstance
+                      Id="a39ff367-71af-46cf-9cfc-e1a068a1f061"
+                      name="ClrAttributes" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="03d1812e-1807-4a42-875e-71559a88d59e">
+                    <propertyInstance
+                      Id="d58ab1fb-181e-4663-98ee-e7090119ff20"
+                      name="IsPartial"
+                      value="false" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="e9d35bb9-9000-41bc-a8c6-33077ceff3ee">
+                    <propertyInstance
+                      Id="f2bcc6da-e9cd-4857-8b80-f0e8c98cfc6d"
+                      name="IsUnsafe"
+                      value="false" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="2e333444-1c2c-4b71-9751-2b5cc4a51330">
+                    <propertyInstance
+                      Id="83ca8b7f-77e3-476d-93e5-a71545c4f2d1"
+                      name="Inheritance"
+                      value="none" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="db428a84-bbee-4900-a6e9-46823159a747">
+                    <propertyInstance
+                      Id="e19cfea7-ba1f-4530-8dc2-1a0e398ea91b"
+                      name="PackageVisibility"
+                      value="internal" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="028cc18f-8172-4c93-ac9d-5782a3c8f44c">
+                    <propertyInstance
+                      Id="c2d45e4f-de7c-49f9-b50a-d61910b2b9fc"
+                      name="params"
+                      value="false" />
+                  </stereotypeInstanceHasPropertyInstances>
+                </propertyInstances>
+              </stereotypeInstance>
+            </appliedStereotypesInternal>
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="263ddcb3-eae8-4a93-b512-92d8eb53cbe7"
+                  direction="Return">
+                  <type_NamedElement>
+                    <primitiveTypeMoniker
+                      Id="8943dc84-709e-4f62-b15a-a3273aa6f165"
+                      LastKnownName="Boolean"
+                      LastKnownLocation="MBC Model.uml" />
+                  </type_NamedElement>
+                </parameter>
+              </operationHasOwnedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="11cc01b4-3426-460a-a592-d64085511c5f"
+                  name="plr"
+                  direction="In">
+                  <referencesInternal>
+                    <reference
+                      Id="19a4cd22-ab55-4587-acd7-294f477801f7"
+                      handle="viewcode://./CodeSchema_Parameter?Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fmbc_core.dll&quot; Namespace%3DMBC.Core.Game Type%3DMatchCore Member%3D(Name%3DPlacePlayerShips OverloadingParameters%3D[(Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fctrlplugin.dll&quot; Namespace%3DMBC.Shared Type%3DPlayer)%2C(Assembly%3D&quot;file:%2F%2F%2FC:%2FProgram Files (x86)%2FReference Assemblies%2FMicrosoft%2FFramework%2F.NETFramework%2Fv4.0%2FSystem.dll&quot; Namespace%3DSystem.Collections.Generic Type%3D(Name%3DISet GenericParameterCount%3D1 GenericArguments%3D[(Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fctrlplugin.dll&quot; Namespace%3DMBC.Shared Type%3DShip)]))]) ParameterIdentifier%3Dplr"
+                      tag="ViewCode" />
+                  </referencesInternal>
+                  <type_NamedElement>
+                    <classMoniker
+                      Id="41767e86-4cfc-4500-b040-31dcae4f09c5"
+                      LastKnownName="Player"
+                      LastKnownLocation="Package4_1355.uml" />
+                  </type_NamedElement>
+                </parameter>
+              </operationHasOwnedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="70d3a8e9-f3e2-4621-b379-a602e290e8b7"
+                  name="ships"
+                  direction="In">
+                  <referencesInternal>
+                    <reference
+                      Id="a47362b3-f6c2-4e7f-b169-212d3173229d"
+                      handle="viewcode://./CodeSchema_Parameter?Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fmbc_core.dll&quot; Namespace%3DMBC.Core.Game Type%3DMatchCore Member%3D(Name%3DPlacePlayerShips OverloadingParameters%3D[(Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fctrlplugin.dll&quot; Namespace%3DMBC.Shared Type%3DPlayer)%2C(Assembly%3D&quot;file:%2F%2F%2FC:%2FProgram Files (x86)%2FReference Assemblies%2FMicrosoft%2FFramework%2F.NETFramework%2Fv4.0%2FSystem.dll&quot; Namespace%3DSystem.Collections.Generic Type%3D(Name%3DISet GenericParameterCount%3D1 GenericArguments%3D[(Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fctrlplugin.dll&quot; Namespace%3DMBC.Shared Type%3DShip)]))]) ParameterIdentifier%3Dships"
+                      tag="ViewCode" />
+                  </referencesInternal>
+                  <type_NamedElement>
+                    <interfaceMoniker
+                      Id="aec1bd05-7d2c-4add-8475-5a145255e2a9"
+                      LastKnownName="ISet&lt;Ship‎&gt;"
+                      LastKnownLocation="Package7_1355.uml" />
+                  </type_NamedElement>
+                </parameter>
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+          <operation
+            Id="e1a406f0-2c79-4353-b820-b4c2fd971b10"
+            name="Play"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="false"
+            concurrency="Sequential"
+            isQuery="false">
+            <referencesInternal>
+              <reference
+                Id="91dbb12d-4f71-470c-806e-02d0d70706f5"
+                handle="viewcode://./CodeSchema_Method?Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fmbc_core.dll&quot; Namespace%3DMBC.Core.Game Type%3DMatchCore Member%3DPlay"
+                tag="ViewCode" />
+            </referencesInternal>
+            <appliedStereotypesInternal>
+              <stereotypeInstance
+                Id="f4f588f0-f3ba-4b83-a9eb-30e51cf3f7c1"
+                name="method"
+                profile="CSharpProfile">
+                <propertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="b7564639-71e4-48fa-a404-816e55a6476b">
+                    <propertyInstance
+                      Id="346c3d38-d60c-4323-92ad-69a0191ba0e8"
+                      name="ClrAttributes" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="a0ab5c0c-a0e7-4cd6-9c24-e41e307256dc">
+                    <propertyInstance
+                      Id="835ede5b-d7df-4f9a-a573-10fc89c7d61a"
+                      name="IsPartial"
+                      value="false" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="54c70803-a6e8-47cb-9a92-5fe549ebcd74">
+                    <propertyInstance
+                      Id="7b596377-501a-4a5b-8bd9-b7ae4f83d455"
+                      name="IsUnsafe"
+                      value="false" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="d222d5ef-0be4-4bef-8aeb-8bbed28ebd93">
+                    <propertyInstance
+                      Id="7fd55048-1b9e-4e87-b8d8-f0f209b5c8d8"
+                      name="Inheritance"
+                      value="none" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="ab8514e3-23ba-4065-bef9-24c1e36fe835">
+                    <propertyInstance
+                      Id="873310fa-76c1-4ab9-9d27-a190d5ef2665"
+                      name="PackageVisibility"
+                      value="internal" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="648ecf9b-34f0-48f7-86f2-07f022a74779">
+                    <propertyInstance
+                      Id="f6f29bd0-2742-41dd-8823-baa7653aa8f7"
+                      name="params"
+                      value="false" />
+                  </stereotypeInstanceHasPropertyInstances>
+                </propertyInstances>
+              </stereotypeInstance>
+            </appliedStereotypesInternal>
+          </operation>
+          <operation
+            Id="b8c0cb7f-509c-4fc6-87b2-8ec13094970c"
+            name="PlayerShipDestroyed"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="false"
+            concurrency="Sequential"
+            isQuery="false">
+            <referencesInternal>
+              <reference
+                Id="125b2555-9526-47c1-aeea-61018fc60a2a"
+                handle="viewcode://./CodeSchema_Method?Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fmbc_core.dll&quot; Namespace%3DMBC.Core.Game Type%3DMatchCore Member%3D(Name%3DPlayerShipDestroyed OverloadingParameters%3D[(Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fctrlplugin.dll&quot; Namespace%3DMBC.Shared Type%3DPlayer)%2C(Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fctrlplugin.dll&quot; Namespace%3DMBC.Shared Type%3DShip)])"
+                tag="ViewCode" />
+            </referencesInternal>
+            <appliedStereotypesInternal>
+              <stereotypeInstance
+                Id="d0b6e991-8c44-47ee-9732-cee9bab1e543"
+                name="method"
+                profile="CSharpProfile">
+                <propertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="07ba7e33-36a2-437b-9ae8-3c56b3eeb7ab">
+                    <propertyInstance
+                      Id="b6b89900-ac44-4102-801e-c6dbd5d6e23b"
+                      name="ClrAttributes" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="434b8d20-3766-4b82-92da-0812798e3be8">
+                    <propertyInstance
+                      Id="95ccc925-1c20-465f-8765-34db32db7297"
+                      name="IsPartial"
+                      value="false" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="23d443ee-a190-49ff-a936-0c1aeecc3720">
+                    <propertyInstance
+                      Id="9174e156-3d52-4ea0-8bfb-76b8a03968b6"
+                      name="IsUnsafe"
+                      value="false" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="8b56c9a4-8acf-4ac7-813e-31428662adf7">
+                    <propertyInstance
+                      Id="30481dc3-415c-4b6e-8519-e99e36946769"
+                      name="Inheritance"
+                      value="none" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="eb767a2a-ae6d-4710-b02e-4b45cbbe713d">
+                    <propertyInstance
+                      Id="e507c837-e38b-4790-b340-5d5338020dca"
+                      name="PackageVisibility"
+                      value="internal" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="e8cb1a19-65e2-4661-af14-5ac256212e9c">
+                    <propertyInstance
+                      Id="89c88584-1702-4986-8473-b290e19d2c94"
+                      name="params"
+                      value="false" />
+                  </stereotypeInstanceHasPropertyInstances>
+                </propertyInstances>
+              </stereotypeInstance>
+            </appliedStereotypesInternal>
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="701ea1f5-f4ee-4052-8b6f-558a8602607f"
+                  direction="Return">
+                  <type_NamedElement>
+                    <primitiveTypeMoniker
+                      Id="8943dc84-709e-4f62-b15a-a3273aa6f165"
+                      LastKnownName="Boolean"
+                      LastKnownLocation="MBC Model.uml" />
+                  </type_NamedElement>
+                </parameter>
+              </operationHasOwnedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="f8c940fa-5d56-4216-9f5e-8b794f5215f8"
+                  name="plr"
+                  direction="In">
+                  <referencesInternal>
+                    <reference
+                      Id="fa7c5543-2203-4fb8-80b7-c103e29683a9"
+                      handle="viewcode://./CodeSchema_Parameter?Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fmbc_core.dll&quot; Namespace%3DMBC.Core.Game Type%3DMatchCore Member%3D(Name%3DPlayerShipDestroyed OverloadingParameters%3D[(Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fctrlplugin.dll&quot; Namespace%3DMBC.Shared Type%3DPlayer)%2C(Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fctrlplugin.dll&quot; Namespace%3DMBC.Shared Type%3DShip)]) ParameterIdentifier%3Dplr"
+                      tag="ViewCode" />
+                  </referencesInternal>
+                  <type_NamedElement>
+                    <classMoniker
+                      Id="41767e86-4cfc-4500-b040-31dcae4f09c5"
+                      LastKnownName="Player"
+                      LastKnownLocation="Package4_1355.uml" />
+                  </type_NamedElement>
+                </parameter>
+              </operationHasOwnedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="1f43ef56-0094-4f67-9705-c31ce29d47ae"
+                  name="destroyedShip"
+                  direction="In">
+                  <referencesInternal>
+                    <reference
+                      Id="d31a6792-d5b9-42ad-a076-00f8cac51b79"
+                      handle="viewcode://./CodeSchema_Parameter?Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fmbc_core.dll&quot; Namespace%3DMBC.Core.Game Type%3DMatchCore Member%3D(Name%3DPlayerShipDestroyed OverloadingParameters%3D[(Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fctrlplugin.dll&quot; Namespace%3DMBC.Shared Type%3DPlayer)%2C(Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fctrlplugin.dll&quot; Namespace%3DMBC.Shared Type%3DShip)]) ParameterIdentifier%3DdestroyedShip"
+                      tag="ViewCode" />
+                  </referencesInternal>
+                  <type_NamedElement>
+                    <classMoniker
+                      Id="41ae42a3-4565-4512-a824-d5fb86aa8728"
+                      LastKnownName="Ship"
+                      LastKnownLocation="Package4_1355.uml" />
+                  </type_NamedElement>
+                </parameter>
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+          <operation
+            Id="9b38fd04-8af1-47e8-b27b-c0624fef7b4c"
+            name="PlayToEvent"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="false"
+            concurrency="Sequential"
+            isQuery="false">
+            <referencesInternal>
+              <reference
+                Id="c7a83255-491f-493c-aa7f-0e8cde382c76"
+                handle="viewcode://./CodeSchema_Method?Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fmbc_core.dll&quot; Namespace%3DMBC.Core.Game Type%3DMatchCore Member%3D(Name%3DPlayToEvent OverloadingParameters%3D[(Assembly%3D&quot;file:%2F%2F%2FC:%2FProgram Files (x86)%2FReference Assemblies%2FMicrosoft%2FFramework%2F.NETFramework%2Fv4.0%2Fmscorlib.dll&quot; Namespace%3DSystem Type%3DInt32)])"
+                tag="ViewCode" />
+            </referencesInternal>
+            <appliedStereotypesInternal>
+              <stereotypeInstance
+                Id="18d806b7-43c9-44e0-9b97-3bc1bde41368"
+                name="method"
+                profile="CSharpProfile">
+                <propertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="fe10ad0e-7e05-4663-b76e-6c957070aea8">
+                    <propertyInstance
+                      Id="f03e7c8d-adc7-4b3b-beb2-39ef4e034e8f"
+                      name="ClrAttributes" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="22b4b2f0-eed7-4a4e-803e-2335a30316dd">
+                    <propertyInstance
+                      Id="2cf76602-53f7-40d9-9794-ac9eb7a19de2"
+                      name="IsPartial"
+                      value="false" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="3271d4a6-dd55-4370-86ed-2d0f2157c514">
+                    <propertyInstance
+                      Id="56b996de-d737-4efb-a7f0-f31596a4126d"
+                      name="IsUnsafe"
+                      value="false" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="fbb32927-a322-4350-b593-a4c56f9d4b20">
+                    <propertyInstance
+                      Id="4a0f0518-8202-48bf-adfd-1015586610f1"
+                      name="Inheritance"
+                      value="none" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="f3e84968-552c-45d3-b072-332bf97e52c0">
+                    <propertyInstance
+                      Id="3a2d6323-cf45-4b20-a0a6-9b0bcadd8492"
+                      name="PackageVisibility"
+                      value="internal" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="e402185d-974e-4ef9-a48d-acea4df70246">
+                    <propertyInstance
+                      Id="828e0118-8fbe-4238-b197-2fb5fb94a890"
+                      name="params"
+                      value="false" />
+                  </stereotypeInstanceHasPropertyInstances>
+                </propertyInstances>
+              </stereotypeInstance>
+            </appliedStereotypesInternal>
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="3dc3d225-f86e-4c70-89f0-b5f2de070c92"
+                  direction="Return">
+                  <type_NamedElement>
+                    <primitiveTypeMoniker
+                      Id="8943dc84-709e-4f62-b15a-a3273aa6f165"
+                      LastKnownName="Boolean"
+                      LastKnownLocation="MBC Model.uml" />
+                  </type_NamedElement>
+                </parameter>
+              </operationHasOwnedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="6aedb3d2-bbf9-450f-9c5c-265ccee30780"
+                  name="eventIdx"
+                  direction="In">
+                  <referencesInternal>
+                    <reference
+                      Id="42230836-912e-41a6-b3d9-ffcf54a3fb32"
+                      handle="viewcode://./CodeSchema_Parameter?Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fmbc_core.dll&quot; Namespace%3DMBC.Core.Game Type%3DMatchCore Member%3D(Name%3DPlayToEvent OverloadingParameters%3D[(Assembly%3D&quot;file:%2F%2F%2FC:%2FProgram Files (x86)%2FReference Assemblies%2FMicrosoft%2FFramework%2F.NETFramework%2Fv4.0%2Fmscorlib.dll&quot; Namespace%3DSystem Type%3DInt32)]) ParameterIdentifier%3DeventIdx"
+                      tag="ViewCode" />
+                  </referencesInternal>
+                  <type_NamedElement>
+                    <primitiveTypeMoniker
+                      Id="220a3521-e091-4221-bae9-3ef9018e845c"
+                      LastKnownName="Integer"
+                      LastKnownLocation="MBC Model.uml" />
+                  </type_NamedElement>
+                </parameter>
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+          <operation
+            Id="209c7cf1-8f46-48f5-add7-586a72b01502"
+            name="PlayToLastEvent"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="false"
+            concurrency="Sequential"
+            isQuery="false">
+            <referencesInternal>
+              <reference
+                Id="a2262e87-de98-417e-9364-e2913f984cc5"
+                handle="viewcode://./CodeSchema_Method?Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fmbc_core.dll&quot; Namespace%3DMBC.Core.Game Type%3DMatchCore Member%3DPlayToLastEvent"
+                tag="ViewCode" />
+            </referencesInternal>
+            <appliedStereotypesInternal>
+              <stereotypeInstance
+                Id="b7f4df01-0d12-40fe-96ed-6acc2ca9e7e3"
+                name="method"
+                profile="CSharpProfile">
+                <propertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="0a5e0433-f40c-4910-a7df-1d98ab3a382f">
+                    <propertyInstance
+                      Id="f01db63b-5d69-4a7e-b149-27f732dab0f0"
+                      name="ClrAttributes" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="c7502c46-e7dd-489f-b70d-b5932d941a33">
+                    <propertyInstance
+                      Id="59ea3979-0648-48b2-b362-4fb203cd3333"
+                      name="IsPartial"
+                      value="false" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="8161fc67-1470-4d2c-a1ef-fb140df7b595">
+                    <propertyInstance
+                      Id="16f641c7-de55-4418-a018-b73e0239b9c5"
+                      name="IsUnsafe"
+                      value="false" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="925b4fd2-34c3-4b60-908e-4268e3f44517">
+                    <propertyInstance
+                      Id="8a375daf-9c47-40ec-a7c1-62794a2cd49b"
+                      name="Inheritance"
+                      value="none" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="cecaf26b-9a55-4b1b-bea8-0050ca293c6a">
+                    <propertyInstance
+                      Id="60604ca0-009f-4af3-9e75-000458f2e543"
+                      name="PackageVisibility"
+                      value="internal" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="8d77c81a-a820-455f-a9a1-d359763e5839">
+                    <propertyInstance
+                      Id="a5b19c47-38e0-4f67-9ab3-97bc60450940"
+                      name="params"
+                      value="false" />
+                  </stereotypeInstanceHasPropertyInstances>
+                </propertyInstances>
+              </stereotypeInstance>
+            </appliedStereotypesInternal>
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="b3f7a65e-0980-42e0-b022-2963c284d9cd"
+                  direction="Return">
+                  <type_NamedElement>
+                    <primitiveTypeMoniker
+                      Id="8943dc84-709e-4f62-b15a-a3273aa6f165"
+                      LastKnownName="Boolean"
+                      LastKnownLocation="MBC Model.uml" />
+                  </type_NamedElement>
+                </parameter>
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+          <operation
+            Id="73e419ec-a2f2-4264-87a0-f377b14c425a"
+            name="RemovePlayer"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="false"
+            concurrency="Sequential"
+            isQuery="false">
+            <referencesInternal>
+              <reference
+                Id="ef18cd20-70dc-4aec-b946-5a89e611009b"
+                handle="viewcode://./CodeSchema_Method?Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fmbc_core.dll&quot; Namespace%3DMBC.Core.Game Type%3DMatchCore Member%3D(Name%3DRemovePlayer OverloadingParameters%3D[(Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fctrlplugin.dll&quot; Namespace%3DMBC.Shared Type%3DPlayer)])"
+                tag="ViewCode" />
+            </referencesInternal>
+            <appliedStereotypesInternal>
+              <stereotypeInstance
+                Id="3d3e3c98-db5d-4844-a919-7efa17e8b294"
+                name="method"
+                profile="CSharpProfile">
+                <propertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="0c2c5df2-7929-4ced-9f06-2144a37b37fe">
+                    <propertyInstance
+                      Id="e0e4a343-f259-4d3a-ba4b-cd0904e1a2ca"
+                      name="ClrAttributes" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="de9e3519-33e3-47f5-8879-a95bb76c1abc">
+                    <propertyInstance
+                      Id="ccb28355-7b47-4d1e-b3db-3515c9e1fa49"
+                      name="IsPartial"
+                      value="false" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="44800630-1b61-413a-b49d-798c21225bce">
+                    <propertyInstance
+                      Id="cff0258b-9f4c-49c6-bb40-88961c2056f0"
+                      name="IsUnsafe"
+                      value="false" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="3330f347-f325-44dd-a924-a09f4d0484c0">
+                    <propertyInstance
+                      Id="a470fee0-10a9-4548-b385-db272ec31c41"
+                      name="Inheritance"
+                      value="none" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="dd0642bb-2caf-45b0-8f17-0bd9de99c51d">
+                    <propertyInstance
+                      Id="11e8e20a-6e81-44a1-916f-853e440f4510"
+                      name="PackageVisibility"
+                      value="internal" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="87474bc8-be26-4b4f-b895-1d4530a5f9ca">
+                    <propertyInstance
+                      Id="c2c31c78-fd11-4d7b-986d-74cf16537d3d"
+                      name="params"
+                      value="false" />
+                  </stereotypeInstanceHasPropertyInstances>
+                </propertyInstances>
+              </stereotypeInstance>
+            </appliedStereotypesInternal>
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="1f839712-49aa-472b-b5b5-effeb04d736c"
+                  direction="Return">
+                  <type_NamedElement>
+                    <primitiveTypeMoniker
+                      Id="8943dc84-709e-4f62-b15a-a3273aa6f165"
+                      LastKnownName="Boolean"
+                      LastKnownLocation="MBC Model.uml" />
+                  </type_NamedElement>
+                </parameter>
+              </operationHasOwnedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="6e7d38b1-d5d0-4a57-8484-90cd33830753"
+                  name="plr"
+                  direction="In">
+                  <referencesInternal>
+                    <reference
+                      Id="bd6b5368-884c-4b03-9f7b-2a1b27151cda"
+                      handle="viewcode://./CodeSchema_Parameter?Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fmbc_core.dll&quot; Namespace%3DMBC.Core.Game Type%3DMatchCore Member%3D(Name%3DRemovePlayer OverloadingParameters%3D[(Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fctrlplugin.dll&quot; Namespace%3DMBC.Shared Type%3DPlayer)]) ParameterIdentifier%3Dplr"
+                      tag="ViewCode" />
+                  </referencesInternal>
+                  <type_NamedElement>
+                    <classMoniker
+                      Id="41767e86-4cfc-4500-b040-31dcae4f09c5"
+                      LastKnownName="Player"
+                      LastKnownLocation="Package4_1355.uml" />
+                  </type_NamedElement>
+                </parameter>
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+          <operation
+            Id="26fcd212-d707-40ff-b6ca-077fd05585a3"
+            name="RemoveTeam"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="false"
+            concurrency="Sequential"
+            isQuery="false">
+            <referencesInternal>
+              <reference
+                Id="58651cc0-3bfb-4bb2-85fe-3b8ec56d5d23"
+                handle="viewcode://./CodeSchema_Method?Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fmbc_core.dll&quot; Namespace%3DMBC.Core.Game Type%3DMatchCore Member%3D(Name%3DRemoveTeam OverloadingParameters%3D[(Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fctrlplugin.dll&quot; Namespace%3DMBC.Shared Type%3DTeam)])"
+                tag="ViewCode" />
+            </referencesInternal>
+            <appliedStereotypesInternal>
+              <stereotypeInstance
+                Id="3f23f74f-353c-4605-972c-a2fe8922e2b7"
+                name="method"
+                profile="CSharpProfile">
+                <propertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="7834bdd7-f1e7-4114-a5a1-e42d9580eb05">
+                    <propertyInstance
+                      Id="8905c78f-7956-4138-a890-5003ad970016"
+                      name="ClrAttributes" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="0ff884f8-f7c2-4ce2-adb6-179f35d7047b">
+                    <propertyInstance
+                      Id="cc85d67f-02f0-4d04-9ae5-58a514a19f2e"
+                      name="IsPartial"
+                      value="false" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="0d601cff-a0ca-446d-bebf-2b8fa7cc6f2e">
+                    <propertyInstance
+                      Id="e9adc6dd-be11-4b31-9b3b-30bb37dc0809"
+                      name="IsUnsafe"
+                      value="false" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="6cbd09d8-82ca-4d5b-81af-67d2f7f1851b">
+                    <propertyInstance
+                      Id="31ff647b-a035-4c89-8487-ba0dfd08e376"
+                      name="Inheritance"
+                      value="none" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="994678e5-1089-48ea-8da0-345c3f5351f1">
+                    <propertyInstance
+                      Id="8b37cde9-02d6-49ee-973a-3807e36cc515"
+                      name="PackageVisibility"
+                      value="internal" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="bb395d76-44a2-4340-94ba-d98d8e3fc42c">
+                    <propertyInstance
+                      Id="fadebbe2-db1c-423d-9b7a-93be79a67e4b"
+                      name="params"
+                      value="false" />
+                  </stereotypeInstanceHasPropertyInstances>
+                </propertyInstances>
+              </stereotypeInstance>
+            </appliedStereotypesInternal>
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="302de9d1-a487-4bb5-b728-228e663c11a4"
+                  direction="Return">
+                  <type_NamedElement>
+                    <primitiveTypeMoniker
+                      Id="8943dc84-709e-4f62-b15a-a3273aa6f165"
+                      LastKnownName="Boolean"
+                      LastKnownLocation="MBC Model.uml" />
+                  </type_NamedElement>
+                </parameter>
+              </operationHasOwnedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="4bc5ac41-058b-44d2-9eaa-861908bbfeb8"
+                  name="remTeam"
+                  direction="In">
+                  <referencesInternal>
+                    <reference
+                      Id="bd1df28e-1454-42bb-849b-844c253ac991"
+                      handle="viewcode://./CodeSchema_Parameter?Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fmbc_core.dll&quot; Namespace%3DMBC.Core.Game Type%3DMatchCore Member%3D(Name%3DRemoveTeam OverloadingParameters%3D[(Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fctrlplugin.dll&quot; Namespace%3DMBC.Shared Type%3DTeam)]) ParameterIdentifier%3DremTeam"
+                      tag="ViewCode" />
+                  </referencesInternal>
+                  <type_NamedElement>
+                    <classMoniker
+                      Id="0ec091d3-25d6-49e8-9fd0-6f774c43b76d"
+                      LastKnownName="Team"
+                      LastKnownLocation="Package4_1355.uml" />
+                  </type_NamedElement>
+                </parameter>
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+          <operation
+            Id="7840fa69-5a4e-4ed3-afb6-de31aaed2779"
+            name="Stop"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="false"
+            concurrency="Sequential"
+            isQuery="false">
+            <referencesInternal>
+              <reference
+                Id="4b2c5227-3a21-4490-b249-7abf94886ca7"
+                handle="viewcode://./CodeSchema_Method?Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fmbc_core.dll&quot; Namespace%3DMBC.Core.Game Type%3DMatchCore Member%3DStop"
+                tag="ViewCode" />
+            </referencesInternal>
+            <appliedStereotypesInternal>
+              <stereotypeInstance
+                Id="97de031a-7b8e-480e-b9a6-4f08aa3f5a65"
+                name="method"
+                profile="CSharpProfile">
+                <propertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="331aa18a-b367-4f23-9fda-9d195aa211b3">
+                    <propertyInstance
+                      Id="e8cea959-fed4-4081-9895-6d7ac5f0cf04"
+                      name="ClrAttributes" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="a1a57628-d42c-4a7a-aae3-9dfe688f1e67">
+                    <propertyInstance
+                      Id="03c5942f-3698-4af0-978b-2c01115264c6"
+                      name="IsPartial"
+                      value="false" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="002798df-6425-4a58-b4a6-0ea03cedaeb9">
+                    <propertyInstance
+                      Id="57e385b0-ee52-43c0-b44c-3df9e0b58d71"
+                      name="IsUnsafe"
+                      value="false" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="c9328834-b255-4683-9737-2e33eabb4a8c">
+                    <propertyInstance
+                      Id="8320c501-f2ac-4852-8f08-22d11033eb97"
+                      name="Inheritance"
+                      value="none" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="2c143b20-843f-4a9b-b660-f1de8361244e">
+                    <propertyInstance
+                      Id="73c8e307-065c-4a07-b1ac-64395420ac34"
+                      name="PackageVisibility"
+                      value="internal" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="d2e4041b-2dec-4953-b9fd-a43773c64d52">
+                    <propertyInstance
+                      Id="4d519ccf-3fa8-4bf6-95e6-27a3cb534baa"
+                      name="params"
+                      value="false" />
+                  </stereotypeInstanceHasPropertyInstances>
+                </propertyInstances>
+              </stereotypeInstance>
+            </appliedStereotypesInternal>
+          </operation>
+          <operation
+            Id="77202833-3099-419b-a2e1-e9df6b108595"
+            name="AddPlayer"
+            visibility="Protected"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="false"
+            concurrency="Sequential"
+            isQuery="false">
+            <referencesInternal>
+              <reference
+                Id="4d9f3d05-bc54-489f-b746-de4e48c26067"
+                handle="viewcode://./CodeSchema_Method?Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fmbc_core.dll&quot; Namespace%3DMBC.Core.Game Type%3DMatchCore Member%3D(Name%3DAddPlayer OverloadingParameters%3D[(Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fctrlplugin.dll&quot; Namespace%3DMBC.Shared Type%3DPlayer)])"
+                tag="ViewCode" />
+            </referencesInternal>
+            <appliedStereotypesInternal>
+              <stereotypeInstance
+                Id="8400f7cd-7b93-45a8-b525-51c960389dab"
+                name="method"
+                profile="CSharpProfile">
+                <propertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="67605876-acea-44ad-9915-770e0b7b2de3">
+                    <propertyInstance
+                      Id="69c4fab5-4c81-4ba4-bc3e-d99e2ccd7984"
+                      name="ClrAttributes" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="cae9c038-7831-496f-9411-416212307cd8">
+                    <propertyInstance
+                      Id="70593a18-d4a7-4283-a71d-f39381ffe99d"
+                      name="IsPartial"
+                      value="false" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="0c18a8af-e431-4eb9-84f2-48a65ebc8fea">
+                    <propertyInstance
+                      Id="c00356d3-e30c-42c8-bbf1-23fa389dcb91"
+                      name="IsUnsafe"
+                      value="false" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="c93a8e7e-e7b0-4a7c-a7d0-b9ed0830443e">
+                    <propertyInstance
+                      Id="860c4227-6ab0-4302-abb3-22ded6e5fc40"
+                      name="Inheritance"
+                      value="none" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="cd6e8caf-8e1a-4c28-a057-7e71502d1d15">
+                    <propertyInstance
+                      Id="340b4e3d-a8e4-41b2-b17e-210e7f53b101"
+                      name="PackageVisibility"
+                      value="internal" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="74d93acd-d2ca-4dc3-9515-77371d56dfd8">
+                    <propertyInstance
+                      Id="abf95351-49dc-489a-bb9f-1f949c9dfafb"
+                      name="params"
+                      value="false" />
+                  </stereotypeInstanceHasPropertyInstances>
+                </propertyInstances>
+              </stereotypeInstance>
+            </appliedStereotypesInternal>
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="10db7cc4-cd26-41c6-acea-d92d892cb145"
+                  direction="Return">
+                  <type_NamedElement>
+                    <primitiveTypeMoniker
+                      Id="8943dc84-709e-4f62-b15a-a3273aa6f165"
+                      LastKnownName="Boolean"
+                      LastKnownLocation="MBC Model.uml" />
+                  </type_NamedElement>
+                </parameter>
+              </operationHasOwnedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="78e7738b-d1d1-479f-91a7-53af0f8f5848"
+                  name="playerAdd"
+                  direction="In">
+                  <referencesInternal>
+                    <reference
+                      Id="fb14e3da-bbb9-4913-bbda-01af28920894"
+                      handle="viewcode://./CodeSchema_Parameter?Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fmbc_core.dll&quot; Namespace%3DMBC.Core.Game Type%3DMatchCore Member%3D(Name%3DAddPlayer OverloadingParameters%3D[(Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fctrlplugin.dll&quot; Namespace%3DMBC.Shared Type%3DPlayer)]) ParameterIdentifier%3DplayerAdd"
+                      tag="ViewCode" />
+                  </referencesInternal>
+                  <type_NamedElement>
+                    <classMoniker
+                      Id="41767e86-4cfc-4500-b040-31dcae4f09c5"
+                      LastKnownName="Player"
+                      LastKnownLocation="Package4_1355.uml" />
+                  </type_NamedElement>
+                </parameter>
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+          <operation
+            Id="d2022eff-99b1-4bac-8795-aa8cec97b1f6"
+            name="AddTeam"
+            visibility="Protected"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="false"
+            concurrency="Sequential"
+            isQuery="false">
+            <referencesInternal>
+              <reference
+                Id="1c1c1c91-f7c7-4a3e-8ead-1904e3ca6457"
+                handle="viewcode://./CodeSchema_Method?Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fmbc_core.dll&quot; Namespace%3DMBC.Core.Game Type%3DMatchCore Member%3D(Name%3DAddTeam OverloadingParameters%3D[(Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fctrlplugin.dll&quot; Namespace%3DMBC.Shared Type%3DTeam)])"
+                tag="ViewCode" />
+            </referencesInternal>
+            <appliedStereotypesInternal>
+              <stereotypeInstance
+                Id="8bcc0cae-d16e-4526-b4e4-27d350b8545a"
+                name="method"
+                profile="CSharpProfile">
+                <propertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="923c209c-1278-4cc9-a106-39bddd625786">
+                    <propertyInstance
+                      Id="e872787c-f61e-4ad0-bf34-51dfd823ad74"
+                      name="ClrAttributes" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="ba3ce791-5d1a-42a0-91b9-9cd96546baf3">
+                    <propertyInstance
+                      Id="f1ef3eda-e9a9-412c-bd82-2b8ce0a5fe77"
+                      name="IsPartial"
+                      value="false" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="93a87699-2cc0-4893-8e5a-5726e56ded42">
+                    <propertyInstance
+                      Id="35783afe-b7f7-4239-92ed-e9574d80a6c8"
+                      name="IsUnsafe"
+                      value="false" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="3f482a17-263b-4f14-be05-54c5acc5e59a">
+                    <propertyInstance
+                      Id="34b32cab-d3ac-447c-abad-0b30c8b450de"
+                      name="Inheritance"
+                      value="none" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="16ff9e0f-ebaa-4197-844c-726ad9a53e92">
+                    <propertyInstance
+                      Id="393cbbcb-e001-40fe-ab18-73ff4d2dde60"
+                      name="PackageVisibility"
+                      value="internal" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="3b36f370-d1b9-45d1-9125-f918b914bf82">
+                    <propertyInstance
+                      Id="e8947cb2-f261-46ee-86ef-66661280e563"
+                      name="params"
+                      value="false" />
+                  </stereotypeInstanceHasPropertyInstances>
+                </propertyInstances>
+              </stereotypeInstance>
+            </appliedStereotypesInternal>
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="534b2459-5779-4a8e-960c-ed543e736c79"
+                  direction="Return">
+                  <type_NamedElement>
+                    <primitiveTypeMoniker
+                      Id="8943dc84-709e-4f62-b15a-a3273aa6f165"
+                      LastKnownName="Boolean"
+                      LastKnownLocation="MBC Model.uml" />
+                  </type_NamedElement>
+                </parameter>
+              </operationHasOwnedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="b8aa1bc5-3deb-45be-bbbc-4794098876b9"
+                  name="addTeam"
+                  direction="In">
+                  <referencesInternal>
+                    <reference
+                      Id="2e8083d3-c727-4546-adf1-bcbc09ec8c9d"
+                      handle="viewcode://./CodeSchema_Parameter?Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fmbc_core.dll&quot; Namespace%3DMBC.Core.Game Type%3DMatchCore Member%3D(Name%3DAddTeam OverloadingParameters%3D[(Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fctrlplugin.dll&quot; Namespace%3DMBC.Shared Type%3DTeam)]) ParameterIdentifier%3DaddTeam"
+                      tag="ViewCode" />
+                  </referencesInternal>
+                  <type_NamedElement>
+                    <classMoniker
+                      Id="0ec091d3-25d6-49e8-9fd0-6f774c43b76d"
+                      LastKnownName="Team"
+                      LastKnownLocation="Package4_1355.uml" />
+                  </type_NamedElement>
+                </parameter>
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+          <operation
+            Id="a4b0b48e-0d5d-4ca4-800e-491326927c95"
+            name="PlayerDisqualified"
+            visibility="Protected"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="false"
+            concurrency="Sequential"
+            isQuery="false">
+            <referencesInternal>
+              <reference
+                Id="257b61e4-22ff-4a5f-a283-69ff2fb4e3bc"
+                handle="viewcode://./CodeSchema_Method?Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fmbc_core.dll&quot; Namespace%3DMBC.Core.Game Type%3DMatchCore Member%3D(Name%3DPlayerDisqualified OverloadingParameters%3D[(Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fctrlplugin.dll&quot; Namespace%3DMBC.Shared Type%3DPlayer)%2C(Assembly%3D&quot;file:%2F%2F%2FC:%2FProgram Files (x86)%2FReference Assemblies%2FMicrosoft%2FFramework%2F.NETFramework%2Fv4.0%2Fmscorlib.dll&quot; Namespace%3DSystem Type%3DString)])"
+                tag="ViewCode" />
+            </referencesInternal>
+            <appliedStereotypesInternal>
+              <stereotypeInstance
+                Id="6722d3bc-a450-4fb2-bec6-eb3ff068315c"
+                name="method"
+                profile="CSharpProfile">
+                <propertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="e3392935-940f-48f5-a73b-fe7644118cd4">
+                    <propertyInstance
+                      Id="75099def-a5f5-4d09-8dfd-b67b7265d0a5"
+                      name="ClrAttributes" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="6ee44fa7-0d40-45f3-83e0-c3f691646b4c">
+                    <propertyInstance
+                      Id="f49ddd1e-8793-40b0-8976-296742e3ead6"
+                      name="IsPartial"
+                      value="false" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="20b39996-9975-4d74-9633-675be1065e72">
+                    <propertyInstance
+                      Id="f5439325-3185-4bf9-80b7-e1f07c31fee5"
+                      name="IsUnsafe"
+                      value="false" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="39e5b9f2-5f6c-43d7-9b31-f1ef24d2ee67">
+                    <propertyInstance
+                      Id="573b76dd-49de-405d-b78a-eb31cf179efb"
+                      name="Inheritance"
+                      value="none" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="b9ced30d-d098-48cf-a1e6-a707616fb88f">
+                    <propertyInstance
+                      Id="e16504b6-5ff5-4d39-9f2c-6a547b0132d5"
+                      name="PackageVisibility"
+                      value="internal" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="6bab0113-c8c6-42d9-a3ba-898c1a474c54">
+                    <propertyInstance
+                      Id="ba12a5be-7d88-4c54-a7c7-138739f27dd0"
+                      name="params"
+                      value="false" />
+                  </stereotypeInstanceHasPropertyInstances>
+                </propertyInstances>
+              </stereotypeInstance>
+            </appliedStereotypesInternal>
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="0164c721-2b49-4fc2-83f8-d4ee87f3f3a4"
+                  direction="Return">
+                  <type_NamedElement>
+                    <primitiveTypeMoniker
+                      Id="8943dc84-709e-4f62-b15a-a3273aa6f165"
+                      LastKnownName="Boolean"
+                      LastKnownLocation="MBC Model.uml" />
+                  </type_NamedElement>
+                </parameter>
+              </operationHasOwnedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="54ec8617-0977-4a8e-8a55-63956733b648"
+                  name="plr"
+                  direction="In">
+                  <referencesInternal>
+                    <reference
+                      Id="502ccf29-a48c-4a6c-b236-d31f91896867"
+                      handle="viewcode://./CodeSchema_Parameter?Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fmbc_core.dll&quot; Namespace%3DMBC.Core.Game Type%3DMatchCore Member%3D(Name%3DPlayerDisqualified OverloadingParameters%3D[(Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fctrlplugin.dll&quot; Namespace%3DMBC.Shared Type%3DPlayer)%2C(Assembly%3D&quot;file:%2F%2F%2FC:%2FProgram Files (x86)%2FReference Assemblies%2FMicrosoft%2FFramework%2F.NETFramework%2Fv4.0%2Fmscorlib.dll&quot; Namespace%3DSystem Type%3DString)]) ParameterIdentifier%3Dplr"
+                      tag="ViewCode" />
+                  </referencesInternal>
+                  <type_NamedElement>
+                    <classMoniker
+                      Id="41767e86-4cfc-4500-b040-31dcae4f09c5"
+                      LastKnownName="Player"
+                      LastKnownLocation="Package4_1355.uml" />
+                  </type_NamedElement>
+                </parameter>
+              </operationHasOwnedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="9553c886-c329-43d3-8a12-66c7526bc81b"
+                  name="reason"
+                  direction="In">
+                  <referencesInternal>
+                    <reference
+                      Id="cf253a89-5d3a-4c9b-90c1-d2d8d4f49006"
+                      handle="viewcode://./CodeSchema_Parameter?Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fmbc_core.dll&quot; Namespace%3DMBC.Core.Game Type%3DMatchCore Member%3D(Name%3DPlayerDisqualified OverloadingParameters%3D[(Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fctrlplugin.dll&quot; Namespace%3DMBC.Shared Type%3DPlayer)%2C(Assembly%3D&quot;file:%2F%2F%2FC:%2FProgram Files (x86)%2FReference Assemblies%2FMicrosoft%2FFramework%2F.NETFramework%2Fv4.0%2Fmscorlib.dll&quot; Namespace%3DSystem Type%3DString)]) ParameterIdentifier%3Dreason"
+                      tag="ViewCode" />
+                  </referencesInternal>
+                  <type_NamedElement>
+                    <primitiveTypeMoniker
+                      Id="59259974-6d55-42c6-b7bd-763d77ac8ef9"
+                      LastKnownName="String"
+                      LastKnownLocation="MBC Model.uml" />
+                  </type_NamedElement>
+                </parameter>
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+          <operation
+            Id="d618bf7c-7825-4f0d-8571-3159ffa9733a"
+            name="PlayLogic"
+            visibility="Protected"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="false"
+            concurrency="Sequential"
+            isQuery="false">
+            <referencesInternal>
+              <reference
+                Id="4c52eb59-b2fd-49b1-ab80-773f0cfc3e2f"
+                handle="viewcode://./CodeSchema_Method?Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fmbc_core.dll&quot; Namespace%3DMBC.Core.Game Type%3DMatchCore Member%3DPlayLogic"
+                tag="ViewCode" />
+            </referencesInternal>
+            <appliedStereotypesInternal>
+              <stereotypeInstance
+                Id="f99adb51-2594-4843-84a6-fa9b173c15dc"
+                name="method"
+                profile="CSharpProfile">
+                <propertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="632c7ed6-93a1-40b5-b140-8051286bc508">
+                    <propertyInstance
+                      Id="eded44b7-a4a0-4b6c-bbaf-0d8fae338280"
+                      name="ClrAttributes" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="e5e4191c-4da0-4d38-b1c7-7159600c8257">
+                    <propertyInstance
+                      Id="84166168-3acc-42e0-a250-c915c148eaa6"
+                      name="IsPartial"
+                      value="false" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="694b8801-b980-4475-b27d-54884227161c">
+                    <propertyInstance
+                      Id="a2424c3d-11c2-464a-90d8-e73594746662"
+                      name="IsUnsafe"
+                      value="false" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="5a3824c5-6f68-4dce-92b8-729bce001c23">
+                    <propertyInstance
+                      Id="ab137118-278d-428a-a376-74e39f0d8aea"
+                      name="Inheritance"
+                      value="none" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="9d6b93f8-22b1-47d0-b9f9-df6566340799">
+                    <propertyInstance
+                      Id="0feb181a-9c68-4039-8e24-78cde43f34c0"
+                      name="PackageVisibility"
+                      value="internal" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="85db4730-356c-4db8-99c9-559c58e95c40">
+                    <propertyInstance
+                      Id="eb52c03f-2b09-4805-a403-4f5e765a7591"
+                      name="params"
+                      value="false" />
+                  </stereotypeInstanceHasPropertyInstances>
+                </propertyInstances>
+              </stereotypeInstance>
+            </appliedStereotypesInternal>
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="7e6241cb-aa97-4fc0-8cf8-fa009be85e3f"
+                  direction="Return">
+                  <type_NamedElement>
+                    <primitiveTypeMoniker
+                      Id="8943dc84-709e-4f62-b15a-a3273aa6f165"
+                      LastKnownName="Boolean"
+                      LastKnownLocation="MBC Model.uml" />
+                  </type_NamedElement>
+                </parameter>
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+          <operation
+            Id="df97f0fa-d907-4772-81f9-2c002982b6c6"
+            name="AppendEvent"
+            visibility="Private"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="false"
+            concurrency="Sequential"
+            isQuery="false">
+            <referencesInternal>
+              <reference
+                Id="03869f6c-35b8-4d2f-9336-903fa68d1320"
+                handle="viewcode://./CodeSchema_Method?Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fmbc_core.dll&quot; Namespace%3DMBC.Core.Game Type%3DMatchCore Member%3D(Name%3DAppendEvent OverloadingParameters%3D[(Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fctrlplugin.dll&quot; Namespace%3DMBC.Shared.Events Type%3DEvent)])"
+                tag="ViewCode" />
+            </referencesInternal>
+            <appliedStereotypesInternal>
+              <stereotypeInstance
+                Id="a8a28e75-7809-42fd-91f9-3efb0f180575"
+                name="method"
+                profile="CSharpProfile">
+                <propertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="69e123e4-675f-4e73-88aa-37f61a39216b">
+                    <propertyInstance
+                      Id="21bac7b5-89e3-4fcc-92d5-0d288ee81394"
+                      name="ClrAttributes" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="31c8874e-a0cc-4bfe-bac3-97970a0da75a">
+                    <propertyInstance
+                      Id="e7e753a0-be27-4cf3-9ca5-f6258572cad9"
+                      name="IsPartial"
+                      value="false" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="396368f9-1f02-4154-b5b3-8b64b136ea57">
+                    <propertyInstance
+                      Id="39cf5b84-0860-431a-82c3-cfb60bff6fc0"
+                      name="IsUnsafe"
+                      value="false" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="5344a704-ebc8-4abc-98ea-6e589feb62a4">
+                    <propertyInstance
+                      Id="8e21b35b-732e-4182-a5b7-f63d81ec8717"
+                      name="Inheritance"
+                      value="none" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="0c4e1523-8dac-411f-bcb7-cb92474e953c">
+                    <propertyInstance
+                      Id="5c1d32ac-b7d6-45c4-80be-defd55061b43"
+                      name="PackageVisibility"
+                      value="internal" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="1df1186c-ebbb-4d3e-8f7b-d300b23bcf65">
+                    <propertyInstance
+                      Id="40dffd6a-7139-4a46-a6b1-3eea0df5de3d"
+                      name="params"
+                      value="false" />
+                  </stereotypeInstanceHasPropertyInstances>
+                </propertyInstances>
+              </stereotypeInstance>
+            </appliedStereotypesInternal>
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="54c3723d-04c4-4519-ae72-c619cb57498b"
+                  direction="Return">
+                  <type_NamedElement>
+                    <primitiveTypeMoniker
+                      Id="8943dc84-709e-4f62-b15a-a3273aa6f165"
+                      LastKnownName="Boolean"
+                      LastKnownLocation="MBC Model.uml" />
+                  </type_NamedElement>
+                </parameter>
+              </operationHasOwnedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="5c53f66c-b0c2-4eeb-a19f-2d6046795847"
+                  name="ev"
+                  direction="In">
+                  <referencesInternal>
+                    <reference
+                      Id="97bc7f9c-173e-46d1-a6da-91ba1a73a0f9"
+                      handle="viewcode://./CodeSchema_Parameter?Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fmbc_core.dll&quot; Namespace%3DMBC.Core.Game Type%3DMatchCore Member%3D(Name%3DAppendEvent OverloadingParameters%3D[(Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fctrlplugin.dll&quot; Namespace%3DMBC.Shared.Events Type%3DEvent)]) ParameterIdentifier%3Dev"
+                      tag="ViewCode" />
+                  </referencesInternal>
+                  <type_NamedElement>
+                    <classMoniker
+                      Id="437c9e1b-f711-46fc-a0c1-c3a3a8eb2f5a"
+                      LastKnownName="Event"
+                      LastKnownLocation="Package8_1355.uml" />
+                  </type_NamedElement>
+                </parameter>
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+          <operation
+            Id="e939bb32-f93b-4d06-ab6f-e6cf230dea7b"
+            name="ApplyParameters"
+            visibility="Private"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="false"
+            concurrency="Sequential"
+            isQuery="false">
+            <referencesInternal>
+              <reference
+                Id="976413d0-348c-49d5-ba44-5f4f7a6ef0c3"
+                handle="viewcode://./CodeSchema_Method?Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fmbc_core.dll&quot; Namespace%3DMBC.Core.Game Type%3DMatchCore Member%3D(Name%3DApplyParameters OverloadingParameters%3D[(Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fmbc_core.dll&quot; Namespace%3DMBC.Core.Util Type%3DConfiguration)])"
+                tag="ViewCode" />
+            </referencesInternal>
+            <appliedStereotypesInternal>
+              <stereotypeInstance
+                Id="fd617d8a-2a3a-4873-a002-f338ae943a6a"
+                name="method"
+                profile="CSharpProfile">
+                <propertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="934afd07-681a-4ba1-a827-0c100d3d3afd">
+                    <propertyInstance
+                      Id="eb60a5a0-7404-4089-84bb-cd9226d48f22"
+                      name="ClrAttributes" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="ff7f91e4-d05b-4b54-8027-061e0bcb0c46">
+                    <propertyInstance
+                      Id="9617e0e6-a44a-41f7-a0ea-04805c568b6d"
+                      name="IsPartial"
+                      value="false" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="d1d53941-7bd8-466b-8b4a-9a4d4bb433a4">
+                    <propertyInstance
+                      Id="d2e048e0-0c6b-43d4-90ef-2cc9900f9bb5"
+                      name="IsUnsafe"
+                      value="false" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="6f924473-2eb1-4e78-a2f7-907a3f6c0e08">
+                    <propertyInstance
+                      Id="ba30d1c3-ea10-40cd-b16a-4cdfd8368707"
+                      name="Inheritance"
+                      value="none" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="0cd1d046-11ce-4c58-a54b-a5580782feeb">
+                    <propertyInstance
+                      Id="77c05aa3-661f-467b-adf0-9b8482f88592"
+                      name="PackageVisibility"
+                      value="internal" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="e29da262-7af3-4ebd-b20a-ab461c38f52e">
+                    <propertyInstance
+                      Id="50b16fa5-7a65-40da-ad3b-f7f4f809c946"
+                      name="params"
+                      value="false" />
+                  </stereotypeInstanceHasPropertyInstances>
+                </propertyInstances>
+              </stereotypeInstance>
+            </appliedStereotypesInternal>
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="ccca782b-673f-4a80-88e9-2ecca7a0ef6c"
+                  name="conf"
+                  direction="In">
+                  <referencesInternal>
+                    <reference
+                      Id="6690c964-a4ed-4a51-a4b8-8fb4e0427cb1"
+                      handle="viewcode://./CodeSchema_Parameter?Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fmbc_core.dll&quot; Namespace%3DMBC.Core.Game Type%3DMatchCore Member%3D(Name%3DApplyParameters OverloadingParameters%3D[(Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fmbc_core.dll&quot; Namespace%3DMBC.Core.Util Type%3DConfiguration)]) ParameterIdentifier%3Dconf"
+                      tag="ViewCode" />
+                  </referencesInternal>
+                  <type_NamedElement>
+                    <classMoniker
+                      Id="9b6d1c8b-7283-4d88-9db5-af6b10cc476c"
+                      LastKnownName="Configuration"
+                      LastKnownLocation="Package3_1355.uml" />
+                  </type_NamedElement>
+                </parameter>
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+          <operation
+            Id="18602773-9ba6-459f-9de2-385645ec08b5"
+            name="FindFirstEmptyPlayerID"
+            visibility="Private"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="false"
+            concurrency="Sequential"
+            isQuery="false">
+            <referencesInternal>
+              <reference
+                Id="1ae619fb-4f88-4636-b632-9d19898f3073"
+                handle="viewcode://./CodeSchema_Method?Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2FPiknik%2FDocuments%2FProgramming%2FCSharp VS%2FMohawk_Battleship%2Fbin%2Fmbc_core.dll&quot; Namespace%3DMBC.Core.Game Type%3DMatchCore Member%3DFindFirstEmptyPlayerID"
+                tag="ViewCode" />
+            </referencesInternal>
+            <appliedStereotypesInternal>
+              <stereotypeInstance
+                Id="54211b47-9a23-497a-9707-0b8e4179a76f"
+                name="method"
+                profile="CSharpProfile">
+                <propertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="5a0bfa38-4c7c-45a1-ab8a-0859cd06846d">
+                    <propertyInstance
+                      Id="f2488004-011a-4721-b4cc-b332bafe5c9d"
+                      name="ClrAttributes" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="f5390cda-9440-478b-8898-668ebc617d40">
+                    <propertyInstance
+                      Id="c9bd4a77-175f-4d42-a9ae-03f13d09052e"
+                      name="IsPartial"
+                      value="false" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="7e782e8e-7de1-475a-8d55-e34c0efccac9">
+                    <propertyInstance
+                      Id="f0169b50-6487-42b2-a8de-065e1e7d50a1"
+                      name="IsUnsafe"
+                      value="false" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="2787b57b-b5ba-4c31-a8fd-2204ba30e87a">
+                    <propertyInstance
+                      Id="5d352948-381e-4acf-ada2-8b3055d24333"
+                      name="Inheritance"
+                      value="none" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="2b36a6a3-661c-49b3-a17a-cf329c1a28e6">
+                    <propertyInstance
+                      Id="746411df-7063-49cd-9c1f-6b535e196fb0"
+                      name="PackageVisibility"
+                      value="internal" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="6a86286a-ff5c-4940-82ea-630d3dfee0b9">
+                    <propertyInstance
+                      Id="2875c796-e78f-4857-bdd6-131773cc4b71"
+                      name="params"
+                      value="false" />
+                  </stereotypeInstanceHasPropertyInstances>
+                </propertyInstances>
+              </stereotypeInstance>
+            </appliedStereotypesInternal>
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="0d8d5f5c-ec7f-477f-9367-32dd7ef44102"
+                  direction="Return">
+                  <type_NamedElement>
+                    <primitiveTypeMoniker
+                      Id="220a3521-e091-4221-bae9-3ef9018e845c"
+                      LastKnownName="Integer"
+                      LastKnownLocation="MBC Model.uml" />
+                  </type_NamedElement>
+                </parameter>
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+        </ownedOperationsInternal>
+      </class>
+    </packageHasNamedElement>
+  </packagedElements>
+</package>
