@@ -9,7 +9,7 @@ namespace MBC.Shared
     {
         event StringOutputHandler ControllerMessageEvent;
 
-        Match match { get; set; }
+        Match Match { get; set; }
 
         /// <summary>
         /// Called when required to create and return a <see cref="Shot"/>. Refer to the rules of the
