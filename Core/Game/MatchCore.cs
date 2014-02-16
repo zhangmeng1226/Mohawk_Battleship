@@ -18,7 +18,7 @@ namespace MBC.Core.Game
     /// </summary>
     public class MatchCore : Match
     {
-        public const Coordinates COORDS_ZERO = new Coordinates(0, 0);
+        public static Coordinates COORDS_ZERO = new Coordinates(0, 0);
 
         /// <summary>
         /// Creates a match with parameters loaded from a configuration.

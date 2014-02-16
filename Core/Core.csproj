@@ -44,6 +44,7 @@
   <ItemGroup>
     <Compile Include="Accolades\Accolade.cs" />
     <Compile Include="Accolades\AccoladeGenerator.cs" />
+    <Compile Include="Controllers\ControllerAdapter.cs" />
     <Compile Include="Game\ClassicMatch.cs" />
     <Compile Include="Game\MatchCore.cs" />
     <Compile Include="Threading\ThreadTimeoutAborter.cs" />

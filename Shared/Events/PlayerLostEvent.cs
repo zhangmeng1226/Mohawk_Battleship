@@ -20,14 +20,24 @@ namespace MBC.Shared.Events
 
         public override bool ApplyBackward()
         {
-            Player.Losses--;
-            return true;
+            if (!Player.Active)
+            {
+                Player.Active = true;
+                Player.Losses--;
+                return true;
+            }
+            return false;
         }
 
         public override bool ApplyForward()
         {
-            Player.Losses++;
-            return true;
+            if (Player.Active)
+            {
+                Player.Active = false;
+                Player.Losses++;
+                return true;
+            }
+            return false;
         }
     }
 }

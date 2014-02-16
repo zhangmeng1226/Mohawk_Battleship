@@ -23,7 +23,7 @@ namespace MBC.Shared
         /// <param name="newId">The ID number in the match</param>
         /// <param name="newName">The name of the player</param>
         /// <param name="cont">The controller associated with this player</param>
-        public Player(IDNumber newId, string newName, IController cont)
+        public Player(IDNumber newId, string newName, IController2 cont)
             : this(newId, newName)
         {
             Controller = cont;
@@ -42,7 +42,7 @@ namespace MBC.Shared
         /// <summary>
         /// Gets the controller that makes decisions for this player.
         /// </summary>
-        public IController Controller
+        public IController2 Controller
         {
             get;
             internal set;

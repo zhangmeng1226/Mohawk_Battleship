@@ -1,12 +1,12 @@
-﻿using System;
+﻿using MBC.Shared;
+using MBC.Shared.Attributes;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using MBC.Shared;
-using MBC.Shared.Attributes;
 
-namespace MBC.Core
+namespace MBC.Core.Controllers
 {
     /// <summary>
     /// Provides various information about a <see cref="Controller"/> that is loaded from an external library via
@@ -61,7 +61,8 @@ namespace MBC.Core
 
                 foreach (Type cont in types)
                 {
-                    if (cont.GetInterface("IController", false) != null && !cont.IsAbstract && cont.GetConstructor(Type.EmptyTypes) != null)
+                    if (!cont.IsAbstract && cont.GetConstructor(Type.EmptyTypes) != null
+                        && (cont.GetInterface("IController", false) != null || cont.GetInterface("IController2", false) != null))
                     {
                         string[] pathSplit = filePath.Split('\\');
 
@@ -125,9 +126,18 @@ namespace MBC.Core
         /// Creates a <see cref="Controller"/> instance from the type contained in this <see cref="ControllerSkeleton"/>.
         /// </summary>
         /// <returns>Returns the created instance.</returns>
-        public Controller CreateInstance()
+        public IController2 CreateInstance()
         {
-            return (Controller)Activator.CreateInstance(Controller);
+            IController2 result = null;
+            if (Controller.GetInterface("IController2", false) == null)
+            {
+                result = new ControllerAdapter((IController)Activator.CreateInstance(Controller));
+            }
+            else
+            {
+                result = (IController2)Activator.CreateInstance(Controller);
+            }
+            return result;
         }
 
         /// <summary>
