@@ -9,7 +9,7 @@ namespace MBC.Shared
     /// <summary>
     /// This is the new framework part of a match.
     /// </summary>
-    public class Match
+    public class Match : MarshalByRefObject
     {
         /// <summary>
         /// Called when the match begins. Called before any rounds begin.
@@ -208,7 +208,7 @@ namespace MBC.Shared
                 ShipList.AreShipsValid(player.Ships, FieldSize);
         }
 
-        protected virtual void NotifyEvent(Event e)
+        public virtual void NotifyEvent(Event e)
         {
             if (e is PlayerTurnSwitchEvent)
             {
@@ -338,6 +338,16 @@ namespace MBC.Shared
                     OnPlayerTeamAssign(this, (PlayerTeamAssignEvent)e);
                 }
             }
+        }
+
+        /// <summary>
+        /// Applies an event to the match by allowing it to modify the match data.
+        /// </summary>
+        /// <param name="e"></param>
+        /// <returns></returns>
+        protected virtual bool ApplyEvent(Event e)
+        {
+            return e.ApplyForward();
         }
     }
 }

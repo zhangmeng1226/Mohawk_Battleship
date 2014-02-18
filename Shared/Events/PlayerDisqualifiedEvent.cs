@@ -37,6 +37,7 @@ namespace MBC.Shared.Events
         public override bool ApplyForward()
         {
             Player.Disqualifications++;
+            Player.Active = false;
             return true;
         }
     }

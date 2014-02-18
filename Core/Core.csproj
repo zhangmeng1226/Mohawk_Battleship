@@ -46,6 +46,7 @@
     <Compile Include="Accolades\AccoladeGenerator.cs" />
     <Compile Include="Controllers\ControllerAdapter.cs" />
     <Compile Include="Game\ClassicMatch.cs" />
+    <Compile Include="Controllers\ControllerIsolator.cs" />
     <Compile Include="Game\MatchCore.cs" />
     <Compile Include="Threading\ThreadTimeoutAborter.cs" />
     <Compile Include="Controllers\TimedController.cs" />

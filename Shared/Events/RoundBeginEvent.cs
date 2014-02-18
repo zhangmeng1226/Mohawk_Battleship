@@ -43,6 +43,10 @@ namespace MBC.Shared.Events
             if ((Match.CurrentRound + 1) == Round)
             {
                 Match.CurrentRound++;
+                foreach (var plr in Match.Players)
+                {
+                    plr.Active = true;
+                }
                 return true;
             }
             return false;

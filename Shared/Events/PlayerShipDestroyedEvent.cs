@@ -32,12 +32,12 @@ namespace MBC.Shared.Events
 
         public override bool ApplyBackward()
         {
-            return DestroyedShip.IsSunk();
+            return DestroyedShip == null ? true : DestroyedShip.IsSunk();
         }
 
         public override bool ApplyForward()
         {
-            return !DestroyedShip.IsSunk();
+            return DestroyedShip == null ? true : !DestroyedShip.IsSunk();
         }
     }
 }

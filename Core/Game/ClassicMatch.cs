@@ -87,24 +87,7 @@ namespace MBC.Core.Game
         /// <returns></returns>
         public override bool MakePlayerLose(Player plr)
         {
-            if (!activePlayers.Remove(plr))
-            {
-                return false;
-            }
-            plr.Active = false;
-            plr.Controller.RoundLost();
-            foreach (Player activePlayer in activePlayers)
-            {
-                try
-                {
-                    activePlayer.Controller.OpponentDestroyed(plr.ID);
-                }
-                catch (ControllerTimeoutException ex)
-                {
-                    PlayerDisqualified(FindPlayerFromController(ex.Controller), REASON_TIMEOUT);
-                }
-            }
-            return base.MakePlayerLose(plr);
+            return base.MakePlayerLose(plr) && activePlayers.Remove(plr);
         }
 
         public override bool NewRound()
@@ -143,7 +126,6 @@ namespace MBC.Core.Game
         /// <returns></returns>
         protected override bool AddPlayer(Player plr)
         {
-            plr.Active = false;
             return base.AddPlayer(plr);
         }
 
@@ -155,23 +137,7 @@ namespace MBC.Core.Game
         /// <returns></returns>
         protected override bool PlayerDisqualified(Player plr, string reason)
         {
-            if (!activePlayers.Remove(plr))
-            {
-                return false;
-            }
-            plr.Active = false;
-            foreach (Player player in activePlayers)
-            {
-                try
-                {
-                    player.Controller.OpponentDestroyed(plr.ID);
-                }
-                catch (ControllerTimeoutException ex)
-                {
-                    PlayerDisqualified(FindPlayerFromController(ex.Controller), REASON_TIMEOUT);
-                }
-            }
-            return base.PlayerDisqualified(plr, reason);
+            return base.PlayerDisqualified(plr, reason) && activePlayers.Remove(plr);
         }
 
         /// <summary>
@@ -214,7 +180,6 @@ namespace MBC.Core.Game
             {
                 Player winner = activePlayers[0];
                 activePlayers.Clear();
-                winner.Controller.RoundWon();
                 MakePlayerWin(winner);
             }
             return false;
@@ -253,10 +218,7 @@ namespace MBC.Core.Game
             {
                 try
                 {
-                    plr.Active = true;
-                    plr.Ships = StartingShips;
                     activePlayers.Add(plr);
-                    plr.Controller.NewRound();
                 }
                 catch (ControllerTimeoutException ex)
                 {
@@ -281,7 +243,7 @@ namespace MBC.Core.Game
             }
             else
             {
-                CurrentPlayer.Ships = new HashSet<Ship>(CurrentPlayer.Controller.PlaceShips().ToList());
+                PlacePlayerShips(CurrentPlayer, new HashSet<Ship>(CurrentPlayer.Controller.PlaceShips().ToList()));
 
                 if (!AreShipsValid(CurrentPlayer))
                 {
@@ -308,19 +270,17 @@ namespace MBC.Core.Game
             var shotMade = CurrentPlayer.Controller.MakeShot();
             var shipHit = ShipList.GetShipAt(shotMade.ReceiverPlr.Ships, shotMade.Coordinates);
             MakePlayerShot(CurrentPlayer, shotMade, shipHit);
-            if (!IsShotValid(shotMade))
+            if (!IsShotValid(CurrentPlayer, shotMade))
             {
                 PlayerDisqualified(CurrentPlayer, REASON_SHOT);
                 return SwitchNextPlayer();
             }
-            shotMade.ReceiverPlr.Controller.OpponentShot(shotMade);
 
             shipHit.SetShotHit(shotMade.Coordinates, true);
 
             if (shipHit != null)
             {
                 var sunk = shipHit.IsSunk();
-                CurrentPlayer.Controller.ShotHit(shotMade, sunk);
                 if (sunk)
                 {
                     MakePlayerShipDestroyed(shotMade.ReceiverPlr, shipHit);
@@ -329,10 +289,6 @@ namespace MBC.Core.Game
                         MakePlayerLose(shotMade.ReceiverPlr);
                     }
                 }
-            }
-            else
-            {
-                CurrentPlayer.Controller.ShotMiss(shotMade);
             }
             return SwitchNextPlayer();
         }

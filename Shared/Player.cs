@@ -15,6 +15,7 @@ namespace MBC.Shared
         {
             ID = newId;
             Name = newName;
+            Active = false;
         }
 
         /// <summary>

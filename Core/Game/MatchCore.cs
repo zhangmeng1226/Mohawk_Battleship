@@ -76,7 +76,8 @@ namespace MBC.Core.Game
         /// <returns></returns>
         public virtual bool AddPlayer(ControllerSkeleton skeleton)
         {
-            return AddPlayer(new Player(FindFirstEmptyPlayerID(), skeleton.GetAttribute<NameAttribute>().Name, new TimedController(skeleton.CreateInstance())));
+            var isolator = ControllerIsolator.Isolate(skeleton, this);
+            return AddPlayer(new Player(FindFirstEmptyPlayerID(), skeleton.GetAttribute<NameAttribute>().Name, isolator.Controller));
         }
 
         /// <summary>
@@ -86,7 +87,7 @@ namespace MBC.Core.Game
         /// <param name="newTeam"></param>
         public virtual bool AssignPlayerTeam(Player plr, Team newTeam)
         {
-            return AppendEvent(new PlayerTeamAssignEvent(plr, newTeam));
+            return ApplyEvent(new PlayerTeamAssignEvent(plr, newTeam));
         }
 
         /// <summary>
@@ -95,7 +96,7 @@ namespace MBC.Core.Game
         public bool EndMatch()
         {
             AtEnd = true;
-            return AppendEvent(new MatchEndEvent(this));
+            return ApplyEvent(new MatchEndEvent(this));
         }
 
         /// <summary>
@@ -104,7 +105,7 @@ namespace MBC.Core.Game
         /// <returns></returns>
         public virtual bool EndRound()
         {
-            return AppendEvent(new RoundEndEvent(this, CurrentRound));
+            return ApplyEvent(new RoundEndEvent(this, CurrentRound));
         }
 
         /// <summary>
@@ -127,7 +128,7 @@ namespace MBC.Core.Game
         /// <param name="plr"></param>
         public virtual bool MakePlayerLose(Player plr)
         {
-            return AppendEvent(new PlayerLostEvent(plr));
+            return ApplyEvent(new PlayerLostEvent(plr));
         }
 
         /// <summary>
@@ -138,7 +139,7 @@ namespace MBC.Core.Game
         /// <returns></returns>
         public virtual bool MakePlayerShipDestroyed(Player plr, Ship destroyedShip)
         {
-            return AppendEvent(new PlayerShipDestroyedEvent(plr, destroyedShip));
+            return ApplyEvent(new PlayerShipDestroyedEvent(plr, destroyedShip));
         }
 
         /// <summary>
@@ -160,7 +161,7 @@ namespace MBC.Core.Game
         /// <returns></returns>
         public virtual bool MakePlayerShot(Player plr, Shot shot, Ship shipHit)
         {
-            return AppendEvent(new PlayerShotEvent(plr, shot, shipHit));
+            return ApplyEvent(new PlayerShotEvent(plr, shot, shipHit));
         }
 
         /// <summary>
@@ -170,7 +171,7 @@ namespace MBC.Core.Game
         /// <param name="ex"></param>
         public virtual bool MakePlayerTimeout(Player plr, string method)
         {
-            return AppendEvent(new PlayerTimeoutEvent(plr, method));
+            return ApplyEvent(new PlayerTimeoutEvent(plr, method));
         }
 
         /// <summary>
@@ -179,7 +180,7 @@ namespace MBC.Core.Game
         /// <param name="plr"></param>
         public virtual bool MakePlayerWin(Player plr)
         {
-            return AppendEvent(new PlayerWonEvent(plr));
+            return ApplyEvent(new PlayerWonEvent(plr));
         }
 
         /// <summary>
@@ -189,7 +190,7 @@ namespace MBC.Core.Game
         public virtual bool NewRound()
         {
             EndRound();
-            return AppendEvent(new RoundBeginEvent(this, CurrentRound + 1));
+            return ApplyEvent(new RoundBeginEvent(this, CurrentRound + 1));
         }
 
         /// <summary>
@@ -200,7 +201,7 @@ namespace MBC.Core.Game
         /// <returns></returns>
         public virtual bool PlacePlayerShips(Player plr, ISet<Ship> ships)
         {
-            return AppendEvent(new PlayerShipsPlacedEvent(plr, ships));
+            return ApplyEvent(new PlayerShipsPlacedEvent(plr, ships));
         }
 
         /// <summary>
@@ -213,7 +214,7 @@ namespace MBC.Core.Game
                 IsRunning = true;
                 if (CurrentRound == -1)
                 {
-                    if (!AppendEvent(new RoundBeginEvent(this, CurrentRound + 1)))
+                    if (!ApplyEvent(new RoundBeginEvent(this, CurrentRound + 1)))
                     {
                         IsRunning = false;
                     }
@@ -296,7 +297,7 @@ namespace MBC.Core.Game
         /// <param name="plr"></param>
         public virtual bool RemovePlayer(Player plr)
         {
-            return AppendEvent(new MatchRemovePlayerEvent(this, plr));
+            return ApplyEvent(new MatchRemovePlayerEvent(this, plr));
         }
 
         /// <summary>
@@ -305,7 +306,7 @@ namespace MBC.Core.Game
         /// <param name="remTeam"></param>
         public virtual bool RemoveTeam(Team remTeam)
         {
-            return AppendEvent(new MatchTeamRemoveEvent(this, remTeam));
+            return ApplyEvent(new MatchTeamRemoveEvent(this, remTeam));
         }
 
         /// <summary>
@@ -317,79 +318,10 @@ namespace MBC.Core.Game
         }
 
         /// <summary>
-        /// Adds a player to the match.
-        /// </summary>
-        /// <param name="playerAdd"></param>
-        /// <returns></returns>
-        protected virtual bool AddPlayer(Player playerAdd)
-        {
-            return AppendEvent(new MatchAddPlayerEvent(this, playerAdd));
-        }
-
-        /// <summary>
-        /// Adds a team to the match.
-        /// </summary>
-        /// <param name="newTeam"></param>
-        /// <returns></returns>
-        protected virtual bool AddTeam(Team addTeam)
-        {
-            return AppendEvent(new MatchTeamAddEvent(this, addTeam));
-        }
-
-        /// <summary>
-        /// Signals a disqualification event against a player for a specific reason.
-        /// </summary>
-        /// <param name="plr"></param>
-        /// <param name="reason"></param>
-        /// <returns></returns>
-        protected virtual bool PlayerDisqualified(Player plr, string reason)
-        {
-            return AppendEvent(new PlayerDisqualifiedEvent(plr, reason));
-        }
-
-        /// <summary>
-        /// Must be overriden by the sub class that provides round functionality.
-        /// </summary>
-        /// <returns></returns>
-        protected virtual bool PlayLogic()
-        {
-            return false;
-        }
-
-        /// <summary>
-        /// Moves the current event index to the last event, and applies the given event.
-        /// </summary>
-        /// <param name="ev"></param>
-        /// <returns></returns>
-        private bool AppendEvent(Event ev)
-        {
-            if (PlayToLastEvent() && ev.ApplyForward())
-            {
-                Events.Add(ev);
-                ev.Millis = (int)(GameTimer.ElapsedMilliseconds);
-                return true;
-            }
-            return false;
-        }
-
-        /// <summary>
-        /// Applies a configuration to the match.
-        /// </summary>
-        /// <param name="conf"></param>
-        private void ApplyParameters(Configuration conf)
-        {
-            FieldSize = new Coordinates(conf.GetValue<int>("mbc_field_width"), conf.GetValue<int>("mbc_field_height"));
-            NumberOfRounds = conf.GetValue<int>("mbc_match_rounds");
-
-            StartingShips = ShipList.ShipsFromLengths(conf.GetList<int>("mbc_ship_sizes"));
-            TimeLimit = conf.GetValue<int>("mbc_player_timeout");
-        }
-
-        /// <summary>
         /// Finds the first IDNumber that is unoccupied in the players list.
         /// </summary>
         /// <returns></returns>
-        private int FindFirstEmptyPlayerID()
+        internal int FindFirstEmptyPlayerID()
         {
             var numberSet = new HashSet<int>();
             foreach (var plr in Players)
@@ -404,6 +336,75 @@ namespace MBC.Core.Game
                 }
             }
             return numberSet.Count;
+        }
+
+        /// <summary>
+        /// Adds a player to the match.
+        /// </summary>
+        /// <param name="playerAdd"></param>
+        /// <returns></returns>
+        protected virtual bool AddPlayer(Player playerAdd)
+        {
+            return ApplyEvent(new MatchAddPlayerEvent(this, playerAdd));
+        }
+
+        /// <summary>
+        /// Adds a team to the match.
+        /// </summary>
+        /// <param name="newTeam"></param>
+        /// <returns></returns>
+        protected virtual bool AddTeam(Team addTeam)
+        {
+            return ApplyEvent(new MatchTeamAddEvent(this, addTeam));
+        }
+
+        /// <summary>
+        /// Moves the current event index to the last event, and applies the given event.
+        /// </summary>
+        /// <param name="ev"></param>
+        /// <returns></returns>
+        protected override bool ApplyEvent(Event ev)
+        {
+            if (PlayToLastEvent() && base.ApplyEvent(ev))
+            {
+                Events.Add(ev);
+                ev.Millis = (int)(GameTimer.ElapsedMilliseconds);
+                return true;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Signals a disqualification event against a player for a specific reason.
+        /// </summary>
+        /// <param name="plr"></param>
+        /// <param name="reason"></param>
+        /// <returns></returns>
+        protected virtual bool PlayerDisqualified(Player plr, string reason)
+        {
+            return ApplyEvent(new PlayerDisqualifiedEvent(plr, reason));
+        }
+
+        /// <summary>
+        /// Must be overriden by the sub class that provides round functionality.
+        /// </summary>
+        /// <returns></returns>
+        protected virtual bool PlayLogic()
+        {
+            return false;
+        }
+
+        /// <summary>
+        /// Applies a configuration to the match.
+        /// </summary>
+        /// <param name="conf"></param>
+        private void ApplyParameters(Configuration conf)
+        {
+            FieldSize = new Coordinates(conf.GetValue<int>("mbc_field_width"), conf.GetValue<int>("mbc_field_height"));
+            NumberOfRounds = conf.GetValue<int>("mbc_match_rounds");
+
+            StartingShips = ShipList.ShipsFromLengths(conf.GetList<int>("mbc_ship_sizes"));
+            TimeLimit = conf.GetValue<int>("mbc_player_timeout");
         }
     }
 }
