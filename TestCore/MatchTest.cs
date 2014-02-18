@@ -22,7 +22,7 @@ namespace TestCore
         }
 
         [TestMethod]
-        public void PlayerDisqualifiedTest()
+        public bool PlayerDisqualifiedTest()
         {
             var matchTest = new Match(Configuration.Global);
             var testPlayer = new Player(0, "Test Player");
