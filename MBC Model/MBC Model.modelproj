@@ -22,6 +22,13 @@
   </PropertyGroup>
   <Import Project="$(VSToolsPath)\ArchitectureTools\Microsoft.VisualStudio.TeamArchitect.ModelingProject.targets" Condition="'$(VSToolsPath)' != ''" />
   <ItemGroup>
+    <Content Include="Summary Use Case.usecasediagram">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Summary Use Case.usecasediagram.layout">
+      <SubType>Content</SubType>
+      <DependentUpon>Summary Use Case.usecasediagram</DependentUpon>
+    </Content>
     <Content Include="ModelDefinition\Package1_1355.uml">
       <SubType>Content</SubType>
     </Content>

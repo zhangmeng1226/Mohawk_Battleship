@@ -17,6 +17,15 @@ namespace MBC.Core.Controllers
         public ControllerAdapter(IController oldController)
         {
             this.oldController = oldController;
+            oldController.ControllerMessageEvent += (string msg) =>
+            {
+                if (ControllerMessageEvent != null)
+                {
+                    ControllerMessageEvent(msg);
+                }
+            };
+            Match = new Match();
+
             Match.OnMatchBegin += (object match, MatchBeginEvent ev) => { oldController.NewMatch(); };
             Match.OnMatchEnd += (object match, MatchEndEvent ev) => { oldController.MatchOver(); };
             Match.OnRoundBegin += (object match, RoundBeginEvent ev) => { oldController.NewRound(); };
@@ -60,7 +69,11 @@ namespace MBC.Core.Controllers
 
         public event StringOutputHandler ControllerMessageEvent;
 
-        public Match Match { get; set; }
+        public Match Match
+        {
+            get;
+            set;
+        }
 
         public Shot MakeShot()
         {

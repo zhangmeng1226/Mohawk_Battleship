@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<modelStoreModel xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" xmlns:dm1="http://schemas.microsoft.com/dsltools/Kernel" xmlns:dm2="http://schemas.microsoft.com/dsltools/Component" xmlns:dm3="http://schemas.microsoft.com/dsltools/UseCase" xmlns:dm4="http://schemas.microsoft.com/dsltools/Activity" xmlns:dm5="http://schemas.microsoft.com/dsltools/Interaction" xmlns:dm6="http://schemas.microsoft.com/dsltools/UmlModelLibrary" xmlns:dm7="http://schemas.microsoft.com/dsltools/UmlDiagrams" xmlns:dm8="http://schemas.microsoft.com/dsltools/LogicalClassDesigner"
+<modelStoreModel xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" xmlns:dm1="http://schemas.microsoft.com/dsltools/Kernel" xmlns:dm2="http://schemas.microsoft.com/dsltools/Component" xmlns:dm3="http://schemas.microsoft.com/dsltools/UseCase" xmlns:dm4="http://schemas.microsoft.com/dsltools/Activity" xmlns:dm5="http://schemas.microsoft.com/dsltools/Interaction" xmlns:dm6="http://schemas.microsoft.com/dsltools/UmlModelLibrary" xmlns:dm7="http://schemas.microsoft.com/dsltools/UmlDiagrams" xmlns:dm8="http://schemas.microsoft.com/dsltools/LogicalClassDesigner" xmlns:dm9="http://schemas.microsoft.com/dsltools/SimpleShapesModel" xmlns:dm10="http://schemas.microsoft.com/dsltools/UseCaseModel"
   dslVersion="1.0.0.0"
   Id="ee33e9ba-409d-4115-9875-41c2a17fa31f"
   name="MBC Model" xmlns="http://schemas.microsoft.com/dsltools/ModelStore">
@@ -35,6 +35,751 @@
         Id="b2d36eef-ed77-48ba-8470-a502812e1363"
         LastKnownName="System"
         LastKnownLocation="Package5_1355.uml" />
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <actor
+        Id="354d0ac9-4e6c-4e04-968f-6ab3252431b5"
+        name="User"
+        isAbstract="false"
+        isLeaf="false">
+        <targetEnds>
+          <association
+            Id="1393a25c-6e6e-4bf1-9d80-292e22373e52"
+            isDerived="false"
+            sourceEndRoleName="User"
+            targetEndRoleName="Select Controllers"
+            isLeaf="false"
+            isAbstract="false">
+            <useCaseMoniker
+              Id="8e301e7b-7b68-4b6d-9971-03d106d9e3a2"
+              LastKnownName="Select Controllers"
+              LastKnownLocation="MBC Model.uml" />
+            <relationshipOwnedElementsInternal>
+              <associationHasOwnedEnds>
+                <memberEnd
+                  Id="f7d2dd15-a81d-42d0-bb58-7b3715a04325"
+                  name="User"
+                  isLeaf="false"
+                  isStatic="false"
+                  isReadOnly="false"
+                  isDerived="false"
+                  isDerivedUnion="false"
+                  aggregation="None"
+                  isComposite="false"
+                  isNavigableOwned="false" />
+              </associationHasOwnedEnds>
+              <associationHasOwnedEnds>
+                <memberEnd
+                  Id="2602db98-b4bf-4f01-b680-b46dc3267f9d"
+                  name="Select Controllers"
+                  isLeaf="false"
+                  isStatic="false"
+                  isReadOnly="false"
+                  isDerived="false"
+                  isDerivedUnion="false"
+                  aggregation="None"
+                  isComposite="false" />
+              </associationHasOwnedEnds>
+            </relationshipOwnedElementsInternal>
+          </association>
+          <association
+            Id="471048b2-6755-41b4-ba30-b2107255a2fa"
+            isDerived="false"
+            sourceEndRoleName="User"
+            targetEndRoleName="Configure Parameters"
+            isLeaf="false"
+            isAbstract="false">
+            <useCaseMoniker
+              Id="8bc2a844-be3a-40fe-ae99-0be64aeefb2c"
+              LastKnownName="Configure Parameters"
+              LastKnownLocation="MBC Model.uml" />
+            <relationshipOwnedElementsInternal>
+              <associationHasOwnedEnds>
+                <memberEnd
+                  Id="0ce8bcbd-2b98-48a5-b540-1a732c550591"
+                  name="User"
+                  isLeaf="false"
+                  isStatic="false"
+                  isReadOnly="false"
+                  isDerived="false"
+                  isDerivedUnion="false"
+                  aggregation="None"
+                  isComposite="false"
+                  isNavigableOwned="false" />
+              </associationHasOwnedEnds>
+              <associationHasOwnedEnds>
+                <memberEnd
+                  Id="659e9632-202a-493f-a3b3-e234fbb13d56"
+                  name="Configure Parameters"
+                  isLeaf="false"
+                  isStatic="false"
+                  isReadOnly="false"
+                  isDerived="false"
+                  isDerivedUnion="false"
+                  aggregation="None"
+                  isComposite="false" />
+              </associationHasOwnedEnds>
+            </relationshipOwnedElementsInternal>
+          </association>
+          <association
+            Id="52e947b5-902c-4e69-9071-3430743b476e"
+            isDerived="false"
+            sourceEndRoleName="User"
+            targetEndRoleName="Start Match"
+            isLeaf="false"
+            isAbstract="false">
+            <useCaseMoniker
+              Id="accb2cc8-9606-4f60-9c3f-0ecb237f637f"
+              LastKnownName="Start Match"
+              LastKnownLocation="MBC Model.uml" />
+            <relationshipOwnedElementsInternal>
+              <associationHasOwnedEnds>
+                <memberEnd
+                  Id="67ed82a8-6780-4663-9c4b-104509a8b47e"
+                  name="User"
+                  isLeaf="false"
+                  isStatic="false"
+                  isReadOnly="false"
+                  isDerived="false"
+                  isDerivedUnion="false"
+                  aggregation="None"
+                  isComposite="false"
+                  isNavigableOwned="false" />
+              </associationHasOwnedEnds>
+              <associationHasOwnedEnds>
+                <memberEnd
+                  Id="b0121518-32a8-4877-963c-6526e8e63a24"
+                  name="Start Match"
+                  isLeaf="false"
+                  isStatic="false"
+                  isReadOnly="false"
+                  isDerived="false"
+                  isDerivedUnion="false"
+                  aggregation="None"
+                  isComposite="false" />
+              </associationHasOwnedEnds>
+            </relationshipOwnedElementsInternal>
+          </association>
+          <association
+            Id="b3949c9c-1242-4907-a33d-9118ad85f29c"
+            isDerived="false"
+            sourceEndRoleName="User"
+            targetEndRoleName="Display End-Results"
+            isLeaf="false"
+            isAbstract="false">
+            <useCaseMoniker
+              Id="a661a626-a074-495c-b6bb-ee4b3bf5c64d"
+              LastKnownName="Display End-Results"
+              LastKnownLocation="MBC Model.uml" />
+            <relationshipOwnedElementsInternal>
+              <associationHasOwnedEnds>
+                <memberEnd
+                  Id="ef60bbf0-dfe7-4943-be02-a0052395ebab"
+                  name="User"
+                  isLeaf="false"
+                  isStatic="false"
+                  isReadOnly="false"
+                  isDerived="false"
+                  isDerivedUnion="false"
+                  aggregation="None"
+                  isComposite="false"
+                  isNavigableOwned="false" />
+              </associationHasOwnedEnds>
+              <associationHasOwnedEnds>
+                <memberEnd
+                  Id="509da963-823a-4528-93e7-e2ac1d1a788b"
+                  name="Display End-Results"
+                  isLeaf="false"
+                  isStatic="false"
+                  isReadOnly="false"
+                  isDerived="false"
+                  isDerivedUnion="false"
+                  aggregation="None"
+                  isComposite="false" />
+              </associationHasOwnedEnds>
+            </relationshipOwnedElementsInternal>
+          </association>
+        </targetEnds>
+      </actor>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <subsystem
+        Id="99d20c05-df0f-4462-9547-bb93d618317b"
+        name="Core"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false" />
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <useCase
+        Id="54e255e1-f654-4e57-9983-2b823ad1b814"
+        name="Begin Match"
+        isAbstract="false"
+        isLeaf="false">
+        <additions>
+          <include
+            Id="1a37eac4-a590-406c-bc4e-c99d187ad13b">
+            <useCaseMoniker
+              Id="33a4d683-494b-49a3-84cd-da6398314e06"
+              LastKnownName="Create and Isolate Controller(s)"
+              LastKnownLocation="MBC Model.uml" />
+          </include>
+          <include
+            Id="b8929f26-630a-4f31-b073-f201231736c9">
+            <useCaseMoniker
+              Id="29a937f6-362a-44f1-aaa5-d4094fd30b75"
+              LastKnownName="Match Loop"
+              LastKnownLocation="MBC Model.uml" />
+          </include>
+        </additions>
+        <subjects>
+          <subsystemMoniker
+            Id="99d20c05-df0f-4462-9547-bb93d618317b"
+            LastKnownName="Core"
+            LastKnownLocation="MBC Model.uml" />
+        </subjects>
+      </useCase>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <useCase
+        Id="28ad4b50-dbba-466c-9a5d-ced69a541c09"
+        name="UseCase2"
+        isAbstract="false"
+        isLeaf="false" />
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <subsystem
+        Id="97bce378-0b9d-4e28-9364-49c234630bf6"
+        name="Console Application"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false" />
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <useCase
+        Id="8e301e7b-7b68-4b6d-9971-03d106d9e3a2"
+        name="Select Controllers"
+        isAbstract="false"
+        isLeaf="false">
+        <extendedCases>
+          <extend
+            Id="4c7b52e0-3226-4538-99b5-598550edcdcd">
+            <useCaseMoniker
+              Id="c0050ee3-ab05-4941-814a-b01148b6e2ef"
+              LastKnownName="Display"
+              LastKnownLocation="MBC Model.uml" />
+          </extend>
+        </extendedCases>
+        <subjects>
+          <subsystemMoniker
+            Id="97bce378-0b9d-4e28-9364-49c234630bf6"
+            LastKnownName="Console Application"
+            LastKnownLocation="MBC Model.uml" />
+        </subjects>
+      </useCase>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <actor
+        Id="c6596d5a-e433-477d-aca6-eccfcd2a6323"
+        name="Server"
+        isAbstract="false"
+        isLeaf="false">
+        <targetEnds>
+          <association
+            Id="3d1fd7cb-431e-4c35-a790-ebf09f734960"
+            isDerived="false"
+            sourceEndRoleName="Server"
+            targetEndRoleName="Select Controllers"
+            isLeaf="false"
+            isAbstract="false">
+            <useCaseMoniker
+              Id="8e301e7b-7b68-4b6d-9971-03d106d9e3a2"
+              LastKnownName="Select Controllers"
+              LastKnownLocation="MBC Model.uml" />
+            <relationshipOwnedElementsInternal>
+              <associationHasOwnedEnds>
+                <memberEnd
+                  Id="a87cdac4-f8c8-409e-a5d6-935ac152b0fa"
+                  name="Server"
+                  isLeaf="false"
+                  isStatic="false"
+                  isReadOnly="false"
+                  isDerived="false"
+                  isDerivedUnion="false"
+                  aggregation="None"
+                  isComposite="false"
+                  isNavigableOwned="false" />
+              </associationHasOwnedEnds>
+              <associationHasOwnedEnds>
+                <memberEnd
+                  Id="960d8fba-733a-43bf-9528-4f976778a1bf"
+                  name="Select Controllers"
+                  isLeaf="false"
+                  isStatic="false"
+                  isReadOnly="false"
+                  isDerived="false"
+                  isDerivedUnion="false"
+                  aggregation="None"
+                  isComposite="false" />
+              </associationHasOwnedEnds>
+            </relationshipOwnedElementsInternal>
+          </association>
+          <association
+            Id="4d57ea48-9d99-4a0e-a99d-d07109fa37e6"
+            isDerived="false"
+            sourceEndRoleName="Server"
+            targetEndRoleName="Configure Parameters"
+            isLeaf="false"
+            isAbstract="false">
+            <useCaseMoniker
+              Id="8bc2a844-be3a-40fe-ae99-0be64aeefb2c"
+              LastKnownName="Configure Parameters"
+              LastKnownLocation="MBC Model.uml" />
+            <relationshipOwnedElementsInternal>
+              <associationHasOwnedEnds>
+                <memberEnd
+                  Id="72fbe72d-d48b-480d-b772-0e199f48e905"
+                  name="Server"
+                  isLeaf="false"
+                  isStatic="false"
+                  isReadOnly="false"
+                  isDerived="false"
+                  isDerivedUnion="false"
+                  aggregation="None"
+                  isComposite="false"
+                  isNavigableOwned="false" />
+              </associationHasOwnedEnds>
+              <associationHasOwnedEnds>
+                <memberEnd
+                  Id="96cb9b12-d007-4b20-986c-13cece562a81"
+                  name="Configure Parameters"
+                  isLeaf="false"
+                  isStatic="false"
+                  isReadOnly="false"
+                  isDerived="false"
+                  isDerivedUnion="false"
+                  aggregation="None"
+                  isComposite="false" />
+              </associationHasOwnedEnds>
+            </relationshipOwnedElementsInternal>
+          </association>
+          <association
+            Id="12df7828-0724-46ee-bbfe-1e1cb7ef6c77"
+            isDerived="false"
+            sourceEndRoleName="Server"
+            targetEndRoleName="Start Match"
+            isLeaf="false"
+            isAbstract="false">
+            <useCaseMoniker
+              Id="accb2cc8-9606-4f60-9c3f-0ecb237f637f"
+              LastKnownName="Start Match"
+              LastKnownLocation="MBC Model.uml" />
+            <relationshipOwnedElementsInternal>
+              <associationHasOwnedEnds>
+                <memberEnd
+                  Id="27708d78-57e9-4a8b-8261-57a60276e2fb"
+                  name="Server"
+                  isLeaf="false"
+                  isStatic="false"
+                  isReadOnly="false"
+                  isDerived="false"
+                  isDerivedUnion="false"
+                  aggregation="None"
+                  isComposite="false"
+                  isNavigableOwned="false" />
+              </associationHasOwnedEnds>
+              <associationHasOwnedEnds>
+                <memberEnd
+                  Id="565c1caa-3a6e-498f-84c0-ea548d2b5a80"
+                  name="Start Match"
+                  isLeaf="false"
+                  isStatic="false"
+                  isReadOnly="false"
+                  isDerived="false"
+                  isDerivedUnion="false"
+                  aggregation="None"
+                  isComposite="false" />
+              </associationHasOwnedEnds>
+            </relationshipOwnedElementsInternal>
+          </association>
+          <association
+            Id="014639bf-10c0-4660-affc-cdb0f95fdda6"
+            isDerived="false"
+            sourceEndRoleName="Server"
+            targetEndRoleName="Display End-Results"
+            isLeaf="false"
+            isAbstract="false">
+            <useCaseMoniker
+              Id="a661a626-a074-495c-b6bb-ee4b3bf5c64d"
+              LastKnownName="Display End-Results"
+              LastKnownLocation="MBC Model.uml" />
+            <relationshipOwnedElementsInternal>
+              <associationHasOwnedEnds>
+                <memberEnd
+                  Id="9aa52067-33a9-48a2-9141-403773a39a2b"
+                  name="Server"
+                  isLeaf="false"
+                  isStatic="false"
+                  isReadOnly="false"
+                  isDerived="false"
+                  isDerivedUnion="false"
+                  aggregation="None"
+                  isComposite="false"
+                  isNavigableOwned="false" />
+              </associationHasOwnedEnds>
+              <associationHasOwnedEnds>
+                <memberEnd
+                  Id="d7589dbd-54d3-459b-b64f-733230ef82a9"
+                  name="Display End-Results"
+                  isLeaf="false"
+                  isStatic="false"
+                  isReadOnly="false"
+                  isDerived="false"
+                  isDerivedUnion="false"
+                  aggregation="None"
+                  isComposite="false" />
+              </associationHasOwnedEnds>
+            </relationshipOwnedElementsInternal>
+          </association>
+        </targetEnds>
+      </actor>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <useCase
+        Id="29a937f6-362a-44f1-aaa5-d4094fd30b75"
+        name="Match Loop"
+        isAbstract="false"
+        isLeaf="false">
+        <additions>
+          <include
+            Id="0b9188be-b12d-491d-b13c-addada20a534">
+            <useCaseMoniker
+              Id="223d24a7-921e-41e1-9595-8893ba0a9099"
+              LastKnownName="End Match"
+              LastKnownLocation="MBC Model.uml" />
+          </include>
+          <include
+            Id="cef79a83-6f6a-4564-86c0-1f9ef7f91dae">
+            <useCaseMoniker
+              Id="1423cb86-25be-459c-9c21-100326c5de2a"
+              LastKnownName="Notify Event(s)"
+              LastKnownLocation="MBC Model.uml" />
+          </include>
+        </additions>
+        <subjects>
+          <subsystemMoniker
+            Id="99d20c05-df0f-4462-9547-bb93d618317b"
+            LastKnownName="Core"
+            LastKnownLocation="MBC Model.uml" />
+        </subjects>
+      </useCase>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <actor
+        Id="4b182038-22b8-48dc-bcaf-e6ab8bc3f20a"
+        name="Third-Party Controller"
+        isAbstract="false"
+        isLeaf="false" />
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <useCase
+        Id="1423cb86-25be-459c-9c21-100326c5de2a"
+        name="Notify Event(s)"
+        isAbstract="false"
+        isLeaf="false">
+        <targetEnds>
+          <association
+            Id="dd2095c2-f905-4611-913b-4121d55fa3d2"
+            isDerived="false"
+            sourceEndRoleName="Notify Event(s)"
+            targetEndRoleName="Third-Party Controller"
+            isLeaf="false"
+            isAbstract="false">
+            <actorMoniker
+              Id="4b182038-22b8-48dc-bcaf-e6ab8bc3f20a"
+              LastKnownName="Third-Party Controller"
+              LastKnownLocation="MBC Model.uml" />
+            <relationshipOwnedElementsInternal>
+              <associationHasOwnedEnds>
+                <memberEnd
+                  Id="9771202f-cc6e-4cb0-955f-0f3a8c79f585"
+                  name="Notify Event(s)"
+                  isLeaf="false"
+                  isStatic="false"
+                  isReadOnly="false"
+                  isDerived="false"
+                  isDerivedUnion="false"
+                  aggregation="None"
+                  isComposite="false"
+                  isNavigableOwned="false" />
+              </associationHasOwnedEnds>
+              <associationHasOwnedEnds>
+                <memberEnd
+                  Id="af33cc6c-c354-4319-b5d0-6b2b5962e276"
+                  name="Third-Party Controller"
+                  isLeaf="false"
+                  isStatic="false"
+                  isReadOnly="false"
+                  isDerived="false"
+                  isDerivedUnion="false"
+                  aggregation="None"
+                  isComposite="false" />
+              </associationHasOwnedEnds>
+            </relationshipOwnedElementsInternal>
+          </association>
+        </targetEnds>
+        <additions>
+          <include
+            Id="b4c621cc-acab-48a0-a58b-3b89bd196ae7">
+            <useCaseMoniker
+              Id="1a220bba-027f-4e30-9a2c-e08b807479ea"
+              LastKnownName="Display Information"
+              LastKnownLocation="MBC Model.uml" />
+          </include>
+          <include
+            Id="168be6dc-c372-41c4-867e-a1d0187030ba">
+            <useCaseMoniker
+              Id="29a937f6-362a-44f1-aaa5-d4094fd30b75"
+              LastKnownName="Match Loop"
+              LastKnownLocation="MBC Model.uml" />
+          </include>
+        </additions>
+        <subjects>
+          <subsystemMoniker
+            Id="99d20c05-df0f-4462-9547-bb93d618317b"
+            LastKnownName="Core"
+            LastKnownLocation="MBC Model.uml" />
+        </subjects>
+      </useCase>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <useCase
+        Id="223d24a7-921e-41e1-9595-8893ba0a9099"
+        name="End Match"
+        isAbstract="false"
+        isLeaf="false">
+        <additions>
+          <include
+            Id="5daacd65-54b3-4e9e-832f-aba8292aa184">
+            <useCaseMoniker
+              Id="a661a626-a074-495c-b6bb-ee4b3bf5c64d"
+              LastKnownName="Display End-Results"
+              LastKnownLocation="MBC Model.uml" />
+          </include>
+        </additions>
+        <subjects>
+          <subsystemMoniker
+            Id="99d20c05-df0f-4462-9547-bb93d618317b"
+            LastKnownName="Core"
+            LastKnownLocation="MBC Model.uml" />
+        </subjects>
+      </useCase>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <useCase
+        Id="8bc2a844-be3a-40fe-ae99-0be64aeefb2c"
+        name="Configure Parameters"
+        isAbstract="false"
+        isLeaf="false">
+        <suppliersInternal>
+          <dependency
+            Id="ae6081d5-09a8-4ae7-892f-8239120400d5">
+            <useCaseMoniker
+              Id="8e301e7b-7b68-4b6d-9971-03d106d9e3a2"
+              LastKnownName="Select Controllers"
+              LastKnownLocation="MBC Model.uml" />
+          </dependency>
+        </suppliersInternal>
+        <extendedCases>
+          <extend
+            Id="07ee101f-0452-4534-9acd-21986d237235">
+            <useCaseMoniker
+              Id="c0050ee3-ab05-4941-814a-b01148b6e2ef"
+              LastKnownName="Display"
+              LastKnownLocation="MBC Model.uml" />
+          </extend>
+        </extendedCases>
+        <subjects>
+          <subsystemMoniker
+            Id="97bce378-0b9d-4e28-9364-49c234630bf6"
+            LastKnownName="Console Application"
+            LastKnownLocation="MBC Model.uml" />
+        </subjects>
+      </useCase>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <useCase
+        Id="accb2cc8-9606-4f60-9c3f-0ecb237f637f"
+        name="Start Match"
+        isAbstract="false"
+        isLeaf="false">
+        <suppliersInternal>
+          <dependency
+            Id="594fc1bc-a666-4e0b-a784-109a6418b7ef">
+            <useCaseMoniker
+              Id="8bc2a844-be3a-40fe-ae99-0be64aeefb2c"
+              LastKnownName="Configure Parameters"
+              LastKnownLocation="MBC Model.uml" />
+          </dependency>
+        </suppliersInternal>
+        <extendedCases>
+          <extend
+            Id="4f1f00e2-16c6-4eb2-b4ef-d156be653333">
+            <useCaseMoniker
+              Id="c0050ee3-ab05-4941-814a-b01148b6e2ef"
+              LastKnownName="Display"
+              LastKnownLocation="MBC Model.uml" />
+          </extend>
+        </extendedCases>
+        <additions>
+          <include
+            Id="59a8d581-fd34-451a-b357-dbc6a9082561">
+            <useCaseMoniker
+              Id="54e255e1-f654-4e57-9983-2b823ad1b814"
+              LastKnownName="Begin Match"
+              LastKnownLocation="MBC Model.uml" />
+          </include>
+        </additions>
+        <subjects>
+          <subsystemMoniker
+            Id="97bce378-0b9d-4e28-9364-49c234630bf6"
+            LastKnownName="Console Application"
+            LastKnownLocation="MBC Model.uml" />
+        </subjects>
+      </useCase>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <useCase
+        Id="1a220bba-027f-4e30-9a2c-e08b807479ea"
+        name="Display Information"
+        isAbstract="false"
+        isLeaf="false">
+        <suppliersInternal>
+          <dependency
+            Id="f8a19007-3e78-47f6-b6b0-29b4f668ba69">
+            <useCaseMoniker
+              Id="accb2cc8-9606-4f60-9c3f-0ecb237f637f"
+              LastKnownName="Start Match"
+              LastKnownLocation="MBC Model.uml" />
+          </dependency>
+        </suppliersInternal>
+        <extendedCases>
+          <extend
+            Id="bf41949a-adfc-4670-ba49-6f4d7671819d">
+            <useCaseMoniker
+              Id="c0050ee3-ab05-4941-814a-b01148b6e2ef"
+              LastKnownName="Display"
+              LastKnownLocation="MBC Model.uml" />
+          </extend>
+        </extendedCases>
+        <subjects>
+          <subsystemMoniker
+            Id="97bce378-0b9d-4e28-9364-49c234630bf6"
+            LastKnownName="Console Application"
+            LastKnownLocation="MBC Model.uml" />
+        </subjects>
+      </useCase>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <useCase
+        Id="a661a626-a074-495c-b6bb-ee4b3bf5c64d"
+        name="Display End-Results"
+        isAbstract="false"
+        isLeaf="false">
+        <suppliersInternal>
+          <dependency
+            Id="aa2fdeb0-d362-421e-ba8d-45d87105fbd1">
+            <useCaseMoniker
+              Id="1a220bba-027f-4e30-9a2c-e08b807479ea"
+              LastKnownName="Display Information"
+              LastKnownLocation="MBC Model.uml" />
+          </dependency>
+        </suppliersInternal>
+        <extendedCases>
+          <extend
+            Id="2215be37-ab94-47a1-b174-61a268238192">
+            <useCaseMoniker
+              Id="c0050ee3-ab05-4941-814a-b01148b6e2ef"
+              LastKnownName="Display"
+              LastKnownLocation="MBC Model.uml" />
+          </extend>
+        </extendedCases>
+        <subjects>
+          <subsystemMoniker
+            Id="97bce378-0b9d-4e28-9364-49c234630bf6"
+            LastKnownName="Console Application"
+            LastKnownLocation="MBC Model.uml" />
+        </subjects>
+      </useCase>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <useCase
+        Id="33a4d683-494b-49a3-84cd-da6398314e06"
+        name="Create and Isolate Controller(s)"
+        isAbstract="false"
+        isLeaf="false">
+        <targetEnds>
+          <association
+            Id="e8b0417a-98e1-4c84-8900-c31257943f8f"
+            isDerived="false"
+            sourceEndRoleName="Create and Isolate Controller"
+            targetEndRoleName="Third-Party Controller"
+            isLeaf="false"
+            isAbstract="false">
+            <actorMoniker
+              Id="4b182038-22b8-48dc-bcaf-e6ab8bc3f20a"
+              LastKnownName="Third-Party Controller"
+              LastKnownLocation="MBC Model.uml" />
+            <relationshipOwnedElementsInternal>
+              <associationHasOwnedEnds>
+                <memberEnd
+                  Id="4a846792-9344-41b3-a45b-2da1c2c1da3f"
+                  name="Create and Isolate Controller"
+                  isLeaf="false"
+                  isStatic="false"
+                  isReadOnly="false"
+                  isDerived="false"
+                  isDerivedUnion="false"
+                  aggregation="None"
+                  isComposite="false"
+                  isNavigableOwned="false" />
+              </associationHasOwnedEnds>
+              <associationHasOwnedEnds>
+                <memberEnd
+                  Id="bf2cebd0-b712-418c-bd54-662b3c0bb6e3"
+                  name="Third-Party Controller"
+                  isLeaf="false"
+                  isStatic="false"
+                  isReadOnly="false"
+                  isDerived="false"
+                  isDerivedUnion="false"
+                  aggregation="None"
+                  isComposite="false" />
+              </associationHasOwnedEnds>
+            </relationshipOwnedElementsInternal>
+          </association>
+        </targetEnds>
+        <subjects>
+          <subsystemMoniker
+            Id="99d20c05-df0f-4462-9547-bb93d618317b"
+            LastKnownName="Core"
+            LastKnownLocation="MBC Model.uml" />
+        </subjects>
+      </useCase>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <useCase
+        Id="c0050ee3-ab05-4941-814a-b01148b6e2ef"
+        name="Display"
+        isAbstract="false"
+        isLeaf="false">
+        <subjects>
+          <subsystemMoniker
+            Id="97bce378-0b9d-4e28-9364-49c234630bf6"
+            LastKnownName="Console Application"
+            LastKnownLocation="MBC Model.uml" />
+        </subjects>
+      </useCase>
     </packageHasNamedElement>
   </packagedElements>
   <primitiveType
