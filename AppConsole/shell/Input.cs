@@ -1,8 +1,9 @@
-﻿using System;
+﻿using MBC.Core;
+using MBC.Core.Controllers;
+using MBC.Core.Util;
+using System;
 using System.Collections.Generic;
 using System.Text;
-using MBC.Core;
-using MBC.Core.Util;
 
 namespace MBC.App.BattleshipConsole
 {
