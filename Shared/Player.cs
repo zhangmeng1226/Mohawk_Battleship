@@ -4,7 +4,7 @@ using System.ComponentModel;
 
 namespace MBC.Shared
 {
-    public class Player
+    public class Player : IEquatable<Player>
     {
         /// <summary>
         /// Constructs a Player with an ID and a name. This player will not have a controller.
@@ -152,6 +152,44 @@ namespace MBC.Shared
         {
             get;
             internal set;
+        }
+
+        /// <summary>
+        /// Compares the equality of this player with another player.
+        /// </summary>
+        /// <param name="plr"></param>
+        /// <returns></returns>
+        public bool Equals(Player plr)
+        {
+            return GetHashCode() == plr.GetHashCode();
+        }
+
+        /// <summary>
+        /// Compares the equality of this player with another object.
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public override bool Equals(object obj)
+        {
+            return base.Equals(obj);
+        }
+
+        /// <summary>
+        /// Gets the unique identifier for this player.
+        /// </summary>
+        /// <returns></returns>
+        public override int GetHashCode()
+        {
+            return ID;
+        }
+
+        /// <summary>
+        /// Generates a string representation of the player.
+        /// </summary>
+        /// <returns>A string representation.</returns>
+        public override string ToString()
+        {
+            return string.Format("[{0}] {1}", ID, Name);
         }
     }
 }

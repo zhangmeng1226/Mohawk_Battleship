@@ -10,7 +10,7 @@ namespace MBC.Core.Controllers
     /// <summary>
     /// Wraps an IController interface and adapts it to the new IController2 interface.
     /// </summary>
-    internal class ControllerAdapter : IController2
+    internal class ControllerAdapter : MarshalByRefObject, IController2
     {
         private Match containingMatch;
         private IController oldController;

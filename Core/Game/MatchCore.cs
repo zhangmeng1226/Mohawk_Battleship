@@ -13,6 +13,15 @@ using System.Threading;
 
 namespace MBC.Core.Game
 {
+    [Configuration("mbc_field_width", 10)]
+    [Configuration("mbc_field_height", 10)]
+    [Configuration("mbc_ship_sizes", 2, 3, 3, 4, 5)]
+    [Configuration("mbc_game_mode", GameMode.Classic, null)]
+    [Configuration("mbc_match_playeradd_init_only", true)]
+    [Configuration("mbc_match_rounds_mode", RoundMode.AllRounds,
+        Description = "Determines the ending behaviour of a match based on a given number of rounds.",
+        DisplayName = "Match Rounds Mode")]
+    [Configuration("mbc_match_rounds", 100)]
     /// <summary>
     /// This is the new framework part of a match.
     /// </summary>

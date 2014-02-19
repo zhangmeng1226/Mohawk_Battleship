@@ -26,7 +26,10 @@ namespace MBC.Shared
 
         public MatchConfig(Match matchCopy)
         {
-            StartingShips = new ShipList(matchCopy.StartingShips.ToList());
+            if (matchCopy.StartingShips != null)
+            {
+                StartingShips = new ShipList(matchCopy.StartingShips.ToList());
+            }
             NumberOfRounds = matchCopy.NumberOfRounds;
             FieldSize = matchCopy.FieldSize;
             TimeLimit = matchCopy.TimeLimit;

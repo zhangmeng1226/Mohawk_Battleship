@@ -13,11 +13,12 @@ namespace MBC.Core.Game
     /// Acts as a buffer between the match core and the match client application domains, allowing for restrictions to be
     /// placed upon the 3rd-party code being executed.
     /// </summary>
+    [Serializable]
     internal class ControllerIsolator : MarshalByRefObject
     {
         private AppDomain sandbox;
 
-        private ControllerIsolator()
+        public ControllerIsolator()
         {
         }
 
