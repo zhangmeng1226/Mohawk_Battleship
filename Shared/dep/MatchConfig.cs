@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.Serialization;
 
 namespace MBC.Shared
@@ -21,6 +22,16 @@ namespace MBC.Shared
             TimeLimit = copy.TimeLimit;
             GameMode = copy.GameMode;
             Random = copy.Random;
+        }
+
+        public MatchConfig(Match matchCopy)
+        {
+            StartingShips = new ShipList(matchCopy.StartingShips.ToList());
+            NumberOfRounds = matchCopy.NumberOfRounds;
+            FieldSize = matchCopy.FieldSize;
+            TimeLimit = matchCopy.TimeLimit;
+            GameMode = GameMode.Classic;
+            Random = matchCopy.Random;
         }
 
         public MatchConfig(SerializationInfo info, StreamingContext context)
