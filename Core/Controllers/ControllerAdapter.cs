@@ -32,8 +32,15 @@ namespace MBC.Core.Controllers
 
         public Match Match
         {
-            get;
-            set;
+            get
+            {
+                return containingMatch;
+            }
+            set
+            {
+                containingMatch = value;
+                SetupMatch();
+            }
         }
 
         public Shot MakeShot()
@@ -46,10 +53,9 @@ namespace MBC.Core.Controllers
             return oldController.PlaceShips().ToList();
         }
 
-        public void SetContainingMatch(Match containingMatch)
+        public void SetupMatch()
         {
-            this.containingMatch = containingMatch;
-            oldController.Match = new MatchConfig(containingMatch);
+            oldController.Match = new MatchConfig(Match);
 
             oldController.Registers = new Dictionary<IDNumber, Register>();
             foreach (var player in containingMatch.Players)
