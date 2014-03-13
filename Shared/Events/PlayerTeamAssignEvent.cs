@@ -7,6 +7,7 @@ namespace MBC.Shared.Events
     /// <summary>
     /// Created during a match when a player has been assigned to a team.
     /// </summary>
+    [Serializable]
     public class PlayerTeamAssignEvent : PlayerEvent
     {
         /// <summary>
@@ -27,22 +28,6 @@ namespace MBC.Shared.Events
         {
             get;
             private set;
-        }
-
-        public override bool ApplyBackward()
-        {
-            //TODO: Get previous team from previous events.
-            return false;
-        }
-
-        public override bool ApplyForward()
-        {
-            if (Player.Team != Team)
-            {
-                Player.Team = Team;
-                return true;
-            }
-            return false;
         }
     }
 }

@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 
@@ -22,18 +23,21 @@ namespace MBC.Core.Game
         Description = "Determines the ending behaviour of a match based on a given number of rounds.",
         DisplayName = "Match Rounds Mode")]
     [Configuration("mbc_match_rounds", 100)]
+    [Configuration("mbc_match_listen_port", 49628)]
     /// <summary>
     /// This is the new framework part of a match.
     /// </summary>
-    public class MatchCore : Match
+    public class MatchServer : Match
     {
         public static Coordinates COORDS_ZERO = new Coordinates(0, 0);
+
+        private Socket serverSocket;
 
         /// <summary>
         /// Creates a match with parameters loaded from a configuration.
         /// </summary>
         /// <param name="config"></param>
-        public MatchCore(Configuration config)
+        public MatchServer(Configuration config)
         {
             Events = new List<Event>();
             Players = new HashSet<Player>();
@@ -41,13 +45,39 @@ namespace MBC.Core.Game
             Random = new Random();
             GameTimer = new Stopwatch();
             CurrentRound = -1;
+            OnMatchBegin += Event_OnMatchBegin;
+            OnMatchEnd += Event_OnMatchEnd;
+            OnPlayerAdd += Event_OnPlayerAdd;
+            OnPlayerDisqualified += Event_OnPlayerDisqualified;
+            OnPlayerLose += Event_OnPlayerLose;
+            OnPlayerMessage += Event_OnPlayerMessage;
+            OnPlayerRemove += Event_OnPlayerRemove;
+            OnPlayerShipDestruction += Event_OnPlayerShipDestruction;
+            OnPlayerShipsPlaced += Event_OnPlayerShipsPlaced;
+            OnPlayerShot += Event_OnPlayerShot;
+            OnPlayerTeamAssign += Event_OnPlayerTeamAssign;
+            OnPlayerTimeout += Event_OnPlayerTimeout;
+            OnPlayerTurnSwitch += Event_OnPlayerTurnSwitch;
+            OnPlayerWin += Event_OnPlayerWin;
+            OnRoundBegin += Event_OnRoundBegin;
+            OnRoundEnd += Event_OnRoundEnd;
+            OnTeamAdd += Event_OnTeamAdd;
+            OnTeamRemove += Event_OnTeamRemove;
 
             ApplyParameters(config);
+
+            serverSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
         }
 
-        public MatchCore()
+        public MatchServer()
             : this(Configuration.Global)
         {
+        }
+
+        public List<NetController> clients
+        {
+            get;
+            private set;
         }
 
         public int CurrentEvent
@@ -78,46 +108,6 @@ namespace MBC.Core.Game
         }
 
         /// <summary>
-        /// Adds a player to this match by instantiating a new controller through a specific
-        /// controller skeleton.
-        /// </summary>
-        /// <param name="skeleton"></param>
-        /// <returns></returns>
-        public virtual bool AddPlayer(ControllerSkeleton skeleton)
-        {
-            var isolator = ControllerIsolator.Isolate(skeleton, this);
-            return AddPlayer(new Player(FindFirstEmptyPlayerID(), skeleton.GetAttribute<NameAttribute>().Name, isolator.Controller));
-        }
-
-        /// <summary>
-        /// Assign a player to a team.
-        /// </summary>
-        /// <param name="plr"></param>
-        /// <param name="newTeam"></param>
-        public virtual bool AssignPlayerTeam(Player plr, Team newTeam)
-        {
-            return ApplyEvent(new PlayerTeamAssignEvent(plr, newTeam));
-        }
-
-        /// <summary>
-        /// Ends the match and prevents further progression.
-        /// </summary>
-        public bool EndMatch()
-        {
-            AtEnd = true;
-            return ApplyEvent(new MatchEndEvent(this));
-        }
-
-        /// <summary>
-        /// Ends the round currently in progress.
-        /// </summary>
-        /// <returns></returns>
-        public virtual bool EndRound()
-        {
-            return ApplyEvent(new RoundEndEvent(this, CurrentRound));
-        }
-
-        /// <summary>
         /// Determines whether or not a shot made by a player is valid.
         /// </summary>
         /// <param name="shooter"></param>
@@ -131,89 +121,6 @@ namespace MBC.Core.Game
         }
 
         /// <summary>
-        /// Marks a player as a loser in the current round and increases their losing score.
-        /// Player must be active in order to lose, otherwise this method returns false.
-        /// </summary>
-        /// <param name="plr"></param>
-        public virtual bool MakePlayerLose(Player plr)
-        {
-            return ApplyEvent(new PlayerLostEvent(plr));
-        }
-
-        /// <summary>
-        /// Call when a player ship has been destroyed.
-        /// </summary>
-        /// <param name="plr"></param>
-        /// <param name="destroyedShip"></param>
-        /// <returns></returns>
-        public virtual bool MakePlayerShipDestroyed(Player plr, Ship destroyedShip)
-        {
-            return ApplyEvent(new PlayerShipDestroyedEvent(plr, destroyedShip));
-        }
-
-        /// <summary>
-        /// Use when a player shoots.
-        /// </summary>
-        /// <param name="plr"></param>
-        /// <param name="shot"></param>
-        public virtual bool MakePlayerShot(Player plr, Shot shot)
-        {
-            return MakePlayerShot(plr, shot, null);
-        }
-
-        /// <summary>
-        /// Use when a player shoots and hits a ship.
-        /// </summary>
-        /// <param name="plr"></param>
-        /// <param name="shot"></param>
-        /// <param name="shipHit"></param>
-        /// <returns></returns>
-        public virtual bool MakePlayerShot(Player plr, Shot shot, Ship shipHit)
-        {
-            return ApplyEvent(new PlayerShotEvent(plr, shot, shipHit));
-        }
-
-        /// <summary>
-        /// Call when a player has timed out.
-        /// </summary>
-        /// <param name="plr"></param>
-        /// <param name="ex"></param>
-        public virtual bool MakePlayerTimeout(Player plr, string method)
-        {
-            return ApplyEvent(new PlayerTimeoutEvent(plr, method));
-        }
-
-        /// <summary>
-        /// Call when a player has won a round.
-        /// </summary>
-        /// <param name="plr"></param>
-        public virtual bool MakePlayerWin(Player plr)
-        {
-            return ApplyEvent(new PlayerWonEvent(plr));
-        }
-
-        /// <summary>
-        /// Ends the current round if not already ended, and begins a new round.
-        /// </summary>
-        /// <returns></returns>
-        public virtual bool NewRound()
-        {
-            EndRound();
-            return ApplyEvent(new RoundBeginEvent(this, CurrentRound + 1));
-        }
-
-        /// <summary>
-        /// Sets the ships that are assigned to a player.
-        /// </summary>
-        /// <param name="plr"></param>
-        /// <param name="ships"></param>
-        /// <returns></returns>
-        public virtual bool PlacePlayerShips(Player plr, ISet<Ship> ships)
-        {
-            return ApplyEvent(new PlayerShipsPlacedEvent(plr, ships));
-        }
-
-        /// <summary>
         /// Moves the match progress forward at a standard pace.
         /// </summary>
         public virtual void Play()
@@ -223,7 +130,7 @@ namespace MBC.Core.Game
                 IsRunning = true;
                 if (CurrentRound == -1)
                 {
-                    if (!ApplyEvent(new RoundBeginEvent(this, CurrentRound + 1)))
+                    if (!ApplyEvent(RoundBegin(CurrentRound + 1)))
                     {
                         IsRunning = false;
                     }
@@ -233,14 +140,13 @@ namespace MBC.Core.Game
                     var isRoundPlaying = PlayLogic();
                     if ((!isRoundPlaying) && (NumberOfRounds - CurrentRound == 0))
                     {
-                        EndMatch();
+                        End();
                         break;
                     }
                     else if (!isRoundPlaying)
                     {
-                        EndRound();
-                        CurrentRound++;
-                        NewRound();
+                        RoundEnd(CurrentRound);
+                        RoundBegin(++CurrentRound);
                     }
                 }
             }
@@ -260,6 +166,7 @@ namespace MBC.Core.Game
             }
             if (eventIdx < CurrentEvent)
             {
+                /*
                 for (; CurrentEvent >= eventIdx; CurrentEvent--)
                 {
                     if (!Events[CurrentEvent].ApplyBackward())
@@ -271,10 +178,12 @@ namespace MBC.Core.Game
                     {
                         break;
                     }
-                }
+                }*/
+                throw new NotImplementedException("No backward-playing functionality.");
             }
             else if (eventIdx > CurrentEvent)
             {
+                /*
                 for (; CurrentEvent <= eventIdx; CurrentEvent++)
                 {
                     if (!Events[CurrentEvent].ApplyForward())
@@ -286,7 +195,8 @@ namespace MBC.Core.Game
                     {
                         break;
                     }
-                }
+                }*/
+                throw new NotImplementedException("No replaying functionality.");
             }
             return true;
         }
@@ -298,24 +208,6 @@ namespace MBC.Core.Game
         public bool PlayToLastEvent()
         {
             return PlayToEvent(Events.Count - 1);
-        }
-
-        /// <summary>
-        /// Call when a player is to be removed from the match.
-        /// </summary>
-        /// <param name="plr"></param>
-        public virtual bool RemovePlayer(Player plr)
-        {
-            return ApplyEvent(new MatchRemovePlayerEvent(this, plr));
-        }
-
-        /// <summary>
-        /// Call when a team is to be removed from the match.
-        /// </summary>
-        /// <param name="remTeam"></param>
-        public virtual bool RemoveTeam(Team remTeam)
-        {
-            return ApplyEvent(new MatchTeamRemoveEvent(this, remTeam));
         }
 
         /// <summary>
@@ -348,50 +240,16 @@ namespace MBC.Core.Game
         }
 
         /// <summary>
-        /// Adds a player to the match.
-        /// </summary>
-        /// <param name="playerAdd"></param>
-        /// <returns></returns>
-        protected virtual bool AddPlayer(Player playerAdd)
-        {
-            return ApplyEvent(new MatchAddPlayerEvent(this, playerAdd));
-        }
-
-        /// <summary>
-        /// Adds a team to the match.
-        /// </summary>
-        /// <param name="newTeam"></param>
-        /// <returns></returns>
-        protected virtual bool AddTeam(Team addTeam)
-        {
-            return ApplyEvent(new MatchTeamAddEvent(this, addTeam));
-        }
-
-        /// <summary>
         /// Moves the current event index to the last event, and applies the given event.
         /// </summary>
         /// <param name="ev"></param>
         /// <returns></returns>
-        protected override bool ApplyEvent(Event ev)
+        protected bool ApplyEvent(Event ev)
         {
-            if (PlayToLastEvent() && base.ApplyEvent(ev))
-            {
-                Events.Add(ev);
-                ev.Millis = (int)(GameTimer.ElapsedMilliseconds);
-                return true;
-            }
-            return false;
-        }
-
-        /// <summary>
-        /// Signals a disqualification event against a player for a specific reason.
-        /// </summary>
-        /// <param name="plr"></param>
-        /// <param name="reason"></param>
-        /// <returns></returns>
-        protected virtual bool PlayerDisqualified(Player plr, string reason)
-        {
-            return ApplyEvent(new PlayerDisqualifiedEvent(plr, reason));
+            PlayToLastEvent();
+            Events.Add(ev);
+            ev.Millis = (int)(GameTimer.ElapsedMilliseconds);
+            return true;
         }
 
         /// <summary>
@@ -414,6 +272,96 @@ namespace MBC.Core.Game
 
             StartingShips = ShipList.ShipsFromLengths(conf.GetList<int>("mbc_ship_sizes"));
             TimeLimit = conf.GetValue<int>("mbc_player_timeout");
+        }
+
+        private void Event_OnMatchBegin(object sender, MatchBeginEvent e)
+        {
+            ApplyEvent(e);
+        }
+
+        private void Event_OnMatchEnd(object sender, MatchEndEvent e)
+        {
+            ApplyEvent(e);
+        }
+
+        private void Event_OnPlayerAdd(object sender, MatchAddPlayerEvent e)
+        {
+            ApplyEvent(e);
+        }
+
+        private void Event_OnPlayerDisqualified(object sender, PlayerDisqualifiedEvent e)
+        {
+            ApplyEvent(e);
+        }
+
+        private void Event_OnPlayerLose(object sender, PlayerLostEvent e)
+        {
+            ApplyEvent(e);
+        }
+
+        private void Event_OnPlayerMessage(object sender, PlayerMessageEvent e)
+        {
+            ApplyEvent(e);
+        }
+
+        private void Event_OnPlayerRemove(object sender, MatchRemovePlayerEvent e)
+        {
+            ApplyEvent(e);
+        }
+
+        private void Event_OnPlayerShipDestruction(object sender, PlayerShipDestroyedEvent e)
+        {
+            ApplyEvent(e);
+        }
+
+        private void Event_OnPlayerShipsPlaced(object sender, PlayerShipsPlacedEvent e)
+        {
+            ApplyEvent(e);
+        }
+
+        private void Event_OnPlayerShot(object sender, PlayerShotEvent e)
+        {
+            ApplyEvent(e);
+        }
+
+        private void Event_OnPlayerTeamAssign(object sender, PlayerTeamAssignEvent e)
+        {
+            ApplyEvent(e);
+        }
+
+        private void Event_OnPlayerTimeout(object sender, PlayerTimeoutEvent e)
+        {
+            ApplyEvent(e);
+        }
+
+        private void Event_OnPlayerTurnSwitch(object sender, PlayerTurnSwitchEvent e)
+        {
+            ApplyEvent(e);
+        }
+
+        private void Event_OnPlayerWin(object sender, PlayerWonEvent e)
+        {
+            ApplyEvent(e);
+        }
+
+        private void Event_OnRoundBegin(object sender, RoundBeginEvent e)
+        {
+            ApplyEvent(e);
+        }
+
+        private void Event_OnRoundEnd(object sender, RoundEndEvent e)
+        {
+            ApplyEvent(e);
+        }
+
+        private void Event_OnTeamAdd(object sender, MatchTeamAddEvent e)
+        {
+            ApplyEvent(e);
+        }
+
+        private void Event_OnTeamRemove(object sender, MatchTeamRemoveEvent e)
+        {
+            ApplyEvent(e);
         }
     }
 }

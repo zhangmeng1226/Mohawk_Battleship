@@ -55,7 +55,7 @@ namespace MBC.App.BattleshipConsole
             }
             try
             {
-                var newMatch = new MatchCore();
+                var newMatch = new MatchServer();
                 MatchRun.CurrentMatch = newMatch;
 
                 if (Configuration.Global.GetValue<bool>("mbc_console_create_events"))

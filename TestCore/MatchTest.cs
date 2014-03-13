@@ -27,13 +27,13 @@ namespace TestCore
             var matchTest = new Match(Configuration.Global);
             var testPlayer = new Player(0, "Test Player");
 
-            matchTest.AddPlayer(testPlayer);
+            matchTest.PlayerAdd(testPlayer);
 
-            Assert.IsTrue(matchTest.PlayerDisqualified(testPlayer, "Test reason"));
+            Assert.IsTrue(matchTest.PlayerDisqualify(testPlayer, "Test reason"));
 
             matchTest.RemovePlayer(testPlayer);
 
-            Assert.IsFalse(matchTest.PlayerDisqualified(testPlayer, "Test reason"));
+            Assert.IsFalse(matchTest.PlayerDisqualify(testPlayer, "Test reason"));
         }
 
         [TestMethod]

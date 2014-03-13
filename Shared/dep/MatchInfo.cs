@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace MBC.Shared.dep
+namespace MBC.Shared
 {    /// <summary>
     /// Provides information about a single match in a game of battleship. Remains consistent and un-modified
     /// throughout the match.

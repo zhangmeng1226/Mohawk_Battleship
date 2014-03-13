@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace MBC.Shared.dep
+namespace MBC.Shared
 {
     [Obsolete("No longer used.")]
     public class ControllerRegister

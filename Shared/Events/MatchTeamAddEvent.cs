@@ -1,4 +1,5 @@
 ﻿using MBC.Shared;
+using System;
 using System.Runtime.Serialization;
 
 namespace MBC.Shared.Events
@@ -6,14 +7,14 @@ namespace MBC.Shared.Events
     /// <summary>
     /// Created during a match when a team has been created.
     /// </summary>
-    public class MatchTeamAddEvent : MatchEvent
+    [Serializable]
+    public class MatchTeamAddEvent : Event
     {
         /// <summary>
         /// Constructs the event with the new team.
         /// </summary>
         /// <param name="team"></param>
-        public MatchTeamAddEvent(Match match, Team team)
-            : base(match)
+        public MatchTeamAddEvent(Team team)
         {
             Team = team;
         }
@@ -25,16 +26,6 @@ namespace MBC.Shared.Events
         {
             get;
             private set;
-        }
-
-        public override bool ApplyBackward()
-        {
-            return Match.Teams.Remove(Team);
-        }
-
-        public override bool ApplyForward()
-        {
-            return Match.Teams.Add(Team);
         }
     }
 }

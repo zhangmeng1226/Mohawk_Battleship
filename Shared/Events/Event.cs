@@ -27,15 +27,5 @@ namespace MBC.Shared.Events
             get;
             set;
         }
-
-        public virtual bool ApplyBackward()
-        {
-            return true;
-        }
-
-        public virtual bool ApplyForward()
-        {
-            return true;
-        }
     }
 }

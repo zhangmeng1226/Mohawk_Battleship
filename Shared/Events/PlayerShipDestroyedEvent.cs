@@ -8,6 +8,7 @@ namespace MBC.Shared.Events
     /// Provides information about a <see cref="Register"/>'s <see cref="Ship"/> that has
     /// been destroyed by another <see cref="Register"/>.
     /// </summary>
+    [Serializable]
     public class PlayerShipDestroyedEvent : PlayerEvent
     {
         /// <summary>
@@ -28,16 +29,6 @@ namespace MBC.Shared.Events
         {
             get;
             private set;
-        }
-
-        public override bool ApplyBackward()
-        {
-            return DestroyedShip == null ? true : DestroyedShip.IsSunk();
-        }
-
-        public override bool ApplyForward()
-        {
-            return DestroyedShip == null ? true : !DestroyedShip.IsSunk();
         }
     }
 }

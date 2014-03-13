@@ -7,6 +7,7 @@ namespace MBC.Shared.Events
     /// <summary>
     /// Provides information about a <see cref="Register"/> that had won a <see cref="GameLogic"/>.
     /// </summary>
+    [Serializable]
     public class PlayerWonEvent : PlayerEvent
     {
         /// <summary>
@@ -16,18 +17,6 @@ namespace MBC.Shared.Events
         public PlayerWonEvent(Player player)
             : base(player)
         {
-        }
-
-        public override bool ApplyBackward()
-        {
-            Player.Wins--;
-            return false;
-        }
-
-        public override bool ApplyForward()
-        {
-            Player.Wins++;
-            return true;
         }
     }
 }

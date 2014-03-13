@@ -10,6 +10,7 @@ namespace MBC.Shared.Events
     /// <summary>
     /// Created during a match when a player's turn has ended and is being switched to another player.
     /// </summary>
+    [Serializable]
     public class PlayerTurnSwitchEvent : PlayerEvent
     {
         /// <summary>

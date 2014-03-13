@@ -1,6 +1,7 @@
 ﻿using MBC.Core.Threading;
 using MBC.Core.Util;
 using MBC.Shared;
+using MBC.Shared.Events;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +12,7 @@ namespace MBC.Core.Game
     /// <summary>
     /// A type of match that uses the standard rules of battleship as logic.
     /// </summary>
-    public class ClassicMatch : MatchCore
+    public class ClassicMatch : MatchServer
     {
         private const string REASON_PLACEMENT = "The player controller placed an invalid ship formation.";
         private const string REASON_SHOT = "The player controller made an invalid shot.";
@@ -74,26 +75,28 @@ namespace MBC.Core.Game
             protected set;
         }
 
-        public override bool EndRound()
-        {
-            CurrentPhase = Phase.End;
-            return base.EndRound();
-        }
-
         /// <summary>
         /// Makes a player lose the round and removes them from the list of active players.
         /// </summary>
         /// <param name="plr"></param>
         /// <returns></returns>
-        public override bool MakePlayerLose(Player plr)
+        public override PlayerLostEvent PlayerLose(Player plr)
         {
-            return base.MakePlayerLose(plr) && activePlayers.Remove(plr);
+            var result = base.PlayerLose(plr);
+            activePlayers.Remove(plr);
+            return result;
         }
 
-        public override bool NewRound()
+        public override RoundBeginEvent RoundBegin(int currentRound)
         {
             CurrentPhase = Phase.Init;
-            return base.NewRound();
+            return base.RoundBegin(currentRound);
+        }
+
+        public override RoundEndEvent RoundEnd(int roundNumber)
+        {
+            CurrentPhase = Phase.End;
+            return base.RoundEnd(roundNumber);
         }
 
         /// <summary>
@@ -124,9 +127,9 @@ namespace MBC.Core.Game
         /// </summary>
         /// <param name="plr"></param>
         /// <returns></returns>
-        protected override bool AddPlayer(Player plr)
+        protected override MatchAddPlayerEvent PlayerAdd(Player plr)
         {
-            return base.AddPlayer(plr);
+            return base.PlayerAdd(plr);
         }
 
         /// <summary>
@@ -135,9 +138,11 @@ namespace MBC.Core.Game
         /// <param name="plr"></param>
         /// <param name="reason"></param>
         /// <returns></returns>
-        protected override bool PlayerDisqualified(Player plr, string reason)
+        protected override PlayerDisqualifiedEvent PlayerDisqualify(Player plr, string reason)
         {
-            return base.PlayerDisqualified(plr, reason) && activePlayers.Remove(plr);
+            var result = base.PlayerDisqualify(plr, reason);
+            activePlayers.Remove(plr);
+            return result;
         }
 
         /// <summary>
@@ -165,7 +170,7 @@ namespace MBC.Core.Game
             }
             catch (ControllerTimeoutException ex)
             {
-                PlayerDisqualified(FindPlayerFromController(ex.Controller), REASON_TIMEOUT);
+                PlayerDisqualify(FindPlayerFromController(ex.Controller), REASON_TIMEOUT);
                 return SwitchNextPlayer();
             }
         }
@@ -180,7 +185,7 @@ namespace MBC.Core.Game
             {
                 Player winner = activePlayers[0];
                 activePlayers.Clear();
-                MakePlayerWin(winner);
+                PlayerWin(winner);
             }
             return false;
         }
@@ -222,7 +227,7 @@ namespace MBC.Core.Game
                 }
                 catch (ControllerTimeoutException ex)
                 {
-                    PlayerDisqualified(FindPlayerFromController(ex.Controller), REASON_TIMEOUT);
+                    PlayerDisqualify(FindPlayerFromController(ex.Controller), REASON_TIMEOUT);
                 }
             }
             CollectionUtils.RandomizeList(activePlayers);
@@ -243,16 +248,16 @@ namespace MBC.Core.Game
             }
             else
             {
-                PlacePlayerShips(CurrentPlayer, new HashSet<Ship>(CurrentPlayer.Controller.PlaceShips().ToList()));
+                PlayerPlaceShips(CurrentPlayer, new HashSet<Ship>(CurrentPlayer.Controller.PlaceShips().ToList()));
 
                 if (!AreShipsValid(CurrentPlayer))
                 {
-                    PlayerDisqualified(CurrentPlayer, REASON_PLACEMENT);
+                    PlayerDisqualify(CurrentPlayer, REASON_PLACEMENT);
                 }
             }
             if (!AreShipsValid(CurrentPlayer))
             {
-                PlayerDisqualified(CurrentPlayer, REASON_PLACEMENT);
+                PlayerDisqualify(CurrentPlayer, REASON_PLACEMENT);
             }
             if (activePlayers.Count > 0 && ShipList.AreShipsPlaced(activePlayers[currentIteration + 1].Ships))
             {
@@ -269,10 +274,10 @@ namespace MBC.Core.Game
         {
             var shotMade = CurrentPlayer.Controller.MakeShot();
             var shipHit = ShipList.GetShipAt(shotMade.ReceiverPlr.Ships, shotMade.Coordinates);
-            MakePlayerShot(CurrentPlayer, shotMade, shipHit);
+            PlayerShot(CurrentPlayer, shotMade, shipHit);
             if (!IsShotValid(CurrentPlayer, shotMade))
             {
-                PlayerDisqualified(CurrentPlayer, REASON_SHOT);
+                PlayerDisqualify(CurrentPlayer, REASON_SHOT);
                 return SwitchNextPlayer();
             }
 
@@ -283,10 +288,10 @@ namespace MBC.Core.Game
                 var sunk = shipHit.IsSunk();
                 if (sunk)
                 {
-                    MakePlayerShipDestroyed(shotMade.ReceiverPlr, shipHit);
+                    PlayerShipDestroy(shotMade.ReceiverPlr, shipHit);
                     if (shotMade.ReceiverPlr.Ships.All(ship => ship.IsSunk()))
                     {
-                        MakePlayerLose(shotMade.ReceiverPlr);
+                        PlayerLose(shotMade.ReceiverPlr);
                     }
                 }
             }

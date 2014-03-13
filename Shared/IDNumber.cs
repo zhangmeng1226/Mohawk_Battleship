@@ -1,4 +1,4 @@
-﻿using MBC.Shared.dep;
+﻿using MBC.Shared;
 
 namespace MBC.Shared
 {

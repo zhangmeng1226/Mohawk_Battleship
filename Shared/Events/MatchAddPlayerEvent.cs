@@ -7,14 +7,14 @@ namespace MBC.Shared.Events
     /// <summary>
     /// Event created when a player has been added to a match.
     /// </summary>
-    public class MatchAddPlayerEvent : MatchEvent
+    [Serializable]
+    public class MatchAddPlayerEvent : Event
     {
         /// <summary>
         /// Constructs this event with the given player.
         /// </summary>
         /// <param name="player"></param>
-        public MatchAddPlayerEvent(Match match, Player player)
-            : base(match)
+        internal MatchAddPlayerEvent(Player player)
         {
             Player = player;
         }
@@ -26,16 +26,6 @@ namespace MBC.Shared.Events
         {
             get;
             private set;
-        }
-
-        public override bool ApplyBackward()
-        {
-            return Match.Players.Remove(Player);
-        }
-
-        public override bool ApplyForward()
-        {
-            return Match.Players.Add(Player);
         }
     }
 }

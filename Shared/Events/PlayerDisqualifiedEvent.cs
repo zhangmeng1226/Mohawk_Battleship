@@ -7,6 +7,7 @@ namespace MBC.Shared.Events
     /// <summary>
     /// Provides information about a <see cref="Register"/> that had lost a <see cref="GameLogic"/>.
     /// </summary>
+    [Serializable]
     public class PlayerDisqualifiedEvent : PlayerEvent
     {
         /// <summary>
@@ -26,19 +27,6 @@ namespace MBC.Shared.Events
         {
             get;
             private set;
-        }
-
-        public override bool ApplyBackward()
-        {
-            Player.Disqualifications--;
-            return true;
-        }
-
-        public override bool ApplyForward()
-        {
-            Player.Disqualifications++;
-            Player.Active = false;
-            return true;
         }
     }
 }

@@ -13,9 +13,9 @@ namespace MBC.App.Terminal.Modules
     public class ResultDisplay : TerminalModule
     {
         private VerticalLayout buttonLayout;
-        private MatchCore competition;
+        private MatchServer competition;
 
-        public ResultDisplay(MatchCore comp)
+        public ResultDisplay(MatchServer comp)
         {
             competition = comp;
 

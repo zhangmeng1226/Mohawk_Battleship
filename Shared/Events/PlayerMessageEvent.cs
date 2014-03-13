@@ -10,6 +10,7 @@ namespace MBC.Shared.Events
     /// <summary>
     /// Created during a match when a controller outputs a string message.
     /// </summary>
+    [Serializable]
     public class PlayerMessageEvent : PlayerEvent
     {
         /// <summary>

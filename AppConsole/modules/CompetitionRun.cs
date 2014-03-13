@@ -16,14 +16,14 @@ namespace MBC.App.Terminal.Modules
 {
     public class CompetitionRun : TerminalModule
     {
-        private MatchCore competition;
+        private MatchServer competition;
         private string currentEventString;
         private StreamWriter fileWriter;
         private int millisDelay;
         private int roundsRun;
         private int turns;
 
-        public CompetitionRun(MatchCore comp, int delay, bool eventsToFile)
+        public CompetitionRun(MatchServer comp, int delay, bool eventsToFile)
         {
             turns = 0;
             roundsRun = 0;

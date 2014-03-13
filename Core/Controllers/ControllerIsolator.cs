@@ -13,7 +13,6 @@ namespace MBC.Core.Game
     /// Acts as a buffer between the match core and the match client application domains, allowing for restrictions to be
     /// placed upon the 3rd-party code being executed.
     /// </summary>
-    [Serializable]
     internal class ControllerIsolator : MarshalByRefObject
     {
         private AppDomain sandbox;
@@ -34,7 +33,7 @@ namespace MBC.Core.Game
             private set;
         }
 
-        public static ControllerIsolator Isolate(ControllerSkeleton skeleton, MatchCore originalMatch)
+        public static ControllerIsolator Isolate(ControllerSkeleton skeleton, MatchServer originalMatch)
         {
             AppDomain sandbox = AppDomain.CreateDomain(Guid.NewGuid().ToString());
             ControllerIsolator isolator = (ControllerIsolator)sandbox.CreateInstanceAndUnwrap(Assembly.GetCallingAssembly().FullName, typeof(ControllerIsolator).FullName);
@@ -42,7 +41,7 @@ namespace MBC.Core.Game
             return isolator;
         }
 
-        private void Initialize(ControllerSkeleton skeleton, MatchCore match, AppDomain sandbox)
+        private void Initialize(ControllerSkeleton skeleton, MatchServer match, AppDomain sandbox)
         {
             ClientMatch = new Match();
             Controller = skeleton.CreateInstance();

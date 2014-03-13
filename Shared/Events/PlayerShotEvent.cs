@@ -8,6 +8,7 @@ namespace MBC.Shared.Events
     /// <summary>
     /// Provides information about a <see cref="Shot"/> that was made by a <see cref="Register"/>.
     /// </summary>
+    [Serializable]
     public class PlayerShotEvent : PlayerEvent
     {
         /// <summary>
@@ -61,22 +62,6 @@ namespace MBC.Shared.Events
         {
             get;
             private set;
-        }
-
-        public override bool ApplyBackward()
-        {
-            if (Player.ShotsMade.Last() == Shot)
-            {
-                Player.ShotsMade.Remove(Player.ShotsMade.Last());
-                return true;
-            }
-            return false;
-        }
-
-        public override bool ApplyForward()
-        {
-            Player.ShotsMade.Add(Shot);
-            return true;
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace MBC.Shared
 {
@@ -8,6 +9,7 @@ namespace MBC.Shared
     /// <param name="message">A string containing the message being passed.</param>
     public delegate void StringOutputHandler(string message);
 
+    [Obsolete("Use the IController2 interface.")]
     public interface IController
     {
         /// <summary>

@@ -7,9 +7,10 @@ using System.Linq;
 namespace MBC.Shared
 {
     /// <summary>
-    /// This is the new framework part of a match.
+    /// Provides the modifications, events, and properties that are necessary to operate
+    /// a game of battleship. All events must be subscribed to.
     /// </summary>
-    public class Match : MarshalByRefObject
+    public abstract class Match
     {
         /// <summary>
         /// Called when the match begins. Called before any rounds begin.
@@ -201,153 +202,336 @@ namespace MBC.Shared
         /// </summary>
         /// <param name="player"></param>
         /// <returns></returns>
-        public bool AreShipsValid(Player player)
+        public virtual bool AreShipsValid(Player player)
         {
             return player.Ships != null &&
                 ShipList.AreEquivalentLengths(player.Ships, StartingShips) &&
                 ShipList.AreShipsValid(player.Ships, FieldSize);
         }
 
-        public virtual void NotifyEvent(Event e)
+        /// <summary>
+        /// Creates a MatchBeginEvent from within the match and returns it. Invokes any event
+        /// subscriptions to OnMatchBegin.
+        /// </summary>
+        /// <param name="player"></param>
+        /// <returns>The generated event</returns>
+        public virtual MatchBeginEvent Begin()
         {
-            if (e is PlayerTurnSwitchEvent)
-            {
-                if (OnPlayerTurnSwitch != null)
-                {
-                    OnPlayerTurnSwitch(this, (PlayerTurnSwitchEvent)e);
-                }
-            }
-            else if (e is PlayerShotEvent)
-            {
-                if (OnPlayerShot != null)
-                {
-                    OnPlayerShot(this, (PlayerShotEvent)e);
-                }
-            }
-            else if (e is PlayerShipDestroyedEvent)
-            {
-                if (OnPlayerShipDestruction != null)
-                {
-                    OnPlayerShipDestruction(this, (PlayerShipDestroyedEvent)e);
-                }
-            }
-            else if (e is PlayerLostEvent)
-            {
-                if (OnPlayerLose != null)
-                {
-                    OnPlayerLose(this, (PlayerLostEvent)e);
-                }
-            }
-            else if (e is PlayerWonEvent)
-            {
-                if (OnPlayerWin != null)
-                {
-                    OnPlayerWin(this, (PlayerWonEvent)e);
-                }
-            }
-            else if (e is PlayerShipsPlacedEvent)
-            {
-                if (OnPlayerShipsPlaced != null)
-                {
-                    OnPlayerShipsPlaced(this, (PlayerShipsPlacedEvent)e);
-                }
-            }
-            else if (e is PlayerMessageEvent)
-            {
-                if (OnPlayerMessage != null)
-                {
-                    OnPlayerMessage(this, (PlayerMessageEvent)e);
-                }
-            }
-            else if (e is PlayerTimeoutEvent)
-            {
-                if (OnPlayerTimeout != null)
-                {
-                    OnPlayerTimeout(this, (PlayerTimeoutEvent)e);
-                }
-            }
-            else if (e is RoundBeginEvent)
-            {
-                if (OnRoundBegin != null)
-                {
-                    OnRoundBegin(this, (RoundBeginEvent)e);
-                }
-            }
-            else if (e is RoundEndEvent)
-            {
-                if (OnRoundEnd != null)
-                {
-                    OnRoundEnd(this, (RoundEndEvent)e);
-                }
-            }
-            else if (e is PlayerDisqualifiedEvent)
-            {
-                if (OnPlayerDisqualified != null)
-                {
-                    OnPlayerDisqualified(this, (PlayerDisqualifiedEvent)e);
-                }
-            }
-            else if (e is MatchAddPlayerEvent)
-            {
-                if (OnPlayerAdd != null)
-                {
-                    OnPlayerAdd(this, (MatchAddPlayerEvent)e);
-                }
-            }
-            else if (e is MatchBeginEvent)
-            {
-                var evCast = (MatchBeginEvent)e;
-
-                if (OnMatchBegin != null)
-                {
-                    OnMatchBegin(this, (MatchBeginEvent)e);
-                }
-            }
-            else if (e is MatchEndEvent)
-            {
-                if (OnMatchEnd != null)
-                {
-                    OnMatchEnd(this, (MatchEndEvent)e);
-                }
-            }
-            else if (e is MatchRemovePlayerEvent)
-            {
-                if (OnPlayerRemove != null)
-                {
-                    OnPlayerRemove(this, (MatchRemovePlayerEvent)e);
-                }
-            }
-            else if (e is MatchTeamAddEvent)
-            {
-                if (OnTeamAdd != null)
-                {
-                    OnTeamAdd(this, (MatchTeamAddEvent)e);
-                }
-            }
-            else if (e is MatchTeamRemoveEvent)
-            {
-                if (OnTeamRemove != null)
-                {
-                    OnTeamRemove(this, (MatchTeamRemoveEvent)e);
-                }
-            }
-            else if (e is PlayerTeamAssignEvent)
-            {
-                if (OnPlayerTeamAssign != null)
-                {
-                    OnPlayerTeamAssign(this, (PlayerTeamAssignEvent)e);
-                }
-            }
+            var ev = new MatchBeginEvent(this);
+            OnMatchBegin(this, ev);
+            return ev;
         }
 
         /// <summary>
-        /// Applies an event to the match by allowing it to modify the match data.
+        /// Creates a MatchEndEvent from within the match and returns it. Invokes any event
+        /// subscriptions to OnMatchEnd.
         /// </summary>
-        /// <param name="e"></param>
-        /// <returns></returns>
-        protected virtual bool ApplyEvent(Event e)
+        /// <param name="player"></param>
+        /// <returns>The generated event</returns>
+        public virtual MatchEndEvent End()
         {
-            return e.ApplyForward();
+            var ev = new MatchEndEvent();
+            OnMatchEnd(this, ev);
+            return ev;
+        }
+
+        /// <summary>
+        /// Creates a MatchAddPlayerEvent from within the match and returns it. Invokes any event
+        /// subscriptions to OnPlayerAdd.
+        /// </summary>
+        /// <param name="player"></param>
+        /// <returns>The generated event</returns>
+        /// <exception cref="InvalidEventException">Thrown when the event being created is not valid for the
+        /// current state of the match.</exception>
+        public virtual MatchAddPlayerEvent PlayerAdd(Player player)
+        {
+            var ev = new MatchAddPlayerEvent(player);
+            if (!Players.Add(player))
+            {
+                throw new InvalidEventException(ev, "Player already exists within match.");
+            }
+            OnPlayerAdd(this, ev);
+            return ev;
+        }
+
+        /// <summary>
+        /// Creates a PlayerDisqualifiedEvent from within the match and returns it. Invokes any event
+        /// subscriptions to OnPlayerDisqualified.
+        /// </summary>
+        /// <param name="player"></param>
+        /// <returns>The generated event</returns>
+        public virtual PlayerDisqualifiedEvent PlayerDisqualify(Player player, String reason)
+        {
+            var ev = new PlayerDisqualifiedEvent(player, reason);
+            ev.Player.Disqualifications++;
+            OnPlayerDisqualified(this, ev);
+            return ev;
+        }
+
+        /// <summary>
+        /// Creates a PlayerLostEvent from within the match and returns it. Invokes any event
+        /// subscriptions to OnPlayerLose.
+        /// </summary>
+        /// <param name="player"></param>
+        /// <returns>The generated event</returns>
+        /// <exception cref="InvalidEventException">Thrown when the event being created is not valid for the
+        /// current state of the match.</exception>
+        public virtual PlayerLostEvent PlayerLose(Player player)
+        {
+            var ev = new PlayerLostEvent(player);
+            player.Losses++;
+            OnPlayerLose(this, ev);
+            return ev;
+        }
+
+        /// <summary>
+        /// Creates a PlayerMessageEvent from within the match and returns it. Invokes any event
+        /// subscriptions to OnPlayerMessage.
+        /// </summary>
+        /// <param name="player"></param>
+        /// <returns>The generated event</returns>
+        public virtual PlayerMessageEvent PlayerMessage(Player player, String message)
+        {
+            var ev = new PlayerMessageEvent(player, message);
+            OnPlayerMessage(this, ev);
+            return ev;
+        }
+
+        /// <summary>
+        /// Creates a PlayerShipsPlacedEvent from within the match and returns it. Invokes any event
+        /// subscriptions to OnPlayerShipsPlaced.
+        /// </summary>
+        /// <param name="player"></param>
+        /// <returns>The generated event</returns>
+        /// <exception cref="InvalidEventException">Thrown when the event being created is not valid for the
+        /// current state of the match.</exception>
+        public virtual PlayerShipsPlacedEvent PlayerPlaceShips(Player player, ISet<Ship> placedShips)
+        {
+            var ev = new PlayerShipsPlacedEvent(player, placedShips);
+            player.Ships = placedShips;
+            OnPlayerShipsPlaced(this, ev);
+            return ev;
+        }
+
+        /// <summary>
+        /// Creates a MatchRemovePlayerEvent from within the match and returns it. Invokes any event
+        /// subscriptions to OnPlayerRemove.
+        /// </summary>
+        /// <param name="player"></param>
+        /// <returns>The generated event</returns>
+        /// <exception cref="InvalidEventException">Thrown when the event being created is not valid for the
+        /// current state of the match.</exception>
+        public virtual MatchRemovePlayerEvent PlayerRemove(Player player)
+        {
+            var ev = new MatchRemovePlayerEvent(player);
+            if (!Players.Remove(player))
+            {
+                throw new InvalidEventException(ev, "Player does not exist within the match.");
+            }
+            OnPlayerRemove(this, ev);
+            return ev;
+        }
+
+        /// <summary>
+        /// Creates a PlayerShipDestroyedEvent from within the match and returns it. Invokes any event
+        /// subscriptions to OnPlayerShipDestruction.
+        /// </summary>
+        /// <param name="shipOwner"></param>
+        /// <returns>The generated event</returns>
+        /// <exception cref="InvalidEventException">Thrown when the event being created is not valid for the
+        /// current state of the match.</exception>
+        public virtual PlayerShipDestroyedEvent PlayerShipDestroy(Player shipOwner, Ship destroyedShip)
+        {
+            var ev = new PlayerShipDestroyedEvent(shipOwner, destroyedShip);
+            if (!destroyedShip.IsSunk())
+            {
+                throw new InvalidEventException(ev, "The ship in the event is not sunken.");
+            }
+            OnPlayerShipDestruction(this, ev);
+            return ev;
+        }
+
+        /// <summary>
+        /// Creates a PlayerShotEvent from within the match and returns it. Invokes any event
+        /// subscriptions to OnPlayerShot.
+        /// </summary>
+        /// <param name="player"></param>
+        /// <returns>The generated event</returns>
+        /// <exception cref="InvalidEventException">Thrown when the event being created is not valid for the
+        /// current state of the match.</exception>
+        public virtual PlayerShotEvent PlayerShot(Player player, Shot shot)
+        {
+            return PlayerShot(player, shot, null);
+        }
+
+        /// <summary>
+        /// Creates a PlayerShotEvent from within the match and returns it. Invokes any event
+        /// subscriptions to OnPlayerShot.
+        /// </summary>
+        /// <param name="player"></param>
+        /// <returns>The generated event</returns>
+        /// <exception cref="InvalidEventException">Thrown when the event being created is not valid for the
+        /// current state of the match.</exception>
+        public virtual PlayerShotEvent PlayerShot(Player player, Shot shot, Ship shipHit)
+        {
+            var ev = new PlayerShotEvent(player, shot, shipHit);
+            player.ShotsMade.Add(shot);
+            OnPlayerShot(this, ev);
+            return ev;
+        }
+
+        /// <summary>
+        /// Creates a PlayerTeamAssignEvent from within the match and returns it. Invokes any event
+        /// subscriptions to OnPlayerTeamAssign.
+        /// </summary>
+        /// <param name="player"></param>
+        /// <returns>The generated event</returns>
+        /// <exception cref="InvalidEventException">Thrown when the event being created is not valid for the
+        /// current state of the match.</exception>
+        public virtual PlayerTeamAssignEvent PlayerTeamAssign(Player player, Team team)
+        {
+            var ev = new PlayerTeamAssignEvent(player, team);
+            if (player.Team != team)
+            {
+                player.Team = team;
+            }
+            else
+            {
+                throw new InvalidEventException(ev, "The player is already on the team.");
+            }
+            OnPlayerTeamAssign(this, ev);
+            return ev;
+        }
+
+        /// <summary>
+        /// Creates a PlayerTimeoutEvent from within the match and returns it. Invokes any event
+        /// subscriptions to OnPlayerTimeout.
+        /// </summary>
+        /// <param name="player"></param>
+        /// <returns>The generated event</returns>
+        /// <exception cref="InvalidEventException">Thrown when the event being created is not valid for the
+        /// current state of the match.</exception>
+        public virtual PlayerTimeoutEvent PlayerTimeout(Player player, String method)
+        {
+            var ev = new PlayerTimeoutEvent(player, method);
+            player.Timeouts++;
+            OnPlayerTimeout(this, ev);
+            return ev;
+        }
+
+        /// <summary>
+        /// Creates a PlayerTurnSwitchEvent from within the match and returns it. Invokes any event
+        /// subscriptions to OnPlayerTurnSwitch.
+        /// </summary>
+        /// <param name="player"></param>
+        /// <returns>The generated event</returns>
+        /// <exception cref="InvalidEventException">Thrown when the event being created is not valid for the
+        /// current state of the match.</exception>
+        public virtual PlayerTurnSwitchEvent PlayerTurnSwitch(Player prevPlayer, Player nextPlayer)
+        {
+            var ev = new PlayerTurnSwitchEvent(prevPlayer, nextPlayer);
+            OnPlayerTurnSwitch(this, ev);
+            return ev;
+        }
+
+        /// <summary>
+        /// Creates a PlayerWonEvent from within the match and returns it. Invokes any event
+        /// subscriptions to OnPlayerWin.
+        /// </summary>
+        /// <param name="player"></param>
+        /// <returns>The generated event</returns>
+        /// <exception cref="InvalidEventException">Thrown when the event being created is not valid for the
+        /// current state of the match.</exception>
+        public virtual PlayerWonEvent PlayerWin(Player player)
+        {
+            var ev = new PlayerWonEvent(player);
+            player.Wins++;
+            OnPlayerWin(this, ev);
+            return ev;
+        }
+
+        /// <summary>
+        /// Creates a RoundBeginEvent from within the match and returns it. Invokes any event
+        /// subscriptions to OnRoundBegin.
+        /// </summary>
+        /// <param name="player"></param>
+        /// <returns>The generated event</returns>
+        /// <exception cref="InvalidEventException">Thrown when the event being created is not valid for the
+        /// current state of the match.</exception>
+        public virtual RoundBeginEvent RoundBegin(int roundBeginNumber)
+        {
+            var ev = new RoundBeginEvent(roundBeginNumber);
+            if ((CurrentRound + 1) == roundBeginNumber)
+            {
+                CurrentRound++;
+                foreach (var plr in Players)
+                {
+                    plr.Active = true;
+                }
+            }
+            else
+            {
+                throw new InvalidEventException(ev, "The round that is beginning is not correct.");
+            }
+            OnRoundBegin(this, ev);
+            return ev;
+        }
+
+        /// <summary>
+        /// Creates a RoundEndEvent from within the match and returns it. Invokes any event
+        /// subscriptions to OnRoundEnd.
+        /// </summary>
+        /// <param name="player"></param>
+        /// <returns>The generated event</returns>
+        /// <exception cref="InvalidEventException">Thrown when the event being created is not valid for the
+        /// current state of the match.</exception>
+        public virtual RoundEndEvent RoundEnd(int roundNumber)
+        {
+            var ev = new RoundEndEvent(roundNumber);
+            if (!(CurrentRound > -1))
+            {
+                throw new InvalidEventException(ev, "There is no round that has started.");
+            }
+            OnRoundEnd(this, ev);
+            return ev;
+        }
+
+        /// <summary>
+        /// Creates a MatchTeamAddEvent from within the match and returns it. Invokes any event
+        /// subscriptions to OnTeamAdd.
+        /// </summary>
+        /// <param name="player"></param>
+        /// <returns>The generated event</returns>
+        /// <exception cref="InvalidEventException">Thrown when the event being created is not valid for the
+        /// current state of the match.</exception>
+        public virtual MatchTeamAddEvent TeamAdd(Team team)
+        {
+            var ev = new MatchTeamAddEvent(team);
+            if (!Teams.Add(team))
+            {
+                throw new InvalidEventException(ev, "Team already exists within match.");
+            }
+            OnTeamAdd(this, ev);
+            return ev;
+        }
+
+        /// <summary>
+        /// Creates a MatchTeamRemoveEvent from within the match and returns it. Invokes any event
+        /// subscriptions to OnTeamRemove.
+        /// </summary>
+        /// <param name="player"></param>
+        /// <returns>The generated event</returns>
+        /// <exception cref="InvalidEventException">Thrown when the event being created is not valid for the
+        /// current state of the match.</exception>
+        public virtual MatchTeamRemoveEvent TeamRemove(Team team)
+        {
+            var ev = new MatchTeamRemoveEvent(team);
+            if (!Teams.Remove(team))
+            {
+                throw new InvalidEventException(ev, "Team does not existin within the match.");
+            }
+            OnTeamRemove(this, ev);
+            return ev;
         }
     }
 }

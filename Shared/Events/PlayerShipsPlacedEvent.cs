@@ -9,6 +9,7 @@ namespace MBC.Shared.Events
     /// Provides information about a <see cref="Register"/>'s <see cref="ShipList"/> that had
     /// been requested to be modified.
     /// </summary>
+    [Serializable]
     public class PlayerShipsPlacedEvent : PlayerEvent
     {
         private ISet<Ship> shipList;
@@ -33,18 +34,6 @@ namespace MBC.Shared.Events
             {
                 return new HashSet<Ship>(shipList);
             }
-        }
-
-        public override bool ApplyBackward()
-        {
-            //TODO: Apply the previous ship placement.
-            return true;
-        }
-
-        public override bool ApplyForward()
-        {
-            Player.Ships = ShipsList;
-            return true;
         }
     }
 }

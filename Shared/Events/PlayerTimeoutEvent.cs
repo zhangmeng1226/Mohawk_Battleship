@@ -8,6 +8,7 @@ namespace MBC.Shared.Events
     /// Provides information about a <see cref="Register"/> that had taken too long to return from
     /// a method call in its associating <see cref="Controller"/>.
     /// </summary>
+    [Serializable]
     public class PlayerTimeoutEvent : PlayerEvent
     {
         /// <summary>
@@ -29,18 +30,6 @@ namespace MBC.Shared.Events
         {
             get;
             private set;
-        }
-
-        public override bool ApplyBackward()
-        {
-            Player.Timeouts--;
-            return false;
-        }
-
-        public override bool ApplyForward()
-        {
-            Player.Timeouts++;
-            return true;
         }
     }
 }

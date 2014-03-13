@@ -59,7 +59,6 @@
     <Compile Include="Events\MatchAddPlayerEvent.cs" />
     <Compile Include="Events\MatchBeginEvent.cs" />
     <Compile Include="Events\MatchEndEvent.cs" />
-    <Compile Include="Events\MatchEvent.cs" />
     <Compile Include="Events\MatchRemovePlayerEvent.cs" />
     <Compile Include="Events\MatchTeamRemoveEvent.cs" />
     <Compile Include="Events\PlayerDisqualifiedEvent.cs" />
@@ -80,6 +79,7 @@
     <Compile Include="IController2.cs" />
     <Compile Include="IDNumber.cs" />
     <Compile Include="CollectionUtils.cs" />
+    <Compile Include="Events\InvalidEventException.cs" />
     <Compile Include="Match.cs" />
     <Compile Include="Events\MatchTeamAddEvent.cs" />
     <Compile Include="Player.cs" />

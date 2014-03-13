@@ -1,4 +1,4 @@
-﻿using MBC.Shared.dep;
+﻿using MBC.Shared;
 using System;
 using System.Collections;
 using System.Collections.Generic;

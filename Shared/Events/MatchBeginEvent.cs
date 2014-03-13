@@ -8,13 +8,13 @@ namespace MBC.Shared.Events
     /// <summary>
     /// Provides information about a <see cref="Match"/> that has begun.
     /// </summary>
-    public class MatchBeginEvent : MatchEvent
+    [Serializable]
+    public class MatchBeginEvent : Event
     {
         /// <summary>
         /// Constructs this event
         /// </summary>
         public MatchBeginEvent(Match copyParams)
-            : base(copyParams)
         {
             CurrentRound = copyParams.CurrentRound;
             FieldSize = copyParams.FieldSize;
@@ -87,23 +87,6 @@ namespace MBC.Shared.Events
         {
             get;
             protected set;
-        }
-
-        public override bool ApplyBackward()
-        {
-            return ApplyForward();
-        }
-
-        public override bool ApplyForward()
-        {
-            Match.CurrentRound = CurrentRound;
-            Match.FieldSize = FieldSize;
-            Match.NumberOfRounds = NumberOfRounds;
-            Match.Random = Random;
-            Match.RoundMode = RoundMode;
-            Match.StartingShips = StartingShips;
-            Match.TimeLimit = TimeLimit;
-            return true;
         }
     }
 }
