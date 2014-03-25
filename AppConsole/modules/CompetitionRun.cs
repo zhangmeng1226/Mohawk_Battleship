@@ -16,9 +16,11 @@ namespace MBC.App.Terminal.Modules
 {
     public class CompetitionRun : TerminalModule
     {
+        private int boardsBaseY;
         private ActiveMatch competition;
         private string currentEventString;
         private StreamWriter fileWriter;
+        private bool isWritten;
         private int lastMillis;
         private int millisDelay;
         private int roundsRun;
@@ -27,6 +29,8 @@ namespace MBC.App.Terminal.Modules
 
         public CompetitionRun(ActiveMatch comp, int delay, bool eventsToFile)
         {
+            isWritten = false;
+            boardsBaseY = -1;
             turns = 0;
             roundsRun = 0;
             competition = comp;
@@ -35,10 +39,12 @@ namespace MBC.App.Terminal.Modules
             competition.AddEventAction(typeof(PlayerShotEvent), CompRoundTurn);
             competition.AddEventAction(typeof(RoundEndEvent), CompRoundEnd);
             competition.AddEventAction(typeof(PlayerShipDestroyedEvent), ShipDestroyed);
+            competition.AddEventAction(typeof(PlayerShipDestroyedEvent), ASCIIShipDestroyed);
             competition.AddEventAction(typeof(PlayerShotEvent), PlayerShot);
             competition.AddEventAction(typeof(PlayerShotEvent), ASCIIUpdateShot);
             competition.AddEventAction(typeof(PlayerHitShipEvent), PlayerHit);
             competition.AddEventAction(typeof(PlayerHitShipEvent), ASCIIUpdateShotHit);
+            competition.AddEventAction(typeof(PlayerShipsPlacedEvent), ASCIIUpdateShips);
             competition.AddEventAction(typeof(MatchEndEvent), MatchEnd);
             competition.AddEventAction(typeof(Event), LastEvent);
             threader = new FuncThreader();
@@ -60,12 +66,27 @@ namespace MBC.App.Terminal.Modules
             WriteScoreRounds();
             WriteTurns();
             WriteCurrentEvent();
+            if (!isWritten)
+            {
+                boardsBaseY = CurrentY;
+                isWritten = true;
+                MakeASCII();
+            }
             Console.ForegroundColor = ConsoleColor.White;
+        }
+
+        private void ASCIIShipDestroyed(Event ev)
+        {
+        }
+
+        private void ASCIIUpdateShips(Event ev)
+        {
         }
 
         private void ASCIIUpdateShot(Event ev)
         {
             PlayerShotEvent shotEvent = (PlayerShotEvent)ev;
+            ModifyASCII(shotEvent.Shot.Receiver, shotEvent.Shot.Coordinates.X, shotEvent.Shot.Coordinates.Y, '*', ConsoleColor.DarkYellow, ConsoleColor.Black);
         }
 
         private void ASCIIUpdateShotHit(Event ev)
@@ -97,7 +118,7 @@ namespace MBC.App.Terminal.Modules
             lastMillis = ev.Millis;
         }
 
-        private void makeASCII()
+        private void MakeASCII()
         {
             string[,] battleField = new String[10, 10];
             NewLine(2);
