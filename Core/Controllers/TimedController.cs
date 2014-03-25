@@ -1,23 +1,35 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using MBC.Core.Threading;
+﻿using MBC.Core.Threading;
 using MBC.Core.Util;
 using MBC.Shared;
 using MBC.Shared.Attributes;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace MBC.Core.Controllers
 {
+    /// <summary>
+    /// Wraps another IController and provides timeout features.
+    /// </summary>
     [Configuration("mbc_player_timeout", 500)]
     public class TimedController : IController
     {
+        private ThreadTimeoutAborter aborter;
         private IController controller;
-        private Stopwatch timer;
 
-        public TimedController(IController controllerWrap)
+        /// <summary>
+        /// Wraps a controller and sets up the thread aborter on the current thread.
+        /// </summary>
+        /// <param name="controllerWrap"></param>
+        public TimedController(MatchConfig config, IController controllerWrap)
         {
             controller = controllerWrap;
+            Match = config;
+            controller = controllerWrap;
             controller.ControllerMessageEvent += ReceiveMessage;
+            aborter = new ThreadTimeoutAborter(Thread.CurrentThread, Match.TimeLimit);
         }
 
         /// <summary>
@@ -25,6 +37,9 @@ namespace MBC.Core.Controllers
         /// </summary>
         public event StringOutputHandler ControllerMessageEvent;
 
+        /// <summary>
+        /// Gets or sets the wrapped field value for the controller.
+        /// </summary>
         public FieldInfo Field
         {
             get
@@ -37,6 +52,9 @@ namespace MBC.Core.Controllers
             }
         }
 
+        /// <summary>
+        /// Gets or sets the wrapped ID value for the controller.
+        /// </summary>
         public IDNumber ID
         {
             get
@@ -49,6 +67,9 @@ namespace MBC.Core.Controllers
             }
         }
 
+        /// <summary>
+        /// Gets or sets the wrapped Match value for the controller.
+        /// </summary>
         public MatchConfig Match
         {
             get
@@ -61,6 +82,9 @@ namespace MBC.Core.Controllers
             }
         }
 
+        /// <summary>
+        /// Gets or sets the wrapped Registers value for the controller.
+        /// </summary>
         public Dictionary<IDNumber, Register> Registers
         {
             get
@@ -73,6 +97,9 @@ namespace MBC.Core.Controllers
             }
         }
 
+        /// <summary>
+        /// Gets or sets the wrapped Teams value for the controller.
+        /// </summary>
         public Dictionary<IDNumber, Team> Teams
         {
             get
@@ -85,21 +112,34 @@ namespace MBC.Core.Controllers
             }
         }
 
+        /// <summary>
+        /// Gets a set attribute on a controller.
+        /// </summary>
+        /// <typeparam name="T">The type of attribute to get</typeparam>
+        /// <returns>The attibute object of type <typeparamref name="T"/></returns>
         public T GetAttribute<T>()
         {
             return controller.GetAttribute<T>();
         }
 
+        /// <summary>
+        /// <see cref="IController.MakeShot()"/>
+        /// </summary>
+        /// <returns><see cref="IController.MakeShot()"/></returns>
         public Shot MakeShot()
         {
-            timer.Restart();
-            var result = controller.MakeShot();
-            timer.Stop();
-            if (timer.ElapsedMilliseconds > Match.TimeLimit)
+            try
             {
-                throw new MethodTimeoutException("MakeShot", (int)timer.ElapsedMilliseconds);
+                aborter.MonBegin();
+                var result = controller.MakeShot();
+                aborter.MonEnd();
+                return result;
             }
-            return result;
+            catch (ThreadAbortException ex)
+            {
+                Thread.ResetAbort();
+                throw new ControllerTimeoutException("MakeShot", this);
+            }
         }
 
         /// <summary>
@@ -107,12 +147,16 @@ namespace MBC.Core.Controllers
         /// </summary>
         public void MatchOver()
         {
-            timer.Restart();
-            controller.MatchOver();
-            timer.Stop();
-            if (timer.ElapsedMilliseconds > Match.TimeLimit)
+            try
             {
-                throw new MethodTimeoutException("MatchOver", (int)timer.ElapsedMilliseconds);
+                aborter.MonBegin();
+                controller.MatchOver();
+                aborter.MonEnd();
+            }
+            catch (ThreadAbortException ex)
+            {
+                Thread.ResetAbort();
+                throw new ControllerTimeoutException("MatchOver", this);
             }
         }
 
@@ -121,12 +165,16 @@ namespace MBC.Core.Controllers
         /// </summary>
         public void NewMatch()
         {
-            timer.Restart();
-            controller.NewMatch();
-            timer.Stop();
-            if (timer.ElapsedMilliseconds > Match.TimeLimit)
+            try
             {
-                throw new MethodTimeoutException("NewMatch", (int)timer.ElapsedMilliseconds);
+                aborter.MonBegin();
+                controller.NewMatch();
+                aborter.MonEnd();
+            }
+            catch (ThreadAbortException ex)
+            {
+                Thread.ResetAbort();
+                throw new ControllerTimeoutException("NewMatch", this);
             }
         }
 
@@ -135,12 +183,16 @@ namespace MBC.Core.Controllers
         /// </summary>
         public void NewRound()
         {
-            timer.Restart();
-            controller.NewRound();
-            timer.Stop();
-            if (timer.ElapsedMilliseconds > Match.TimeLimit)
+            try
             {
-                throw new MethodTimeoutException("NewRound", (int)timer.ElapsedMilliseconds);
+                aborter.MonBegin();
+                controller.NewRound();
+                aborter.MonEnd();
+            }
+            catch (ThreadAbortException ex)
+            {
+                Thread.ResetAbort();
+                throw new ControllerTimeoutException("NewRound", this);
             }
         }
 
@@ -149,12 +201,16 @@ namespace MBC.Core.Controllers
         /// </summary>
         public void OpponentDestroyed(IDNumber destroyedID)
         {
-            timer.Restart();
-            controller.OpponentDestroyed(destroyedID);
-            timer.Stop();
-            if (timer.ElapsedMilliseconds > Match.TimeLimit)
+            try
             {
-                throw new MethodTimeoutException("OpponentDestroyed", (int)timer.ElapsedMilliseconds);
+                aborter.MonBegin();
+                controller.OpponentDestroyed(destroyedID);
+                aborter.MonEnd();
+            }
+            catch (ThreadAbortException ex)
+            {
+                Thread.ResetAbort();
+                throw new ControllerTimeoutException("OpponentDestroyed", this);
             }
         }
 
@@ -163,25 +219,37 @@ namespace MBC.Core.Controllers
         /// </summary>
         public void OpponentShot(Shot shot)
         {
-            timer.Restart();
-            controller.OpponentShot(shot);
-            timer.Stop();
-            if (timer.ElapsedMilliseconds > Match.TimeLimit)
+            try
             {
-                throw new MethodTimeoutException("OpponentShot", (int)timer.ElapsedMilliseconds);
+                aborter.MonBegin();
+                controller.OpponentShot(shot);
+                aborter.MonEnd();
+            }
+            catch (ThreadAbortException ex)
+            {
+                Thread.ResetAbort();
+                throw new ControllerTimeoutException("OpponentShot", this);
             }
         }
 
+        /// <summary>
+        /// <see cref="IController.PlaceShips()"/>
+        /// </summary>
+        /// <returns><see cref="IController.PlaceShips()"/></returns>
         public ShipList PlaceShips()
         {
-            timer.Restart();
-            var result = controller.PlaceShips();
-            timer.Stop();
-            if (timer.ElapsedMilliseconds > Match.TimeLimit)
+            try
             {
-                throw new MethodTimeoutException("PlaceShips", (int)timer.ElapsedMilliseconds);
+                aborter.MonBegin();
+                var result = controller.PlaceShips();
+                aborter.MonEnd();
+                return result;
             }
-            return result;
+            catch (ThreadAbortException ex)
+            {
+                Thread.ResetAbort();
+                throw new ControllerTimeoutException("PlaceShips", this);
+            }
         }
 
         /// <summary>
@@ -189,12 +257,16 @@ namespace MBC.Core.Controllers
         /// </summary>
         public void RoundLost()
         {
-            timer.Restart();
-            controller.RoundLost();
-            timer.Stop();
-            if (timer.ElapsedMilliseconds > Match.TimeLimit)
+            try
             {
-                throw new MethodTimeoutException("RoundLost", (int)timer.ElapsedMilliseconds);
+                aborter.MonBegin();
+                controller.RoundLost();
+                aborter.MonEnd();
+            }
+            catch (ThreadAbortException ex)
+            {
+                Thread.ResetAbort();
+                throw new ControllerTimeoutException("RoundLost", this);
             }
         }
 
@@ -203,12 +275,16 @@ namespace MBC.Core.Controllers
         /// </summary>
         public void RoundWon()
         {
-            timer.Restart();
-            controller.RoundWon();
-            timer.Stop();
-            if (timer.ElapsedMilliseconds > Match.TimeLimit)
+            try
             {
-                throw new MethodTimeoutException("RoundWon", (int)timer.ElapsedMilliseconds);
+                aborter.MonBegin();
+                controller.RoundWon();
+                aborter.MonEnd();
+            }
+            catch (ThreadAbortException ex)
+            {
+                Thread.ResetAbort();
+                throw new ControllerTimeoutException("RoundWon", this);
             }
         }
 
@@ -217,12 +293,16 @@ namespace MBC.Core.Controllers
         /// </summary>
         public void ShotHit(Shot shot, bool sunk)
         {
-            timer.Restart();
-            controller.ShotHit(shot, sunk);
-            timer.Stop();
-            if (timer.ElapsedMilliseconds > Match.TimeLimit)
+            try
             {
-                throw new MethodTimeoutException("ShotHit", (int)timer.ElapsedMilliseconds);
+                aborter.MonBegin();
+                controller.ShotHit(shot, sunk);
+                aborter.MonEnd();
+            }
+            catch (ThreadAbortException ex)
+            {
+                Thread.ResetAbort();
+                throw new ControllerTimeoutException("ShotHit", this);
             }
         }
 
@@ -231,15 +311,23 @@ namespace MBC.Core.Controllers
         /// </summary>
         public void ShotMiss(Shot shot)
         {
-            timer.Restart();
-            controller.ShotMiss(shot);
-            timer.Stop();
-            if (timer.ElapsedMilliseconds > Match.TimeLimit)
+            try
             {
-                throw new MethodTimeoutException("ShotMiss", (int)timer.ElapsedMilliseconds);
+                aborter.MonBegin();
+                controller.ShotMiss(shot);
+                aborter.MonEnd();
+            }
+            catch (ThreadAbortException ex)
+            {
+                Thread.ResetAbort();
+                throw new ControllerTimeoutException("ShotMiss", this);
             }
         }
 
+        /// <summary>
+        /// <see cref="IController.ToString()"/>
+        /// </summary>
+        /// <returns><see cref="IController.ToString()"/></returns>
         public override string ToString()
         {
             return controller.ToString();
