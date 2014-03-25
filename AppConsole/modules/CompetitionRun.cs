@@ -1,15 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using MBC.App.Terminal.Layouts;
+﻿using MBC.App.Terminal.Layouts;
 using MBC.App.Terminal.Modules;
 using MBC.Core;
 using MBC.Core.Events;
 using MBC.Core.Matches;
 using MBC.Core.Threading;
+using MBC.Shared;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading;
 
 namespace MBC.App.Terminal.Modules
 {
@@ -35,7 +36,9 @@ namespace MBC.App.Terminal.Modules
             competition.AddEventAction(typeof(RoundEndEvent), CompRoundEnd);
             competition.AddEventAction(typeof(PlayerShipDestroyedEvent), ShipDestroyed);
             competition.AddEventAction(typeof(PlayerShotEvent), PlayerShot);
+            competition.AddEventAction(typeof(PlayerShotEvent), ASCIIUpdateShot);
             competition.AddEventAction(typeof(PlayerHitShipEvent), PlayerHit);
+            competition.AddEventAction(typeof(PlayerHitShipEvent), ASCIIUpdateShotHit);
             competition.AddEventAction(typeof(MatchEndEvent), MatchEnd);
             competition.AddEventAction(typeof(Event), LastEvent);
             threader = new FuncThreader();
@@ -58,6 +61,16 @@ namespace MBC.App.Terminal.Modules
             WriteTurns();
             WriteCurrentEvent();
             Console.ForegroundColor = ConsoleColor.White;
+        }
+
+        private void ASCIIUpdateShot(Event ev)
+        {
+            PlayerShotEvent shotEvent = (PlayerShotEvent)ev;
+        }
+
+        private void ASCIIUpdateShotHit(Event ev)
+        {
+            PlayerHitShipEvent shipEvent = (PlayerHitShipEvent)ev;
         }
 
         private void CompRoundEnd(Event ev)
@@ -84,6 +97,21 @@ namespace MBC.App.Terminal.Modules
             lastMillis = ev.Millis;
         }
 
+        private void makeASCII()
+        {
+            string[,] battleField = new String[10, 10];
+            NewLine(2);
+            for (int column = 1; column < battleField.GetLength(0); column++)
+            {
+                for (int row = 1; row < battleField.GetLength(1); row++)
+                {
+                    battleField[column, row] = "~ ";
+                    WriteText(battleField[column, row]);
+                }
+                NewLine();
+            }
+        }
+
         private void MatchEnd(Event ev)
         {
             BattleshipConsole.RemoveModule(this);
@@ -93,6 +121,14 @@ namespace MBC.App.Terminal.Modules
             {
                 fileWriter.Close();
             }
+        }
+
+        private void ModifyASCII(int ctrlIdx, int x, int y, char character, ConsoleColor text, ConsoleColor background)
+        {
+            NewLine(2);
+            int startY = CurrentY;
+            int baseX = 20;
+            int baseY = 0;
         }
 
         private void PlayerHit(Event ev)
