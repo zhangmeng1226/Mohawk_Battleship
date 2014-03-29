@@ -157,17 +157,13 @@ namespace MBC.App.Terminal.Modules
                         {
                             Console.ForegroundColor = ConsoleColor.White;
                             Console.BackgroundColor = ConsoleColor.Black;
-                            if (x == -1 && y != -1)
+                            if (x == -1)
                             {
-                                ModifyASCII(i, -1, y, (y + 1).ToString().ToCharArray()[0], ConsoleColor.Gray, ConsoleColor.Black);
-                            }
-                            else if (x == -1 && y == -1)
-                            {
-                                ModifyASCII(i, -1, -1, '0', ConsoleColor.Gray, ConsoleColor.Black);
+                                ModifyASCII(i, -1, y, y.ToString().ToCharArray()[0], ConsoleColor.Gray, ConsoleColor.Black);
                             }
                             else if (y == -1)
                             {
-                                ModifyASCII(i, x, -1, (x + 1).ToString().ToCharArray()[0], ConsoleColor.Gray, ConsoleColor.Black);
+                                ModifyASCII(i, x, -1, x.ToString().ToCharArray()[0], ConsoleColor.Gray, ConsoleColor.Black);
                             }
                         }
                         else
