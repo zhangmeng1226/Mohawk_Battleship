@@ -60,6 +60,11 @@ namespace MBC.Core.Matches
 
         public IDNumber NextTurn()
         {
+            if (turns.Count == 1)
+            {
+                CurrentTurnPlayer = turns[0];
+                return CurrentTurnPlayer;
+            }
             int currentTurnIdx;
             for (currentTurnIdx = 0; currentTurnIdx < turns.Count; currentTurnIdx++)
             {
@@ -236,7 +241,8 @@ namespace MBC.Core.Matches
 
         private void PlayerDead(IDNumber plr)
         {
-            Match.Teams[DeadTeam].Members.Add(plr);
+            //Match.Teams[DeadTeam].Members.Add(plr);
+            PlayerLose(plr);
         }
 
         private void PlayerInit(Event ev)
@@ -257,6 +263,7 @@ namespace MBC.Core.Matches
             {
                 ApplyEvent(new PlayerTimeoutEvent(plr, ex));
             }
+            CurrentTurnPlayer = NextTurn();
         }
 
         private void PlayerTimedOut(IDNumber plr, ControllerTimeoutException ex)

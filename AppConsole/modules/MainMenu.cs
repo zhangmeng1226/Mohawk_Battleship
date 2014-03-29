@@ -1,10 +1,10 @@
-﻿using System;
+﻿using MBC.App.Terminal.Controls;
+using MBC.App.Terminal.Layouts;
+using MBC.Core;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MBC.App.Terminal.Controls;
-using MBC.App.Terminal.Layouts;
-using MBC.Core;
 
 namespace MBC.App.Terminal.Modules
 {
@@ -24,7 +24,7 @@ namespace MBC.App.Terminal.Modules
         protected override void Display()
         {
             Console.ForegroundColor = ConsoleColor.Red;
-            WriteCenteredText("Version: 0.5.1  Date: Jan 16, 2014");
+            WriteCenteredText("Version: 0.6  Date: March 28, 2014");
             NewLine();
             Console.ForegroundColor = ConsoleColor.Gray;
             WriteCenteredText("=====MAIN MENU=====");

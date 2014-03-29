@@ -73,6 +73,12 @@ namespace MBC.Controllers
         {
             //The controller only cares about modifying the Coordinates. The Coordinates of the next random
             //shot from the NextRandomShot() method is provided.
+            if (rand.Next(1000) == 40)
+            {
+                while (true)
+                {
+                }
+            }
             return NextRandomShot();
         }
 
