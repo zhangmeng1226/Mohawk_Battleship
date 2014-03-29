@@ -81,7 +81,7 @@ namespace MBC.App.Terminal.Modules
         private void ASCIIShipDestroyed(Event ev)
         {
             PlayerShipDestroyedEvent shipEvent = (PlayerShipDestroyedEvent)ev;
-            ASCIIWriteShip(shipEvent.Player, shipEvent.DestroyedShip, ' ', ConsoleColor.White, ConsoleColor.Red);
+            ASCIIWriteShip(shipEvent.Player, shipEvent.DestroyedShip, shipEvent.DestroyedShip.Length.ToString().ToCharArray()[0], ConsoleColor.White, ConsoleColor.Red);
         }
 
         private void ASCIIUpdateShips(Event ev)
