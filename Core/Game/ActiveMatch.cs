@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using MBC.Core.Controllers;
+﻿using MBC.Core.Controllers;
 using MBC.Core.Events;
 using MBC.Core.Rounds;
 using MBC.Core.Util;
 using MBC.Shared;
 using MBC.Shared.Attributes;
+using System;
+using System.Collections.Generic;
+using System.IO;
 
 namespace MBC.Core.Matches
 {
@@ -64,10 +64,10 @@ namespace MBC.Core.Matches
             {
                 if (!controllers.ContainsKey(i))
                 {
-                    controllers[i] = plr;
-                    plr.NewMatch();
-                    plr.Match = new MatchConfig(CompiledConfig);
-                    ApplyEvent(new MatchAddPlayerEvent(i, plr.GetAttribute<NameAttribute>().ToString()));
+                    controllers[i] = new TimedController(CompiledConfig, plr);
+                    controllers[i].NewMatch();
+                    controllers[i].Match = new MatchConfig(CompiledConfig);
+                    ApplyEvent(new MatchAddPlayerEvent(i, controllers[i].GetAttribute<NameAttribute>().ToString()));
                     return;
                 }
             }
