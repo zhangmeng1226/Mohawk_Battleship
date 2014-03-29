@@ -1,12 +1,12 @@
-﻿using System;
+﻿using MBC.Core.Events;
+using MBC.Core.Rounds;
+using MBC.Core.Threading;
+using MBC.Shared;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
-using MBC.Core.Events;
-using MBC.Core.Rounds;
-using MBC.Core.Threading;
-using MBC.Shared;
 
 namespace MBC.Core.Matches
 {
@@ -208,7 +208,7 @@ namespace MBC.Core.Matches
                     Match.Controllers[CurrentTurnPlayer].ShotMiss(shotMade);
                 }
             }
-            catch (MethodTimeoutException ex)
+            catch (ControllerTimeoutException ex)
             {
                 PlayerTimedOut(CurrentTurnPlayer, ex);
             }
@@ -227,7 +227,7 @@ namespace MBC.Core.Matches
                         PlayerLose(controller.Key);
                     }
                 }
-                catch (MethodTimeoutException ex)
+                catch (ControllerTimeoutException ex)
                 {
                     PlayerTimedOut(controller.Key, ex);
                 }
@@ -253,13 +253,13 @@ namespace MBC.Core.Matches
             {
                 Match.Controllers[plr].RoundLost();
             }
-            catch (MethodTimeoutException ex)
+            catch (ControllerTimeoutException ex)
             {
                 ApplyEvent(new PlayerTimeoutEvent(plr, ex));
             }
         }
 
-        private void PlayerTimedOut(IDNumber plr, MethodTimeoutException ex)
+        private void PlayerTimedOut(IDNumber plr, ControllerTimeoutException ex)
         {
             ApplyEvent(new PlayerTimeoutEvent(plr, ex));
             PlayerLose(plr);
