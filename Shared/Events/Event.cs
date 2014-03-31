@@ -16,7 +16,7 @@ namespace MBC.Shared.Events
     /// <seealso cref="MatchEvent"/>
     /// <seealso cref="RoundEvent"/>
     /// <seealso cref="PlayerEvent"/>
-    public abstract class Event : EventArgs
+    public abstract class Event
     {
         protected Event()
         {
@@ -26,6 +26,10 @@ namespace MBC.Shared.Events
         {
             get;
             set;
+        }
+
+        protected internal virtual void PerformOperation()
+        {
         }
     }
 }

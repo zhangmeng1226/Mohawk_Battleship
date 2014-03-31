@@ -16,14 +16,14 @@ namespace MBC.App.Terminal.Modules
 {
     public class CompetitionRun : TerminalModule
     {
-        private MatchServer competition;
+        private MatchCore competition;
         private string currentEventString;
         private StreamWriter fileWriter;
         private int millisDelay;
         private int roundsRun;
         private int turns;
 
-        public CompetitionRun(MatchServer comp, int delay, bool eventsToFile)
+        public CompetitionRun(MatchCore comp, int delay, bool eventsToFile)
         {
             turns = 0;
             roundsRun = 0;
@@ -107,7 +107,7 @@ namespace MBC.App.Terminal.Modules
             WriteTurns();
         }
 
-        private void ShipDestroyed(object match, PlayerShipDestroyedEvent ev)
+        private void ShipDestroyed(object match, ShipDestroyedEvent ev)
         {
             currentEventString = string.Format("{0}'s ship ({1}) is destroyed",
                 ev.Player,

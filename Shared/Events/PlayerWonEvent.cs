@@ -18,5 +18,10 @@ namespace MBC.Shared.Events
             : base(player)
         {
         }
+
+        protected internal override void PerformOperation()
+        {
+            Player.Wins++;
+        }
     }
 }

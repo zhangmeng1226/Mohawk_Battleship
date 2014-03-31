@@ -9,15 +9,15 @@ namespace MBC.Shared.Events
     /// been destroyed by another <see cref="Register"/>.
     /// </summary>
     [Serializable]
-    public class PlayerShipDestroyedEvent : PlayerEvent
+    public class ShipDestroyedEvent : ShipEvent
     {
         /// <summary>
         /// Constructs this event with the player who owns the destroyed ship.
         /// </summary>
         /// <param name="owner"></param>
         /// <param name="destroyedShip"></param>
-        public PlayerShipDestroyedEvent(Player owner, Ship destroyedShip) :
-            base(owner)
+        public ShipDestroyedEvent(Ship destroyedShip) :
+            base(destroyedShip)
         {
             DestroyedShip = destroyedShip;
         }

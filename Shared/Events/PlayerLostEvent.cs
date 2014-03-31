@@ -18,5 +18,10 @@ namespace MBC.Shared.Events
             : base(loser)
         {
         }
+
+        protected internal override void PerformOperation()
+        {
+            Player.Losses++;
+        }
     }
 }

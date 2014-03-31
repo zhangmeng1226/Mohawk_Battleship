@@ -11,13 +11,14 @@ namespace MBC.Shared.Events
     /// Created during a match when a team has been created.
     /// </summary>
     [Serializable]
-    public class MatchTeamRemoveEvent : Event
+    public class MatchTeamRemoveEvent : MatchEvent
     {
         /// <summary>
         /// Constructs the event with the team to be removed.
         /// </summary>
         /// <param name="team"></param>
-        public MatchTeamRemoveEvent(Team team)
+        public MatchTeamRemoveEvent(Match match, Team team)
+            : base(match)
         {
             Team = team;
         }
@@ -29,6 +30,14 @@ namespace MBC.Shared.Events
         {
             get;
             private set;
+        }
+
+        protected internal override void PerformOperation()
+        {
+            if (!Match.Teams.Remove(Team))
+            {
+                throw new InvalidEventException(this, "Team does not existin within the match.");
+            }
         }
     }
 }

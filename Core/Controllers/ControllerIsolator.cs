@@ -33,7 +33,7 @@ namespace MBC.Core.Game
             private set;
         }
 
-        public static ControllerIsolator Isolate(ControllerSkeleton skeleton, MatchServer originalMatch)
+        public static ControllerIsolator Isolate(ControllerSkeleton skeleton, MatchCore originalMatch)
         {
             AppDomain sandbox = AppDomain.CreateDomain(Guid.NewGuid().ToString());
             ControllerIsolator isolator = (ControllerIsolator)sandbox.CreateInstanceAndUnwrap(Assembly.GetCallingAssembly().FullName, typeof(ControllerIsolator).FullName);
@@ -41,7 +41,7 @@ namespace MBC.Core.Game
             return isolator;
         }
 
-        private void Initialize(ControllerSkeleton skeleton, MatchServer match, AppDomain sandbox)
+        private void Initialize(ControllerSkeleton skeleton, MatchCore match, AppDomain sandbox)
         {
             ClientMatch = new Match();
             Controller = skeleton.CreateInstance();
@@ -103,11 +103,11 @@ namespace MBC.Core.Game
             ClientMatch.NotifyEvent(e);
         }
 
-        private void OnPlayerShipDestruction(object sender, PlayerShipDestroyedEvent e)
+        private void OnPlayerShipDestruction(object sender, ShipDestroyedEvent e)
         {
             if (e.Player.Controller != Controller)
             {
-                ClientMatch.NotifyEvent(new PlayerShipDestroyedEvent(e.Player, null));
+                ClientMatch.NotifyEvent(new ShipDestroyedEvent(e.Player, null));
             }
             else
             {
@@ -115,11 +115,11 @@ namespace MBC.Core.Game
             }
         }
 
-        private void OnPlayerShipsPlaced(object sender, PlayerShipsPlacedEvent e)
+        private void OnPlayerShipsPlaced(object sender, ShipMovedEvent e)
         {
             if (e.Player.Controller != Controller)
             {
-                ClientMatch.NotifyEvent(new PlayerShipsPlacedEvent(e.Player, null));
+                ClientMatch.NotifyEvent(new ShipMovedEvent(e.Player, null));
             }
             else
             {

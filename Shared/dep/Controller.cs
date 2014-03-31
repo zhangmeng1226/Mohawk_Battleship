@@ -18,6 +18,7 @@ namespace MBC.Shared
     /// </para>
     /// </summary>
     [SecurityPermission(SecurityAction.PermitOnly, SerializationFormatter = true)]
+    [Obsolete("Use and implement the IController2 interface.")]
     public abstract class Controller : IController
     {
         /// <summary>

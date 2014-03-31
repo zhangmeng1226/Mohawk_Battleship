@@ -28,5 +28,10 @@ namespace MBC.Shared.Events
             get;
             private set;
         }
+
+        protected internal override void PerformOperation()
+        {
+            Player.Disqualifications++;
+        }
     }
 }

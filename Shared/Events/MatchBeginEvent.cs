@@ -9,12 +9,13 @@ namespace MBC.Shared.Events
     /// Provides information about a <see cref="Match"/> that has begun.
     /// </summary>
     [Serializable]
-    public class MatchBeginEvent : Event
+    public class MatchBeginEvent : MatchEvent
     {
         /// <summary>
         /// Constructs this event
         /// </summary>
         public MatchBeginEvent(Match copyParams)
+            : base(copyParams)
         {
             CurrentRound = copyParams.CurrentRound;
             FieldSize = copyParams.FieldSize;
@@ -23,6 +24,7 @@ namespace MBC.Shared.Events
             RoundMode = copyParams.RoundMode;
             StartingShips = copyParams.StartingShips;
             TimeLimit = copyParams.TimeLimit;
+            TurnOrder = copyParams.TurnOrder;
         }
 
         /// <summary>
@@ -84,6 +86,15 @@ namespace MBC.Shared.Events
         /// Gets or sets the time limit allowed for each decision in the match.
         /// </summary>
         public int TimeLimit
+        {
+            get;
+            protected set;
+        }
+
+        /// <summary>
+        /// Gets or sets the order in which the players take turns in the match.
+        /// </summary>
+        public IList<Player> TurnOrder
         {
             get;
             protected set;

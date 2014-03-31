@@ -12,7 +12,7 @@ namespace MBC.Core.Game
     /// <summary>
     /// A type of match that uses the standard rules of battleship as logic.
     /// </summary>
-    public class ClassicMatch : MatchServer
+    public class ClassicMatch : MatchCore
     {
         private const string REASON_PLACEMENT = "The player controller placed an invalid ship formation.";
         private const string REASON_SHOT = "The player controller made an invalid shot.";
@@ -28,6 +28,7 @@ namespace MBC.Core.Game
             : base(conf)
         {
             CurrentPhase = Phase.Init;
+            OnMatchEvent += HandleMatchEvent;
         }
 
         /// <summary>
@@ -76,30 +77,6 @@ namespace MBC.Core.Game
         }
 
         /// <summary>
-        /// Makes a player lose the round and removes them from the list of active players.
-        /// </summary>
-        /// <param name="plr"></param>
-        /// <returns></returns>
-        public override PlayerLostEvent PlayerLose(Player plr)
-        {
-            var result = base.PlayerLose(plr);
-            activePlayers.Remove(plr);
-            return result;
-        }
-
-        public override RoundBeginEvent RoundBegin(int currentRound)
-        {
-            CurrentPhase = Phase.Init;
-            return base.RoundBegin(currentRound);
-        }
-
-        public override RoundEndEvent RoundEnd(int roundNumber)
-        {
-            CurrentPhase = Phase.End;
-            return base.RoundEnd(roundNumber);
-        }
-
-        /// <summary>
         /// Switches the current player to the next player in the iteration. Returns true if the
         /// round may continue, false if there is a winner, or no active players left.
         /// </summary>
@@ -112,6 +89,7 @@ namespace MBC.Core.Game
                 {
                     currentIteration = ++currentIteration % activePlayers.Count;
                 }
+                CurrentPlayer.TurnSwitchTo(activePlayers[currentIteration]);
                 CurrentPlayer = activePlayers[currentIteration];
                 return true;
             }
@@ -120,29 +98,6 @@ namespace MBC.Core.Game
                 CurrentPhase = Phase.End;
             }
             return false;
-        }
-
-        /// <summary>
-        /// Adds a player to the match, and ensures that it is inactive until the next round.
-        /// </summary>
-        /// <param name="plr"></param>
-        /// <returns></returns>
-        protected override MatchAddPlayerEvent PlayerAdd(Player plr)
-        {
-            return base.PlayerAdd(plr);
-        }
-
-        /// <summary>
-        /// Disqualifies a player from the match and removes it from the active players list.
-        /// </summary>
-        /// <param name="plr"></param>
-        /// <param name="reason"></param>
-        /// <returns></returns>
-        protected override PlayerDisqualifiedEvent PlayerDisqualify(Player plr, string reason)
-        {
-            var result = base.PlayerDisqualify(plr, reason);
-            activePlayers.Remove(plr);
-            return result;
         }
 
         /// <summary>
@@ -170,7 +125,7 @@ namespace MBC.Core.Game
             }
             catch (ControllerTimeoutException ex)
             {
-                PlayerDisqualify(FindPlayerFromController(ex.Controller), REASON_TIMEOUT);
+                FindPlayerFromController(ex.Controller).Disqualify(REASON_TIMEOUT);
                 return SwitchNextPlayer();
             }
         }
@@ -185,54 +140,40 @@ namespace MBC.Core.Game
             {
                 Player winner = activePlayers[0];
                 activePlayers.Clear();
-                PlayerWin(winner);
+                winner.Win();
             }
             return false;
         }
 
-        /// <summary>
-        /// Finds the player with a specific controller interface.
-        /// </summary>
-        /// <param name="playerController"></param>
-        /// <returns></returns>
-        private Player FindPlayerFromController(IController playerController)
+        private void HandleMatchEvent(MatchEvent matchEvent)
         {
-            foreach (var player in Players)
+            if (matchEvent.GetType() == typeof(MatchAddPlayerEvent))
             {
-                if (player.Controller == playerController)
-                {
-                    return player;
-                }
+                MatchAddPlayerEvent ev = (MatchAddPlayerEvent)matchEvent;
+                ev.Player.OnPlayerEvent += HandlePlayerEvent;
             }
-            return null;
+            else if (matchEvent.GetType() == typeof(MatchRemovePlayerEvent))
+            {
+                MatchRemovePlayerEvent ev = (MatchRemovePlayerEvent)matchEvent;
+                ev.Player.OnPlayerEvent -= HandlePlayerEvent;
+            }
+            else if (matchEvent.GetType() == typeof(RoundBeginEvent))
+            {
+                CurrentPhase = Phase.Init;
+            }
+            else if (matchEvent.GetType() == typeof(RoundEndEvent))
+            {
+                CurrentPhase = Phase.End;
+            }
         }
 
-        /// <summary>
-        /// The initialization phase.
-        /// </summary>
-        /// <returns></returns>
-        private bool Initialization()
+        private void HandlePlayerEvent(PlayerEvent playerEvent)
         {
-            if (Players.Count() < 2)
+            if (playerEvent.GetType() == typeof(PlayerLostEvent))
             {
-                return false;
+                PlayerLostEvent ev = (PlayerLostEvent)playerEvent;
+                activePlayers.Remove(ev.Player);
             }
-            currentIteration = 0;
-            activePlayers = new List<Player>();
-            foreach (var plr in Players)
-            {
-                try
-                {
-                    activePlayers.Add(plr);
-                }
-                catch (ControllerTimeoutException ex)
-                {
-                    PlayerDisqualify(FindPlayerFromController(ex.Controller), REASON_TIMEOUT);
-                }
-            }
-            CollectionUtils.RandomizeList(activePlayers);
-            CurrentPhase = Phase.Placement;
-            return SwitchNextPlayer();
         }
 
         /// <summary>

@@ -238,6 +238,11 @@ namespace MBC.Shared
             return conflictingShips;
         }
 
+        public static Ship GetShipAt(Shot shotMade)
+        {
+            return GetShipAt(shotMade.ReceiverPlr.Ships, shotMade.Coordinates);
+        }
+
         /// <summary>
         /// Finds a ship at specific coordinates.
         /// </summary>

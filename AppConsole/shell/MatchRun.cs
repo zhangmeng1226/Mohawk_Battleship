@@ -14,7 +14,7 @@ namespace MBC.App.BattleshipConsole
         /// <summary>
         /// Gets or sets <see cref="Match"/> that is currently being used in the application.
         /// </summary>
-        public static MatchServer CurrentMatch { get; set; }
+        public static MatchCore CurrentMatch { get; set; }
 
         /// <summary>
         /// Begins running the <see cref="MatchRun.CurrentMatch"/> continuously until it ends, or

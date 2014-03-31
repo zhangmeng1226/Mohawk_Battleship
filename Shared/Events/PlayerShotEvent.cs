@@ -23,45 +23,22 @@ namespace MBC.Shared.Events
         }
 
         /// <summary>
-        /// Constructs the event with the player who made the shot and hit a ship.
-        /// </summary>
-        /// <param name="player"></param>
-        /// <param name="shot"></param>
-        /// <param name="shipHit"></param>
-        public PlayerShotEvent(Player player, Shot shot, Ship shipHit)
-            : base(player)
-        {
-            Shot = shot;
-            ShipHit = shipHit;
-        }
-
-        /// <summary>
-        /// Gets a value indicating if the shot hit a ship.
-        /// </summary>
-        public bool Hit
-        {
-            get
-            {
-                return ShipHit != null;
-            }
-        }
-
-        /// <summary>
-        /// Gets a ship object that the shot hit, if it hit. Otherwise the ship will be null.
-        /// </summary>
-        public Ship ShipHit
-        {
-            get;
-            private set;
-        }
-
-        /// <summary>
         /// Gets the <see cref="Shot"/> made by the <see cref="PlayerEvent.Register"/>.
         /// </summary>
         public Shot Shot
         {
             get;
             private set;
+        }
+
+        protected internal override void PerformOperation()
+        {
+            var shipHit = ShipList.GetShipAt(Shot);
+            Player.ShotsMade.Add(Shot);
+            if (shipHit != null)
+            {
+                shipHit.Hit(Shot.Coordinates);
+            }
         }
     }
 }

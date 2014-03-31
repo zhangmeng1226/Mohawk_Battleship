@@ -29,5 +29,14 @@ namespace MBC.Shared.Events
             get;
             private set;
         }
+
+        protected internal override void PerformOperation()
+        {
+            if (Player.Team == Team)
+            {
+                throw new InvalidEventException(this, "The player is already on the team.");
+            }
+            Player.Team = Team;
+        }
     }
 }

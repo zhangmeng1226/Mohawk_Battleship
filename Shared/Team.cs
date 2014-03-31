@@ -3,7 +3,8 @@ using System.Collections.Generic;
 
 namespace MBC.Shared
 {
-    public class Team
+    [Serializable]
+    public class Team : IEquatable<Team>
     {
         private HashSet<IDNumber> members;
 
@@ -76,16 +77,33 @@ namespace MBC.Shared
             return team1.ID == team2.ID;
         }
 
-        public override bool Equals(object obj)
+        /// <summary>
+        /// Compares the equality of this player with another player.
+        /// </summary>
+        /// <param name="plr"></param>
+        /// <returns></returns>
+        public bool Equals(Team team)
         {
-            return (obj as Team == this);
+            return this == team;
         }
 
+        /// <summary>
+        /// Compares the equality of this player with another object.
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public override bool Equals(object obj)
+        {
+            return base.Equals(obj);
+        }
+
+        /// <summary>
+        /// Gets the unique identifier for this player.
+        /// </summary>
+        /// <returns></returns>
         public override int GetHashCode()
         {
-            int hash = 23;
-            hash = hash * 37 + ID;
-            return hash;
+            return ID;
         }
 
         public override string ToString()

@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace MBC.Shared
+namespace MBC.Shared.Events
 {
-    public interface IController2
+    public class NetEvent : Event
     {
-        Player Player { get; set; }
     }
 }

@@ -7,12 +7,13 @@ namespace MBC.Shared.Events
     /// Provides information about a <see cref="Match"/> that has ended.
     /// </summary>
     [Serializable]
-    public class MatchEndEvent : Event
+    public class MatchEndEvent : MatchEvent
     {
         /// <summary>
         /// Constructs the event.
         /// </summary>
-        public MatchEndEvent()
+        public MatchEndEvent(Match match)
+            : base(match)
         {
         }
     }

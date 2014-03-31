@@ -67,8 +67,8 @@ namespace MBC.App.Terminal.Modules
         {
             Configuration.Global.SetValue("mbc_match_rounds", roundsNumberControl.Value.ToString());
             var match = new ClassicMatch();
-            match.AddPlayer(red);
-            match.AddPlayer(blue);
+            match.PlayerCreate(red);
+            match.PlayerCreate(blue);
             CompetitionRun runner = new CompetitionRun(match, millisecondControl.Value, dumpEventsCheck.IsChecked);
             BattleshipConsole.AddModule(runner);
             BattleshipConsole.RemoveModule(this);

@@ -8,13 +8,14 @@ namespace MBC.Shared.Events
     /// Provides information about a <see cref="GameLogic"/> that has ended.
     /// </summary>
     [Serializable]
-    public class RoundEndEvent : Event
+    public class RoundEndEvent : MatchEvent
     {
         /// <summary>
         /// Passes the <paramref name="round"/> to the base constructor
         /// </summary>
         /// <param name="round"></param>
-        public RoundEndEvent(IDNumber roundNumber)
+        public RoundEndEvent(Match match, IDNumber roundNumber)
+            : base(match)
         {
             Round = roundNumber;
         }
@@ -26,6 +27,14 @@ namespace MBC.Shared.Events
         {
             get;
             private set;
+        }
+
+        protected internal override void PerformOperation()
+        {
+            if (!(Match.CurrentRound > -1))
+            {
+                throw new InvalidEventException(this, "There is no round that has started.");
+            }
         }
     }
 }

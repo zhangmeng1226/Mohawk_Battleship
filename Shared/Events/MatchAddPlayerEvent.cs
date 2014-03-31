@@ -1,5 +1,6 @@
 ﻿using MBC.Shared;
 using System;
+using System.Collections.Generic;
 using System.Runtime.Serialization;
 
 namespace MBC.Shared.Events
@@ -8,13 +9,14 @@ namespace MBC.Shared.Events
     /// Event created when a player has been added to a match.
     /// </summary>
     [Serializable]
-    public class MatchAddPlayerEvent : Event
+    public class MatchAddPlayerEvent : MatchEvent
     {
         /// <summary>
         /// Constructs this event with the given player.
         /// </summary>
         /// <param name="player"></param>
-        internal MatchAddPlayerEvent(Player player)
+        public MatchAddPlayerEvent(Match match, Player player)
+            : base(match)
         {
             Player = player;
         }
@@ -26,6 +28,16 @@ namespace MBC.Shared.Events
         {
             get;
             private set;
+        }
+
+        public override void PerformOperation()
+        {
+            Match.Players.Add(Player);
+            Player.Ships = new HashSet<Ship>();
+            foreach (Ship startShip in Match.StartingShips)
+            {
+                Player.Ships.Add(new Ship(startShip));
+            }
         }
     }
 }

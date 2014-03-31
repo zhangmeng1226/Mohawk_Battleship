@@ -44,10 +44,12 @@
   <ItemGroup>
     <Compile Include="Accolades\Accolade.cs" />
     <Compile Include="Accolades\AccoladeGenerator.cs" />
+    <Compile Include="Controllers\ControlledPlayer.cs" />
     <Compile Include="Controllers\ControllerAdapter.cs" />
+    <Compile Include="Controllers\NetController.cs" />
     <Compile Include="Game\ClassicMatch.cs" />
     <Compile Include="Controllers\ControllerIsolator.cs" />
-    <Compile Include="Game\MatchServer.cs" />
+    <Compile Include="Game\MatchCore.cs" />
     <Compile Include="Threading\ThreadTimeoutAborter.cs" />
     <Compile Include="Controllers\TimedController.cs" />
     <Compile Include="Controllers\ControllerSkeleton.cs" />

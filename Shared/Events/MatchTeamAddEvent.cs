@@ -8,13 +8,14 @@ namespace MBC.Shared.Events
     /// Created during a match when a team has been created.
     /// </summary>
     [Serializable]
-    public class MatchTeamAddEvent : Event
+    public class MatchTeamAddEvent : MatchEvent
     {
         /// <summary>
         /// Constructs the event with the new team.
         /// </summary>
         /// <param name="team"></param>
-        public MatchTeamAddEvent(Team team)
+        public MatchTeamAddEvent(Match match, Team team)
+            : base(match)
         {
             Team = team;
         }
@@ -26,6 +27,14 @@ namespace MBC.Shared.Events
         {
             get;
             private set;
+        }
+
+        protected internal override void PerformOperation()
+        {
+            if (!Match.Teams.Add(Team))
+            {
+                throw new InvalidEventException(this, "Team already exists within match.");
+            }
         }
     }
 }

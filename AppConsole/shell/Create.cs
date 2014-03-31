@@ -55,7 +55,7 @@ namespace MBC.App.BattleshipConsole
             }
             try
             {
-                var newMatch = new MatchServer();
+                var newMatch = new MatchCore();
                 MatchRun.CurrentMatch = newMatch;
 
                 if (Configuration.Global.GetValue<bool>("mbc_console_create_events"))
@@ -69,7 +69,7 @@ namespace MBC.App.BattleshipConsole
                 Console.WriteLine("Match created with:");
                 foreach (var controller in playControllers)
                 {
-                    newMatch.AddPlayer(controller);
+                    newMatch.PlayerCreate(controller);
                     Console.WriteLine(controller);
                 }
             }

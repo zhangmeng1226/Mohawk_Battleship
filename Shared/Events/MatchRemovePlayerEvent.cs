@@ -8,13 +8,14 @@ namespace MBC.Shared.Events
     /// Created during a match when a player is removed.
     /// </summary>
     [Serializable]
-    public class MatchRemovePlayerEvent : Event
+    public class MatchRemovePlayerEvent : MatchEvent
     {
         /// <summary>
         /// Constructs this event with the player being removed.
         /// </summary>
         /// <param name="player"></param>
-        public MatchRemovePlayerEvent(Player player)
+        public MatchRemovePlayerEvent(Match match, Player player)
+            : base(match)
         {
             Player = player;
         }
@@ -26,6 +27,11 @@ namespace MBC.Shared.Events
         {
             get;
             private set;
+        }
+
+        public override void PerformOperation()
+        {
+            Match.Players.Remove(Player);
         }
     }
 }

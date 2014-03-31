@@ -1,26 +1,22 @@
-﻿using System;
-using System.Linq;
+﻿using MBC.Shared.Events;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Xml.Serialization;
 
 namespace MBC.Shared
 {
+    public delegate void ShipEventHandler(ShipEvent ev);
+
     /// <summary>
     /// Provides information about a primary component of a battleship game used by <see cref="Controller"/>s;
     /// the ship. Provides various functions to assist a <see cref="Controller"/> in determining ship
     /// placement, validity, and <see cref="Shot"/> hits made against it.
     /// </summary>
+    [Serializable]
     public class Ship : IEquatable<Ship>
     {
-        private bool isPlaced;
-
-        private int length;
-
-        private Coordinates location;
-
-        private ShipOrientation orientation;
-
-        private bool[] shots;
+        private EventFilter<ShipEventHandler> filter = new EventFilter<ShipEventHandler>();
 
         /// <summary>
         /// Copies an existing <see cref="Ship"/>.
@@ -28,6 +24,7 @@ namespace MBC.Shared
         /// <param name="shipCopy"></param>
         public Ship(Ship shipCopy)
         {
+            ID = shipCopy.ID;
             IsPlaced = shipCopy.IsPlaced;
             Location = shipCopy.Location;
             Orientation = shipCopy.Orientation;
@@ -42,8 +39,21 @@ namespace MBC.Shared
         /// <exception cref="ArgumentOutOfRangeException">Thrown when the <paramref name="length"/> is less
         /// than 1.</exception>
         public Ship(int length)
+            : this(length, -1)
         {
-            if (length < 1)
+        }
+
+        /// <summary>
+        /// Sets the length of the <see cref="Ship"/> to <paramref name="length"/>. The <paramref name="length"/>
+        /// must be at least 1.
+        /// </summary>
+        /// <param name="length">The number of cells the <see cref="Ship"/> occupies.</param>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown when the <paramref name="length"/> is less
+        /// than 1.</exception>
+        public Ship(int length, IDNumber identifier)
+        {
+            ID = identifier;
+            if (length < 1 || length > 31)
             {
                 throw new ArgumentOutOfRangeException("length");
             }
@@ -51,73 +61,89 @@ namespace MBC.Shared
             Length = length;
         }
 
-        private Ship()
+        /// <summary>
+        /// Invoked whenever a ShipEvent is generated.
+        /// </summary>
+        public event ShipEventHandler OnShipEvent
         {
+            add
+            {
+                filter.AddEventHandler(value);
+            }
+            remove
+            {
+                filter.RemoveEventHandler(value);
+            }
+        }
+
+        /// <summary>
+        /// Gets the ID number that uniquely identifies the ship within a collection of ships.
+        /// </summary>
+        public IDNumber ID
+        {
+            get;
+            protected set;
         }
 
         /// <summary>
         /// Gets a bool that indicates whether or not this <see cref="Ship"/> has been placed.
         /// </summary>
-        [XmlIgnore]
+        [NonSerialized]
         public bool IsPlaced
         {
-            get
-            {
-                return isPlaced;
-            }
-            private set
-            {
-                isPlaced = value;
-            }
+            get;
+            protected set;
         }
 
         /// <summary>
         /// Gets the length by number of cells occupied. When set, sets the array of
         /// shots made against this ship to the value.
         /// </summary>
-        [XmlIgnore]
+        [NonSerialized]
         public int Length
         {
-            get
-            {
-                return length;
-            }
-            set
-            {
-                length = value;
-                shots = new bool[length];
-            }
+            get;
+            protected set;
         }
 
         /// <summary>
         /// Gets the <see cref="Coordinates"/> of placement.
         /// </summary>
         /// <exception cref="InvalidOperationException">Thrown if this <see cref="Ship"/> has not been placed.</exception>
+        [NonSerialized]
         public Coordinates Location
         {
-            get
-            {
-                return location;
-            }
-            set
-            {
-                location = value;
-            }
+            get;
+            protected set;
         }
 
         /// <summary>
         /// Gets the <see cref="ShipOrientation"/>.
         /// </summary>
+        [NonSerialized]
         public ShipOrientation Orientation
         {
-            get
-            {
-                return orientation;
-            }
-            set
-            {
-                orientation = value;
-            }
+            get;
+            protected set;
+        }
+
+        /// <summary>
+        /// Gets the player that owns the ship.
+        /// </summary>
+        public Player Owner
+        {
+            get;
+            protected set;
+        }
+
+        /// <summary>
+        /// Gets an integer that represents a bit-set of ship hits made against the ship.
+        /// </summary>
+        [NonSerialized]
+        protected int Shots
+        {
+            get;
+            protected set;
         }
 
         /// <summary>
@@ -231,13 +257,13 @@ namespace MBC.Shared
         {
             if (IsAt(coords))
             {
-                switch (orientation)
+                switch (Orientation)
                 {
                     case ShipOrientation.Horizontal:
-                        return IsHitAt(location.X - coords.X);
+                        return IsHitAt(Location.X - coords.X);
 
                     case ShipOrientation.Vertical:
-                        return IsHitAt(location.Y - coords.Y);
+                        return IsHitAt(Location.Y - coords.Y);
                 }
             }
             return false;
@@ -250,7 +276,8 @@ namespace MBC.Shared
         /// <returns></returns>
         public bool IsHitAt(int idx)
         {
-            return shots[idx];
+            var idxPow = 1 << idx;
+            return (Shots & idxPow) == idxPow;
         }
 
         /// <summary>Checks if the given list of Coordinates completely occupy the cells this Ship occupies. This
@@ -277,7 +304,12 @@ namespace MBC.Shared
         /// <returns></returns>
         public bool IsSunk()
         {
-            return shots.Where(hit => hit == true).Count() > 0;
+            int sunkVal = 0;
+            for (int i = 1; i <= Length; i++)
+            {
+                sunkVal |= 1 << i;
+            }
+            return sunkVal == Shots;
         }
 
         /// <summary>
@@ -328,32 +360,7 @@ namespace MBC.Shared
             Location = location;
             Orientation = orientation;
             IsPlaced = true;
-        }
-
-        public void SetShotHit(Coordinates coords, bool hit)
-        {
-            if (IsAt(coords))
-            {
-                switch (orientation)
-                {
-                    case ShipOrientation.Horizontal:
-                        SetShotHit(location.X - coords.X, hit);
-                        break;
-
-                    case ShipOrientation.Vertical:
-                        SetShotHit(location.Y - coords.Y, hit);
-                        break;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Sets the
-        /// </summary>
-        /// <param name="idx"></param>
-        /// <param name="hit"></param>
-        public void SetShotHit(int idx, bool hit)
-        {
+            filter.InvokeEvent(new ShipMovedEvent(this, location, orientation));
         }
 
         /// <summary>
@@ -363,6 +370,62 @@ namespace MBC.Shared
         public override string ToString()
         {
             return Location + " L" + Length + " " + Enum.GetName(typeof(ShipOrientation), Orientation);
+        }
+
+        /// <summary>
+        /// Hits the ship at the specified index.
+        /// </summary>
+        /// <param name="idx"></param>
+        internal void Hit(int idx)
+        {
+            if (idx > Length || idx < 1)
+            {
+                throw new IndexOutOfRangeException(String.Format("The specified index {0} is out of range.", idx));
+            }
+            var ev = new ShipHitEvent(this);
+            Shots |= 1 << idx;
+            OnShipEvent(ev);
+            if (IsSunk())
+            {
+                var ev2 = new ShipDestroyedEvent(this);
+                OnShipEvent(ev2);
+            }
+            filter.InvokeEvent(new ShipHitEvent(this));
+        }
+
+        /// <summary>
+        /// Attempts to hit the ship at the given coordinates.
+        /// </summary>
+        /// <param name="coords"></param>
+        /// <returns></returns>
+        internal bool Hit(Coordinates coords)
+        {
+            if (IsAt(coords))
+            {
+                switch (Orientation)
+                {
+                    case ShipOrientation.Horizontal:
+                        Hit(Location.X - coords.X);
+                        break;
+
+                    case ShipOrientation.Vertical:
+                        Hit(Location.Y - coords.Y);
+                        break;
+                }
+                return true;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Resets the ship back to its initialized state.
+        /// </summary>
+        internal void Reset()
+        {
+            Location = default(Coordinates);
+            Orientation = default(ShipOrientation);
+            IsPlaced = false;
+            Shots = 0;
         }
     }
 }
