@@ -30,5 +30,12 @@ namespace MBC.Shared.Events
             get;
             protected set;
         }
+
+        protected internal override void PerformOperation()
+        {
+            Ship.Location = Position;
+            Ship.Orientation = Orientation;
+            Ship.IsPlaced = true;
+        }
     }
 }

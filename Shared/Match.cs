@@ -6,28 +6,12 @@ using System.Linq;
 
 namespace MBC.Shared
 {
-    public delegate void MatchEventHandler(MatchEvent matchEvent);
-
     /// <summary>
     /// Provides the modifications, events, and properties that are necessary to operate
     /// a game of battleship. All events must be subscribed to.
     /// </summary>
-    public abstract class Match
+    public abstract class Match : Entity
     {
-        private EventFilter<MatchEventHandler> filter = new EventFilter<MatchEventHandler>();
-
-        public event MatchEventHandler OnMatchEvent
-        {
-            add
-            {
-                filter.AddEventHandler(value);
-            }
-            remove
-            {
-                filter.RemoveEventHandler(value);
-            }
-        }
-
         /// <summary>
         /// Gets a boolean value indicating whether or not the match is at the end and cannot
         /// progress further.
@@ -148,7 +132,7 @@ namespace MBC.Shared
         /// <returns>The generated event</returns>
         protected internal virtual void Begin()
         {
-            filter.InvokeEvent(new MatchBeginEvent(this));
+            InvokeEvent(new MatchBeginEvent(this));
         }
 
         /// <summary>
@@ -157,7 +141,7 @@ namespace MBC.Shared
         /// <param name="player"></param>
         protected internal virtual void End()
         {
-            filter.InvokeEvent(new MatchEndEvent(this));
+            InvokeEvent(new MatchEndEvent(this));
         }
 
         /// <summary>
@@ -170,7 +154,7 @@ namespace MBC.Shared
         /// current state of the match.</exception>
         protected internal virtual void PlayerAdd(Player player)
         {
-            filter.InvokeEvent(new MatchAddPlayerEvent(this, player));
+            InvokeEvent(new MatchAddPlayerEvent(this, player));
         }
 
         /// <summary>
@@ -183,7 +167,7 @@ namespace MBC.Shared
         /// current state of the match.</exception>
         protected internal virtual void PlayerRemove(Player player)
         {
-            filter.InvokeEvent(new MatchRemovePlayerEvent(this, player));
+            InvokeEvent(new MatchRemovePlayerEvent(this, player));
         }
 
         /// <summary>
@@ -196,7 +180,7 @@ namespace MBC.Shared
         /// current state of the match.</exception>
         protected internal virtual void RoundBegin(int roundBeginNumber)
         {
-            filter.InvokeEvent(new RoundBeginEvent(this, roundBeginNumber));
+            InvokeEvent(new RoundBeginEvent(this, roundBeginNumber));
         }
 
         /// <summary>
@@ -209,7 +193,7 @@ namespace MBC.Shared
         /// current state of the match.</exception>
         protected internal virtual void RoundEnd(int roundNumber)
         {
-            filter.InvokeEvent(new RoundEndEvent(this, roundNumber));
+            InvokeEvent(new RoundEndEvent(this, roundNumber));
         }
 
         /// <summary>
@@ -222,7 +206,7 @@ namespace MBC.Shared
         /// current state of the match.</exception>
         protected internal virtual void TeamAdd(Team team)
         {
-            filter.InvokeEvent(new MatchTeamAddEvent(this, team));
+            InvokeEvent(new MatchTeamAddEvent(this, team));
         }
 
         /// <summary>
@@ -235,7 +219,7 @@ namespace MBC.Shared
         /// current state of the match.</exception>
         protected internal virtual void TeamRemove(Team team)
         {
-            filter.InvokeEvent(new MatchTeamRemoveEvent(this, team));
+            InvokeEvent(new MatchTeamRemoveEvent(this, team));
         }
     }
 }

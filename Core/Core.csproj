@@ -51,7 +51,6 @@
     <Compile Include="Controllers\ControllerIsolator.cs" />
     <Compile Include="Game\MatchCore.cs" />
     <Compile Include="Threading\ThreadTimeoutAborter.cs" />
-    <Compile Include="Controllers\TimedController.cs" />
     <Compile Include="Controllers\ControllerSkeleton.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Exceptions\ControllerTimeoutException.cs" />

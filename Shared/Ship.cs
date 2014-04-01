@@ -6,18 +6,14 @@ using System.Xml.Serialization;
 
 namespace MBC.Shared
 {
-    public delegate void ShipEventHandler(ShipEvent ev);
-
     /// <summary>
     /// Provides information about a primary component of a battleship game used by <see cref="Controller"/>s;
     /// the ship. Provides various functions to assist a <see cref="Controller"/> in determining ship
     /// placement, validity, and <see cref="Shot"/> hits made against it.
     /// </summary>
     [Serializable]
-    public class Ship : IEquatable<Ship>
+    public class Ship : Entity, IEquatable<Ship>
     {
-        private EventFilter<ShipEventHandler> filter = new EventFilter<ShipEventHandler>();
-
         /// <summary>
         /// Copies an existing <see cref="Ship"/>.
         /// </summary>
@@ -57,23 +53,7 @@ namespace MBC.Shared
             {
                 throw new ArgumentOutOfRangeException("length");
             }
-
             Length = length;
-        }
-
-        /// <summary>
-        /// Invoked whenever a ShipEvent is generated.
-        /// </summary>
-        public event ShipEventHandler OnShipEvent
-        {
-            add
-            {
-                filter.AddEventHandler(value);
-            }
-            remove
-            {
-                filter.RemoveEventHandler(value);
-            }
         }
 
         /// <summary>
@@ -82,49 +62,45 @@ namespace MBC.Shared
         public IDNumber ID
         {
             get;
-            protected set;
+            protected internal set;
         }
 
         /// <summary>
         /// Gets a bool that indicates whether or not this <see cref="Ship"/> has been placed.
         /// </summary>
-        [NonSerialized]
         public bool IsPlaced
         {
             get;
-            protected set;
+            protected internal set;
         }
 
         /// <summary>
         /// Gets the length by number of cells occupied. When set, sets the array of
         /// shots made against this ship to the value.
         /// </summary>
-        [NonSerialized]
         public int Length
         {
             get;
-            protected set;
+            protected internal set;
         }
 
         /// <summary>
         /// Gets the <see cref="Coordinates"/> of placement.
         /// </summary>
         /// <exception cref="InvalidOperationException">Thrown if this <see cref="Ship"/> has not been placed.</exception>
-        [NonSerialized]
         public Coordinates Location
         {
             get;
-            protected set;
+            protected internal set;
         }
 
         /// <summary>
         /// Gets the <see cref="ShipOrientation"/>.
         /// </summary>
-        [NonSerialized]
         public ShipOrientation Orientation
         {
             get;
-            protected set;
+            protected internal set;
         }
 
         /// <summary>
@@ -133,17 +109,16 @@ namespace MBC.Shared
         public Player Owner
         {
             get;
-            protected set;
+            protected internal set;
         }
 
         /// <summary>
         /// Gets an integer that represents a bit-set of ship hits made against the ship.
         /// </summary>
-        [NonSerialized]
-        protected int Shots
+        protected internal int Shots
         {
             get;
-            protected set;
+            set;
         }
 
         /// <summary>
@@ -357,10 +332,12 @@ namespace MBC.Shared
         /// <param name="orientation">The <see cref="ShipOrientation"/> to set.</param>
         public void Place(Coordinates location, ShipOrientation orientation)
         {
-            Location = location;
-            Orientation = orientation;
-            IsPlaced = true;
-            filter.InvokeEvent(new ShipMovedEvent(this, location, orientation));
+            InvokeEvent(new ShipMovedEvent(this, location, orientation));
+        }
+
+        public void Sink()
+        {
+            InvokeEvent(new ShipDestroyedEvent(this));
         }
 
         /// <summary>
@@ -378,19 +355,7 @@ namespace MBC.Shared
         /// <param name="idx"></param>
         internal void Hit(int idx)
         {
-            if (idx > Length || idx < 1)
-            {
-                throw new IndexOutOfRangeException(String.Format("The specified index {0} is out of range.", idx));
-            }
-            var ev = new ShipHitEvent(this);
-            Shots |= 1 << idx;
-            OnShipEvent(ev);
-            if (IsSunk())
-            {
-                var ev2 = new ShipDestroyedEvent(this);
-                OnShipEvent(ev2);
-            }
-            filter.InvokeEvent(new ShipHitEvent(this));
+            InvokeEvent(new ShipHitEvent(this, idx));
         }
 
         /// <summary>

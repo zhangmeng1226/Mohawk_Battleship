@@ -1,11 +1,13 @@
 ﻿using MBC.Core.Threading;
 using MBC.Core.Util;
 using MBC.Shared;
+using MBC.Shared.Attributes;
 using MBC.Shared.Events;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 
 namespace MBC.Core.Game
 {
@@ -19,6 +21,8 @@ namespace MBC.Core.Game
         private const string REASON_TIMEOUT = "The player controller timed out.";
         private List<Player> activePlayers;
         private int currentIteration;
+        private List<Player> waitList = new List<Player>();
+        private AutoResetEvent waitSignal = new AutoResetEvent(false);
 
         /// <summary>
         /// Constructs a match with a specific configuration.
@@ -27,8 +31,11 @@ namespace MBC.Core.Game
         public ClassicMatch(Configuration conf)
             : base(conf)
         {
-            CurrentPhase = Phase.Init;
-            OnMatchEvent += HandleMatchEvent;
+            CurrentPhase = Phase.Placement;
+            OnEvent += HandleAddPlayer;
+            OnEvent += HandleRemovePlayer;
+            OnEvent += HandleRoundEnd;
+            OnEvent += HandleRoundBegin;
         }
 
         /// <summary>
@@ -44,7 +51,6 @@ namespace MBC.Core.Game
         /// </summary>
         public enum Phase
         {
-            Init,
             Placement,
             Turn,
             End
@@ -109,9 +115,6 @@ namespace MBC.Core.Game
             {
                 switch (CurrentPhase)
                 {
-                    case Phase.Init:
-                        return Initialization();
-
                     case Phase.Placement:
                         return Placement();
 
@@ -125,7 +128,6 @@ namespace MBC.Core.Game
             }
             catch (ControllerTimeoutException ex)
             {
-                FindPlayerFromController(ex.Controller).Disqualify(REASON_TIMEOUT);
                 return SwitchNextPlayer();
             }
         }
@@ -145,34 +147,59 @@ namespace MBC.Core.Game
             return false;
         }
 
-        private void HandleMatchEvent(MatchEvent matchEvent)
+        [EventFilter(typeof(MatchAddPlayerEvent))]
+        private void HandleAddPlayer(Event ev)
         {
-            if (matchEvent.GetType() == typeof(MatchAddPlayerEvent))
+            MatchAddPlayerEvent evCasted = (MatchAddPlayerEvent)ev;
+            evCasted.Player.OnEvent += HandlePlayerLose;
+            foreach (Ship ship in evCasted.Player.Ships)
             {
-                MatchAddPlayerEvent ev = (MatchAddPlayerEvent)matchEvent;
-                ev.Player.OnPlayerEvent += HandlePlayerEvent;
-            }
-            else if (matchEvent.GetType() == typeof(MatchRemovePlayerEvent))
-            {
-                MatchRemovePlayerEvent ev = (MatchRemovePlayerEvent)matchEvent;
-                ev.Player.OnPlayerEvent -= HandlePlayerEvent;
-            }
-            else if (matchEvent.GetType() == typeof(RoundBeginEvent))
-            {
-                CurrentPhase = Phase.Init;
-            }
-            else if (matchEvent.GetType() == typeof(RoundEndEvent))
-            {
-                CurrentPhase = Phase.End;
+                ship.OnEvent += HandleShipMove;
             }
         }
 
-        private void HandlePlayerEvent(PlayerEvent playerEvent)
+        [EventFilter(typeof(PlayerLostEvent))]
+        private void HandlePlayerLose(Event ev)
         {
-            if (playerEvent.GetType() == typeof(PlayerLostEvent))
+            PlayerLostEvent evCasted = (PlayerLostEvent)ev;
+            activePlayers.Remove(evCasted.Player);
+        }
+
+        [EventFilter(typeof(MatchRemovePlayerEvent))]
+        private void HandleRemovePlayer(Event ev)
+        {
+            MatchRemovePlayerEvent evCasted = (MatchRemovePlayerEvent)ev;
+            evCasted.Player.OnEvent -= HandleRemovePlayer;
+        }
+
+        [EventFilter(typeof(RoundBeginEvent))]
+        private void HandleRoundBegin(Event ev)
+        {
+            CurrentPhase = Phase.Placement;
+            waitList.Clear();
+            waitList.AddRange(Players);
+        }
+
+        [EventFilter(typeof(RoundEndEvent))]
+        private void HandleRoundEnd(Event ev)
+        {
+            CurrentPhase = Phase.End;
+        }
+
+        [EventFilter(typeof(ShipMovedEvent))]
+        private void HandleShipMove(Event ev)
+        {
+            ShipMovedEvent evCasted = (ShipMovedEvent)ev;
+            Ship ship = evCasted.Ship;
+            Player player = ship.Owner;
+
+            if (ShipList.AreShipsPlaced(player.Ships) && ShipList.AreShipsValid(player.Ships, FieldSize))
             {
-                PlayerLostEvent ev = (PlayerLostEvent)playerEvent;
-                activePlayers.Remove(ev.Player);
+                waitList.Remove(player);
+                if (waitList.Count == 0)
+                {
+                    waitSignal.Set();
+                }
             }
         }
 
@@ -182,28 +209,8 @@ namespace MBC.Core.Game
         /// <returns></returns>
         private bool Placement()
         {
-            if (ShipList.AreShipsPlaced(CurrentPlayer.Ships))
-            {
-                CurrentPhase = Phase.Turn;
-                return true;
-            }
-            else
-            {
-                PlayerPlaceShips(CurrentPlayer, new HashSet<Ship>(CurrentPlayer.Controller.PlaceShips().ToList()));
-
-                if (!AreShipsValid(CurrentPlayer))
-                {
-                    PlayerDisqualify(CurrentPlayer, REASON_PLACEMENT);
-                }
-            }
-            if (!AreShipsValid(CurrentPlayer))
-            {
-                PlayerDisqualify(CurrentPlayer, REASON_PLACEMENT);
-            }
-            if (activePlayers.Count > 0 && ShipList.AreShipsPlaced(activePlayers[currentIteration + 1].Ships))
-            {
-                CurrentPhase = Phase.Turn;
-            }
+            WaitForTimeout();
+            CurrentPhase = Phase.Turn;
             return SwitchNextPlayer();
         }
 
@@ -237,6 +244,15 @@ namespace MBC.Core.Game
                 }
             }
             return SwitchNextPlayer();
+        }
+
+        private void WaitForTimeout()
+        {
+            waitSignal.WaitOne(TimeLimit);
+            foreach (Player timeoutPlayer in waitList)
+            {
+                timeoutPlayer.Lose();
+            }
         }
     }
 }

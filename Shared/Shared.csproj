@@ -49,14 +49,16 @@
     <Compile Include="Attributes\CapabilitiesAttribute.cs" />
     <Compile Include="Attributes\ControllerAttribute.cs" />
     <Compile Include="Attributes\DescriptionAttribute.cs" />
+    <Compile Include="Attributes\EventFilterAttribute.cs" />
     <Compile Include="Attributes\NameAttribute.cs" />
     <Compile Include="Attributes\VersionAttribute.cs" />
     <Compile Include="dep\Constants.cs" />
     <Compile Include="dep\ControllerID.cs" />
     <Compile Include="dep\ControllerRegister.cs" />
     <Compile Include="dep\MatchInfo.cs" />
+    <Compile Include="Entity.cs" />
     <Compile Include="Events\Event.cs" />
-    <Compile Include="Events\EventFilter.cs" />
+    <Compile Include="EventBroadcaster.cs" />
     <Compile Include="Events\MatchAddPlayerEvent.cs" />
     <Compile Include="Events\MatchBeginEvent.cs" />
     <Compile Include="Events\MatchEndEvent.cs" />
@@ -73,6 +75,8 @@
     <Compile Include="Events\PlayerEvent.cs" />
     <Compile Include="Events\PlayerLostEvent.cs" />
     <Compile Include="Events\PlayerMessageEvent.cs" />
+    <Compile Include="Events\PlayerTurnBeginEvent.cs" />
+    <Compile Include="Events\PlayerTurnEndEvent.cs" />
     <Compile Include="Events\ShipDestroyedEvent.cs" />
     <Compile Include="Events\ShipHitEvent.cs" />
     <Compile Include="Events\ShipMovedEvent.cs" />
@@ -88,7 +92,7 @@
     <Compile Include="Events\ShipEvent.cs" />
     <Compile Include="IController2.cs" />
     <Compile Include="IDNumber.cs" />
-    <Compile Include="Events\InvalidEventException.cs" />
+    <Compile Include="Exceptions\InvalidEventException.cs" />
     <Compile Include="Match.cs" />
     <Compile Include="Events\MatchTeamAddEvent.cs" />
     <Compile Include="MBCCommunicator.cs" />
@@ -107,9 +111,7 @@
     <Compile Include="ShipOrientation.cs" />
     <Compile Include="Team.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Exceptions\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

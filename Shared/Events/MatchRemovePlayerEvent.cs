@@ -29,7 +29,7 @@ namespace MBC.Shared.Events
             private set;
         }
 
-        public override void PerformOperation()
+        protected internal override void PerformOperation()
         {
             Match.Players.Remove(Player);
         }

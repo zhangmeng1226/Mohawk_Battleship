@@ -6,25 +6,31 @@ using System.Text;
 
 namespace MBC.Shared.Events
 {
-    public class EventFilter<T> where T : Delegate
+    public class EventBroadcaster
     {
         private Dictionary<Type, List<Delegate>> filterMap;
         private object[] parameters = new object[1];
 
-        public void AddEventHandler(T del)
+        private Type typeRestriction;
+
+        public EventBroadcaster(Type typeRestriction)
         {
-            lock (this)
-            {
-                Type parameterType = ParamTypeFromDelegate(del);
-                if (!filterMap.ContainsKey(parameterType))
-                {
-                    filterMap.Add(parameterType, new List<Delegate>());
-                }
-                filterMap[parameterType].Add(del);
-            }
+            this.typeRestriction = typeRestriction;
         }
 
-        public void InvokeEvent(Event ev)
+        public static EventBroadcaster operator -(EventBroadcaster filter, Delegate del)
+        {
+            filter.AddEventHandler(del);
+            return filter;
+        }
+
+        public static EventBroadcaster operator +(EventBroadcaster filter, Delegate del)
+        {
+            filter.RemoveEventHandler(del);
+            return filter;
+        }
+
+        protected internal void InvokeEvent(Event ev)
         {
             Type eventType = ev.GetType();
             parameters[0] = ev;
@@ -45,16 +51,20 @@ namespace MBC.Shared.Events
             }
         }
 
-        public void RemoveEventHandler(T del)
+        private void AddEventHandler(Delegate del)
         {
             lock (this)
             {
                 Type parameterType = ParamTypeFromDelegate(del);
+                if (!parameterType.IsSubclassOf(typeRestriction))
+                {
+                    throw new InvalidOperationException(String.Format("The subscribing method does not contain a parameter a subclass of {0}", typeRestriction.Name));
+                }
                 if (!filterMap.ContainsKey(parameterType))
                 {
-                    return;
+                    filterMap.Add(parameterType, new List<Delegate>());
                 }
-                filterMap[parameterType].Remove(del);
+                filterMap[parameterType].Add(del);
             }
         }
 
@@ -67,6 +77,19 @@ namespace MBC.Shared.Events
             }
             ParameterInfo firstParam = method.GetParameters()[0];
             return firstParam.ParameterType;
+        }
+
+        private void RemoveEventHandler(Delegate del)
+        {
+            lock (this)
+            {
+                Type parameterType = ParamTypeFromDelegate(del);
+                if (!filterMap.ContainsKey(parameterType))
+                {
+                    return;
+                }
+                filterMap[parameterType].Remove(del);
+            }
         }
     }
 }

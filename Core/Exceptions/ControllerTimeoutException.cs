@@ -5,13 +5,21 @@ namespace MBC.Core.Threading
 {
     public class ControllerTimeoutException : Exception
     {
+        private IController2 controller;
         private string methodName;
-        private IController controller;
 
-        public ControllerTimeoutException(string methodName, IController ctrlTimeout)
-            : base(ctrlTimeout.ToString()+" timed out on method call to " + methodName)
+        public ControllerTimeoutException(string methodName, IController2 ctrlTimeout)
+            : base(ctrlTimeout.ToString() + " timed out on method call to " + methodName)
         {
             this.methodName = methodName;
+        }
+
+        public IController2 Controller
+        {
+            get
+            {
+                return controller;
+            }
         }
 
         public string MethodName
@@ -19,14 +27,6 @@ namespace MBC.Core.Threading
             get
             {
                 return methodName;
-            }
-        }
-
-        public IController Controller
-        {
-            get
-            {
-                return controller;
             }
         }
     }

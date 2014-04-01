@@ -16,7 +16,7 @@ namespace MBC.Shared.Events
     /// <seealso cref="MatchEvent"/>
     /// <seealso cref="RoundEvent"/>
     /// <seealso cref="PlayerEvent"/>
-    public abstract class Event
+    public abstract class Event : Attribute
     {
         protected Event()
         {

@@ -42,7 +42,7 @@ namespace MBC.Core.Game
             Random = new Random();
             GameTimer = new Stopwatch();
             CurrentRound = -1;
-            OnMatchEvent += AppendMatchEvent;
+            OnEvent += ApplyEvent;
 
             ApplyParameters(config);
         }
@@ -129,7 +129,7 @@ namespace MBC.Core.Game
         public void PlayerCreate(ControllerSkeleton skeleton)
         {
             Player newPlayer = new ControlledPlayer(FindFirstEmptyPlayerID(), skeleton.GetAttribute<NameAttribute>().Name, skeleton.CreateInstance());
-            newPlayer.OnPlayerEvent += AppendPlayerEvent;
+            newPlayer.OnEvent += ApplyEvent;
             PlayerAdd(newPlayer);
         }
 
@@ -225,12 +225,11 @@ namespace MBC.Core.Game
         /// </summary>
         /// <param name="ev"></param>
         /// <returns></returns>
-        protected bool ApplyEvent(Event ev)
+        protected void ApplyEvent(Event ev)
         {
             PlayToLastEvent();
             Events.Add(ev);
             ev.Millis = (int)(GameTimer.ElapsedMilliseconds);
-            return true;
         }
 
         /// <summary>
@@ -240,33 +239,6 @@ namespace MBC.Core.Game
         protected virtual bool PlayLogic()
         {
             return false;
-        }
-
-        /// <summary>
-        /// Applies a match event.
-        /// </summary>
-        /// <param name="ev"></param>
-        private void AppendMatchEvent(MatchEvent ev)
-        {
-            ApplyEvent(ev);
-        }
-
-        /// <summary>
-        /// Appends a player event.
-        /// </summary>
-        /// <param name="ev"></param>
-        private void AppendPlayerEvent(PlayerEvent ev)
-        {
-            ApplyEvent(ev);
-        }
-
-        /// <summary>
-        /// Appends a ship event.
-        /// </summary>
-        /// <param name="ev"></param>
-        private void AppendShipEvent(ShipEvent ev)
-        {
-            ApplyEvent(ev);
         }
 
         /// Applies a configuration to the match.

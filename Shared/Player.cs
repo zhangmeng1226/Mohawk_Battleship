@@ -5,13 +5,9 @@ using System.ComponentModel;
 
 namespace MBC.Shared
 {
-    public delegate void PlayerEventHandler(PlayerEvent ev);
-
     [Serializable]
-    public class Player : IEquatable<Player>
+    public class Player : Entity, IEquatable<Player>
     {
-        private EventFilter<PlayerEventHandler> filter = new EventFilter<PlayerEventHandler>();
-
         /// <summary>
         /// Constructs a Player with an ID and a name. This player will not have a controller.
         /// </summary>
@@ -24,23 +20,10 @@ namespace MBC.Shared
             Active = false;
         }
 
-        public event PlayerEventHandler OnPlayerEvent
-        {
-            add
-            {
-                filter.AddEventHandler(value);
-            }
-            remove
-            {
-                filter.RemoveEventHandler(value);
-            }
-        }
-
         /// <summary>
         /// Gets or sets a boolean value indicating whether or not this player is
         /// actively participating at the moment.
         /// </summary>
-        [NonSerialized]
         public bool Active
         {
             get;
@@ -50,7 +33,6 @@ namespace MBC.Shared
         /// <summary>
         /// Gets or sets the number of disqualifications this player accumulated.
         /// </summary>
-        [NonSerialized]
         public int Disqualifications
         {
             get;
@@ -69,17 +51,21 @@ namespace MBC.Shared
         /// <summary>
         /// Gets or sets the number of losses
         /// </summary>
-        [NonSerialized]
         public int Losses
         {
             get;
             internal set;
         }
 
+        public Match Match
+        {
+            get;
+            set;
+        }
+
         /// <summary>
         /// Gets the name of the player.
         /// </summary>
-        [NonSerialized]
         public string Name
         {
             get;
@@ -89,7 +75,6 @@ namespace MBC.Shared
         /// <summary>
         /// Gets or sets the score
         /// </summary>
-        [NonSerialized]
         public int Score
         {
             get;
@@ -99,7 +84,6 @@ namespace MBC.Shared
         /// <summary>
         /// Gets the list of ships this player currently has.
         /// </summary>
-        [NonSerialized]
         public ISet<Ship> Ships
         {
             get;
@@ -109,7 +93,6 @@ namespace MBC.Shared
         /// <summary>
         /// Gets or sets the number of shot hits
         /// </summary>
-        [NonSerialized]
         public int ShotHits
         {
             get;
@@ -119,14 +102,12 @@ namespace MBC.Shared
         /// <summary>
         /// Gets or sets the number of shot misses
         /// </summary>
-        [NonSerialized]
         public int ShotMisses
         {
             get;
             internal set;
         }
 
-        [NonSerialized]
         public IList<Shot> ShotsMade
         {
             get;
@@ -136,7 +117,6 @@ namespace MBC.Shared
         /// <summary>
         /// Gets or sets the team that this player is on.
         /// </summary>
-        [NonSerialized]
         public Team Team
         {
             get;
@@ -146,7 +126,6 @@ namespace MBC.Shared
         /// <summary>
         /// Gets or sets the number of timeouts the controller encountered in the match.
         /// </summary>
-        [NonSerialized]
         public int Timeouts
         {
             get;
@@ -156,7 +135,6 @@ namespace MBC.Shared
         /// <summary>
         /// Gets or sets the number of wins
         /// </summary>
-        [NonSerialized]
         public int Wins
         {
             get;
@@ -172,12 +150,12 @@ namespace MBC.Shared
         /// current state of the player.</exception>
         public virtual void AssignToTeam(Team team)
         {
-            filter.InvokeEvent(new PlayerTeamAssignEvent(this, team));
+            InvokeEvent(new PlayerTeamAssignEvent(this, team));
         }
 
         public virtual void BeginTurn()
         {
-            filter.InvokeEvent(new PlayerBeginTurnEvent(this));
+            InvokeEvent(new PlayerBeginTurnEvent(this));
         }
 
         /// <summary>
@@ -187,7 +165,7 @@ namespace MBC.Shared
         /// <returns>The generated event</returns>
         public virtual void Disqualify(String reason)
         {
-            filter.InvokeEvent(new PlayerDisqualifiedEvent(this, reason));
+            InvokeEvent(new PlayerDisqualifiedEvent(this, reason));
         }
 
         /// <summary>
@@ -199,7 +177,7 @@ namespace MBC.Shared
         /// current state of the player.</exception>
         public virtual void EndTurn()
         {
-            filter.InvokeEvent(new PlayerEndTurnEvent(this));
+            InvokeEvent(new PlayerEndTurnEvent(this));
         }
 
         /// <summary>
@@ -240,7 +218,7 @@ namespace MBC.Shared
         /// current state of the player.</exception>
         public virtual void Lose()
         {
-            filter.InvokeEvent(new PlayerLostEvent(this));
+            InvokeEvent(new PlayerLostEvent(this));
         }
 
         /// <summary>
@@ -250,7 +228,7 @@ namespace MBC.Shared
         /// <returns>The generated event</returns>
         public virtual void Message(String message)
         {
-            filter.InvokeEvent(new PlayerMessageEvent(this, message));
+            InvokeEvent(new PlayerMessageEvent(this, message));
         }
 
         /// <summary>
@@ -259,7 +237,7 @@ namespace MBC.Shared
         /// <param name="shot"></param>
         public virtual void Shoot(Shot shot)
         {
-            filter.InvokeEvent(new PlayerShotEvent(this, shot));
+            InvokeEvent(new PlayerShotEvent(this, shot));
         }
 
         /// <summary>
@@ -282,7 +260,7 @@ namespace MBC.Shared
         /// current state of the player.</exception>
         public virtual void Timeout(String method)
         {
-            filter.InvokeEvent(new PlayerTimeoutEvent(this, method));
+            InvokeEvent(new PlayerTimeoutEvent(this, method));
         }
 
         /// <summary>
@@ -303,7 +281,7 @@ namespace MBC.Shared
         /// current state of the player.</exception>
         public virtual void Win()
         {
-            filter.InvokeEvent(new PlayerWonEvent(this));
+            InvokeEvent(new PlayerWonEvent(this));
         }
     }
 }
