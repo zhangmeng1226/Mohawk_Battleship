@@ -23,13 +23,12 @@ namespace MBC.Core.Game
         Description = "Determines the ending behaviour of a match based on a given number of rounds.",
         DisplayName = "Match Rounds Mode")]
     [Configuration("mbc_match_rounds", 100)]
+    [Configuration("mbc_player_timeout", 500)]
     /// <summary>
     /// This is the new framework part of a match.
     /// </summary>
     public class MatchCore : Match
     {
-        public static Coordinates COORDS_ZERO = new Coordinates(0, 0);
-
         /// <summary>
         /// Creates a match with parameters loaded from a configuration.
         /// </summary>
@@ -80,19 +79,6 @@ namespace MBC.Core.Game
         }
 
         /// <summary>
-        /// Determines whether or not a shot made by a player is valid.
-        /// </summary>
-        /// <param name="shooter"></param>
-        /// <param name="shot"></param>
-        /// <returns></returns>
-        public bool IsShotValid(Player shooter, Shot shot)
-        {
-            return ShotList.IsShotMade(shooter.ShotsMade, shot) &&
-                shot.Coordinates > COORDS_ZERO &&
-                shot.Coordinates < FieldSize;
-        }
-
-        /// <summary>
         /// Moves the match progress forward at a standard pace.
         /// </summary>
         public virtual void Play()
@@ -128,9 +114,10 @@ namespace MBC.Core.Game
         /// <returns></returns>
         public void PlayerCreate(ControllerSkeleton skeleton)
         {
-            Player newPlayer = new ControlledPlayer(FindFirstEmptyPlayerID(), skeleton.GetAttribute<NameAttribute>().Name, skeleton.CreateInstance());
+            ControlledPlayer newPlayer = new ControlledPlayer(skeleton.GetAttribute<NameAttribute>().Name, skeleton.CreateInstance());
             newPlayer.OnEvent += ApplyEvent;
             PlayerAdd(newPlayer);
+            newPlayer.Controller.Player = newPlayer;
         }
 
         /// <summary>
@@ -200,34 +187,13 @@ namespace MBC.Core.Game
         }
 
         /// <summary>
-        /// Finds the first IDNumber that is unoccupied in the players list.
-        /// </summary>
-        /// <returns></returns>
-        internal int FindFirstEmptyPlayerID()
-        {
-            var numberSet = new HashSet<int>();
-            foreach (var plr in Players)
-            {
-                numberSet.Add(plr.ID);
-            }
-            for (int i = 0; i < numberSet.Count; i++)
-            {
-                if (numberSet.Contains(i))
-                {
-                    return i;
-                }
-            }
-            return numberSet.Count;
-        }
-
-        /// <summary>
         /// Moves the current event index to the last event, and applies the given event.
         /// </summary>
         /// <param name="ev"></param>
         /// <returns></returns>
         protected void ApplyEvent(Event ev)
         {
-            PlayToLastEvent();
+            //PlayToLastEvent();
             Events.Add(ev);
             ev.Millis = (int)(GameTimer.ElapsedMilliseconds);
         }

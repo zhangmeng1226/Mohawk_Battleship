@@ -94,7 +94,7 @@ namespace MBC.Shared.Events
         /// <summary>
         /// Gets or sets the order in which the players take turns in the match.
         /// </summary>
-        public IList<Player> TurnOrder
+        public List<Player> TurnOrder
         {
             get;
             protected set;

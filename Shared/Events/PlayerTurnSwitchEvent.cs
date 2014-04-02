@@ -18,18 +18,24 @@ namespace MBC.Shared.Events
         /// </summary>
         /// <param name="prevPlayer"></param>
         /// <param name="nextPlayer"></param>
-        public PlayerTurnSwitchEvent(Player prevPlayer, Player nextPlayer)
-            : base(nextPlayer)
+        public PlayerTurnSwitchEvent(Player player)
+            : base(player)
         {
         }
 
-        /// <summary>
-        /// Gets the player who will have the next turn.
-        /// </summary>
-        public Player PrevPlayer
+        protected internal override void PerformOperation()
         {
-            get;
-            private set;
+            if (!Player.Active)
+            {
+                throw new InvalidEventException(this, "The player is inactive.");
+            }
+            if (Player.Match.CurrentPlayer != Player)
+            {
+                throw new InvalidEventException(this, String.Format("Player {0} does not have the turn.", Player));
+            }
+            Player.Match.TurnOrder.Remove(Player);
+            Player.Match.TurnOrder.Add(Player);
+            Player.Match.CurrentPlayer = Player.Match.TurnOrder.First();
         }
     }
 }

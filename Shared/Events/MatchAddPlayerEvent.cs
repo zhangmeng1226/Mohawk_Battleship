@@ -32,11 +32,18 @@ namespace MBC.Shared.Events
 
         protected internal override void PerformOperation()
         {
+            if (Match.Players.Contains(Player))
+            {
+                throw new InvalidEventException(this, "Match already contains the player.");
+            }
             Match.Players.Add(Player);
             Player.Ships = new HashSet<Ship>();
+            Player.Match = Match;
             foreach (Ship startShip in Match.StartingShips)
             {
-                Player.Ships.Add(new Ship(startShip));
+                Ship newShip = new Ship(startShip);
+                newShip.Owner = Player;
+                Player.Ships.Add(newShip);
             }
         }
     }

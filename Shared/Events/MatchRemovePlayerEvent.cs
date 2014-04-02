@@ -31,6 +31,10 @@ namespace MBC.Shared.Events
 
         protected internal override void PerformOperation()
         {
+            if (!Match.Players.Contains(Player))
+            {
+                throw new InvalidEventException(this, "Match does not contain player.");
+            }
             Match.Players.Remove(Player);
         }
     }

@@ -19,16 +19,15 @@ namespace MBC.Shared.Events
         public ShipDestroyedEvent(Ship destroyedShip) :
             base(destroyedShip)
         {
-            DestroyedShip = destroyedShip;
         }
 
-        /// <summary>
-        /// Gets the <see cref="Ship"/> that was destroyed.
-        /// </summary>
-        public Ship DestroyedShip
+        protected internal override void PerformOperation()
         {
-            get;
-            private set;
+            if (!Ship.Active)
+            {
+                throw new InvalidEventException(this, String.Format("Ship {0} is already destroyed.", Ship));
+            }
+            Ship.Active = false;
         }
     }
 }

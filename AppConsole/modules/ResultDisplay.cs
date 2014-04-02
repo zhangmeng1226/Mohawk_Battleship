@@ -55,13 +55,14 @@ namespace MBC.App.Terminal.Modules
             foreach (var ev in competition.Events)
             {
                 var shotEvent = ev as PlayerShotEvent;
+                var hitEvent = ev as ShipHitEvent;
                 if (shotEvent != null)
                 {
                     shotBots[shotEvent.Player.ID]++;
-                    if (shotEvent.ShipHit != null)
-                    {
-                        hitBots[shotEvent.Player.ID]++;
-                    }
+                }
+                else if (hitEvent != null)
+                {
+                    hitBots[shotEvent.Player.ID]++;
                 }
                 lastEvent = ev;
             }

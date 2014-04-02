@@ -21,7 +21,12 @@ namespace MBC.Shared.Events
 
         protected internal override void PerformOperation()
         {
+            if (!Player.Active)
+            {
+                throw new InvalidEventException(this, "The player is inactive.");
+            }
             Player.Wins++;
+            Player.Active = false;
         }
     }
 }

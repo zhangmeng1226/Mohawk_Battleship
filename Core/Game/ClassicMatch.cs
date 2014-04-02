@@ -16,11 +16,10 @@ namespace MBC.Core.Game
     /// </summary>
     public class ClassicMatch : MatchCore
     {
+        private const string REASON_NOT_TURN = "The player controller does not have the turn.";
         private const string REASON_PLACEMENT = "The player controller placed an invalid ship formation.";
-        private const string REASON_SHOT = "The player controller made an invalid shot.";
+        private const string REASON_SHOT = "The player controller shot at the same cell.";
         private const string REASON_TIMEOUT = "The player controller timed out.";
-        private List<Player> activePlayers;
-        private int currentIteration;
         private List<Player> waitList = new List<Player>();
         private AutoResetEvent waitSignal = new AutoResetEvent(false);
 
@@ -56,14 +55,6 @@ namespace MBC.Core.Game
             End
         }
 
-        public IEnumerable<Player> ActivePlayers
-        {
-            get
-            {
-                return activePlayers;
-            }
-        }
-
         /// <summary>
         /// Gets the current phase of this type of match.
         /// </summary>
@@ -74,102 +65,85 @@ namespace MBC.Core.Game
         }
 
         /// <summary>
-        /// Gets the player that has the turn.
-        /// </summary>
-        public Player CurrentPlayer
-        {
-            get;
-            protected set;
-        }
-
-        /// <summary>
-        /// Switches the current player to the next player in the iteration. Returns true if the
-        /// round may continue, false if there is a winner, or no active players left.
-        /// </summary>
-        /// <returns></returns>
-        public bool SwitchNextPlayer()
-        {
-            if (activePlayers.Count > 1)
-            {
-                if (CurrentPlayer == activePlayers[currentIteration])
-                {
-                    currentIteration = ++currentIteration % activePlayers.Count;
-                }
-                CurrentPlayer.TurnSwitchTo(activePlayers[currentIteration]);
-                CurrentPlayer = activePlayers[currentIteration];
-                return true;
-            }
-            else if (activePlayers.Count == 1)
-            {
-                CurrentPhase = Phase.End;
-            }
-            return false;
-        }
-
-        /// <summary>
         /// Plays through the current state of the match, in one iteration.
         /// </summary>
         protected override bool PlayLogic()
         {
-            try
+            switch (CurrentPhase)
             {
-                switch (CurrentPhase)
-                {
-                    case Phase.Placement:
-                        return Placement();
+                case Phase.Placement:
+                    WaitForTimeout();
+                    CurrentPhase = Phase.Turn;
+                    break;
 
-                    case Phase.Turn:
-                        return Turn();
+                case Phase.Turn:
+                    waitList.Add(CurrentPlayer);
+                    WaitForTimeout();
+                    if (TurnOrder.Count == 1)
+                    {
+                        CurrentPlayer.Win();
+                        CurrentPhase = Phase.End;
+                    }
+                    break;
 
-                    case Phase.End:
-                        return End();
-                }
-                return false;
+                case Phase.End:
+                    return false;
             }
-            catch (ControllerTimeoutException ex)
-            {
-                return SwitchNextPlayer();
-            }
-        }
-
-        /// <summary>
-        /// Logic that deals with ending the round due to the number of players reaching 1 or 0.
-        /// </summary>
-        /// <returns></returns>
-        private bool End()
-        {
-            if (activePlayers.Count == 1)
-            {
-                Player winner = activePlayers[0];
-                activePlayers.Clear();
-                winner.Win();
-            }
-            return false;
+            return true;
         }
 
         [EventFilter(typeof(MatchAddPlayerEvent))]
         private void HandleAddPlayer(Event ev)
         {
             MatchAddPlayerEvent evCasted = (MatchAddPlayerEvent)ev;
-            evCasted.Player.OnEvent += HandlePlayerLose;
-            foreach (Ship ship in evCasted.Player.Ships)
+            Player plr = evCasted.Player;
+            plr.OnEvent += HandlePlayerShot;
+            foreach (Ship ship in plr.Ships)
             {
                 ship.OnEvent += HandleShipMove;
+                ship.OnEvent += HandleShipHit;
+                ship.OnEvent += HandleShipDestroyed;
             }
         }
 
-        [EventFilter(typeof(PlayerLostEvent))]
-        private void HandlePlayerLose(Event ev)
+        [EventFilter(typeof(PlayerShotEvent))]
+        private void HandlePlayerShot(Event ev)
         {
-            PlayerLostEvent evCasted = (PlayerLostEvent)ev;
-            activePlayers.Remove(evCasted.Player);
+            PlayerShotEvent evCasted = (PlayerShotEvent)ev;
+            Shot shot = evCasted.Shot;
+            Player plr = evCasted.Player;
+            if (plr != CurrentPlayer)
+            {
+                throw new InvalidEventException(evCasted, REASON_NOT_TURN);
+            }
+            if (plr.ShotsMade.Contains(shot))
+            {
+                plr.Disqualify(REASON_SHOT);
+                plr.EndTurn();
+                plr.Lose();
+                waitSignal.Set();
+                throw new InvalidEventException(evCasted, REASON_SHOT);
+            }
+
+            Ship shipHit = ShipList.GetShipAt(evCasted.Shot);
+            if (shipHit != null)
+            {
+                shipHit.Hit(shot.Coordinates);
+            }
+            plr.EndTurn();
         }
 
         [EventFilter(typeof(MatchRemovePlayerEvent))]
         private void HandleRemovePlayer(Event ev)
         {
             MatchRemovePlayerEvent evCasted = (MatchRemovePlayerEvent)ev;
-            evCasted.Player.OnEvent -= HandleRemovePlayer;
+            evCasted.Player.OnEvent -= HandlePlayerShot;
+            foreach (Ship ship in evCasted.Player.Ships)
+            {
+                ship.OnEvent -= HandleShipMove;
+                ship.OnEvent -= HandleShipHit;
+                ship.OnEvent -= HandleShipDestroyed;
+            }
         }
 
         [EventFilter(typeof(RoundBeginEvent))]
@@ -186,6 +160,31 @@ namespace MBC.Core.Game
             CurrentPhase = Phase.End;
         }
 
+        private void HandleShipDestroyed(Event ev)
+        {
+            ShipDestroyedEvent evCasted = (ShipDestroyedEvent)ev;
+            Ship evShip = evCasted.Ship;
+            foreach (Ship ship in evShip.Owner.Ships)
+            {
+                if (!ship.IsSunk())
+                {
+                    return;
+                }
+            }
+            evShip.Owner.Lose();
+        }
+
+        [EventFilter(typeof(ShipHitEvent))]
+        private void HandleShipHit(Event ev)
+        {
+            ShipHitEvent evCasted = (ShipHitEvent)ev;
+            Ship ship = evCasted.Ship;
+            if (ship.IsSunk())
+            {
+                ship.Sink();
+            }
+        }
+
         [EventFilter(typeof(ShipMovedEvent))]
         private void HandleShipMove(Event ev)
         {
@@ -193,7 +192,7 @@ namespace MBC.Core.Game
             Ship ship = evCasted.Ship;
             Player player = ship.Owner;
 
-            if (ShipList.AreShipsPlaced(player.Ships) && ShipList.AreShipsValid(player.Ships, FieldSize))
+            if (ShipList.AreShipsPlaced(player.Ships))
             {
                 waitList.Remove(player);
                 if (waitList.Count == 0)
@@ -203,49 +202,6 @@ namespace MBC.Core.Game
             }
         }
 
-        /// <summary>
-        /// The ship placement phase for one iteration of a player.
-        /// </summary>
-        /// <returns></returns>
-        private bool Placement()
-        {
-            WaitForTimeout();
-            CurrentPhase = Phase.Turn;
-            return SwitchNextPlayer();
-        }
-
-        /// <summary>
-        /// The player shot phase for one iteration of a player.
-        /// </summary>
-        /// <returns></returns>
-        private bool Turn()
-        {
-            var shotMade = CurrentPlayer.Controller.MakeShot();
-            var shipHit = ShipList.GetShipAt(shotMade.ReceiverPlr.Ships, shotMade.Coordinates);
-            PlayerShot(CurrentPlayer, shotMade, shipHit);
-            if (!IsShotValid(CurrentPlayer, shotMade))
-            {
-                PlayerDisqualify(CurrentPlayer, REASON_SHOT);
-                return SwitchNextPlayer();
-            }
-
-            shipHit.SetShotHit(shotMade.Coordinates, true);
-
-            if (shipHit != null)
-            {
-                var sunk = shipHit.IsSunk();
-                if (sunk)
-                {
-                    PlayerShipDestroy(shotMade.ReceiverPlr, shipHit);
-                    if (shotMade.ReceiverPlr.Ships.All(ship => ship.IsSunk()))
-                    {
-                        PlayerLose(shotMade.ReceiverPlr);
-                    }
-                }
-            }
-            return SwitchNextPlayer();
-        }
-
         private void WaitForTimeout()
         {
             waitSignal.WaitOne(TimeLimit);
@@ -253,6 +209,7 @@ namespace MBC.Core.Game
             {
                 timeoutPlayer.Lose();
             }
+            waitList.Clear();
         }
     }
 }

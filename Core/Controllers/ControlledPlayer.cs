@@ -13,8 +13,8 @@ namespace MBC.Core.Controllers
         /// </summary>
         /// <param name="newId">The ID number in the match</param>
         /// <param name="newName">The name of the player</param>
-        public ControlledPlayer(IDNumber newId, string newName, IController2 cont)
-            : base(newId, newName)
+        public ControlledPlayer(string newName, IController2 cont)
+            : base(newName)
         {
             Controller = cont;
         }

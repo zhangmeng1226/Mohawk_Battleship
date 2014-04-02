@@ -7,7 +7,7 @@ namespace MBC.Shared
     /// the <see cref="Coordinates"/> used to target a <see cref="Ship"/> of a <see cref="Controller"/> associated
     /// with a certain <see cref="IDNumber"/>.
     /// </summary>
-    public class Shot : IEquatable<Shot>, IComparable<Shot>
+    public class Shot : Entity, IEquatable<Shot>, IComparable<Shot>
     {
         private Coordinates coords;
 
@@ -40,7 +40,7 @@ namespace MBC.Shared
         public Shot(IDNumber receiver, Coordinates coords)
         {
             this.coords = coords;
-            this.ReceiverPlr = new Player(receiver, "placeholder");
+            Receiver = receiver;
         }
 
         /// <summary>
@@ -85,10 +85,8 @@ namespace MBC.Shared
         [Obsolete("Use the player object directly")]
         public IDNumber Receiver
         {
-            get
-            {
-                return ReceiverPlr.ID;
-            }
+            get;
+            set;
         }
 
         /// <summary>
@@ -185,6 +183,11 @@ namespace MBC.Shared
         public override string ToString()
         {
             return Coordinates.ToString() + "=>[" + ReceiverPlr.ID + "]";
+        }
+
+        protected override Type GetEntityType()
+        {
+            return typeof(Shot);
         }
     }
 }

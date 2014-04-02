@@ -22,6 +22,12 @@ namespace MBC.Shared
             protected internal set;
         }
 
+        public Player CurrentPlayer
+        {
+            get;
+            protected internal set;
+        }
+
         /// <summary>
         /// Gets the current round in progress in the match.
         /// </summary>
@@ -107,22 +113,10 @@ namespace MBC.Shared
         /// <summary>
         /// Gets or sets the order in which players take turns in the match.
         /// </summary>
-        public IList<Player> TurnOrder
+        public List<Player> TurnOrder
         {
             get;
             protected internal set;
-        }
-
-        /// <summary>
-        /// Checks if a player's ship are placed, and are valid within the parameters of the match.
-        /// </summary>
-        /// <param name="player"></param>
-        /// <returns></returns>
-        public virtual bool AreShipsValid(Player player)
-        {
-            return player.Ships != null &&
-                ShipList.AreEquivalentLengths(player.Ships, StartingShips) &&
-                ShipList.AreShipsValid(player.Ships, FieldSize);
         }
 
         /// <summary>
@@ -220,6 +214,11 @@ namespace MBC.Shared
         protected internal virtual void TeamRemove(Team team)
         {
             InvokeEvent(new MatchTeamRemoveEvent(this, team));
+        }
+
+        protected override Type GetEntityType()
+        {
+            return typeof(Match);
         }
     }
 }

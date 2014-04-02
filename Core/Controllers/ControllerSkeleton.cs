@@ -13,7 +13,7 @@ namespace MBC.Core.Controllers
     /// <see cref="ControllerSkeleton.LoadControllerFolder(string)"/>. Contains the <see cref="Type"/>
     /// that represents a constructable <see cref="Controller"/>.
     /// </summary>
-    public class ControllerSkeleton : MarshalByRefObject
+    public class ControllerSkeleton
     {
         private Dictionary<Type, ControllerAttribute> attributes;
         private Type controllerClass;

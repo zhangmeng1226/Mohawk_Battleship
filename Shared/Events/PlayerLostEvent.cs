@@ -21,7 +21,12 @@ namespace MBC.Shared.Events
 
         protected internal override void PerformOperation()
         {
+            if (!Player.Match.TurnOrder.Contains(Player))
+            {
+                throw new InvalidEventException(this, String.Format("Player {0} already lost.", Player));
+            }
             Player.Losses++;
+            Player.Match.TurnOrder.Remove(Player);
         }
     }
 }

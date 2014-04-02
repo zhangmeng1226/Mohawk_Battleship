@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace MBC.Shared
 {
     [Serializable]
-    public class Team : IEquatable<Team>
+    public class Team : Entity, IEquatable<Team>
     {
         private HashSet<IDNumber> members;
 
@@ -25,12 +25,6 @@ namespace MBC.Shared
             ID = id;
             Name = name;
             IsInternal = internalTeam;
-        }
-
-        public IDNumber ID
-        {
-            get;
-            set;
         }
 
         public bool IsFriendly
@@ -109,6 +103,11 @@ namespace MBC.Shared
         public override string ToString()
         {
             return string.Format("[{0}] {1}", ID, Name);
+        }
+
+        protected override Type GetEntityType()
+        {
+            return typeof(Team);
         }
     }
 }

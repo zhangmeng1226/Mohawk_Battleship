@@ -10,12 +10,19 @@ namespace MBC.Core.Controllers
     public class NetController : IController2
     {
         private Socket clientSocket;
+
         private IController2 controllerWrap;
 
         public NetController(Socket connection, IController2 controller)
         {
             clientSocket = connection;
             controllerWrap = controller;
+        }
+
+        public Player Player
+        {
+            get;
+            set;
         }
     }
 }

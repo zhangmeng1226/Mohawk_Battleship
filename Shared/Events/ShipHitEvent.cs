@@ -7,13 +7,13 @@ namespace MBC.Shared.Events
 {
     public class ShipHitEvent : ShipEvent
     {
-        public ShipHitEvent(Ship ship, int hitIdx)
+        public ShipHitEvent(Ship ship, Coordinates coords)
             : base(ship)
         {
-            HitIndex = hitIdx;
+            HitCoords = coords;
         }
 
-        public int HitIndex
+        public Coordinates HitCoords
         {
             get;
             private set;
@@ -21,15 +21,15 @@ namespace MBC.Shared.Events
 
         protected internal override void PerformOperation()
         {
-            if (HitIndex > Ship.Length || HitIndex < 1)
+            if (!Ship.IsAt(HitCoords))
             {
-                throw new IndexOutOfRangeException(String.Format("The specified index {0} is out of range.", HitIndex));
+                throw new InvalidEventException(this, String.Format("The specified shot {0} is out of range of ship {1}.", HitCoords, Ship));
             }
-            Ship.Shots |= 1 << HitIndex;
-            if (Ship.IsSunk())
+            if (!Ship.RemainingLocations.Contains(HitCoords))
             {
-                Ship.Sink();
+                throw new InvalidEventException(this, String.Format("The ship {0} has already been hit at {1}", Ship, HitCoords));
             }
+            Ship.RemainingLocations.Remove(HitCoords);
         }
     }
 }

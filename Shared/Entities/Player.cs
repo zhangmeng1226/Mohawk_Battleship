@@ -13,9 +13,8 @@ namespace MBC.Shared
         /// </summary>
         /// <param name="newId">The ID number in the match</param>
         /// <param name="newName">The name of the player</param>
-        public Player(IDNumber newId, string newName)
+        public Player(string newName)
         {
-            ID = newId;
             Name = newName;
             Active = false;
         }
@@ -33,16 +32,7 @@ namespace MBC.Shared
         /// <summary>
         /// Gets or sets the number of disqualifications this player accumulated.
         /// </summary>
-        public int Disqualifications
-        {
-            get;
-            internal set;
-        }
-
-        /// <summary>
-        /// Gets the id number of this player.
-        /// </summary>
-        public IDNumber ID
+        public int InvalidActions
         {
             get;
             internal set;
@@ -153,11 +143,6 @@ namespace MBC.Shared
             InvokeEvent(new PlayerTeamAssignEvent(this, team));
         }
 
-        public virtual void BeginTurn()
-        {
-            InvokeEvent(new PlayerBeginTurnEvent(this));
-        }
-
         /// <summary>
         /// Disqualifies the player
         /// </summary>
@@ -165,7 +150,7 @@ namespace MBC.Shared
         /// <returns>The generated event</returns>
         public virtual void Disqualify(String reason)
         {
-            InvokeEvent(new PlayerDisqualifiedEvent(this, reason));
+            InvokeEvent(new PlayerInvalidActionEvent(this, reason));
         }
 
         /// <summary>
@@ -177,7 +162,7 @@ namespace MBC.Shared
         /// current state of the player.</exception>
         public virtual void EndTurn()
         {
-            InvokeEvent(new PlayerEndTurnEvent(this));
+            InvokeEvent(new PlayerTurnSwitchEvent(this));
         }
 
         /// <summary>
@@ -198,15 +183,6 @@ namespace MBC.Shared
         public override bool Equals(object obj)
         {
             return base.Equals(obj);
-        }
-
-        /// <summary>
-        /// Gets the unique identifier for this player.
-        /// </summary>
-        /// <returns></returns>
-        public override int GetHashCode()
-        {
-            return ID;
         }
 
         /// <summary>
@@ -282,6 +258,11 @@ namespace MBC.Shared
         public virtual void Win()
         {
             InvokeEvent(new PlayerWonEvent(this));
+        }
+
+        protected override Type GetEntityType()
+        {
+            return typeof(Player);
         }
     }
 }

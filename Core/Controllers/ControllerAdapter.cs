@@ -1,4 +1,5 @@
 ﻿using MBC.Shared;
+using MBC.Shared.Attributes;
 using MBC.Shared.Events;
 using System;
 using System.Collections.Generic;
@@ -10,52 +11,150 @@ namespace MBC.Core.Controllers
     /// <summary>
     /// Wraps an IController interface and adapts it to the new IController2 interface.
     /// </summary>
-    internal class ControllerAdapter : MarshalByRefObject, IController2
+    internal class ControllerAdapter : IController2
     {
-        private Match containingMatch;
+        private Player myPlayer;
         private IController oldController;
 
         public ControllerAdapter(IController oldController)
         {
             this.oldController = oldController;
-            oldController.ControllerMessageEvent += (string msg) =>
-            {
-                if (ControllerMessageEvent != null)
-                {
-                    ControllerMessageEvent(msg);
-                }
-            };
-            oldController.Field = new FieldInfo();
         }
 
-        public event StringOutputHandler ControllerMessageEvent;
-
-        public Match Match
+        public Player Player
         {
             get
             {
-                return containingMatch;
+                return myPlayer;
             }
             set
             {
-                containingMatch = value;
-                SetupMatch();
+                myPlayer = value;
+                Initialize();
             }
         }
 
-        public Shot MakeShot()
+        [EventFilter(typeof(MatchBeginEvent))]
+        private void HandleMatchBegin(Event ev)
         {
-            return oldController.MakeShot();
+            oldController.NewMatch();
         }
 
-        public IList<Ship> PlaceShips()
+        [EventFilter(typeof(MatchEndEvent))]
+        private void HandleMatchEnd(Event ev)
         {
-            return oldController.PlaceShips().ToList();
+            oldController.MatchOver();
         }
 
-        public void SetupMatch()
+        [EventFilter(typeof(MatchAddPlayerEvent))]
+        private void HandlePlayerAdd(Event ev)
         {
-            oldController.Match = new MatchConfig(Match);
+            MatchAddPlayerEvent evCasted = (MatchAddPlayerEvent)ev;
+            Player plr = evCasted.Player;
+            plr.OnEvent += HandlePlayerLose;
+            plr.OnEvent += HandlePlayerShot;
+            plr.OnEvent += HandlePlayerWin;
+            if (plr == myPlayer)
+            {
+                oldController.ID = plr.ID;
+            }
+            oldController.Registers.Add(plr.ID, new Register(plr.ID, plr.Name));
+        }
+
+        [EventFilter(typeof(PlayerLostEvent))]
+        private void HandlePlayerLose(Event ev)
+        {
+            Player plr = ((PlayerLostEvent)ev).Player;
+            if (plr == myPlayer)
+            {
+                oldController.RoundLost();
+            }
+            else
+            {
+                oldController.OpponentDestroyed(plr.ID);
+            }
+        }
+
+        [EventFilter(typeof(MatchRemovePlayerEvent))]
+        private void HandlePlayerRemove(Event ev)
+        {
+            Player plr = ((PlayerLostEvent)ev).Player;
+            plr.OnEvent -= HandlePlayerLose;
+            plr.OnEvent -= HandlePlayerShot;
+            plr.OnEvent -= HandlePlayerWin;
+            oldController.Registers.Remove(((MatchRemovePlayerEvent)ev).Player.ID);
+        }
+
+        [EventFilter(typeof(PlayerShotEvent))]
+        private void HandlePlayerShot(Event ev)
+        {
+            PlayerShotEvent evCasted = (PlayerShotEvent)ev;
+            Player plr = evCasted.Player;
+            Shot shot = evCasted.Shot;
+            if (plr == myPlayer)
+            {
+                Ship shipHit = ShipList.GetShipAt(shot);
+                if (shipHit == null)
+                {
+                    oldController.ShotMiss(shot);
+                }
+                else
+                {
+                    oldController.ShotHit(shot, shipHit.IsSunk());
+                }
+            }
+            else
+            {
+                oldController.OpponentShot(shot);
+            }
+        }
+
+        [EventFilter(typeof(PlayerWonEvent))]
+        private void HandlePlayerWin(Event ev)
+        {
+            if (((PlayerWonEvent)ev).Player == myPlayer)
+            {
+                oldController.RoundWon();
+            }
+        }
+
+        [EventFilter(typeof(RoundBeginEvent))]
+        private void HandleRoundBegin(Event ev)
+        {
+            oldController.NewRound();
+            foreach (Ship ship in oldController.PlaceShips())
+            {
+                Ship existingShip = myPlayer.Ships.Where(x => x.Length == ship.Length && !x.IsPlaced).First();
+                if (existingShip != null)
+                {
+                    existingShip.Place(ship.Location, ship.Orientation);
+                }
+            }
+        }
+
+        [EventFilter(typeof(MatchTeamAddEvent))]
+        private void HandleTeamAdd(Event ev)
+        {
+            Team team = ((MatchTeamAddEvent)ev).Team;
+            oldController.Teams.Add(team.ID, team);
+        }
+
+        [EventFilter(typeof(MatchTeamRemoveEvent))]
+        private void HandleTeamRemove(Event ev)
+        {
+            oldController.Teams.Remove(((MatchTeamRemoveEvent)ev).Team.ID);
+        }
+
+        private void Initialize()
+        {
+            Match containingMatch = myPlayer.Match;
+            oldController.ControllerMessageEvent += (string msg) =>
+            {
+                myPlayer.Message(msg);
+            };
+            oldController.Field = new FieldInfo();
+
+            oldController.Match = new MatchConfig(Player.Match);
 
             oldController.Registers = new Dictionary<IDNumber, Register>();
             foreach (var player in containingMatch.Players)
@@ -69,56 +168,13 @@ namespace MBC.Core.Controllers
                 oldController.Teams.Add(team.ID, team);
             }
 
-            Match.OnPlayerAdd += (object match, MatchAddPlayerEvent ev) =>
-                {
-                    if (ev.Player.Controller == oldController)
-                    {
-                        oldController.ID = ev.Player.ID;
-                    }
-                    oldController.Registers.Add(ev.Player.ID, new Register(ev.Player.ID, ev.Player.Name));
-                };
-            Match.OnPlayerRemove += (object match, MatchRemovePlayerEvent ev) => { oldController.Registers.Remove(ev.Player.ID); };
-            Match.OnTeamAdd += (object match, MatchTeamAddEvent ev) => { oldController.Teams.Add(ev.Team.ID, ev.Team); };
-            Match.OnTeamRemove += (object match, MatchTeamRemoveEvent ev) => { oldController.Teams.Remove(ev.Team.ID); };
-            Match.OnMatchBegin += (object match, MatchBeginEvent ev) => { oldController.NewMatch(); };
-            Match.OnMatchEnd += (object match, MatchEndEvent ev) => { oldController.MatchOver(); };
-            Match.OnRoundBegin += (object match, RoundBeginEvent ev) => { oldController.NewRound(); };
-            Match.OnPlayerLose += (object match, PlayerLostEvent ev) =>
-                {
-                    if (ev.Player.Controller == oldController)
-                    {
-                        oldController.RoundLost();
-                    }
-                    else
-                    {
-                        oldController.OpponentDestroyed(ev.Player.ID);
-                    }
-                };
-            Match.OnPlayerShot += (object match, PlayerShotEvent ev) =>
-                {
-                    if (ev.Player.Controller == oldController)
-                    {
-                        if (ev.ShipHit == null)
-                        {
-                            oldController.ShotMiss(ev.Shot);
-                        }
-                        else
-                        {
-                            oldController.ShotHit(ev.Shot, ev.ShipHit.IsSunk());
-                        }
-                    }
-                    else
-                    {
-                        oldController.OpponentShot(ev.Shot);
-                    }
-                };
-            Match.OnPlayerWin += (object match, PlayerWonEvent ev) =>
-                {
-                    if (ev.Player.Controller == oldController)
-                    {
-                        oldController.RoundWon();
-                    }
-                };
+            containingMatch.OnEvent += HandlePlayerAdd;
+            containingMatch.OnEvent += HandlePlayerRemove;
+            containingMatch.OnEvent += HandleTeamAdd;
+            containingMatch.OnEvent += HandleTeamRemove;
+            containingMatch.OnEvent += HandleMatchBegin;
+            containingMatch.OnEvent += HandleMatchEnd;
+            containingMatch.OnEvent += HandleRoundBegin;
         }
     }
 }

@@ -9,6 +9,7 @@ namespace MBC.Shared
     /// Contains a number of <see cref="Ship"/>s and provides a number of functions to operate on all
     /// of them.
     /// </summary>
+    [Obsolete]
     public class ShipList : ICollection<Ship>
     {
         private int maxLength;
@@ -196,24 +197,6 @@ namespace MBC.Shared
                 }
             }
             return true;
-        }
-
-        /// <summary>
-        /// Checks the placement
-        /// </summary>
-        /// <param name="ships"></param>
-        /// <param name="maxFieldSize"></param>
-        /// <returns></returns>
-        public static bool AreShipsValid(IEnumerable<Ship> ships, Coordinates maxFieldSize)
-        {
-            foreach (var ship in ships)
-            {
-                if (!ship.IsValid(maxFieldSize))
-                {
-                    return false;
-                }
-            }
-            return GetConflictingShips(ships).Count() == 0;
         }
 
         /// <summary>
@@ -506,7 +489,11 @@ namespace MBC.Shared
             {
                 if (!ship.IsPlaced && ship.Length <= targetLength)
                 {
-                    ship.Place(coords, orientation);
+                    ship.Location = coords;
+                    ship.Orientation = orientation;
+                    ship.Locations = new HashSet<Coordinates>(GetAllLocations(ship));
+                    ship.RemainingLocations = new HashSet<Coordinates>(ship.Locations);
+                    ship.IsPlaced = true;
                     return true;
                 }
             }
@@ -557,6 +544,24 @@ namespace MBC.Shared
                 if (ship.Length > maxLength)
                 {
                     maxLength = ship.Length;
+                }
+            }
+        }
+
+        private IEnumerable<Coordinates> GetAllLocations(Ship s)
+        {
+            if (s.Orientation == ShipOrientation.Horizontal)
+            {
+                for (int i = 0; i < s.Length; i++)
+                {
+                    yield return new Coordinates(s.Location.X + i, s.Location.Y);
+                }
+            }
+            else
+            {
+                for (int i = 0; i < s.Length; i++)
+                {
+                    yield return new Coordinates(s.Location.X, s.Location.Y + i);
                 }
             }
         }

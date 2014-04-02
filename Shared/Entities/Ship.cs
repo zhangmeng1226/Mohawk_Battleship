@@ -35,20 +35,7 @@ namespace MBC.Shared
         /// <exception cref="ArgumentOutOfRangeException">Thrown when the <paramref name="length"/> is less
         /// than 1.</exception>
         public Ship(int length)
-            : this(length, -1)
         {
-        }
-
-        /// <summary>
-        /// Sets the length of the <see cref="Ship"/> to <paramref name="length"/>. The <paramref name="length"/>
-        /// must be at least 1.
-        /// </summary>
-        /// <param name="length">The number of cells the <see cref="Ship"/> occupies.</param>
-        /// <exception cref="ArgumentOutOfRangeException">Thrown when the <paramref name="length"/> is less
-        /// than 1.</exception>
-        public Ship(int length, IDNumber identifier)
-        {
-            ID = identifier;
             if (length < 1 || length > 31)
             {
                 throw new ArgumentOutOfRangeException("length");
@@ -56,10 +43,7 @@ namespace MBC.Shared
             Length = length;
         }
 
-        /// <summary>
-        /// Gets the ID number that uniquely identifies the ship within a collection of ships.
-        /// </summary>
-        public IDNumber ID
+        public bool Active
         {
             get;
             protected internal set;
@@ -94,6 +78,12 @@ namespace MBC.Shared
             protected internal set;
         }
 
+        public HashSet<Coordinates> Locations
+        {
+            get;
+            protected internal set;
+        }
+
         /// <summary>
         /// Gets the <see cref="ShipOrientation"/>.
         /// </summary>
@@ -112,13 +102,10 @@ namespace MBC.Shared
             protected internal set;
         }
 
-        /// <summary>
-        /// Gets an integer that represents a bit-set of ship hits made against the ship.
-        /// </summary>
-        protected internal int Shots
+        public HashSet<Coordinates> RemainingLocations
         {
             get;
-            set;
+            protected internal set;
         }
 
         /// <summary>
@@ -170,36 +157,20 @@ namespace MBC.Shared
         /// Gets a list of <see cref="Coordinates"/> that contains all of the locations occupied.
         /// </summary>
         /// <returns>An enumerable collection of <see cref="Coordinates"/>.</returns>
+        [Obsolete("Use the property Locations instead.")]
         public IEnumerable<Coordinates> GetAllLocations()
         {
-            if (Orientation == ShipOrientation.Horizontal)
-            {
-                for (int i = 0; i < Length; i++)
-                {
-                    yield return new Coordinates(Location.X + i, Location.Y);
-                }
-            }
-            else
-            {
-                for (int i = 0; i < Length; i++)
-                {
-                    yield return new Coordinates(Location.X, Location.Y + i);
-                }
-            }
+            return Locations;
         }
 
         /// <summary>
-        /// Generates a hash code of this <see cref="Ship"/> based on its fields.
+        /// Hits the ship at the coordinates.
         /// </summary>
-        /// <returns>A hash code.</returns>
-        public override int GetHashCode()
+        /// <param name="coords"></param>
+        /// <returns></returns>
+        public void Hit(Coordinates coords)
         {
-            int hash = 23;
-            hash = hash * 37 + IsPlaced.GetHashCode();
-            hash = hash * 37 + Location.GetHashCode();
-            hash = hash * 37 + Orientation.GetHashCode();
-            hash = hash * 37 + Length.GetHashCode();
-            return hash;
+            InvokeEvent(new ShipHitEvent(this, coords));
         }
 
         /// <summary>
@@ -209,39 +180,7 @@ namespace MBC.Shared
         /// <returns>A value indicating the presence of this <see cref="Ship"/> at the <paramref name="location"/>.</returns>
         public bool IsAt(Coordinates location)
         {
-            if (!IsPlaced)
-            {
-                return false;
-            }
-            if (Orientation == ShipOrientation.Horizontal)
-            {
-                return (Location.Y == location.Y) && (Location.X <= location.X) && (Location.X + Length > location.X);
-            }
-            else
-            {
-                return (Location.X == location.X) && (Location.Y <= location.Y) && (Location.Y + Length > location.Y);
-            }
-        }
-
-        /// <summary>
-        /// Checks whether the hit flag has been set at the specific coordinates.
-        /// </summary>
-        /// <param name="coords"></param>
-        /// <returns></returns>
-        public bool IsHitAt(Coordinates coords)
-        {
-            if (IsAt(coords))
-            {
-                switch (Orientation)
-                {
-                    case ShipOrientation.Horizontal:
-                        return IsHitAt(Location.X - coords.X);
-
-                    case ShipOrientation.Vertical:
-                        return IsHitAt(Location.Y - coords.Y);
-                }
-            }
-            return false;
+            return IsPlaced && Locations.Contains(location);
         }
 
         /// <summary>
@@ -249,78 +188,18 @@ namespace MBC.Shared
         /// </summary>
         /// <param name="idx"></param>
         /// <returns></returns>
-        public bool IsHitAt(int idx)
+        public bool IsHitAt(Coordinates location)
         {
-            var idxPow = 1 << idx;
-            return (Shots & idxPow) == idxPow;
-        }
-
-        /// <summary>Checks if the given list of Coordinates completely occupy the cells this Ship occupies. This
-        /// is used to determine if shots have sunk this Ship.</summary>
-        /// <param name="shots">A list of Coordinates that represent shots made.</param>
-        /// <returns>True if the Coordinates in the given ShotList completely occupy the same cells this Ship occupies. False if otherwise.</returns>
-        public bool IsSunk(ShotList shots)
-        {
-            foreach (var location in GetAllLocations())
-            {
-                if (!shots.Contains(location))
-                {
-                    return false;
-                }
-            }
-
-            return true;
+            return !RemainingLocations.Contains(location);
         }
 
         /// <summary>
-        /// Checks if the shot hits made against this ship via SetShotHit are all true, which
-        /// indicates a sunken ship.
+        ///
         /// </summary>
         /// <returns></returns>
         public bool IsSunk()
         {
-            int sunkVal = 0;
-            for (int i = 1; i <= Length; i++)
-            {
-                sunkVal |= 1 << i;
-            }
-            return sunkVal == Shots;
-        }
-
-        /// <summary>
-        /// Indicated whether or not placement of this <see cref="Ship"/> is valid.
-        /// </summary>
-        /// <param name="boardSize">The maximum size of a field in the <see cref="Coordinates.X"/>
-        /// and <see cref="Coordinates.Y"/> components.</param>
-        /// <returns>A value indicating valid <see cref="Ship"/> placement.</returns>
-        public bool IsValid(Coordinates boardSize)
-        {
-            if (!IsPlaced)
-            {
-                return false;
-            }
-
-            if (Location < new Coordinates(0, 0))
-            {
-                return false;
-            }
-
-            if (Orientation == ShipOrientation.Horizontal)
-            {
-                if (new Coordinates(Location.X + Length, Location.Y) >= boardSize)
-                {
-                    return false;
-                }
-            }
-            else
-            {
-                if (new Coordinates(Location.X, Location.Y) >= boardSize)
-                {
-                    return false;
-                }
-            }
-
-            return true;
+            return RemainingLocations.Count == 0;
         }
 
         /// <summary>
@@ -335,6 +214,17 @@ namespace MBC.Shared
             InvokeEvent(new ShipMovedEvent(this, location, orientation));
         }
 
+        /// <summary>
+        /// Resets the ship back to its initialized state.
+        /// </summary>
+        public virtual void Reset()
+        {
+            InvokeEvent(new ShipResetEvent(this));
+        }
+
+        /// <summary>
+        /// Sinks the ship
+        /// </summary>
         public void Sink()
         {
             InvokeEvent(new ShipDestroyedEvent(this));
@@ -346,51 +236,12 @@ namespace MBC.Shared
         /// <returns>A string representation of this <see cref="Ship"/>.</returns>
         public override string ToString()
         {
-            return Location + " L" + Length + " " + Enum.GetName(typeof(ShipOrientation), Orientation);
+            return String.Format("[{0}] L{1}", ID, Length);
         }
 
-        /// <summary>
-        /// Hits the ship at the specified index.
-        /// </summary>
-        /// <param name="idx"></param>
-        internal void Hit(int idx)
+        protected override Type GetEntityType()
         {
-            InvokeEvent(new ShipHitEvent(this, idx));
-        }
-
-        /// <summary>
-        /// Attempts to hit the ship at the given coordinates.
-        /// </summary>
-        /// <param name="coords"></param>
-        /// <returns></returns>
-        internal bool Hit(Coordinates coords)
-        {
-            if (IsAt(coords))
-            {
-                switch (Orientation)
-                {
-                    case ShipOrientation.Horizontal:
-                        Hit(Location.X - coords.X);
-                        break;
-
-                    case ShipOrientation.Vertical:
-                        Hit(Location.Y - coords.Y);
-                        break;
-                }
-                return true;
-            }
-            return false;
-        }
-
-        /// <summary>
-        /// Resets the ship back to its initialized state.
-        /// </summary>
-        internal void Reset()
-        {
-            Location = default(Coordinates);
-            Orientation = default(ShipOrientation);
-            IsPlaced = false;
-            Shots = 0;
+            return typeof(Ship);
         }
     }
 }
