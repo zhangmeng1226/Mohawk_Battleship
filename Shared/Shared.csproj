@@ -72,13 +72,14 @@
     <Compile Include="Events\PlayerEvent.cs" />
     <Compile Include="Events\PlayerLostEvent.cs" />
     <Compile Include="Events\PlayerMessageEvent.cs" />
+    <Compile Include="Events\PlayerTurnBeginEvent.cs" />
     <Compile Include="Events\ShipDestroyedEvent.cs" />
     <Compile Include="Events\ShipHitEvent.cs" />
     <Compile Include="Events\ShipMovedEvent.cs" />
     <Compile Include="Events\PlayerShotEvent.cs" />
     <Compile Include="Events\PlayerTeamAssignEvent.cs" />
     <Compile Include="Events\PlayerTimeoutEvent.cs" />
-    <Compile Include="Events\PlayerTurnSwitchEvent.cs" />
+    <Compile Include="Events\PlayerTurnEndEvent.cs" />
     <Compile Include="Events\PlayerWonEvent.cs" />
     <Compile Include="Events\RoundBeginEvent.cs" />
     <Compile Include="Events\RoundEndEvent.cs" />

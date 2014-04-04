@@ -172,9 +172,9 @@ namespace MBC.Shared
         /// <returns>The generated event</returns>
         /// <exception cref="InvalidEventException">Thrown when the event being created is not valid for the
         /// current state of the match.</exception>
-        protected internal virtual void RoundBegin(int roundBeginNumber)
+        protected internal virtual void RoundBegin()
         {
-            InvokeEvent(new RoundBeginEvent(this, roundBeginNumber));
+            InvokeEvent(new RoundBeginEvent(this));
         }
 
         /// <summary>

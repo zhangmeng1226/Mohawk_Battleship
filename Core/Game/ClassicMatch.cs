@@ -21,7 +21,7 @@ namespace MBC.Core.Game
         private const string REASON_SHOT = "The player controller shot at the same cell.";
         private const string REASON_TIMEOUT = "The player controller timed out.";
         private List<Player> waitList = new List<Player>();
-        private AutoResetEvent waitSignal = new AutoResetEvent(false);
+        private ManualResetEvent waitSignal = new ManualResetEvent(false);
 
         /// <summary>
         /// Constructs a match with a specific configuration.
@@ -78,7 +78,9 @@ namespace MBC.Core.Game
 
                 case Phase.Turn:
                     waitList.Add(CurrentPlayer);
+                    CurrentPlayer.BeginTurn();
                     WaitForTimeout();
+                    CurrentPlayer.EndTurn();
                     if (TurnOrder.Count == 1)
                     {
                         CurrentPlayer.Win();
@@ -98,6 +100,7 @@ namespace MBC.Core.Game
             MatchAddPlayerEvent evCasted = (MatchAddPlayerEvent)ev;
             Player plr = evCasted.Player;
             plr.OnEvent += HandlePlayerShot;
+            plr.OnEvent += HandleTurnEnd;
             foreach (Ship ship in plr.Ships)
             {
                 ship.OnEvent += HandleShipMove;
@@ -119,7 +122,6 @@ namespace MBC.Core.Game
             if (plr.ShotsMade.Contains(shot))
             {
                 plr.Disqualify(REASON_SHOT);
-                plr.EndTurn();
                 plr.Lose();
                 waitSignal.Set();
                 throw new InvalidEventException(evCasted, REASON_SHOT);
@@ -130,7 +132,7 @@ namespace MBC.Core.Game
             {
                 shipHit.Hit(shot.Coordinates);
             }
-            plr.EndTurn();
+            waitSignal.Set();
         }
 
         [EventFilter(typeof(MatchRemovePlayerEvent))]
@@ -138,6 +140,7 @@ namespace MBC.Core.Game
         {
             MatchRemovePlayerEvent evCasted = (MatchRemovePlayerEvent)ev;
             evCasted.Player.OnEvent -= HandlePlayerShot;
+            evCasted.Player.OnEvent -= HandleTurnEnd;
             foreach (Ship ship in evCasted.Player.Ships)
             {
                 ship.OnEvent -= HandleShipMove;
@@ -160,6 +163,7 @@ namespace MBC.Core.Game
             CurrentPhase = Phase.End;
         }
 
+        [EventFilter(typeof(ShipDestroyedEvent))]
         private void HandleShipDestroyed(Event ev)
         {
             ShipDestroyedEvent evCasted = (ShipDestroyedEvent)ev;
@@ -202,9 +206,23 @@ namespace MBC.Core.Game
             }
         }
 
+        [EventFilter(typeof(PlayerTurnEndEvent))]
+        private void HandleTurnEnd(Event ev)
+        {
+            PlayerTurnEndEvent evCasted = (PlayerTurnEndEvent)ev;
+            Player plr = evCasted.Player;
+
+            if (plr == CurrentPlayer)
+            {
+                waitList.Remove(plr);
+            }
+            waitSignal.Set();
+        }
+
         private void WaitForTimeout()
         {
             waitSignal.WaitOne(TimeLimit);
+            waitSignal.Reset();
             foreach (Player timeoutPlayer in waitList)
             {
                 timeoutPlayer.Lose();

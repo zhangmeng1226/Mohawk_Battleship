@@ -1,6 +1,7 @@
 ﻿using MBC.Shared;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.Serialization;
 
 namespace MBC.Shared.Events
@@ -16,10 +17,10 @@ namespace MBC.Shared.Events
         /// based on the <see cref="MBC.Shared.Register"/>s that are involved in it.
         /// </summary>
         /// <param name="round">The associated <see cref="GameLogic"/>.</param>
-        public RoundBeginEvent(Match match, IDNumber roundNumber)
+        public RoundBeginEvent(Match match)
             : base(match)
         {
-            Round = roundNumber;
+            Round = match.CurrentRound + 1;
         }
 
         /// <summary>
@@ -43,12 +44,20 @@ namespace MBC.Shared.Events
             }
 
             Match.CurrentRound++;
-            foreach (var plr in Match.Players)
+            foreach (Player plr in Match.Players)
             {
                 plr.Active = true;
+                if (Match.CurrentRound > 0)
+                {
+                    foreach (Ship ship in plr.Ships)
+                    {
+                        ship.Reset();
+                    }
+                }
             }
             Match.TurnOrder = new List<Player>(Match.Players);
             RandomizeList(Match.TurnOrder);
+            Match.CurrentPlayer = Match.TurnOrder.First();
         }
 
         /// <summary>

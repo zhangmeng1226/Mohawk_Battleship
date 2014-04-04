@@ -23,7 +23,7 @@ namespace MBC.Core.Game
         Description = "Determines the ending behaviour of a match based on a given number of rounds.",
         DisplayName = "Match Rounds Mode")]
     [Configuration("mbc_match_rounds", 100)]
-    [Configuration("mbc_player_timeout", 500)]
+    [Configuration("mbc_player_timeout", 5000)]
     /// <summary>
     /// This is the new framework part of a match.
     /// </summary>
@@ -88,7 +88,7 @@ namespace MBC.Core.Game
                 IsRunning = true;
                 if (CurrentRound == -1)
                 {
-                    RoundBegin(CurrentRound + 1);
+                    RoundBegin();
                 }
                 while (IsRunning && !AtEnd)
                 {
@@ -101,7 +101,7 @@ namespace MBC.Core.Game
                     else if (!isRoundPlaying)
                     {
                         RoundEnd(CurrentRound);
-                        RoundBegin(++CurrentRound);
+                        RoundBegin();
                     }
                 }
             }

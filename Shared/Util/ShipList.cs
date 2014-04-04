@@ -584,7 +584,7 @@ namespace MBC.Shared
             {
                 get
                 {
-                    return collection[currentIdx];
+                    return collection[currentIdx == -1 ? 0 : currentIdx];
                 }
             }
 

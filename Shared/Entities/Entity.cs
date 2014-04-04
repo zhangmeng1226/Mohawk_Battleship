@@ -84,6 +84,10 @@ namespace MBC.Shared
                     Event evInQueue = evQueue.Dequeue();
                     evInQueue.PerformOperation();
                     Type eventType = evInQueue.GetType();
+                    if (evInQueue.GetType() == typeof(MatchAddPlayerEvent))
+                    {
+                        Console.WriteLine("Hello");
+                    }
                     if (filters.ContainsKey(eventType))
                     {
                         InvokeInList(filters[eventType], evInQueue);

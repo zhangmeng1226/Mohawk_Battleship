@@ -54,6 +54,7 @@ namespace MBC.Core.Controllers
             plr.OnEvent += HandlePlayerLose;
             plr.OnEvent += HandlePlayerShot;
             plr.OnEvent += HandlePlayerWin;
+            plr.OnEvent += HandleTurnBegin;
             if (plr == myPlayer)
             {
                 oldController.ID = plr.ID;
@@ -78,10 +79,11 @@ namespace MBC.Core.Controllers
         [EventFilter(typeof(MatchRemovePlayerEvent))]
         private void HandlePlayerRemove(Event ev)
         {
-            Player plr = ((PlayerLostEvent)ev).Player;
+            Player plr = ((MatchRemovePlayerEvent)ev).Player;
             plr.OnEvent -= HandlePlayerLose;
             plr.OnEvent -= HandlePlayerShot;
             plr.OnEvent -= HandlePlayerWin;
+            plr.OnEvent -= HandleTurnBegin;
             oldController.Registers.Remove(((MatchRemovePlayerEvent)ev).Player.ID);
         }
 
@@ -122,7 +124,7 @@ namespace MBC.Core.Controllers
         private void HandleRoundBegin(Event ev)
         {
             oldController.NewRound();
-            foreach (Ship ship in oldController.PlaceShips())
+            foreach (Ship ship in oldController.PlaceShips().ToList())
             {
                 Ship existingShip = myPlayer.Ships.Where(x => x.Length == ship.Length && !x.IsPlaced).First();
                 if (existingShip != null)
@@ -143,6 +145,15 @@ namespace MBC.Core.Controllers
         private void HandleTeamRemove(Event ev)
         {
             oldController.Teams.Remove(((MatchTeamRemoveEvent)ev).Team.ID);
+        }
+
+        [EventFilter(typeof(PlayerTurnBeginEvent))]
+        private void HandleTurnBegin(Event ev)
+        {
+            if (Player.Match.CurrentPlayer == myPlayer)
+            {
+                myPlayer.Shoot(oldController.MakeShot());
+            }
         }
 
         private void Initialize()

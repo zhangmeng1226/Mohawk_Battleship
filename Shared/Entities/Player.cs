@@ -17,6 +17,7 @@ namespace MBC.Shared
         {
             Name = newName;
             Active = false;
+            ShotsMade = new List<Shot>();
         }
 
         /// <summary>
@@ -144,6 +145,14 @@ namespace MBC.Shared
         }
 
         /// <summary>
+        /// Begins the player's turn.
+        /// </summary>
+        public virtual void BeginTurn()
+        {
+            InvokeEvent(new PlayerTurnBeginEvent(this));
+        }
+
+        /// <summary>
         /// Disqualifies the player
         /// </summary>
         /// <param name="player"></param>
@@ -162,7 +171,7 @@ namespace MBC.Shared
         /// current state of the player.</exception>
         public virtual void EndTurn()
         {
-            InvokeEvent(new PlayerTurnSwitchEvent(this));
+            InvokeEvent(new PlayerTurnEndEvent(this));
         }
 
         /// <summary>

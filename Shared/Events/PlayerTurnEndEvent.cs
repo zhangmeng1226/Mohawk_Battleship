@@ -11,31 +11,25 @@ namespace MBC.Shared.Events
     /// Created during a match when a player's turn has ended and is being switched to another player.
     /// </summary>
     [Serializable]
-    public class PlayerTurnSwitchEvent : PlayerEvent
+    public class PlayerTurnEndEvent : PlayerEvent
     {
         /// <summary>
-        /// Constructs the event from the previous player and the next player.
+        /// Constructs the event with the player that switched their turn.
         /// </summary>
-        /// <param name="prevPlayer"></param>
-        /// <param name="nextPlayer"></param>
-        public PlayerTurnSwitchEvent(Player player)
+        public PlayerTurnEndEvent(Player player)
             : base(player)
         {
         }
 
         protected internal override void PerformOperation()
         {
-            if (!Player.Active)
-            {
-                throw new InvalidEventException(this, "The player is inactive.");
-            }
             if (Player.Match.CurrentPlayer != Player)
             {
                 throw new InvalidEventException(this, String.Format("Player {0} does not have the turn.", Player));
             }
-            Player.Match.TurnOrder.Remove(Player);
-            Player.Match.TurnOrder.Add(Player);
-            Player.Match.CurrentPlayer = Player.Match.TurnOrder.First();
+            Player tmp = Player.Match.TurnOrder.First();
+            Player.Match.TurnOrder[0] = Player.Match.TurnOrder[Player.Match.TurnOrder.Count - 1];
+            Player.Match.TurnOrder[Player.Match.TurnOrder.Count - 1] = tmp;
         }
     }
 }
