@@ -1,23 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using MBC.App.Terminal.Layouts;
+﻿using MBC.App.Terminal.Layouts;
 using MBC.App.Terminal.Modules;
 using MBC.Core;
 using MBC.Core.Events;
 using MBC.Core.Matches;
 using MBC.Core.Threading;
+using MBC.Shared;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading;
 
 namespace MBC.App.Terminal.Modules
 {
     public class CompetitionRun : TerminalModule
     {
+        private int boardsBaseY;
         private ActiveMatch competition;
         private string currentEventString;
         private StreamWriter fileWriter;
+        private bool isWritten;
         private int lastMillis;
         private int millisDelay;
         private int roundsRun;
@@ -26,6 +29,8 @@ namespace MBC.App.Terminal.Modules
 
         public CompetitionRun(ActiveMatch comp, int delay, bool eventsToFile)
         {
+            isWritten = false;
+            boardsBaseY = -1;
             turns = 0;
             roundsRun = 0;
             competition = comp;
@@ -38,6 +43,14 @@ namespace MBC.App.Terminal.Modules
             competition.AddEventAction(typeof(PlayerHitShipEvent), PlayerHit);
             competition.AddEventAction(typeof(MatchEndEvent), MatchEnd);
             competition.AddEventAction(typeof(Event), LastEvent);
+            if (millisDelay > 0)
+            {
+                competition.AddEventAction(typeof(PlayerShipDestroyedEvent), ASCIIShipDestroyed);
+                competition.AddEventAction(typeof(PlayerShotEvent), ASCIIUpdateShot);
+                competition.AddEventAction(typeof(PlayerHitShipEvent), ASCIIUpdateShotHit);
+                competition.AddEventAction(typeof(PlayerShipsPlacedEvent), ASCIIUpdateShips);
+                competition.AddEventAction(typeof(RoundBeginEvent), MakeASCII);
+            }
             threader = new FuncThreader();
             if (eventsToFile)
             {
@@ -57,7 +70,52 @@ namespace MBC.App.Terminal.Modules
             WriteScoreRounds();
             WriteTurns();
             WriteCurrentEvent();
+            if (!isWritten)
+            {
+                boardsBaseY = CurrentY + 2;
+                isWritten = true;
+            }
             Console.ForegroundColor = ConsoleColor.White;
+        }
+
+        private void ASCIIShipDestroyed(Event ev)
+        {
+            PlayerShipDestroyedEvent shipEvent = (PlayerShipDestroyedEvent)ev;
+            ASCIIWriteShip(shipEvent.Player, shipEvent.DestroyedShip, shipEvent.DestroyedShip.Length.ToString().ToCharArray()[0], ConsoleColor.White, ConsoleColor.Red);
+        }
+
+        private void ASCIIUpdateShips(Event ev)
+        {
+            PlayerShipsPlacedEvent shipsEvent = (PlayerShipsPlacedEvent)ev;
+            foreach (Ship ship in competition.Fields[shipsEvent.Player].ShipsLeft)
+            {
+                ASCIIWriteShip(shipsEvent.Player, ship, ' ', ConsoleColor.White, ConsoleColor.Green);
+                AlignToCoord(4, 4);
+                WriteText("Wrote ship ", ship);
+                Thread.Sleep(1000);
+            }
+        }
+
+        private void ASCIIUpdateShot(Event ev)
+        {
+            PlayerShotEvent shotEvent = (PlayerShotEvent)ev;
+            ModifyASCII(shotEvent.Shot.Receiver, shotEvent.Shot.Coordinates.X, shotEvent.Shot.Coordinates.Y, ' ', ConsoleColor.White, ConsoleColor.DarkGray);
+        }
+
+        private void ASCIIUpdateShotHit(Event ev)
+        {
+            PlayerHitShipEvent shipEvent = (PlayerHitShipEvent)ev;
+            ModifyASCII(shipEvent.HitShot.Receiver, shipEvent.HitShot.Coordinates.X, shipEvent.HitShot.Coordinates.Y, ' ', ConsoleColor.White, ConsoleColor.Yellow);
+        }
+
+        private void ASCIIWriteShip(IDNumber ctrlIdx, Ship ship, char character, ConsoleColor colorText, ConsoleColor colorBack)
+        {
+            for (int i = 0; i < ship.Length; i++)
+            {
+                ModifyASCII(ctrlIdx, ship.Location.X + (ship.Orientation == ShipOrientation.Horizontal ? i : 0),
+                    ship.Location.Y + (ship.Orientation == ShipOrientation.Vertical ? i : 0),
+                    character, colorText, colorBack);
+            }
         }
 
         private void CompRoundEnd(Event ev)
@@ -65,6 +123,9 @@ namespace MBC.App.Terminal.Modules
             turns = 0;
             roundsRun++;
             WriteScoreRounds();
+            Console.ForegroundColor = ConsoleColor.Black;
+            AlignToLine(6);
+            WriteCenteredText("xxx turns made this round.");
             currentEventString = "!!!New round!!!";
         }
 
@@ -84,6 +145,36 @@ namespace MBC.App.Terminal.Modules
             lastMillis = ev.Millis;
         }
 
+        private void MakeASCII(Event ev)
+        {
+            for (int i = 0; i < 2; i++)
+            {
+                for (int x = -1; x < competition.CompiledConfig.FieldSize.X; x++)
+                {
+                    for (int y = -1; y < competition.CompiledConfig.FieldSize.Y; y++)
+                    {
+                        if (x == -1 || y == -1)
+                        {
+                            Console.ForegroundColor = ConsoleColor.White;
+                            Console.BackgroundColor = ConsoleColor.Black;
+                            if (x == -1)
+                            {
+                                ModifyASCII(i, -1, y, y.ToString().ToCharArray()[0], ConsoleColor.Gray, ConsoleColor.Black);
+                            }
+                            else if (y == -1)
+                            {
+                                ModifyASCII(i, x, -1, x.ToString().ToCharArray()[0], ConsoleColor.Gray, ConsoleColor.Black);
+                            }
+                        }
+                        else
+                        {
+                            ModifyASCII(i, x, y, ' ', ConsoleColor.White, ConsoleColor.DarkBlue);
+                        }
+                    }
+                }
+            }
+        }
+
         private void MatchEnd(Event ev)
         {
             BattleshipConsole.RemoveModule(this);
@@ -93,6 +184,19 @@ namespace MBC.App.Terminal.Modules
             {
                 fileWriter.Close();
             }
+        }
+
+        private void ModifyASCII(int ctrlIdx, int x, int y, char character, ConsoleColor text, ConsoleColor background)
+        {
+            int sidePad = 10;
+            int pad = (Width - 2) - (competition.CompiledConfig.FieldSize.X + (sidePad * 3));
+            int baseX = sidePad + ctrlIdx * (competition.CompiledConfig.FieldSize.X + pad);
+            AlignToCoord(baseX + x, boardsBaseY + y);
+            ColorStore prevColors = ColorStore.StoreCurrentColors();
+            Console.BackgroundColor = background;
+            Console.ForegroundColor = text;
+            WriteCharRepeat(character, 1);
+            prevColors.Restore();
         }
 
         private void PlayerHit(Event ev)
@@ -132,14 +236,14 @@ namespace MBC.App.Terminal.Modules
         {
             if (millisDelay > 0)
             {
-                Console.ForegroundColor = ConsoleColor.Green;
+                /*Console.ForegroundColor = ConsoleColor.Green;
                 for (int i = 0; i < 4; i++)
                 {
                     AlignToLine(8 + i);
                     WriteCharRepeat(' ', currentEventString.Length);
                 }
-                AlignToLine(8);
-                WriteCenteredText(currentEventString);
+                //AlignToLine(8);
+                //WriteCenteredText(currentEventString);*/
                 if (fileWriter != null)
                 {
                     FileWriteEvent();

@@ -1,6 +1,6 @@
-﻿using System;
-using MBC.Shared;
+﻿using MBC.Shared;
 using MBC.Shared.Attributes;
+using System;
 
 namespace MBC.Controllers
 {

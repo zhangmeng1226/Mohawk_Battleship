@@ -54,6 +54,7 @@
     <Compile Include="Events\PlayerTeamAssignEvent.cs" />
     <Compile Include="Events\MatchRemovePlayerEvent.cs" />
     <Compile Include="Events\MatchTeamCreateEvent.cs" />
+    <Compile Include="Exceptions\ControllerTimeoutException.cs" />
     <Compile Include="Game\ActiveMatch.cs" />
     <Compile Include="Game\ClassicGame.cs" />
     <Compile Include="Game\MatchReplay.cs" />
@@ -82,6 +83,7 @@
     <Compile Include="Threading\MethodTimeoutException.cs" />
     <Compile Include="Threading\MultiMethodThreader.cs" />
     <Compile Include="Threading\Threader.cs" />
+    <Compile Include="Threading\ThreadTimeoutAborter.cs" />
     <Compile Include="Threading\TimedThreader.cs" />
     <Compile Include="Util\Configuration.cs" />
     <Compile Include="Util\ConfigurationAttribute.cs" />

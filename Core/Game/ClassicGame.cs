@@ -1,12 +1,12 @@
-﻿using System;
+﻿using MBC.Core.Events;
+using MBC.Core.Rounds;
+using MBC.Core.Threading;
+using MBC.Shared;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
-using MBC.Core.Events;
-using MBC.Core.Rounds;
-using MBC.Core.Threading;
-using MBC.Shared;
 
 namespace MBC.Core.Matches
 {
@@ -60,6 +60,11 @@ namespace MBC.Core.Matches
 
         public IDNumber NextTurn()
         {
+            if (turns.Count == 1)
+            {
+                CurrentTurnPlayer = turns[0];
+                return CurrentTurnPlayer;
+            }
             int currentTurnIdx;
             for (currentTurnIdx = 0; currentTurnIdx < turns.Count; currentTurnIdx++)
             {
@@ -208,7 +213,7 @@ namespace MBC.Core.Matches
                     Match.Controllers[CurrentTurnPlayer].ShotMiss(shotMade);
                 }
             }
-            catch (MethodTimeoutException ex)
+            catch (ControllerTimeoutException ex)
             {
                 PlayerTimedOut(CurrentTurnPlayer, ex);
             }
@@ -227,7 +232,7 @@ namespace MBC.Core.Matches
                         PlayerLose(controller.Key);
                     }
                 }
-                catch (MethodTimeoutException ex)
+                catch (ControllerTimeoutException ex)
                 {
                     PlayerTimedOut(controller.Key, ex);
                 }
@@ -236,7 +241,8 @@ namespace MBC.Core.Matches
 
         private void PlayerDead(IDNumber plr)
         {
-            Match.Teams[DeadTeam].Members.Add(plr);
+            //Match.Teams[DeadTeam].Members.Add(plr);
+            PlayerLose(plr);
         }
 
         private void PlayerInit(Event ev)
@@ -253,13 +259,14 @@ namespace MBC.Core.Matches
             {
                 Match.Controllers[plr].RoundLost();
             }
-            catch (MethodTimeoutException ex)
+            catch (ControllerTimeoutException ex)
             {
                 ApplyEvent(new PlayerTimeoutEvent(plr, ex));
             }
+            CurrentTurnPlayer = NextTurn();
         }
 
-        private void PlayerTimedOut(IDNumber plr, MethodTimeoutException ex)
+        private void PlayerTimedOut(IDNumber plr, ControllerTimeoutException ex)
         {
             ApplyEvent(new PlayerTimeoutEvent(plr, ex));
             PlayerLose(plr);
