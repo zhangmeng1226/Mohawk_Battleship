@@ -34,6 +34,7 @@ namespace MBC.Core.Game
         /// </summary>
         /// <param name="config"></param>
         public MatchCore(Configuration config)
+            : base(0)
         {
             Events = new List<Event>();
             Players = new HashSet<Player>();
@@ -88,6 +89,7 @@ namespace MBC.Core.Game
                 IsRunning = true;
                 if (CurrentRound == -1)
                 {
+                    Begin();
                     RoundBegin();
                 }
                 while (IsRunning && !AtEnd)
@@ -114,7 +116,7 @@ namespace MBC.Core.Game
         /// <returns></returns>
         public void PlayerCreate(ControllerSkeleton skeleton)
         {
-            ControlledPlayer newPlayer = new ControlledPlayer(skeleton.GetAttribute<NameAttribute>().Name, skeleton.CreateInstance());
+            ControlledPlayer newPlayer = new ControlledPlayer(FindID(Players), skeleton.GetAttribute<NameAttribute>().Name, skeleton.CreateInstance());
             newPlayer.OnEvent += ApplyEvent;
             PlayerAdd(newPlayer);
             foreach (Ship ship in newPlayer.Ships)
@@ -219,7 +221,11 @@ namespace MBC.Core.Game
             FieldSize = new Coordinates(conf.GetValue<int>("mbc_field_width"), conf.GetValue<int>("mbc_field_height"));
             NumberOfRounds = conf.GetValue<int>("mbc_match_rounds");
 
-            StartingShips = ShipList.ShipsFromLengths(conf.GetList<int>("mbc_ship_sizes"));
+            StartingShips = new HashSet<Ship>();
+            foreach (int length in conf.GetList<int>("mbc_ship_sizes"))
+            {
+                StartingShips.Add(new Ship(FindID(StartingShips), length));
+            }
             TimeLimit = conf.GetValue<int>("mbc_player_timeout");
         }
     }

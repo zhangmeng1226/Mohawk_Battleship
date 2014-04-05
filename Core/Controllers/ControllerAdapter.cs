@@ -138,7 +138,9 @@ namespace MBC.Core.Controllers
         [EventFilter(typeof(PlayerTurnBeginEvent))]
         private void HandleTurnBegin(Event ev)
         {
-            myPlayer.Shoot(oldController.MakeShot());
+            Shot shotMade = oldController.MakeShot();
+            shotMade.ReceiverPlr = myPlayer.Match.Players.Where(plr => plr.ID == shotMade.Receiver).First();
+            myPlayer.Shoot(shotMade);
         }
 
         private void HookPlayerEvents(Player plr)
@@ -154,7 +156,6 @@ namespace MBC.Core.Controllers
 
         private void Initialize()
         {
-            HookPlayerEvents(myPlayer);
             Match containingMatch = myPlayer.Match;
             oldController.ControllerMessageEvent += (string msg) =>
             {

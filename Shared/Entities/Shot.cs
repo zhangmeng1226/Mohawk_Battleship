@@ -7,7 +7,7 @@ namespace MBC.Shared
     /// the <see cref="Coordinates"/> used to target a <see cref="Ship"/> of a <see cref="Controller"/> associated
     /// with a certain <see cref="IDNumber"/>.
     /// </summary>
-    public class Shot : Entity, IEquatable<Shot>, IComparable<Shot>
+    public class Shot : IEquatable<Shot>, IComparable<Shot>
     {
         private Coordinates coords;
 
@@ -41,7 +41,6 @@ namespace MBC.Shared
         {
             this.coords = coords;
             Receiver = receiver;
-            ReceiverPlr = (Player)Entity.GetFromID(typeof(Player), Receiver);
         }
 
         /// <summary>
@@ -96,7 +95,7 @@ namespace MBC.Shared
         public Player ReceiverPlr
         {
             get;
-            private set;
+            set;
         }
 
         /// <summary>

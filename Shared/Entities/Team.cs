@@ -15,7 +15,6 @@ namespace MBC.Shared
             members = new HashSet<Player>(copy.members);
         }
 
-        [Obsolete()]
         public Team(IDNumber id, string name)
             : this(id, name, false)
         {
@@ -23,16 +22,11 @@ namespace MBC.Shared
 
         [Obsolete()]
         public Team(IDNumber id, string name, bool internalTeam)
+            : base(id)
         {
             ID = id;
             Name = name;
             IsInternal = internalTeam;
-        }
-
-        public Team(string name)
-        {
-            Name = name;
-            IsInternal = false;
         }
 
         [Obsolete()]

@@ -10,15 +10,14 @@ namespace MBC.Shared
 {
     public abstract class Entity : IEquatable<Entity>
     {
-        private static Dictionary<Type, List<WeakReference>> idMappings = new Dictionary<Type, List<WeakReference>>();
         private Queue<Event> evQueue = new Queue<Event>();
         private Dictionary<Type, List<MBCEventHandler>> filters = new Dictionary<Type, List<MBCEventHandler>>();
         private IDNumber id;
         private List<MBCEventHandler> noFilters = new List<MBCEventHandler>();
 
-        public Entity()
+        public Entity(IDNumber id)
         {
-            id = GetNewId(this);
+            ID = id;
         }
 
         public event MBCEventHandler OnEvent
@@ -45,17 +44,10 @@ namespace MBC.Shared
             }
         }
 
-        public static Entity GetFromID(Type entityType, IDNumber entityID)
+        public static IDNumber FindID(IEnumerable<Entity> children)
         {
-            foreach (WeakReference reference in idMappings[entityType])
-            {
-                Entity entity = (Entity)reference.Target;
-                if (entity.ID == entityID)
-                {
-                    return entity;
-                }
-            }
-            return null;
+            IEnumerable<int> existingIds = children.Select(ent => (int)ent.ID);
+            return Enumerable.Range(0, int.MaxValue).Except(existingIds).FirstOrDefault();
         }
 
         public static bool operator !=(Entity ent1, Entity ent2)
@@ -78,7 +70,7 @@ namespace MBC.Shared
 
         public override bool Equals(object obj)
         {
-            return base.Equals(obj);
+            return Equals(obj as Entity);
         }
 
         public bool Equals(Entity ent)
@@ -175,17 +167,6 @@ namespace MBC.Shared
             {
                 noFilters.Remove(del);
             }
-        }
-
-        private static IDNumber GetNewId(Entity ent)
-        {
-            Type entityType = ent.GetEntityType();
-            if (!idMappings.ContainsKey(entityType))
-            {
-                idMappings.Add(entityType, new List<WeakReference>());
-            }
-            idMappings[entityType].Add(new WeakReference(ent));
-            return idMappings[entityType].Count - 1;
         }
 
         /// <summary>

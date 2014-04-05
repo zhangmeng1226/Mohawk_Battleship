@@ -46,6 +46,7 @@ namespace MBC.Shared.Events
             Ship.Locations = new HashSet<Coordinates>(locations);
             Ship.RemainingLocations = new HashSet<Coordinates>(Ship.Locations);
             Ship.IsPlaced = true;
+            Ship.Active = true;
         }
 
         private IEnumerable<Coordinates> GetAllLocations()

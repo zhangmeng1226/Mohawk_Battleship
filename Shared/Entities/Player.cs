@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 
 namespace MBC.Shared
 {
@@ -13,7 +14,8 @@ namespace MBC.Shared
         /// </summary>
         /// <param name="newId">The ID number in the match</param>
         /// <param name="newName">The name of the player</param>
-        public Player(string newName)
+        public Player(IDNumber id, string newName)
+            : base(id)
         {
             Name = newName;
             Active = false;
@@ -193,6 +195,27 @@ namespace MBC.Shared
         public virtual void Shoot(Player opponent, int x, int y)
         {
             Shoot(new Shot(opponent, new Coordinates(x, y)));
+        }
+
+        /// <summary>
+        /// Shoots against an arbitrary player opponent at the specified X and Y coordinates.
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <returns></returns>
+        public virtual Shot Shoot(int x, int y)
+        {
+            Shot result = null;
+            foreach (Team t in Match.Teams)
+            {
+                if (!t.MembersPlr.Contains(this) && t.MembersPlr.Count > 0)
+                {
+                    result = new Shot(t.MembersPlr.First(), new Coordinates(x, y));
+                    Shoot(result);
+                    break;
+                }
+            }
+            return result;
         }
 
         /// <summary>

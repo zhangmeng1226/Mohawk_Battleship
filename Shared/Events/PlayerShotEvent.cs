@@ -37,10 +37,6 @@ namespace MBC.Shared.Events
             {
                 throw new InvalidEventException(this, "The player is inactive.");
             }
-            if (Player.Match.CurrentPlayer != Player)
-            {
-                throw new InvalidEventException(this, "It is not the player's turn.");
-            }
             if (Shot.Coordinates < new Coordinates(0, 0) || Shot.Coordinates > Player.Match.FieldSize)
             {
                 throw new InvalidEventException(this, "Invalid shot made.");

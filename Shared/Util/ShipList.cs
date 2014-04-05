@@ -63,7 +63,7 @@ namespace MBC.Shared
             maxLength = shipLengths[0];
             foreach (var length in shipLengths)
             {
-                Add(new Ship(length));
+                Add(new Ship(-1, length));
             }
         }
 
@@ -269,7 +269,7 @@ namespace MBC.Shared
             var ships = new HashSet<Ship>();
             foreach (var length in lengths)
             {
-                ships.Add(new Ship(length));
+                ships.Add(new Ship(-1, length));
             }
             return ships;
         }

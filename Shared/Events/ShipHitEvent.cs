@@ -30,6 +30,10 @@ namespace MBC.Shared.Events
                 throw new InvalidEventException(this, String.Format("The ship {0} has already been hit at {1}", Ship, HitCoords));
             }
             Ship.RemainingLocations.Remove(HitCoords);
+            if (Ship.IsSunk())
+            {
+                Ship.Sink();
+            }
         }
     }
 }

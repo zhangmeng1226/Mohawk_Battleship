@@ -12,6 +12,11 @@ namespace MBC.Shared
     /// </summary>
     public abstract class Match : Entity
     {
+        public Match(IDNumber id)
+            : base(id)
+        {
+        }
+
         /// <summary>
         /// Gets a boolean value indicating whether or not the match is at the end and cannot
         /// progress further.

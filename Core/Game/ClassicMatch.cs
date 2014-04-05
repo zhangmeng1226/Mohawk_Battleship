@@ -99,7 +99,7 @@ namespace MBC.Core.Game
         {
             MatchAddPlayerEvent evCasted = (MatchAddPlayerEvent)ev;
             Player plr = evCasted.Player;
-            Team plrTeam = new Team(String.Format("{0}'s team", plr.Name));
+            Team plrTeam = new Team(FindID(Teams), String.Format("{0}'s team", plr.Name));
             TeamAdd(plrTeam);
             plrTeam.PlayerAdd(plr);
 
@@ -108,7 +108,6 @@ namespace MBC.Core.Game
             foreach (Ship ship in plr.Ships)
             {
                 ship.OnEvent += HandleShipMove;
-                ship.OnEvent += HandleShipHit;
                 ship.OnEvent += HandleShipDestroyed;
             }
         }
@@ -147,7 +146,6 @@ namespace MBC.Core.Game
             foreach (Ship ship in evCasted.Player.Ships)
             {
                 ship.OnEvent -= HandleShipMove;
-                ship.OnEvent -= HandleShipHit;
                 ship.OnEvent -= HandleShipDestroyed;
             }
         }
@@ -179,17 +177,6 @@ namespace MBC.Core.Game
                 }
             }
             evShip.Owner.Lose();
-        }
-
-        [EventFilter(typeof(ShipHitEvent))]
-        private void HandleShipHit(Event ev)
-        {
-            ShipHitEvent evCasted = (ShipHitEvent)ev;
-            Ship ship = evCasted.Ship;
-            if (ship.IsSunk())
-            {
-                ship.Sink();
-            }
         }
 
         [EventFilter(typeof(ShipMovedEvent))]
