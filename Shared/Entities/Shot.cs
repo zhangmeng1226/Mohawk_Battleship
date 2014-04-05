@@ -41,6 +41,7 @@ namespace MBC.Shared
         {
             this.coords = coords;
             Receiver = receiver;
+            ReceiverPlr = (Player)Entity.GetFromID(typeof(Player), Receiver);
         }
 
         /// <summary>
@@ -183,11 +184,6 @@ namespace MBC.Shared
         public override string ToString()
         {
             return Coordinates.ToString() + "=>[" + ReceiverPlr.ID + "]";
-        }
-
-        protected override Type GetEntityType()
-        {
-            return typeof(Shot);
         }
     }
 }

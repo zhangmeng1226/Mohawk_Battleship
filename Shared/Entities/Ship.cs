@@ -12,7 +12,7 @@ namespace MBC.Shared
     /// placement, validity, and <see cref="Shot"/> hits made against it.
     /// </summary>
     [Serializable]
-    public class Ship : Entity, IEquatable<Ship>
+    public class Ship : Entity
     {
         /// <summary>
         /// Copies an existing <see cref="Ship"/>.
@@ -127,33 +127,6 @@ namespace MBC.Shared
         }
 
         /// <summary>
-        /// Determines whether or not this <see cref="Ship"/> is equal to another <paramref name="ship"/> in
-        /// both of the values in their fields.
-        /// </summary>
-        /// <param name="ship">The <see cref="Ship"/> to compare to.</param>
-        /// <returns>A value indicating whether or not a <see cref="Ship"/> is equivalent.</returns>
-        public bool Equals(Ship ship)
-        {
-            if (ship == null)
-            {
-                return false;
-            }
-            return IsPlaced == ship.IsPlaced &&
-                Location == ship.Location &&
-                Orientation == ship.Orientation &&
-                Length == ship.Length;
-        }
-
-        /// <summary>
-        /// Determines whether or not this <see cref="Ship"/> is equal to another object.
-        /// </summary>
-        /// <param name="obj">The object to compare to.</param>
-        public override bool Equals(object obj)
-        {
-            return Equals(obj as Ship);
-        }
-
-        /// <summary>
         /// Gets a list of <see cref="Coordinates"/> that contains all of the locations occupied.
         /// </summary>
         /// <returns>An enumerable collection of <see cref="Coordinates"/>.</returns>
@@ -237,11 +210,6 @@ namespace MBC.Shared
         public override string ToString()
         {
             return String.Format("[{0}] L{1}", ID, Length);
-        }
-
-        protected override Type GetEntityType()
-        {
-            return typeof(Ship);
         }
     }
 }

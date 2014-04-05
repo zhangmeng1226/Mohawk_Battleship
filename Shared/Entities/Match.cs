@@ -215,10 +215,5 @@ namespace MBC.Shared
         {
             InvokeEvent(new MatchTeamRemoveEvent(this, team));
         }
-
-        protected override Type GetEntityType()
-        {
-            return typeof(Match);
-        }
     }
 }

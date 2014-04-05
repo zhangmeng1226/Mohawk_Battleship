@@ -1,38 +1,48 @@
-﻿using System;
+﻿using MBC.Shared.Events;
+using System;
 using System.Collections.Generic;
 
 namespace MBC.Shared
 {
     [Serializable]
-    public class Team : Entity, IEquatable<Team>
+    public class Team : Entity
     {
-        private HashSet<IDNumber> members;
+        private HashSet<Player> members = new HashSet<Player>();
 
         public Team(Team copy)
             : this(copy.ID, copy.Name, copy.IsInternal)
         {
-            members = new HashSet<IDNumber>(copy.members);
+            members = new HashSet<Player>(copy.members);
         }
 
+        [Obsolete()]
         public Team(IDNumber id, string name)
             : this(id, name, false)
         {
         }
 
+        [Obsolete()]
         public Team(IDNumber id, string name, bool internalTeam)
         {
-            members = new HashSet<IDNumber>();
             ID = id;
             Name = name;
             IsInternal = internalTeam;
         }
 
+        public Team(string name)
+        {
+            Name = name;
+            IsInternal = false;
+        }
+
+        [Obsolete()]
         public bool IsFriendly
         {
             get;
             set;
         }
 
+        [Obsolete()]
         public bool IsInternal
         {
             get;
@@ -40,6 +50,19 @@ namespace MBC.Shared
         }
 
         public HashSet<IDNumber> Members
+        {
+            get
+            {
+                HashSet<IDNumber> result = new HashSet<IDNumber>();
+                foreach (Player plr in MembersPlr)
+                {
+                    result.Add(plr.ID);
+                }
+                return result;
+            }
+        }
+
+        public HashSet<Player> MembersPlr
         {
             get
             {
@@ -53,61 +76,19 @@ namespace MBC.Shared
             set;
         }
 
-        public static bool operator !=(Team team1, Team team2)
+        public virtual void PlayerAdd(Player plr)
         {
-            return !(team1 == team2);
+            InvokeEvent(new TeamAddPlayerEvent(this, plr));
         }
 
-        public static bool operator ==(Team team1, Team team2)
+        public virtual void PlayerRemove(Player plr)
         {
-            if (Object.ReferenceEquals(team1, team2))
-            {
-                return true;
-            }
-            if (Object.ReferenceEquals(team1, null) || Object.ReferenceEquals(team2, null))
-            {
-                return false;
-            }
-            return team1.ID == team2.ID;
-        }
-
-        /// <summary>
-        /// Compares the equality of this player with another player.
-        /// </summary>
-        /// <param name="plr"></param>
-        /// <returns></returns>
-        public bool Equals(Team team)
-        {
-            return this == team;
-        }
-
-        /// <summary>
-        /// Compares the equality of this player with another object.
-        /// </summary>
-        /// <param name="obj"></param>
-        /// <returns></returns>
-        public override bool Equals(object obj)
-        {
-            return base.Equals(obj);
-        }
-
-        /// <summary>
-        /// Gets the unique identifier for this player.
-        /// </summary>
-        /// <returns></returns>
-        public override int GetHashCode()
-        {
-            return ID;
+            InvokeEvent(new TeamRemovePlayerEvent(this, plr));
         }
 
         public override string ToString()
         {
             return string.Format("[{0}] {1}", ID, Name);
-        }
-
-        protected override Type GetEntityType()
-        {
-            return typeof(Team);
         }
     }
 }

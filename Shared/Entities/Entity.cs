@@ -8,9 +8,9 @@ using System.Text;
 
 namespace MBC.Shared
 {
-    public abstract class Entity
+    public abstract class Entity : IEquatable<Entity>
     {
-        private static Dictionary<Type, HashSet<WeakReference>> idMappings = new Dictionary<Type, HashSet<WeakReference>>();
+        private static Dictionary<Type, List<WeakReference>> idMappings = new Dictionary<Type, List<WeakReference>>();
         private Queue<Event> evQueue = new Queue<Event>();
         private Dictionary<Type, List<MBCEventHandler>> filters = new Dictionary<Type, List<MBCEventHandler>>();
         private IDNumber id;
@@ -45,6 +45,47 @@ namespace MBC.Shared
             }
         }
 
+        public static Entity GetFromID(Type entityType, IDNumber entityID)
+        {
+            foreach (WeakReference reference in idMappings[entityType])
+            {
+                Entity entity = (Entity)reference.Target;
+                if (entity.ID == entityID)
+                {
+                    return entity;
+                }
+            }
+            return null;
+        }
+
+        public static bool operator !=(Entity ent1, Entity ent2)
+        {
+            return !(ent1 == ent2);
+        }
+
+        public static bool operator ==(Entity ent1, Entity ent2)
+        {
+            if (Object.ReferenceEquals(ent1, ent2))
+            {
+                return true;
+            }
+            if (Object.ReferenceEquals(ent1, null) || Object.ReferenceEquals(ent2, null))
+            {
+                return false;
+            }
+            return ent1.ID == ent2.ID && ent1.GetType() == ent2.GetType();
+        }
+
+        public override bool Equals(object obj)
+        {
+            return base.Equals(obj);
+        }
+
+        public bool Equals(Entity ent)
+        {
+            return this == ent;
+        }
+
         public override int GetHashCode()
         {
             return ID;
@@ -59,6 +100,10 @@ namespace MBC.Shared
                 foreach (object o in attributes)
                 {
                     EventFilterAttribute attribute = (EventFilterAttribute)o;
+                    if (attribute.Event == typeof(MatchAddPlayerEvent))
+                    {
+                        Console.WriteLine("Hello");
+                    }
                     if (!filters.ContainsKey(attribute.Event))
                     {
                         filters.Add(attribute.Event, new List<MBCEventHandler>());
@@ -72,8 +117,6 @@ namespace MBC.Shared
             }
         }
 
-        protected abstract Type GetEntityType();
-
         protected void InvokeEvent(Event ev)
         {
             if (evQueue.Count == 0)
@@ -82,6 +125,10 @@ namespace MBC.Shared
                 while (evQueue.Count > 0)
                 {
                     Event evInQueue = evQueue.Dequeue();
+                    if (evInQueue.GetType() == typeof(MatchAddPlayerEvent))
+                    {
+                        Console.WriteLine("Hello");
+                    }
                     evInQueue.PerformOperation();
                     Type eventType = evInQueue.GetType();
                     if (evInQueue.GetType() == typeof(MatchAddPlayerEvent))
@@ -135,19 +182,24 @@ namespace MBC.Shared
             Type entityType = ent.GetEntityType();
             if (!idMappings.ContainsKey(entityType))
             {
-                idMappings.Add(entityType, new HashSet<WeakReference>());
-            }
-            List<int> excepted = new List<int>(idMappings[entityType].Count);
-            foreach (WeakReference entRef in idMappings[entityType])
-            {
-                if (entRef.IsAlive)
-                {
-                    Entity entity = (Entity)entRef.Target;
-                    excepted.Add(entity.ID);
-                }
+                idMappings.Add(entityType, new List<WeakReference>());
             }
             idMappings[entityType].Add(new WeakReference(ent));
-            return Enumerable.Range(0, int.MaxValue).Except(excepted).First();
+            return idMappings[entityType].Count - 1;
+        }
+
+        /// <summary>
+        /// Finds the Type object of the current Type that is directly a sub class of Entity.
+        /// </summary>
+        /// <returns></returns>
+        private Type GetEntityType()
+        {
+            Type result = GetType();
+            while (result.BaseType != typeof(Entity))
+            {
+                result = result.BaseType;
+            }
+            return result;
         }
     }
 }

@@ -62,7 +62,7 @@ namespace MBC.App.Terminal.Modules
                 }
                 else if (hitEvent != null)
                 {
-                    hitBots[shotEvent.Player.ID]++;
+                    hitBots[hitEvent.Ship.Owner.ID]++;
                 }
                 lastEvent = ev;
             }

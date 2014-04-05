@@ -77,7 +77,6 @@
     <Compile Include="Events\ShipHitEvent.cs" />
     <Compile Include="Events\ShipMovedEvent.cs" />
     <Compile Include="Events\PlayerShotEvent.cs" />
-    <Compile Include="Events\PlayerTeamAssignEvent.cs" />
     <Compile Include="Events\PlayerTimeoutEvent.cs" />
     <Compile Include="Events\PlayerTurnEndEvent.cs" />
     <Compile Include="Events\PlayerWonEvent.cs" />
@@ -87,6 +86,9 @@
     <Compile Include="dep\IController.cs" />
     <Compile Include="Events\ShipEvent.cs" />
     <Compile Include="Events\ShipResetEvent.cs" />
+    <Compile Include="Events\TeamAddPlayerEvent.cs" />
+    <Compile Include="Events\TeamEvent.cs" />
+    <Compile Include="Events\TeamRemovePlayerEvent.cs" />
     <Compile Include="IController2.cs" />
     <Compile Include="Datatypes\IDNumber.cs" />
     <Compile Include="Exceptions\InvalidEventException.cs" />

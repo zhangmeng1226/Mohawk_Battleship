@@ -117,13 +117,13 @@ namespace MBC.Shared
             var opponents = new HashSet<IDNumber>();
             foreach (var team in Teams)
             {
-                if (!team.Value.IsInternal && (!team.Value.Members.Contains(ID) || !team.Value.IsFriendly))
+                if (team.Value != MyTeam)
                 {
-                    foreach (var id in team.Value.Members)
+                    foreach (IDNumber plr in team.Value.Members)
                     {
-                        if (id != ID)
+                        if (plr != ID)
                         {
-                            opponents.Add(id);
+                            opponents.Add(plr);
                         }
                     }
                 }
@@ -243,20 +243,7 @@ namespace MBC.Shared
 
         protected IDNumber NextOpponent()
         {
-            foreach (var team in Teams)
-            {
-                if (!team.Value.IsInternal && (!team.Value.Members.Contains(ID) || !team.Value.IsFriendly))
-                {
-                    foreach (var id in team.Value.Members)
-                    {
-                        if (id != ID)
-                        {
-                            return id;
-                        }
-                    }
-                }
-            }
-            return -1;
+            return AllOpponents()[0];
         }
 
         /// <summary>

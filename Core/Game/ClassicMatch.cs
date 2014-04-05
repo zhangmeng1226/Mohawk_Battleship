@@ -99,14 +99,23 @@ namespace MBC.Core.Game
         {
             MatchAddPlayerEvent evCasted = (MatchAddPlayerEvent)ev;
             Player plr = evCasted.Player;
+            Team plrTeam = new Team(String.Format("{0}'s team", plr.Name));
+            TeamAdd(plrTeam);
+            plrTeam.PlayerAdd(plr);
+
             plr.OnEvent += HandlePlayerShot;
-            plr.OnEvent += HandleTurnEnd;
+            plr.OnEvent += HandlePlayerLose;
             foreach (Ship ship in plr.Ships)
             {
                 ship.OnEvent += HandleShipMove;
                 ship.OnEvent += HandleShipHit;
                 ship.OnEvent += HandleShipDestroyed;
             }
+        }
+
+        [EventFilter(typeof(PlayerLostEvent))]
+        private void HandlePlayerLose(Event ev)
+        {
         }
 
         [EventFilter(typeof(PlayerShotEvent))]
@@ -119,19 +128,14 @@ namespace MBC.Core.Game
             {
                 throw new InvalidEventException(evCasted, REASON_NOT_TURN);
             }
-            if (plr.ShotsMade.Contains(shot))
+            if (plr.ShotsMade.Count(x => x == shot) > 1)
             {
                 plr.Disqualify(REASON_SHOT);
                 plr.Lose();
                 waitSignal.Set();
                 throw new InvalidEventException(evCasted, REASON_SHOT);
             }
-
-            Ship shipHit = ShipList.GetShipAt(evCasted.Shot);
-            if (shipHit != null)
-            {
-                shipHit.Hit(shot.Coordinates);
-            }
+            waitList.Remove(plr);
             waitSignal.Set();
         }
 
@@ -140,7 +144,6 @@ namespace MBC.Core.Game
         {
             MatchRemovePlayerEvent evCasted = (MatchRemovePlayerEvent)ev;
             evCasted.Player.OnEvent -= HandlePlayerShot;
-            evCasted.Player.OnEvent -= HandleTurnEnd;
             foreach (Ship ship in evCasted.Player.Ships)
             {
                 ship.OnEvent -= HandleShipMove;
@@ -204,19 +207,6 @@ namespace MBC.Core.Game
                     waitSignal.Set();
                 }
             }
-        }
-
-        [EventFilter(typeof(PlayerTurnEndEvent))]
-        private void HandleTurnEnd(Event ev)
-        {
-            PlayerTurnEndEvent evCasted = (PlayerTurnEndEvent)ev;
-            Player plr = evCasted.Player;
-
-            if (plr == CurrentPlayer)
-            {
-                waitList.Remove(plr);
-            }
-            waitSignal.Set();
         }
 
         private void WaitForTimeout()

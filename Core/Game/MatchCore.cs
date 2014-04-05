@@ -117,6 +117,10 @@ namespace MBC.Core.Game
             ControlledPlayer newPlayer = new ControlledPlayer(skeleton.GetAttribute<NameAttribute>().Name, skeleton.CreateInstance());
             newPlayer.OnEvent += ApplyEvent;
             PlayerAdd(newPlayer);
+            foreach (Ship ship in newPlayer.Ships)
+            {
+                ship.OnEvent += ApplyEvent;
+            }
             newPlayer.Controller.Player = newPlayer;
         }
 

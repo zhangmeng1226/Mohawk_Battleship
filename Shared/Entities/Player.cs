@@ -6,7 +6,7 @@ using System.ComponentModel;
 namespace MBC.Shared
 {
     [Serializable]
-    public class Player : Entity, IEquatable<Player>
+    public class Player : Entity
     {
         /// <summary>
         /// Constructs a Player with an ID and a name. This player will not have a controller.
@@ -106,15 +106,6 @@ namespace MBC.Shared
         }
 
         /// <summary>
-        /// Gets or sets the team that this player is on.
-        /// </summary>
-        public Team Team
-        {
-            get;
-            internal set;
-        }
-
-        /// <summary>
         /// Gets or sets the number of timeouts the controller encountered in the match.
         /// </summary>
         public int Timeouts
@@ -130,18 +121,6 @@ namespace MBC.Shared
         {
             get;
             internal set;
-        }
-
-        /// <summary>
-        /// Assigns this player to a team
-        /// </summary>
-        /// <param name="player"></param>
-        /// <returns>The generated event</returns>
-        /// <exception cref="InvalidEventException">Thrown when the event being created is not valid for the
-        /// current state of the player.</exception>
-        public virtual void AssignToTeam(Team team)
-        {
-            InvokeEvent(new PlayerTeamAssignEvent(this, team));
         }
 
         /// <summary>
@@ -172,26 +151,6 @@ namespace MBC.Shared
         public virtual void EndTurn()
         {
             InvokeEvent(new PlayerTurnEndEvent(this));
-        }
-
-        /// <summary>
-        /// Compares the equality of this player with another player.
-        /// </summary>
-        /// <param name="plr"></param>
-        /// <returns></returns>
-        public bool Equals(Player plr)
-        {
-            return GetHashCode() == plr.GetHashCode();
-        }
-
-        /// <summary>
-        /// Compares the equality of this player with another object.
-        /// </summary>
-        /// <param name="obj"></param>
-        /// <returns></returns>
-        public override bool Equals(object obj)
-        {
-            return base.Equals(obj);
         }
 
         /// <summary>
@@ -267,11 +226,6 @@ namespace MBC.Shared
         public virtual void Win()
         {
             InvokeEvent(new PlayerWonEvent(this));
-        }
-
-        protected override Type GetEntityType()
-        {
-            return typeof(Player);
         }
     }
 }

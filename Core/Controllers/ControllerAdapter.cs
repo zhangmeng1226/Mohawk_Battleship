@@ -51,14 +51,7 @@ namespace MBC.Core.Controllers
         {
             MatchAddPlayerEvent evCasted = (MatchAddPlayerEvent)ev;
             Player plr = evCasted.Player;
-            plr.OnEvent += HandlePlayerLose;
-            plr.OnEvent += HandlePlayerShot;
-            plr.OnEvent += HandlePlayerWin;
-            plr.OnEvent += HandleTurnBegin;
-            if (plr == myPlayer)
-            {
-                oldController.ID = plr.ID;
-            }
+            HookPlayerEvents(plr);
             oldController.Registers.Add(plr.ID, new Register(plr.ID, plr.Name));
         }
 
@@ -80,10 +73,7 @@ namespace MBC.Core.Controllers
         private void HandlePlayerRemove(Event ev)
         {
             Player plr = ((MatchRemovePlayerEvent)ev).Player;
-            plr.OnEvent -= HandlePlayerLose;
-            plr.OnEvent -= HandlePlayerShot;
-            plr.OnEvent -= HandlePlayerWin;
-            plr.OnEvent -= HandleTurnBegin;
+            UnhookPlayerEvents(plr);
             oldController.Registers.Remove(((MatchRemovePlayerEvent)ev).Player.ID);
         }
 
@@ -114,10 +104,7 @@ namespace MBC.Core.Controllers
         [EventFilter(typeof(PlayerWonEvent))]
         private void HandlePlayerWin(Event ev)
         {
-            if (((PlayerWonEvent)ev).Player == myPlayer)
-            {
-                oldController.RoundWon();
-            }
+            oldController.RoundWon();
         }
 
         [EventFilter(typeof(RoundBeginEvent))]
@@ -144,20 +131,30 @@ namespace MBC.Core.Controllers
         [EventFilter(typeof(MatchTeamRemoveEvent))]
         private void HandleTeamRemove(Event ev)
         {
-            oldController.Teams.Remove(((MatchTeamRemoveEvent)ev).Team.ID);
+            Team team = ((MatchTeamRemoveEvent)ev).Team;
+            oldController.Teams.Remove(team.ID);
         }
 
         [EventFilter(typeof(PlayerTurnBeginEvent))]
         private void HandleTurnBegin(Event ev)
         {
-            if (Player.Match.CurrentPlayer == myPlayer)
+            myPlayer.Shoot(oldController.MakeShot());
+        }
+
+        private void HookPlayerEvents(Player plr)
+        {
+            plr.OnEvent += HandlePlayerShot;
+            plr.OnEvent += HandlePlayerLose;
+            if (plr == myPlayer)
             {
-                myPlayer.Shoot(oldController.MakeShot());
+                plr.OnEvent += HandleTurnBegin;
+                plr.OnEvent += HandlePlayerWin;
             }
         }
 
         private void Initialize()
         {
+            HookPlayerEvents(myPlayer);
             Match containingMatch = myPlayer.Match;
             oldController.ControllerMessageEvent += (string msg) =>
             {
@@ -170,6 +167,7 @@ namespace MBC.Core.Controllers
             oldController.Registers = new Dictionary<IDNumber, Register>();
             foreach (var player in containingMatch.Players)
             {
+                HookPlayerEvents(player);
                 oldController.Registers.Add(player.ID, new Register(player.ID, player.Name));
             }
 
@@ -178,6 +176,7 @@ namespace MBC.Core.Controllers
             {
                 oldController.Teams.Add(team.ID, team);
             }
+            oldController.ID = myPlayer.ID;
 
             containingMatch.OnEvent += HandlePlayerAdd;
             containingMatch.OnEvent += HandlePlayerRemove;
@@ -186,6 +185,14 @@ namespace MBC.Core.Controllers
             containingMatch.OnEvent += HandleMatchBegin;
             containingMatch.OnEvent += HandleMatchEnd;
             containingMatch.OnEvent += HandleRoundBegin;
+        }
+
+        private void UnhookPlayerEvents(Player plr)
+        {
+            plr.OnEvent -= HandlePlayerLose;
+            plr.OnEvent -= HandlePlayerShot;
+            plr.OnEvent -= HandlePlayerWin;
+            plr.OnEvent -= HandleTurnBegin;
         }
     }
 }

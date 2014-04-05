@@ -47,6 +47,7 @@ namespace MBC.Shared.Events
             foreach (Player plr in Match.Players)
             {
                 plr.Active = true;
+                plr.ShotsMade.Clear();
                 if (Match.CurrentRound > 0)
                 {
                     foreach (Ship ship in plr.Ships)
