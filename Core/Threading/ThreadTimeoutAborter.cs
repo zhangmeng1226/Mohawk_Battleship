@@ -12,9 +12,9 @@ namespace MBC.Core.Controllers
     /// </summary>
     public class ThreadTimeoutAborter
     {
-        private Timer timer;
         private Thread abortThread;
         private int timeout;
+        private Timer timer;
 
         /// <summary>
         /// Initialization
@@ -26,25 +26,6 @@ namespace MBC.Core.Controllers
             timer = new Timer(new TimerCallback(ThreadTimeout));
             abortThread = th;
             timeout = time;
-        }
-
-        /// <summary>
-        /// The time (in milliseconds) to wait before aborting a thread once monitoring begins
-        /// </summary>
-        public int TimeoutMillis
-        {
-            get
-            {
-                return timeout;
-            }
-            set
-            {
-                if (timeout < 0)
-                {
-                    throw new ArgumentOutOfRangeException("Cannot provide a timeout value less than 0");
-                }
-                timeout = value;
-            }
         }
 
         /// <summary>
@@ -66,14 +47,22 @@ namespace MBC.Core.Controllers
             }
         }
 
-        /// <summary>
-        /// Stops the timer and aborts the thread.
+        /// The time (in milliseconds) to wait before aborting a thread once monitoring begins
         /// </summary>
-        /// <param name="stateObject">Unused</param>
-        private void ThreadTimeout(object stateObject)
+        public int TimeoutMillis
         {
-            timer.Change(Timeout.Infinite, Timeout.Infinite);
-            AbortThread.Abort();
+            get
+            {
+                return timeout;
+            }
+            set
+            {
+                if (timeout < 0)
+                {
+                    throw new ArgumentOutOfRangeException("Cannot provide a timeout value less than 0");
+                }
+                timeout = value;
+            }
         }
 
         /// <summary>
@@ -82,6 +71,7 @@ namespace MBC.Core.Controllers
         public void MonBegin()
         {
             timer.Change(TimeoutMillis, Timeout.Infinite);
+            AbortThread = Thread.CurrentThread;
         }
 
         /// <summary>
@@ -91,6 +81,16 @@ namespace MBC.Core.Controllers
         public void MonEnd()
         {
             timer.Change(Timeout.Infinite, Timeout.Infinite);
+        }
+
+        /// <summary>
+        /// Stops the timer and aborts the thread.
+        /// </summary>
+        /// <param name="stateObject">Unused</param>
+        private void ThreadTimeout(object stateObject)
+        {
+            timer.Change(Timeout.Infinite, Timeout.Infinite);
+            AbortThread.Abort();
         }
     }
 }

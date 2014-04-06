@@ -10,14 +10,35 @@ namespace MBC.Shared
 {
     public abstract class Entity : IEquatable<Entity>
     {
-        private Queue<Event> evQueue = new Queue<Event>();
+        private Dictionary<Type, List<Entity>> children = new Dictionary<Type, List<Entity>>();
+        private Queue<EntityEventInvokeQueueItem> evQueue;
         private Dictionary<Type, List<MBCEventHandler>> filters = new Dictionary<Type, List<MBCEventHandler>>();
         private IDNumber id;
         private List<MBCEventHandler> noFilters = new List<MBCEventHandler>();
+        private Entity parent;
 
-        public Entity(IDNumber id)
+        public Entity(Entity parent)
         {
-            ID = id;
+            this.parent = parent;
+            if (parent == null)
+            {
+                evQueue = new Queue<EntityEventInvokeQueueItem>();
+                id = 0;
+            }
+            else
+            {
+                Type myType = GetType();
+                var parentChildren = parent.children;
+                if (!parentChildren.ContainsKey(myType))
+                {
+                    parentChildren.Add(myType, new List<Entity>());
+                }
+                List<Entity> children = parentChildren[myType];
+                id = FindID(children);
+                children.Add(this);
+                evQueue = parent.evQueue;
+                OnEvent += parent.NotifyEvent;
+            }
         }
 
         public event MBCEventHandler OnEvent
@@ -83,6 +104,14 @@ namespace MBC.Shared
             return ID;
         }
 
+        protected static void InvokeInList(IList<MBCEventHandler> handlers, Event ev)
+        {
+            foreach (MBCEventHandler handler in handlers)
+            {
+                handler(ev);
+            }
+        }
+
         protected virtual void AddEventHandler(MBCEventHandler del)
         {
             MethodInfo method = del.Method;
@@ -113,38 +142,19 @@ namespace MBC.Shared
         {
             if (evQueue.Count == 0)
             {
-                evQueue.Enqueue(ev);
+                evQueue.Enqueue(new EntityEventInvokeQueueItem(this, ev));
+                ev.PerformOperation();
                 while (evQueue.Count > 0)
                 {
-                    Event evInQueue = evQueue.Dequeue();
-                    if (evInQueue.GetType() == typeof(MatchAddPlayerEvent))
-                    {
-                        Console.WriteLine("Hello");
-                    }
-                    evInQueue.PerformOperation();
-                    Type eventType = evInQueue.GetType();
-                    if (evInQueue.GetType() == typeof(MatchAddPlayerEvent))
-                    {
-                        Console.WriteLine("Hello");
-                    }
-                    if (filters.ContainsKey(eventType))
-                    {
-                        InvokeInList(filters[eventType], evInQueue);
-                    }
-                    InvokeInList(noFilters, evInQueue);
+                    EntityEventInvokeQueueItem item = evQueue.Peek();
+                    item.Entity.NotifyEvent(item.Event);
+                    evQueue.Dequeue();
                 }
             }
             else
             {
-                evQueue.Enqueue(ev);
-            }
-        }
-
-        protected virtual void InvokeInList(IList<MBCEventHandler> handlers, Event ev)
-        {
-            foreach (MBCEventHandler handler in handlers)
-            {
-                handler(ev);
+                evQueue.Enqueue(new EntityEventInvokeQueueItem(this, ev));
+                ev.PerformOperation();
             }
         }
 
@@ -181,6 +191,29 @@ namespace MBC.Shared
                 result = result.BaseType;
             }
             return result;
+        }
+
+        private void NotifyEvent(Event ev)
+        {
+            Type eventType = ev.GetType();
+            if (filters.ContainsKey(eventType))
+            {
+                InvokeInList(filters[eventType], ev);
+            }
+            InvokeInList(noFilters, ev);
+        }
+
+        private class EntityEventInvokeQueueItem
+        {
+            public EntityEventInvokeQueueItem(Entity entity, Event ev)
+            {
+                Entity = entity;
+                Event = ev;
+            }
+
+            public Entity Entity { get; set; }
+
+            public Event Event { get; set; }
         }
     }
 }

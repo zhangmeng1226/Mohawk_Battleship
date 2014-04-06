@@ -34,7 +34,7 @@ namespace MBC.Core.Game
         /// </summary>
         /// <param name="config"></param>
         public MatchCore(Configuration config)
-            : base(0)
+            : base((Entity)null)
         {
             Events = new List<Event>();
             Players = new HashSet<Player>();
@@ -116,7 +116,7 @@ namespace MBC.Core.Game
         /// <returns></returns>
         public void PlayerCreate(ControllerSkeleton skeleton)
         {
-            ControlledPlayer newPlayer = new ControlledPlayer(FindID(Players), skeleton.GetAttribute<NameAttribute>().Name, skeleton.CreateInstance());
+            ControlledPlayer newPlayer = new ControlledPlayer(this, skeleton.GetAttribute<NameAttribute>().Name, skeleton.CreateInstance());
             newPlayer.OnEvent += ApplyEvent;
             PlayerAdd(newPlayer);
             foreach (Ship ship in newPlayer.Ships)
@@ -224,7 +224,7 @@ namespace MBC.Core.Game
             StartingShips = new HashSet<Ship>();
             foreach (int length in conf.GetList<int>("mbc_ship_sizes"))
             {
-                StartingShips.Add(new Ship(FindID(StartingShips), length));
+                StartingShips.Add(new Ship(this, length));
             }
             TimeLimit = conf.GetValue<int>("mbc_player_timeout");
         }

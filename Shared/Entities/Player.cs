@@ -14,8 +14,8 @@ namespace MBC.Shared
         /// </summary>
         /// <param name="newId">The ID number in the match</param>
         /// <param name="newName">The name of the player</param>
-        public Player(IDNumber id, string newName)
-            : base(id)
+        public Player(Entity parent, string newName)
+            : base(parent)
         {
             Name = newName;
             Active = false;

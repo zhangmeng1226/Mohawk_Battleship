@@ -41,7 +41,7 @@ namespace MBC.Shared.Events
             Player.Match = Match;
             foreach (Ship startShip in Match.StartingShips)
             {
-                Ship newShip = new Ship(startShip);
+                Ship newShip = new Ship(Player, startShip.Length);
                 newShip.Owner = Player;
                 Player.Ships.Add(newShip);
             }

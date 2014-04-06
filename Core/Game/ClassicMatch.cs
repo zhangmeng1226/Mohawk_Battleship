@@ -99,7 +99,7 @@ namespace MBC.Core.Game
         {
             MatchAddPlayerEvent evCasted = (MatchAddPlayerEvent)ev;
             Player plr = evCasted.Player;
-            Team plrTeam = new Team(FindID(Teams), String.Format("{0}'s team", plr.Name));
+            Team plrTeam = new Team(this, String.Format("{0}'s team", plr.Name));
             TeamAdd(plrTeam);
             plrTeam.PlayerAdd(plr);
 

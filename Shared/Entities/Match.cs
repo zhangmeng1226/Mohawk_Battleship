@@ -12,8 +12,8 @@ namespace MBC.Shared
     /// </summary>
     public abstract class Match : Entity
     {
-        public Match(IDNumber id)
-            : base(id)
+        public Match(Entity parent)
+            : base(parent)
         {
         }
 

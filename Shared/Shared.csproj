@@ -101,7 +101,7 @@
     <Compile Include="Datatypes\GameMode.cs" />
     <Compile Include="Datatypes\RoundMode.cs" />
     <Compile Include="Util\ShipList.cs" />
-    <Compile Include="Entities\Shot.cs" />
+    <Compile Include="Datatypes\Shot.cs" />
     <Compile Include="Util\ShotList.cs" />
     <Compile Include="Datatypes\Coordinates.cs" />
     <Compile Include="dep\Controller.cs" />

@@ -9,22 +9,21 @@ namespace MBC.Shared
     {
         private HashSet<Player> members = new HashSet<Player>();
 
-        public Team(Team copy)
-            : this(copy.ID, copy.Name, copy.IsInternal)
+        public Team(Entity parent, Team copy)
+            : this(parent, copy.Name, copy.IsInternal)
         {
             members = new HashSet<Player>(copy.members);
         }
 
-        public Team(IDNumber id, string name)
-            : this(id, name, false)
+        public Team(Entity parent, string name)
+            : this(parent, name, false)
         {
         }
 
         [Obsolete()]
-        public Team(IDNumber id, string name, bool internalTeam)
-            : base(id)
+        public Team(Entity parent, string name, bool internalTeam)
+            : base(parent)
         {
-            ID = id;
             Name = name;
             IsInternal = internalTeam;
         }

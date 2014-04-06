@@ -33,7 +33,7 @@ namespace MBC.App.Terminal.Modules
 
             WriteCenteredText(string.Format("{0}                 vs.               {1}", competition.Players.First(), competition.Players.Last()));
             NewLine();
-            WriteCenteredText(string.Format("{0} wins                                  {1} wins", competition.Players.First(), competition.Players.Last()));
+            WriteCenteredText(string.Format("{0} wins                                   {1} wins", competition.Players.First().Wins, competition.Players.Last().Wins));
 
             NewLine();
 

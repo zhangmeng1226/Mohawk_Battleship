@@ -19,8 +19,9 @@ namespace MBC.Shared
         /// </summary>
         /// <param name="shipCopy"></param>
         public Ship(Ship shipCopy)
-            : base(shipCopy.ID)
+            : base(null)
         {
+            ID = Guid.NewGuid().GetHashCode();
             IsPlaced = shipCopy.IsPlaced;
             Location = shipCopy.Location;
             Orientation = shipCopy.Orientation;
@@ -34,8 +35,8 @@ namespace MBC.Shared
         /// <param name="length">The number of cells the <see cref="Ship"/> occupies.</param>
         /// <exception cref="ArgumentOutOfRangeException">Thrown when the <paramref name="length"/> is less
         /// than 1.</exception>
-        public Ship(IDNumber id, int length)
-            : base(id)
+        public Ship(Entity parent, int length)
+            : base(parent)
         {
             if (length < 1 || length > 31)
             {
