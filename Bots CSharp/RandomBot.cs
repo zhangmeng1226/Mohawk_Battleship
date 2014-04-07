@@ -14,7 +14,7 @@ namespace MBC.Controllers
     /// An MBC battleship contender. There is no strategy behind the RandomBot besides randomly placing ships and randomly placing shots.
     /// </summary>
     [Name("RandomBot C#")]
-    [Version(1, 1)]
+    [Version(2, 0)]
     [Capabilities(GameMode.Classic, GameMode.Salvo, GameMode.Multi)]
     [Description("A controller that uses a random number generator to make all of its decisions.")]
     [Author(FirstName = "Ryan", LastName = "Albert", AKAName = "piknik",
