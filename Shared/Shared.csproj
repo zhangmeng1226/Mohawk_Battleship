@@ -70,7 +70,7 @@
     <Compile Include="Events\NetEvent.cs" />
     <Compile Include="Events\NetConnectEvent.cs" />
     <Compile Include="Events\NetIncomingEvent.cs" />
-    <Compile Include="Events\PlayerInvalidActionEvent.cs" />
+    <Compile Include="Events\PlayerDisqualifyEvent.cs" />
     <Compile Include="Events\PlayerEvent.cs" />
     <Compile Include="Events\PlayerLostEvent.cs" />
     <Compile Include="Events\PlayerMessageEvent.cs" />
@@ -79,7 +79,6 @@
     <Compile Include="Events\ShipHitEvent.cs" />
     <Compile Include="Events\ShipMovedEvent.cs" />
     <Compile Include="Events\PlayerShotEvent.cs" />
-    <Compile Include="Events\PlayerTimeoutEvent.cs" />
     <Compile Include="Events\PlayerTurnEndEvent.cs" />
     <Compile Include="Events\PlayerWonEvent.cs" />
     <Compile Include="Events\RoundBeginEvent.cs" />

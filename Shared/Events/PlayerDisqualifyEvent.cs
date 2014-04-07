@@ -9,13 +9,13 @@ namespace MBC.Shared.Events
     /// Provides information about a <see cref="Register"/> that had lost a <see cref="GameLogic"/>.
     /// </summary>
     [Serializable]
-    public class PlayerInvalidActionEvent : PlayerEvent
+    public class PlayerDisqualifiedEvent : PlayerEvent
     {
         /// <summary>
         /// Constructs the event with the player that lost.
         /// </summary>
         /// <param name="loser"></param>
-        public PlayerInvalidActionEvent(Player loser, string reason)
+        public PlayerDisqualifiedEvent(Player loser, string reason)
             : base(loser)
         {
             Reason = reason;
@@ -32,7 +32,7 @@ namespace MBC.Shared.Events
 
         protected internal override void PerformOperation()
         {
-            Player.InvalidActions++;
+            Player.Disqualifications++;
         }
     }
 }

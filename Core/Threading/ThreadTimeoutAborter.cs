@@ -21,30 +21,10 @@ namespace MBC.Core.Controllers
         /// </summary>
         /// <param name="th">The thread to abort at timeout</param>
         /// <param name="time">The timeout value</param>
-        public ThreadTimeoutAborter(Thread th, int time)
+        public ThreadTimeoutAborter(int time)
         {
             timer = new Timer(new TimerCallback(ThreadTimeout));
-            abortThread = th;
             timeout = time;
-        }
-
-        /// <summary>
-        /// The Thread to abort once the timeout value has been reached.
-        /// </summary>
-        public Thread AbortThread
-        {
-            get
-            {
-                return abortThread;
-            }
-            set
-            {
-                if (abortThread == null)
-                {
-                    throw new NullReferenceException("Cannot set aborting Threads to null.");
-                }
-                abortThread = value;
-            }
         }
 
         /// The time (in milliseconds) to wait before aborting a thread once monitoring begins
@@ -71,7 +51,7 @@ namespace MBC.Core.Controllers
         public void MonBegin()
         {
             timer.Change(TimeoutMillis, Timeout.Infinite);
-            AbortThread = Thread.CurrentThread;
+            abortThread = Thread.CurrentThread;
         }
 
         /// <summary>
@@ -90,7 +70,7 @@ namespace MBC.Core.Controllers
         private void ThreadTimeout(object stateObject)
         {
             timer.Change(Timeout.Infinite, Timeout.Infinite);
-            AbortThread.Abort();
+            abortThread.Abort();
         }
     }
 }

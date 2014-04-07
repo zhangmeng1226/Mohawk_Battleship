@@ -203,6 +203,7 @@ namespace MBC.Core.Game
             waitSignal.Reset();
             foreach (Player timeoutPlayer in waitList)
             {
+                timeoutPlayer.Disqualify(REASON_TIMEOUT);
                 timeoutPlayer.Lose();
             }
             waitList.Clear();

@@ -35,7 +35,7 @@ namespace MBC.Shared.Entities
         /// <summary>
         /// Gets or sets the number of disqualifications this player accumulated.
         /// </summary>
-        public int InvalidActions
+        public int Disqualifications
         {
             get;
             internal set;
@@ -108,15 +108,6 @@ namespace MBC.Shared.Entities
         }
 
         /// <summary>
-        /// Gets or sets the number of timeouts the controller encountered in the match.
-        /// </summary>
-        public int Timeouts
-        {
-            get;
-            internal set;
-        }
-
-        /// <summary>
         /// Gets or sets the number of wins
         /// </summary>
         public int Wins
@@ -140,7 +131,7 @@ namespace MBC.Shared.Entities
         /// <returns>The generated event</returns>
         public virtual void Disqualify(String reason)
         {
-            InvokeEvent(new PlayerInvalidActionEvent(this, reason));
+            InvokeEvent(new PlayerDisqualifiedEvent(this, reason));
         }
 
         /// <summary>
@@ -216,18 +207,6 @@ namespace MBC.Shared.Entities
                 }
             }
             return result;
-        }
-
-        /// <summary>
-        /// Makes the player timeout.
-        /// </summary>
-        /// <param name="player"></param>
-        /// <returns>The generated event</returns>
-        /// <exception cref="InvalidEventException">Thrown when the event being created is not valid for the
-        /// current state of the player.</exception>
-        public virtual void Timeout(String method)
-        {
-            InvokeEvent(new PlayerTimeoutEvent(this, method));
         }
 
         /// <summary>
