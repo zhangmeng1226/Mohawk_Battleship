@@ -24,7 +24,7 @@ namespace MBC.App.Terminal.Modules
         protected override void Display()
         {
             Console.ForegroundColor = ConsoleColor.Red;
-            WriteCenteredText("Version: 0.7  Date: April 5, 2014");
+            WriteCenteredText("Version: 0.71  Date: April 7, 2014");
             NewLine();
             Console.ForegroundColor = ConsoleColor.Gray;
             WriteCenteredText("=====MAIN MENU=====");

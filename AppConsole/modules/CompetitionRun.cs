@@ -17,30 +17,19 @@ namespace MBC.App.Terminal.Modules
 {
     public class CompetitionRun : TerminalModule
     {
-        private int boardsBaseY;
         private MatchCore competition;
-        private string currentEventString;
-        private StreamWriter fileWriter;
-        private bool isWritten;
-        private int lastMillis;
         private int millisDelay;
-        private int roundsRun;
         private int turns;
 
         public CompetitionRun(MatchCore comp, int delay, bool eventsToFile)
         {
-            isWritten = false;
-            boardsBaseY = -1;
             turns = 0;
-            roundsRun = 0;
             competition = comp;
-            currentEventString = "";
             millisDelay = delay;
 
-            comp.OnEvent += RoundEnd;
             comp.OnEvent += MatchEnd;
-            comp.OnEvent += LastEvent;
-            comp.OnEvent += RoundTurn;
+            comp.OnEvent += WriteScoreRounds;
+            comp.OnEvent += WriteHeader;
 
             if (millisDelay > 0)
             {
@@ -50,29 +39,13 @@ namespace MBC.App.Terminal.Modules
                 comp.OnEvent += ASCIIUpdateShotHit;
                 comp.OnEvent += MakeASCII;
                 comp.OnEvent += SleepEvent;
+                comp.OnEvent += WriteTurns;
             }
-            /*if (eventsToFile)
-            {
-                fileWriter = new StreamWriter(Environment.CurrentDirectory + "\\..\\match_" + competition.ID + ".txt");
-                fileWriter.WriteLine("START OF MATCH " + competition.ID);
-            }*/
         }
 
         public void Begin()
         {
             new Thread(competition.Play).Start();
-        }
-
-        protected override void Display()
-        {
-            WriteHeader();
-            WriteScoreRounds();
-            if (!isWritten)
-            {
-                boardsBaseY = CurrentY + 2;
-                isWritten = true;
-            }
-            Console.ForegroundColor = ConsoleColor.White;
         }
 
         [EventFilter(typeof(ShipDestroyedEvent))]
@@ -111,31 +84,10 @@ namespace MBC.App.Terminal.Modules
             }
         }
 
-        [EventFilter(typeof(RoundEndEvent))]
-        private void CompRoundEnd(Event ev)
-        {
-            turns = 0;
-            roundsRun++;
-            WriteScoreRounds();
-            Console.ForegroundColor = ConsoleColor.Black;
-            AlignToLine(6);
-            WriteCenteredText("xxx turns made this round.");
-            currentEventString = "!!!New round!!!";
-        }
-
-        private void FileWriteEvent()
-        {
-            fileWriter.WriteLine(currentEventString);
-        }
-
-        private void LastEvent(Event ev)
-        {
-            lastMillis = ev.Millis;
-        }
-
         [EventFilter(typeof(RoundBeginEvent))]
         private void MakeASCII(Event ev)
         {
+            turns = 0;
             for (int i = 0; i < 2; i++)
             {
                 for (int x = -1; x < competition.FieldSize.X; x++)
@@ -170,10 +122,6 @@ namespace MBC.App.Terminal.Modules
             BattleshipConsole.RemoveModule(this);
             BattleshipConsole.AddModule(new ResultDisplay(competition));
             BattleshipConsole.UpdateDisplay();
-            if (fileWriter != null)
-            {
-                fileWriter.Close();
-            }
         }
 
         private void ModifyASCII(int ctrlIdx, int x, int y, char character, ConsoleColor text, ConsoleColor background)
@@ -181,32 +129,12 @@ namespace MBC.App.Terminal.Modules
             int sidePad = 10;
             int pad = (Width - 2) - (competition.FieldSize.X + (sidePad * 3));
             int baseX = sidePad + ctrlIdx * (competition.FieldSize.X + pad);
-            AlignToCoord(baseX + x, boardsBaseY + y);
+            AlignToCoord(baseX + x, 8 + y);
             ColorStore prevColors = ColorStore.StoreCurrentColors();
             Console.BackgroundColor = background;
             Console.ForegroundColor = text;
             WriteCharRepeat(character, 1);
             prevColors.Restore();
-        }
-
-        [EventFilter(typeof(RoundEndEvent))]
-        private void RoundEnd(Event ev)
-        {
-            turns = 0;
-            roundsRun++;
-            WriteScoreRounds();
-            currentEventString = "!!!New round!!!";
-        }
-
-        [EventFilter(typeof(PlayerTurnEndEvent))]
-        private void RoundTurn(Event ev)
-        {
-            if (millisDelay > 0)
-            {
-                turns++;
-                WriteTurns();
-                Thread.Sleep(millisDelay);
-            }
         }
 
         [EventFilter(typeof(PlayerLostEvent))]
@@ -215,7 +143,8 @@ namespace MBC.App.Terminal.Modules
             Thread.Sleep(1000);
         }
 
-        private void WriteHeader()
+        [EventFilter(typeof(MatchBeginEvent))]
+        private void WriteHeader(Event ev)
         {
             AlignToLine(0);
             Console.ForegroundColor = ConsoleColor.White;
@@ -226,21 +155,25 @@ namespace MBC.App.Terminal.Modules
             WriteCenteredText(players[0] + " vs. " + players[1]);
         }
 
-        private void WriteScoreRounds()
+        [EventFilter(typeof(RoundEndEvent))]
+        private void WriteScoreRounds(Event ev)
         {
             Console.ForegroundColor = ConsoleColor.White;
             AlignToLine(3);
             var players = competition.Players.ToArray();
             WriteCenteredText("[" + players[0].Wins + "]     wins     [" + players[1].Wins + "]");
             NewLine();
-            WriteCenteredText(roundsRun + " rounds out of " + competition.NumberOfRounds);
+            WriteCenteredText((competition.CurrentRound + 1) + " rounds out of " + competition.NumberOfRounds);
         }
 
-        private void WriteTurns()
+        [EventFilter(typeof(PlayerTurnEndEvent))]
+        private void WriteTurns(Event ev)
         {
+            turns++;
             AlignToLine(6);
             Console.ForegroundColor = ConsoleColor.Red;
             WriteCenteredText(turns + " turns made this round.");
+            Thread.Sleep(millisDelay);
         }
     }
 }

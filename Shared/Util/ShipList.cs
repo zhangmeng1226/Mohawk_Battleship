@@ -9,7 +9,6 @@ namespace MBC.Shared
     /// Contains a number of <see cref="Ship"/>s and provides a number of functions to operate on all
     /// of them.
     /// </summary>
-    [Obsolete]
     public class ShipList : ICollection<Ship>
     {
         private int maxLength;
@@ -20,6 +19,7 @@ namespace MBC.Shared
         /// Copies a <see cref="ShipList"/> while making copies of its <see cref="Ship"/>s.
         /// </summary>
         /// <param name="copyList">The <see cref="ShipList"/> to make a deep copy of.</param>
+        [Obsolete()]
         public ShipList(ShipList copyList)
         {
             shipList = new List<Ship>();
@@ -39,6 +39,7 @@ namespace MBC.Shared
         /// <paramref name="ships"/>.
         /// </summary>
         /// <param name="ships">The <see cref="Ship"/>s to store.</param>
+        [Obsolete()]
         public ShipList(IEnumerable<Ship> ships)
         {
             minLength = int.MaxValue;
@@ -56,6 +57,7 @@ namespace MBC.Shared
         /// </summary>
         /// <param name="shipLengths">A variable array of integers representing the <see cref="Ship.Length"/>
         /// of each <see cref="Ship"/>.</param>
+        [Obsolete()]
         public ShipList(params int[] shipLengths)
         {
             shipList = new List<Ship>();
@@ -70,6 +72,7 @@ namespace MBC.Shared
         /// <summary>
         /// Creates an empty list of <see cref="Ship"/>s.
         /// </summary>
+        [Obsolete()]
         public ShipList()
         {
             shipList = new List<Ship>();
@@ -199,6 +202,29 @@ namespace MBC.Shared
             return true;
         }
 
+        public static IEnumerable<Coordinates> GetAllLocations(Coordinates startPos, ShipOrientation orientation, int length)
+        {
+            if (orientation == ShipOrientation.Horizontal)
+            {
+                for (int i = 0; i < length; i++)
+                {
+                    yield return new Coordinates(startPos.X + i, startPos.Y);
+                }
+            }
+            else
+            {
+                for (int i = 0; i < length; i++)
+                {
+                    yield return new Coordinates(startPos.X, startPos.Y + i);
+                }
+            }
+        }
+
+        public static IEnumerable<Coordinates> GetAllLocations(Ship s)
+        {
+            return GetAllLocations(s.Location, s.Orientation, s.Length);
+        }
+
         /// <summary>
         /// Generates a collection of ships that are conflicting with one another.
         /// </summary>
@@ -235,6 +261,101 @@ namespace MBC.Shared
         public static Ship GetShipAt(IEnumerable<Ship> ships, Coordinates coord)
         {
             foreach (var ship in ships)
+            {
+                if (ship.IsAt(coord))
+                {
+                    return ship;
+                }
+            }
+            return null;
+        }
+
+        public static int MaxShipLength(IEnumerable<Ship> ships)
+        {
+            int max = 0;
+            foreach (Ship ship in ships)
+            {
+                if (ship.Length > max)
+                {
+                    max = ship.Length;
+                }
+            }
+            return max;
+        }
+
+        public static int MinShipLength(IEnumerable<Ship> ships)
+        {
+            int min = int.MaxValue;
+            foreach (Ship ship in ships)
+            {
+                if (ship.Length < min)
+                {
+                    min = ship.Length;
+                }
+            }
+            return min;
+        }
+
+        /// <summary>
+        /// Attempts to place an unplaced <see cref="Ship"/> at the <paramref name="coords"/> with the
+        /// <paramref name="orientation"/>. Checks boundaries using the <paramref name="maxCoords"/>.
+        /// </summary>
+        /// <param name="coords"><see cref="Coordinates"/> to place a <see cref="Ship"/>.</param>
+        /// <param name="orientation">The <see cref="ShipOrientation"/> to orient a <see cref="Ship"/>.</param>
+        /// <param name="maxCoords">The maximum size of a field in a match from <see cref="Coordinates"/>.</param>
+        /// <returns></returns>
+        public static bool PlaceShip(IEnumerable<Ship> ships, Coordinates coords, ShipOrientation orientation)
+        {
+            //First determine the largest possible length here...
+            int targetLength = 0;
+            int maxShipLength = MaxShipLength(ships);
+            int minShipLength = MinShipLength(ships);
+            Coordinates searchCoord = coords;
+            Coordinates addCoord;
+            Coordinates maxCoord = default(Coordinates);
+            foreach (Ship ship in ships)
+            {
+                maxCoord = ship.Owner.Match.FieldSize;
+                break;
+            }
+            if (orientation == ShipOrientation.Horizontal)
+            {
+                addCoord = new Coordinates(1, 0);
+            }
+            else
+            {
+                addCoord = new Coordinates(0, 1);
+            }
+            for (var i = 0; i < maxShipLength; i++)
+            {
+                if (ShipAt(ships, searchCoord) != null || searchCoord.X >= maxCoord.X || searchCoord.Y >= maxCoord.Y)
+                {
+                    break;
+                }
+                searchCoord += addCoord;
+                targetLength++;
+            }
+            if (targetLength < minShipLength)
+            {
+                //No ships can be placed.
+                return false;
+            }
+
+            //Now fit a ship with a length lower than the found length.
+            foreach (var ship in ships)
+            {
+                if (!ship.IsPlaced && ship.Length <= targetLength)
+                {
+                    ship.Place(coords, orientation);
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public static Ship ShipAt(IEnumerable<Ship> ships, Coordinates coord)
+        {
+            foreach (Ship ship in ships)
             {
                 if (ship.IsAt(coord))
                 {
@@ -544,24 +665,6 @@ namespace MBC.Shared
                 if (ship.Length > maxLength)
                 {
                     maxLength = ship.Length;
-                }
-            }
-        }
-
-        private IEnumerable<Coordinates> GetAllLocations(Ship s)
-        {
-            if (s.Orientation == ShipOrientation.Horizontal)
-            {
-                for (int i = 0; i < s.Length; i++)
-                {
-                    yield return new Coordinates(s.Location.X + i, s.Location.Y);
-                }
-            }
-            else
-            {
-                for (int i = 0; i < s.Length; i++)
-                {
-                    yield return new Coordinates(s.Location.X, s.Location.Y + i);
                 }
             }
         }

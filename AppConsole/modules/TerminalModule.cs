@@ -1,10 +1,10 @@
-﻿using System;
+﻿using MBC.App.Terminal.Controls;
+using MBC.App.Terminal.Layouts;
+using MBC.Core;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MBC.App.Terminal.Controls;
-using MBC.App.Terminal.Layouts;
-using MBC.Core;
 
 namespace MBC.App.Terminal.Modules
 {
@@ -212,7 +212,9 @@ namespace MBC.App.Terminal.Modules
             currentControlLayout = controls[0];
         }
 
-        protected abstract void Display();
+        protected virtual void Display()
+        {
+        }
 
         protected void RemoveControlLayout(ControlLayout ctrl)
         {

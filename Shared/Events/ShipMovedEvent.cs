@@ -1,6 +1,7 @@
 ﻿using MBC.Shared;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.Serialization;
 
 namespace MBC.Shared.Events
@@ -33,12 +34,19 @@ namespace MBC.Shared.Events
 
         protected internal override void PerformOperation()
         {
-            IEnumerable<Coordinates> locations = GetAllLocations();
+            IEnumerable<Coordinates> locations = ShipList.GetAllLocations(Position, Orientation, Ship.Length);
             foreach (Coordinates coords in locations)
             {
-                if (coords.X < 0 || coords.Y < 0 || coords.X > Ship.Owner.Match.FieldSize.X || coords.Y > Ship.Owner.Match.FieldSize.Y)
+                if (coords.X < 0 || coords.Y < 0 || coords.X >= Ship.Owner.Match.FieldSize.X || coords.Y >= Ship.Owner.Match.FieldSize.Y)
                 {
                     throw new InvalidEventException(this, String.Format("The ship {0} was placed out of bounds.", Ship));
+                }
+                foreach (Ship otherShip in Ship.Owner.Ships)
+                {
+                    if (otherShip.IsPlaced && otherShip.IsAt(coords))
+                    {
+                        throw new InvalidEventException(this, String.Format("The ship {0} conflicts with ship {1}.", Ship, otherShip));
+                    }
                 }
             }
             Ship.Location = Position;
@@ -47,24 +55,6 @@ namespace MBC.Shared.Events
             Ship.RemainingLocations = new HashSet<Coordinates>(Ship.Locations);
             Ship.IsPlaced = true;
             Ship.Active = true;
-        }
-
-        private IEnumerable<Coordinates> GetAllLocations()
-        {
-            if (Orientation == ShipOrientation.Horizontal)
-            {
-                for (int i = 0; i < Ship.Length; i++)
-                {
-                    yield return new Coordinates(Position.X + i, Position.Y);
-                }
-            }
-            else
-            {
-                for (int i = 0; i < Ship.Length; i++)
-                {
-                    yield return new Coordinates(Position.X, Position.Y + i);
-                }
-            }
         }
     }
 }

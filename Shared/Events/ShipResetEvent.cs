@@ -18,6 +18,8 @@ namespace MBC.Shared.Events
             {
                 throw new InvalidEventException(this, String.Format("Ship {0} is already reset.", Ship));
             }
+            Ship.RemainingLocations.Clear();
+            Ship.Locations.Clear();
             Ship.Location = default(Coordinates);
             Ship.Orientation = default(ShipOrientation);
             Ship.IsPlaced = false;
