@@ -44,6 +44,7 @@ namespace MBC.App.Terminal.Modules
             if (millisDelay > 0)
             {
                 comp.OnEvent += WriteTurns;
+                comp.OnEvent += ResetTurns;
             }
         }
 
@@ -91,7 +92,6 @@ namespace MBC.App.Terminal.Modules
         [EventFilter(typeof(RoundBeginEvent))]
         private void MakeASCII(Event ev)
         {
-            turns = 0;
             for (int i = 0; i < 2; i++)
             {
                 for (int x = -1; x < competition.FieldSize.X; x++)
@@ -139,6 +139,12 @@ namespace MBC.App.Terminal.Modules
             Console.ForegroundColor = text;
             WriteCharRepeat(character, 1);
             prevColors.Restore();
+        }
+
+        [EventFilter(typeof(RoundBeginEvent))]
+        private void ResetTurns(Event ev)
+        {
+            turns = 0;
         }
 
         [EventFilter(typeof(PlayerLostEvent))]
