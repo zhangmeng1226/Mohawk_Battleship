@@ -2,6 +2,7 @@
 using MBC.Shared.Attributes;
 using MBC.Shared.Entities;
 using MBC.Shared.Events;
+using MBC.Shared.Util;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,27 +21,20 @@ namespace MBC.Controllers
         Biography = "I assisted in the development of the framework =]"
         )]
     [AcademicInfo("Mohawk College", "Software Development", 3)]
-    public class RandomBot : IController2
+    public class RandomBot : Controller2
     {
-        private Player player;
         private Random rand;
         private List<Shot> shotsRemain;
 
         /// <summary>
-        /// Gets or sets the Player object the RandomBot controller controls. When set,
-        /// initializes the bot.
+        /// Creates the random generator and hooks required events.
         /// </summary>
-        public Player Player
+        protected override void Initialize()
         {
-            get
-            {
-                return player;
-            }
-            set
-            {
-                player = value;
-                Initialize();
-            }
+            rand = new Random();
+            Player.OnEvent += Shoot;
+            Player.Match.OnEvent += PlaceShips;
+            Player.Match.OnEvent += CreateShots;
         }
 
         /// <summary>
@@ -54,25 +48,8 @@ namespace MBC.Controllers
             foreach (Player opponent in Player.Match.Players)
             {
                 if (opponent == Player) continue;
-                for (int x = 0; x < Player.Match.FieldSize.X; x++)
-                {
-                    for (int y = 0; y < Player.Match.FieldSize.Y; y++)
-                    {
-                        shotsRemain.Add(new Shot(opponent, new Coordinates(x, y)));
-                    }
-                }
+                QueueShotsPlayer(opponent);
             }
-        }
-
-        /// <summary>
-        /// Creates the random generator and hooks required events.
-        /// </summary>
-        private void Initialize()
-        {
-            rand = new Random();
-            player.OnEvent += Shoot;
-            player.Match.OnEvent += PlaceShips;
-            player.Match.OnEvent += CreateShots;
         }
 
         /// <summary>
@@ -86,6 +63,21 @@ namespace MBC.Controllers
             while (!ShipList.AreShipsPlaced(Player.Ships))
             {
                 ShipList.PlaceShip(Player.Ships, RandomCoordinates(), RandomShipOrientation());
+            }
+        }
+
+        /// <summary>
+        /// Populates the shotRemain list with all possible shots against a Player opponent
+        /// </summary>
+        /// <param name="opponent"></param>
+        private void QueueShotsPlayer(Player opponent)
+        {
+            for (int x = 0; x < Player.Match.FieldSize.X; x++)
+            {
+                for (int y = 0; y < Player.Match.FieldSize.Y; y++)
+                {
+                    shotsRemain.Add(new Shot(opponent, new Coordinates(x, y)));
+                }
             }
         }
 

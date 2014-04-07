@@ -18,7 +18,6 @@ namespace MBC.Shared
     /// are required to be defined in order for a deriving class to be loaded into the MBC core framework.
     /// </para>
     /// </summary>
-    [SecurityPermission(SecurityAction.PermitOnly, SerializationFormatter = true)]
     [Obsolete("Use and implement the IController2 interface.")]
     public abstract class Controller : IController
     {
