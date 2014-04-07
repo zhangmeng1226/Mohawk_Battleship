@@ -21,7 +21,7 @@ namespace MBC.App.Terminal.Modules
         private int millisDelay;
         private int turns;
 
-        public CompetitionRun(MatchCore comp, int delay, bool eventsToFile)
+        public CompetitionRun(MatchCore comp, int delay, bool showBoards)
         {
             turns = 0;
             competition = comp;
@@ -31,7 +31,7 @@ namespace MBC.App.Terminal.Modules
             comp.OnEvent += WriteScoreRounds;
             comp.OnEvent += WriteHeader;
 
-            if (millisDelay > 0)
+            if (showBoards)
             {
                 comp.OnEvent += ASCIIUpdateShot;
                 comp.OnEvent += ASCIIShipDestroyed;
@@ -39,6 +39,10 @@ namespace MBC.App.Terminal.Modules
                 comp.OnEvent += ASCIIUpdateShotHit;
                 comp.OnEvent += MakeASCII;
                 comp.OnEvent += SleepEvent;
+            }
+
+            if (millisDelay > 0)
+            {
                 comp.OnEvent += WriteTurns;
             }
         }

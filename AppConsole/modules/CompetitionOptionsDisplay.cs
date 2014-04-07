@@ -16,24 +16,24 @@ namespace MBC.App.Terminal.Modules
     public class CompetitionOptionsDisplay : TerminalModule
     {
         private ControllerSkeleton blue;
-        private CheckboxControl dumpEventsCheck;
         private VerticalLayout layout;
         private NumericControl millisecondControl;
         private ControllerSkeleton red;
         private NumericControl roundsNumberControl;
+        private CheckboxControl showBoards;
 
         public CompetitionOptionsDisplay(ControllerSkeleton red, ControllerSkeleton blue)
         {
             this.red = red;
             this.blue = blue;
             layout = new VerticalLayout(VerticalLayout.VerticalAlign.Center);
-            roundsNumberControl = new NumericControl(new NumericControl.NumericControlParameters("# of rounds", false, 1, 100000, 1, 1000));
-            millisecondControl = new NumericControl(new NumericControl.NumericControlParameters("Millisecond delay", false, 0, 10000, 10, 0));
-            dumpEventsCheck = new CheckboxControl("Dump shots to file");
+            roundsNumberControl = new NumericControl(new NumericControl.NumericControlParameters("# of rounds", false, 1, 100000, 10, 1000));
+            millisecondControl = new NumericControl(new NumericControl.NumericControlParameters("Millisecond delay", false, 0, 10000, 5, 0));
+            showBoards = new CheckboxControl("Show ASCII boards");
             layout.Add(roundsNumberControl);
             //layout.Add(new CheckboxControl("Play out rounds"));
             layout.Add(millisecondControl);
-            layout.Add(dumpEventsCheck);
+            layout.Add(showBoards);
             layout.Add(new ButtonControl("Confirm", ButtonConfirmEvent));
             AddControlLayout(layout);
         }
@@ -69,7 +69,7 @@ namespace MBC.App.Terminal.Modules
             var match = new ClassicMatch();
             match.PlayerCreate(red);
             match.PlayerCreate(blue);
-            CompetitionRun runner = new CompetitionRun(match, millisecondControl.Value, dumpEventsCheck.IsChecked);
+            CompetitionRun runner = new CompetitionRun(match, millisecondControl.Value, showBoards.IsChecked);
             BattleshipConsole.AddModule(runner);
             BattleshipConsole.RemoveModule(this);
             BattleshipConsole.UpdateDisplay();
