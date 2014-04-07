@@ -1,4 +1,5 @@
 ﻿using MBC.Shared;
+using MBC.Shared.Entities;
 using System;
 using System.Runtime.Serialization;
 
@@ -16,6 +17,7 @@ namespace MBC.Shared.Events
         /// </summary>
         /// <param name="player"></param>
         public PlayerEvent(Player player)
+            : base(player)
         {
             Player = player;
         }

@@ -2,11 +2,12 @@
 using MBC.Shared.Events;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 
-namespace MBC.Shared
+namespace MBC.Shared.Entities
 {
     public abstract class Entity : IEquatable<Entity>
     {
@@ -16,12 +17,14 @@ namespace MBC.Shared
         private IDNumber id;
         private List<MBCEventHandler> noFilters = new List<MBCEventHandler>();
         private Entity parent;
+        private Stopwatch parentTimer;
 
         public Entity(Entity parent)
         {
             this.parent = parent;
             if (parent == null)
             {
+                parentTimer = new Stopwatch();
                 evQueue = new Queue<EntityEventInvokeQueueItem>();
                 id = 0;
             }
@@ -37,6 +40,7 @@ namespace MBC.Shared
                 id = FindID(children);
                 children.Add(this);
                 evQueue = parent.evQueue;
+                parentTimer = parent.parentTimer;
                 OnEvent += parent.NotifyEvent;
             }
         }
@@ -62,6 +66,14 @@ namespace MBC.Shared
             protected internal set
             {
                 id = value;
+            }
+        }
+
+        protected internal Stopwatch GameTimerParent
+        {
+            get
+            {
+                return parentTimer;
             }
         }
 

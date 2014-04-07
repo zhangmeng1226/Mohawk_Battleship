@@ -10,14 +10,14 @@ using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 
-namespace MBC.Shared
+namespace MBC.Shared.Entities
 {
     public delegate void NetEventHandler(NetEvent ev);
 
     /// <summary>
     /// Allows communication between the server and client through a Socket.
     /// </summary>
-    public class MBCCommunicator
+    public class NetCom : Entity
     {
         public const int PORT = 41826;
         private Socket connection;
@@ -32,7 +32,8 @@ namespace MBC.Shared
         private MemoryStream packetStream;
         private AsyncCallback receiverCallback;
 
-        public MBCCommunicator()
+        public NetCom(Entity parent)
+            : base(parent)
         {
             receiverCallback = new AsyncCallback(Receive);
             handshakeCallback = new Action(HandshakeAction);
@@ -77,7 +78,7 @@ namespace MBC.Shared
             if (connection == null) { return; }
             connection.Disconnect(false);
             connection = null;
-            OnNetEvent(new NetDisconnectEvent());
+            OnNetEvent(new NetDisconnectEvent(this));
         }
 
         private void BeginReceive(Action callback, int expectedSize)
@@ -93,7 +94,7 @@ namespace MBC.Shared
             try
             {
                 Event receivedEvent = (Event)formatter.Deserialize(packetStream);
-                OnNetEvent(new NetIncomingEvent(receivedEvent));
+                OnNetEvent(new NetIncomingEvent(this, receivedEvent));
             }
             catch (Exception e)
             {

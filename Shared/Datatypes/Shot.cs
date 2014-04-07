@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MBC.Shared.Entities;
+using System;
 
 namespace MBC.Shared
 {

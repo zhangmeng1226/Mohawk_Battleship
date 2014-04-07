@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MBC.Shared.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,7 +8,8 @@ namespace MBC.Shared.Events
 {
     public class NetConnectEvent : NetEvent
     {
-        public NetConnectEvent(long syncTime)
+        public NetConnectEvent(NetCom communicator, long syncTime)
+            : base(communicator)
         {
             SyncTime = syncTime;
         }

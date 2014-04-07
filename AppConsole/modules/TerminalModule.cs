@@ -212,9 +212,7 @@ namespace MBC.App.Terminal.Modules
             currentControlLayout = controls[0];
         }
 
-        protected virtual void Display()
-        {
-        }
+        protected abstract void Display();
 
         protected void RemoveControlLayout(ControlLayout ctrl)
         {

@@ -1,4 +1,5 @@
 ﻿using MBC.Shared;
+using MBC.Shared.Entities;
 using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;

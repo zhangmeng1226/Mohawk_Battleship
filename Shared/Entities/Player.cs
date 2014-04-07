@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 
-namespace MBC.Shared
+namespace MBC.Shared.Entities
 {
     [Serializable]
     public class Player : Entity

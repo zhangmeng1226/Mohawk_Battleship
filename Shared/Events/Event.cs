@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MBC.Shared.Entities;
+using System;
 using System.Runtime.Serialization;
 
 namespace MBC.Shared.Events
@@ -18,14 +19,15 @@ namespace MBC.Shared.Events
     /// <seealso cref="PlayerEvent"/>
     public abstract class Event
     {
-        protected Event()
+        protected Event(Entity creatingEntity)
         {
+            Millis = (int)creatingEntity.GameTimerParent.ElapsedMilliseconds;
         }
 
         public int Millis
         {
             get;
-            set;
+            private set;
         }
 
         protected internal virtual void PerformOperation()

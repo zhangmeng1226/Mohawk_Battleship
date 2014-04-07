@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Serialization;
 
-namespace MBC.Shared
+namespace MBC.Shared.Entities
 {
     /// <summary>
     /// Provides information about a primary component of a battleship game used by <see cref="Controller"/>s;

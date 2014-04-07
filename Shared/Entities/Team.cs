@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace MBC.Shared
+namespace MBC.Shared.Entities
 {
     [Serializable]
     public class Team : Entity

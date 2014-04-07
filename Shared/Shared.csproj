@@ -94,7 +94,7 @@
     <Compile Include="Exceptions\InvalidEventException.cs" />
     <Compile Include="Entities\Match.cs" />
     <Compile Include="Events\MatchTeamAddEvent.cs" />
-    <Compile Include="MBCCommunicator.cs" />
+    <Compile Include="Entities\NetCom.cs" />
     <Compile Include="Entities\Player.cs" />
     <Compile Include="dep\Register.cs" />
     <Compile Include="dep\MatchConfig.cs" />

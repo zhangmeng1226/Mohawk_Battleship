@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
-namespace MBC.Shared
+namespace MBC.Shared.Entities
 {
     /// <summary>
     /// Provides the modifications, events, and properties that are necessary to operate
@@ -15,6 +15,7 @@ namespace MBC.Shared
         public Match(Entity parent)
             : base(parent)
         {
+            CurrentRound = -1;
         }
 
         /// <summary>

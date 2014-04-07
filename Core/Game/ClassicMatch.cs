@@ -2,6 +2,7 @@
 using MBC.Core.Util;
 using MBC.Shared;
 using MBC.Shared.Attributes;
+using MBC.Shared.Entities;
 using MBC.Shared.Events;
 using System;
 using System.Collections.Generic;

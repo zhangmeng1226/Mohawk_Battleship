@@ -5,6 +5,7 @@ using MBC.Core.Game;
 using MBC.Core.Threading;
 using MBC.Shared;
 using MBC.Shared.Attributes;
+using MBC.Shared.Entities;
 using MBC.Shared.Events;
 using System;
 using System.Collections.Generic;
@@ -51,6 +52,11 @@ namespace MBC.App.Terminal.Modules
         public void Begin()
         {
             new Thread(competition.Play).Start();
+        }
+
+        protected override void Display()
+        {
+            WriteHeader(null);
         }
 
         [EventFilter(typeof(ShipDestroyedEvent))]
@@ -163,6 +169,13 @@ namespace MBC.App.Terminal.Modules
             var players = competition.Players.ToArray();
 
             WriteCenteredText(players[0] + " vs. " + players[1]);
+
+            if (millisDelay > 0)
+            {
+                AlignToLine(6);
+                Console.ForegroundColor = ConsoleColor.Red;
+                WriteCenteredText("    turns made this round.");
+            }
         }
 
         [EventFilter(typeof(RoundEndEvent))]
@@ -180,9 +193,9 @@ namespace MBC.App.Terminal.Modules
         private void WriteTurns(Event ev)
         {
             turns++;
-            AlignToLine(6);
+            AlignToCoord(26, 6);
             Console.ForegroundColor = ConsoleColor.Red;
-            WriteCenteredText(turns + " turns made this round.");
+            WriteText("{0}", turns.ToString("D3"));
             Thread.Sleep(millisDelay);
         }
     }

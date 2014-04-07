@@ -2,6 +2,7 @@
 using MBC.Core.Util;
 using MBC.Shared;
 using MBC.Shared.Attributes;
+using MBC.Shared.Entities;
 using MBC.Shared.Events;
 using System;
 using System.Collections.Generic;
@@ -40,8 +41,6 @@ namespace MBC.Core.Game
             Players = new HashSet<Player>();
             Teams = new HashSet<Team>();
             Random = new Random();
-            GameTimer = new Stopwatch();
-            CurrentRound = -1;
             OnEvent += ApplyEvent;
 
             ApplyParameters(config);
@@ -68,12 +67,6 @@ namespace MBC.Core.Game
         }
 
         public bool IsRunning
-        {
-            get;
-            private set;
-        }
-
-        protected Stopwatch GameTimer
         {
             get;
             private set;
@@ -201,7 +194,6 @@ namespace MBC.Core.Game
         {
             //PlayToLastEvent();
             Events.Add(ev);
-            ev.Millis = (int)(GameTimer.ElapsedMilliseconds);
         }
 
         /// <summary>
