@@ -100,6 +100,7 @@
     <Compile Include="dep\MatchConfig.cs" />
     <Compile Include="Datatypes\GameMode.cs" />
     <Compile Include="Datatypes\RoundMode.cs" />
+    <Compile Include="Util\Controller2.cs" />
     <Compile Include="Util\ShipList.cs" />
     <Compile Include="Datatypes\Shot.cs" />
     <Compile Include="Util\ShotList.cs" />
