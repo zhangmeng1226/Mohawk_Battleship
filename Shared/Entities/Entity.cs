@@ -120,7 +120,18 @@ namespace MBC.Shared.Entities
         {
             foreach (MBCEventHandler handler in handlers)
             {
-                handler(ev);
+                try
+                {
+                    handler(ev);
+                }
+                catch (Exception e)
+                {
+                    if (ev.GetType() == typeof(ExceptionEvent))
+                    {
+                        throw e;
+                    }
+                    ev.Entity.InvokeEvent(new ExceptionEvent(ev.Entity, e));
+                }
             }
         }
 

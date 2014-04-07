@@ -21,10 +21,17 @@ namespace MBC.Shared.Events
     {
         protected Event(Entity creatingEntity)
         {
+            Entity = creatingEntity;
             Millis = (int)creatingEntity.GameTimer.ElapsedMilliseconds;
         }
 
         public int Millis
+        {
+            get;
+            private set;
+        }
+
+        protected internal Entity Entity
         {
             get;
             private set;

@@ -59,6 +59,7 @@
     <Compile Include="dep\MatchInfo.cs" />
     <Compile Include="Entities\Entity.cs" />
     <Compile Include="Events\Event.cs" />
+    <Compile Include="Events\ExceptionEvent.cs" />
     <Compile Include="Events\MatchAddPlayerEvent.cs" />
     <Compile Include="Events\MatchBeginEvent.cs" />
     <Compile Include="Events\MatchEndEvent.cs" />
