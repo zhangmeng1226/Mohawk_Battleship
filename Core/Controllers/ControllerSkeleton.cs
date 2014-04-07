@@ -88,7 +88,10 @@ namespace MBC.Core.Controllers
                         {
                             info.attributes[typeof(CapabilitiesAttribute)] = new CapabilitiesAttribute(GameMode.Classic);
                         }
-                        results.Add(info);
+                        if (info.GetAttribute<LoadNotAttribute>() == null)
+                        {
+                            results.Add(info);
+                        }
                     }
                 }
             }

@@ -39,6 +39,7 @@ Namespace MBC
                 Biography:="I assisted in the development of the framework =]"
                 )>
         <AcademicInfo("Mohawk College", "Software Development", 2)>
+        <LoadNot>
         Public Class RandomBot_old
             Inherits Controller
 

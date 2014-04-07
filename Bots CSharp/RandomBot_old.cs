@@ -30,6 +30,7 @@ namespace MBC.Controllers
         Biography = "I assisted in the development of the framework =]"
         )]
     [AcademicInfo("Mohawk College", "Software Development", 2)]
+    [LoadNot]
     public class RandomBot_old : Controller
     {
         private Random rand;

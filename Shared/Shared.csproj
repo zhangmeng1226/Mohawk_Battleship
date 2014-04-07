@@ -50,6 +50,7 @@
     <Compile Include="Attributes\ControllerAttribute.cs" />
     <Compile Include="Attributes\DescriptionAttribute.cs" />
     <Compile Include="Attributes\EventFilterAttribute.cs" />
+    <Compile Include="Attributes\LoadNotAttribute.cs" />
     <Compile Include="Attributes\NameAttribute.cs" />
     <Compile Include="Attributes\VersionAttribute.cs" />
     <Compile Include="dep\Constants.cs" />
