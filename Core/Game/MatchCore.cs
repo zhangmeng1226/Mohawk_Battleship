@@ -24,7 +24,7 @@ namespace MBC.Core.Game
         Description = "Determines the ending behaviour of a match based on a given number of rounds.",
         DisplayName = "Match Rounds Mode")]
     [Configuration("mbc_match_rounds", 100)]
-    [Configuration("mbc_player_timeout", 5000)]
+    [Configuration("mbc_player_timeout", 500)]
     /// <summary>
     /// This is the new framework part of a match.
     /// </summary>
@@ -77,28 +77,36 @@ namespace MBC.Core.Game
         /// </summary>
         public virtual void Play()
         {
-            if (!IsRunning)
+            GameTimer.Start();
+            try
             {
-                IsRunning = true;
-                if (CurrentRound == -1)
+                if (!IsRunning)
                 {
-                    Begin();
-                    RoundBegin();
-                }
-                while (IsRunning && !AtEnd)
-                {
-                    var isRoundPlaying = PlayLogic();
-                    if ((!isRoundPlaying) && (NumberOfRounds - CurrentRound == 0))
+                    IsRunning = true;
+                    if (CurrentRound == -1)
                     {
-                        End();
-                        break;
-                    }
-                    else if (!isRoundPlaying)
-                    {
-                        RoundEnd(CurrentRound);
+                        Begin();
                         RoundBegin();
                     }
+                    while (IsRunning && !AtEnd)
+                    {
+                        var isRoundPlaying = PlayLogic();
+                        if ((!isRoundPlaying) && (NumberOfRounds - CurrentRound == 0))
+                        {
+                            End();
+                            break;
+                        }
+                        else if (!isRoundPlaying)
+                        {
+                            RoundEnd(CurrentRound);
+                            RoundBegin();
+                        }
+                    }
                 }
+            }
+            finally
+            {
+                GameTimer.Stop();
             }
         }
 

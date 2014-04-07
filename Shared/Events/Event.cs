@@ -21,7 +21,7 @@ namespace MBC.Shared.Events
     {
         protected Event(Entity creatingEntity)
         {
-            Millis = (int)creatingEntity.GameTimerParent.ElapsedMilliseconds;
+            Millis = (int)creatingEntity.GameTimer.ElapsedMilliseconds;
         }
 
         public int Millis

@@ -57,6 +57,14 @@ namespace MBC.Shared.Entities
             }
         }
 
+        public Stopwatch GameTimer
+        {
+            get
+            {
+                return parentTimer;
+            }
+        }
+
         public IDNumber ID
         {
             get
@@ -66,14 +74,6 @@ namespace MBC.Shared.Entities
             protected internal set
             {
                 id = value;
-            }
-        }
-
-        protected internal Stopwatch GameTimerParent
-        {
-            get
-            {
-                return parentTimer;
             }
         }
 
