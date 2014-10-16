@@ -414,7 +414,6 @@ namespace MBC.Shared
             {
                 get
                 {
-                    Console.Write(currentIdx);
                     return collection[currentIdx];
                 }
             }
