@@ -118,12 +118,12 @@ namespace MBC.Core.Game
         public void PlayerCreate(ControllerSkeleton skeleton)
         {
             ControlledPlayer newPlayer = new ControlledPlayer(this, skeleton.GetAttribute<NameAttribute>().Name, skeleton.CreateInstance());
-            newPlayer.OnEvent += ApplyEvent;
+//            newPlayer.OnEvent += ApplyEvent;
             PlayerAdd(newPlayer);
-            foreach (Ship ship in newPlayer.Ships)
-            {
-                ship.OnEvent += ApplyEvent;
-            }
+//            foreach (Ship ship in newPlayer.Ships)
+//            {
+//                ship.OnEvent += ApplyEvent;
+//            }
             newPlayer.Controller.Player = newPlayer;
         }
 
