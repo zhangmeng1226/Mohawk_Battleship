@@ -18,6 +18,7 @@ namespace MBC.Controllers {
     [Description("A simple bot which fires randomly")]
     [Author(FirstName = "David", LastName = "Miller")]
     [AcademicInfo("Mohawk College", "Software Development", 4)]
+    [LoadNot]
     public class SimpleBot_2_0_0 : Controller2 {
         /// <summary>
         /// Hooks required events.
@@ -172,9 +173,6 @@ namespace MBC.Controllers {
             while (shotMap[nextShot.X, nextShot.Y] == true) {
                 nextShot = RandomCoordinates();
             }
-
-            Player.Shoot(nextShot.X, nextShot.Y);
-            shotMap[nextShot.X, nextShot.Y] = true;
 
             return nextShot;
         }
