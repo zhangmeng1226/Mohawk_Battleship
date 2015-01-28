@@ -11,6 +11,9 @@ using System.Text;
 namespace MBC.Controllers {
     /// <summary>
     ///     A simple bot which merely fires at all grid cells in order
+    ///     Details of this bots logic:
+    ///     1. This bot always places it's ships in the same locations
+    ///     2. This bot shoots at coordinates in sequence, (row by row, top to bottom, left to right)  
     /// </summary>
     [Name("SimpleBot 1.1 - Sequence Fire")]
     [Version(1, 1)]

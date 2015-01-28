@@ -11,6 +11,9 @@ using System.Text;
 namespace MBC.Controllers {
     /// <summary>
     ///     A simple bot which shoots randomly
+    ///     Details of this bots logic:
+    ///     1. This bot always places it's ships in the same locations
+    ///     2. This bot shoots randomly  
     /// </summary>
     [Name("SimpleBot 2.0 - Random Fire")]
     [Version(2, 0)]
