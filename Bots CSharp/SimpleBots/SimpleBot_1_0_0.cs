@@ -18,6 +18,7 @@ namespace MBC.Controllers {
     [Description("A simple bot which merely fires at all grid cells in order")]
     [Author(FirstName = "David", LastName = "Miller")]
     [AcademicInfo("Mohawk College", "Software Development", 4)]
+    [LoadNot]
     public class SimpleBot_1_0_0 : Controller2 {
         /// <summary>
         /// Hooks required events.
