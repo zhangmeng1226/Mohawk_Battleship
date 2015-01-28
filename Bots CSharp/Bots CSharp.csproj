@@ -48,6 +48,7 @@
     <Compile Include="SimpleBots\SimpleBot_1_1_0.cs" />
     <Compile Include="SimpleBots\SimpleBot_2_0_0 .cs" />
     <Compile Include="SimpleBots\SimpleBot_2_1_0.cs" />
+    <Compile Include="SimpleBots\SimpleBot_3_0_0.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Shared\Shared.csproj">
