@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+
 using MBC.Shared;
 
 namespace MBC.App.FormBattleship.Controls

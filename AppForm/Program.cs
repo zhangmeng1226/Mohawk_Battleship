@@ -16,7 +16,7 @@ namespace MBC.App.FormBattleship
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new FormBattleship());
+            Application.Run(new FormBattleShip());
         }
     }
 }
