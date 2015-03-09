@@ -8,12 +8,21 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+using MBC.Core;
+using MBC.Core.Controllers;
+using MBC.Core.Game;
+using MBC.Core.Util;
 using MBC.Shared;
+using MBC.Shared.Attributes;
+using MBC.Shared.Entities;
+using MBC.Shared.Events;
+
+using MBC.App.FormBattleship.Controls;
 
 namespace MBC.App.FormBattleship
 {
 
-
+    [Configuration("bot", "RandomBot")]
     public partial class FormBattleShip : Form
     {
         const int GAMESIZE = 10;
@@ -26,8 +35,8 @@ namespace MBC.App.FormBattleship
         Color HITCOLOR = Color.Red;
         Color MISSCOLOR = Color.SkyBlue;
 
-        private Button[,] userCells = new Button[NROWS, NCOLUMNS];
-        private Button[,] aiCells = new Button[NROWS, NCOLUMNS];
+        private Dictionary<Coordinates, CellButton> userCells = new Dictionary<Coordinates, CellButton>();
+        private Dictionary<Coordinates, CellButton> computerCells = new Dictionary<Coordinates, CellButton>();
         private Button[] shipButtons = new Button[5];
 
         private Random rand = new Random();
@@ -37,56 +46,67 @@ namespace MBC.App.FormBattleship
         private int currentCol;
         private ShipOrientation currentDirection;
 
+        private Configuration configuration;
+        private ControllerSkeleton ComputerPlayer;
+
         public FormBattleShip()
         {
             InitializeComponent();
+
             shipButtons[0] = button5Ship;
             shipButtons[1] = button4Ship;
             shipButtons[2] = button3Ship1;
             shipButtons[3] = button3Ship2;
             shipButtons[4] = button2Ship;
+
+            Configuration.Initialize(Environment.CurrentDirectory + "\\..");
+            configuration = Configuration.Global;
+             
+            foreach (ControllerSkeleton bot in ControllerSkeleton.LoadControllerFolder(Environment.CurrentDirectory + "\\..\\bots"))
+                if(bot.Controller.Name == configuration.GetValue("bot")) {
+                    ComputerPlayer = bot; break;
+                }
+
         }
+
+        #region MBC
+        public void MatchRun(MatchCore comp)
+        {
+
+        }
+        #endregion
 
         private void Form1_Load(object sender, EventArgs e)
         {
             for (int row = 0; row < NROWS; row++)
                 for (int col = 0; col < NROWS; col++)
                 {
-                    userCells[row, col] = new Button();
-                    userCells[row, col].Text = "OPEN";
-                    userCells[row, col].Width = gridUser.Width / NCOLUMNS;
-                    userCells[row, col].Height = gridUser.Height / NROWS;
-                    userCells[row, col].Padding = new Padding(0);
-                    userCells[row, col].Margin = new Padding(0);
-                    userCells[row, col].BackColor = DEFAULTCOLOR;
-                    userCells[row, col].ForeColor = Color.White;
-                    userCells[row, col].Name = "UI_" + row.ToString() + "_" + col.ToString();
-                    userCells[row, col].Click += new System.EventHandler(this.gridButtonUser_Click);
-                    gridUser.Controls.Add(userCells[row, col]);
+                    var coord = new Coordinates(row, col);
+                    var cell = new CellButton();
+                    cell.Name = "UI_" + row.ToString() + "_" + col.ToString();
+                    cell.Click += new System.EventHandler(this.gridButtonUser_Click);
+                    userCells.Add(coord,cell);
+                    gridUser.Controls.Add(cell);
                 }
 
             for (int row = 0; row < NROWS; row++)
                 for (int col = 0; col < NROWS; col++)
                 {
-                    aiCells[row, col] = new Button();
-                    aiCells[row, col].Text = "OPEN";
-                    aiCells[row, col].Width = gridUser.Width / NCOLUMNS;
-                    aiCells[row, col].Height = gridUser.Height / NROWS;
-                    aiCells[row, col].Padding = new Padding(0);
-                    aiCells[row, col].Margin = new Padding(0);
-                    aiCells[row, col].BackColor = DEFAULTCOLOR;
-                    aiCells[row, col].ForeColor = Color.White;
-                    aiCells[row, col].Name = "AI_" + row.ToString() + "_" + col.ToString();
-                    // aiCells[row, col].Click += new System.EventHandler(this.gridButton_Click);
-                    aiCells[row, col].DragOver += new DragEventHandler(this.gridButton_DragOver);
-                    aiCells[row, col].DragEnter += new DragEventHandler(this.gridButton_DragEnter);
-                    aiCells[row, col].DragDrop += new DragEventHandler(this.gridButton_DragDrop);
-                    aiCells[row, col].DragLeave += new EventHandler(this.gridButton_DragLeave);
+                    var coord = new Coordinates(row, col);
+                    var cell = new CellButton();
+                    cell.Name = "UI_" + row.ToString() + "_" + col.ToString();
 
+                    //cell.Click += new System.EventHandler(this.gridButton_Click);
+                    cell.DragOver += new DragEventHandler(this.gridButton_DragOver);
+                    cell.DragEnter += new DragEventHandler(this.gridButton_DragEnter);
+                    cell.DragDrop += new DragEventHandler(this.gridButton_DragDrop);
+                    cell.DragLeave += new EventHandler(this.gridButton_DragLeave);
 
-                    aiCells[row, col].AllowDrop = true;
-                    aiCells[row, col].Enabled = true;
-                    gridAI.Controls.Add(aiCells[row, col]);
+                    cell.AllowDrop = true;
+                    cell.Enabled = true;
+
+                    computerCells.Add(coord, cell);
+                    gridAI.Controls.Add(cell);
                 }
             gridUser.Enabled = false;
 
@@ -95,19 +115,17 @@ namespace MBC.App.FormBattleship
         // Reset the Board to the Starting State
         private void reset_Board()
         {
-            for (int row = 0; row < NROWS; row++)
-                for (int col = 0; col < NCOLUMNS; col++)
-                {
-                    aiCells[row, col].BackColor = DEFAULTCOLOR;
-                    aiCells[row, col].AllowDrop = true;
-                    aiCells[row, col].Text = "OPEN";
-                }
-            for (int row = 0; row < NROWS; row++)
-                for (int col = 0; col < NCOLUMNS; col++)
-                {
-                    userCells[row, col].BackColor = DEFAULTCOLOR;
-                    userCells[row, col].Text = "OPEN";
-                }
+            foreach (var cell in computerCells)
+            {
+                cell.Value.BackColor = DEFAULTCOLOR;
+                cell.Value.AllowDrop = true;
+                cell.Value.Text = "OPEN";
+            }
+            foreach (var cell in userCells)
+            {
+                cell.Value.BackColor = DEFAULTCOLOR;
+                cell.Value.Text = "OPEN";
+            }
             for (int ship = 0; ship < shipButtons.Length; ship++)
                 shipButtons[ship].Visible = true;
         }
@@ -210,7 +228,7 @@ namespace MBC.App.FormBattleship
                 {
                     e.Effect = DragDropEffects.Copy;
                     for (int i = col; i < col + shipSize; i++)
-                        if (aiCells[row, i].BackColor == SHIPCOLOR)
+                        if (userCells[new Coordinates(row,i)].BackColor == SHIPCOLOR)
                         {
                             e.Effect = DragDropEffects.None;
                             break;
@@ -227,7 +245,7 @@ namespace MBC.App.FormBattleship
                 {
                     e.Effect = DragDropEffects.Copy;
                     for (int i = row; i < row + shipSize; i++)
-                        if (aiCells[i, col].BackColor == SHIPCOLOR)
+                        if (computerCells[new Coordinates(i,col)].BackColor == SHIPCOLOR)
                         {
                             e.Effect = DragDropEffects.None;
                             break;
@@ -266,18 +284,18 @@ namespace MBC.App.FormBattleship
             if (direction == ShipOrientation.Horizontal)
                 for (int xpos = col; xpos < col + size; xpos++)
                 {
-                    aiCells[row, xpos].BackColor = color;
+                    computerCells[new Coordinates(row, xpos)].BackColor = color;
                     if (text != "")
-                        aiCells[row, xpos].Text = text;
-                    aiCells[row, xpos].AllowDrop = enabled;
+                        computerCells[new Coordinates(row, xpos)].Text = text;
+                    computerCells[new Coordinates(row, xpos)].AllowDrop = enabled;
                 }
             else
                 for (int ypos = row; ypos < row + size; ypos++)
                 {
-                    aiCells[ypos, col].BackColor = color;
+                    computerCells[new Coordinates(ypos, col)].BackColor = color;
                     if (text != "")
-                        aiCells[ypos, col].Text = text;
-                    aiCells[ypos, col].AllowDrop = enabled;
+                        computerCells[new Coordinates(ypos,col)].Text = text;
+                    computerCells[new Coordinates(ypos,col)].AllowDrop = enabled;
                 }
         }
 
@@ -307,7 +325,7 @@ namespace MBC.App.FormBattleship
             int y = (int)(rand.NextDouble() * GAMESIZE);
             
             //Simulate a Click
-            gridButton_Click(aiCells[x, y], null);
+            gridButton_Click(computerCells[new Coordinates(x,y)], null);
             timerAI.Enabled = false;
             
             // Re-enable ability for User to select a square
