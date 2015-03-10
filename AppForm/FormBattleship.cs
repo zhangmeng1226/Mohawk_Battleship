@@ -82,7 +82,7 @@ namespace MBC.App.FormBattleship
                 for (int col = 0; col < NROWS; col++)
                 {
                     var coord = new Coordinates(row, col);
-                    var cell = new CellButton();
+                    var cell = new CellButton(coord);
                     cell.Name = "UI_" + row.ToString() + "_" + col.ToString();
                     cell.Click += new System.EventHandler(this.gridButtonUser_Click);
                     userCells.Add(coord,cell);
@@ -93,7 +93,7 @@ namespace MBC.App.FormBattleship
                 for (int col = 0; col < NROWS; col++)
                 {
                     var coord = new Coordinates(row, col);
-                    var cell = new CellButton();
+                    var cell = new CellButton(coord);
                     cell.Name = "UI_" + row.ToString() + "_" + col.ToString();
 
                     //cell.Click += new System.EventHandler(this.gridButton_Click);
@@ -117,48 +117,43 @@ namespace MBC.App.FormBattleship
         {
             foreach (var cell in computerCells)
             {
-                cell.Value.BackColor = DEFAULTCOLOR;
                 cell.Value.AllowDrop = true;
-                cell.Value.Text = "OPEN";
+                cell.Value.State = State.Open;
             }
             foreach (var cell in userCells)
-            {
-                cell.Value.BackColor = DEFAULTCOLOR;
-                cell.Value.Text = "OPEN";
-            }
+                cell.Value.State = State.Open;
+            
             for (int ship = 0; ship < shipButtons.Length; ship++)
                 shipButtons[ship].Visible = true;
         }
 
         private void gridButton_Click(object sender, EventArgs e)
         {
-            Button b = (Button)sender;
+            CellButton b = (CellButton)sender;
             if (b.BackColor == SHIPCOLOR)
             {
-                b.Text = "HIT";
-                b.BackColor = Color.Tomato;
+                b.State = State.Hit;
             }
             else
             {
-                b.Text = "MISS";
-                b.BackColor = Color.SkyBlue;
+                b.State = State.Miss;
             }
         }
 
         private void gridButtonUser_Click(object sender, EventArgs e)
         {
-            Button b = (Button)sender;
+            CellButton b = (CellButton)sender;
             b.BackColor = Color.SkyBlue;
-            b.Text = "MISS";
+            b.State = State.Miss; 
             timerAI.Enabled = true;
             gridUser.Enabled = false;
         }
 
         private void gridButton_DragOver(object sender, DragEventArgs e)
         {
-            Button b = (Button)sender;
-            int row = int.Parse(b.Name.Substring(3, 1));
-            int col = int.Parse(b.Name.Substring(5, 1));
+            CellButton b = (CellButton)sender;
+            int row = b.Coordinate.X;
+            int col = b.Coordinate.Y;
             gridButton_DragEnter(sender, e);
             labelFire.Text = "Dragging on # " + row + "," + col + " KeyState = " + e.KeyState;
         }
@@ -172,9 +167,9 @@ namespace MBC.App.FormBattleship
             Button shipButton = (Button)e.Data.GetData(DataFormats.Serializable);
             int shipSize = int.Parse(shipButton.Text);
 
-            Button dropButton = (Button)sender;
-            int row = int.Parse(dropButton.Name.Substring(3, 1));
-            int col = int.Parse(dropButton.Name.Substring(5, 1));
+            CellButton dropButton = (CellButton)sender;
+            int row = dropButton.Coordinate.X;
+            int col = dropButton.Coordinate.Y;
             var placementDirection = shiftKey_Down(e.KeyState) ? ShipOrientation.Horizontal : ShipOrientation.Vertical;
             if (placementDirection == ShipOrientation.Horizontal)
             {
@@ -217,9 +212,9 @@ namespace MBC.App.FormBattleship
             Button shipButton = (Button)e.Data.GetData(DataFormats.Serializable);
             int shipSize = int.Parse(shipButton.Text);
 
-            Button dropButton = (Button)sender;
-            int row = int.Parse(dropButton.Name.Substring(3, 1));
-            int col = int.Parse(dropButton.Name.Substring(5, 1));
+            CellButton dropButton = (CellButton)sender;
+            int row = dropButton.Coordinate.X;
+            int col = dropButton.Coordinate.Y;
             ShipOrientation placementDirection = shiftKey_Down(e.KeyState) ? ShipOrientation.Horizontal : ShipOrientation.Vertical;
                 gridButton_DragLeave(sender, e);
             if (placementDirection == ShipOrientation.Horizontal)

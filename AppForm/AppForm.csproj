@@ -51,6 +51,9 @@
     <Compile Include="Controls\CellButton.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Controls\ShipButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="FormBattleShip.cs">
       <SubType>Form</SubType>
     </Compile>
