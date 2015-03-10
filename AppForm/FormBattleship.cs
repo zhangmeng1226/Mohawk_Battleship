@@ -118,10 +118,10 @@ namespace MBC.App.FormBattleship
             foreach (var cell in computerCells)
             {
                 cell.Value.AllowDrop = true;
-                cell.Value.State = State.Open;
+                cell.Value.ShipState = State.Open;
             }
             foreach (var cell in userCells)
-                cell.Value.State = State.Open;
+                cell.Value.ShipState = State.Open;
             
             for (int ship = 0; ship < shipButtons.Length; ship++)
                 shipButtons[ship].Visible = true;
@@ -132,11 +132,11 @@ namespace MBC.App.FormBattleship
             CellButton b = (CellButton)sender;
             if (b.BackColor == SHIPCOLOR)
             {
-                b.State = State.Hit;
+                b.ShipState = State.Hit;
             }
             else
             {
-                b.State = State.Miss;
+                b.ShipState = State.Miss;
             }
         }
 
@@ -144,7 +144,7 @@ namespace MBC.App.FormBattleship
         {
             CellButton b = (CellButton)sender;
             b.BackColor = Color.SkyBlue;
-            b.State = State.Miss; 
+            b.ShipState = State.Miss; 
             timerAI.Enabled = true;
             gridUser.Enabled = false;
         }
@@ -209,15 +209,16 @@ namespace MBC.App.FormBattleship
         // Highlight the Ship possibility if it will fir in this location
         void gridButton_DragEnter(object sender, DragEventArgs e)
         {
-            Button shipButton = (Button)e.Data.GetData(DataFormats.Serializable);
-            int shipSize = int.Parse(shipButton.Text);
+            ShipButton shipButton = (ShipButton)e.Data.GetData(DataFormats.Serializable);
+            int shipSize = shipButton.ShipSize;
 
             CellButton dropButton = (CellButton)sender;
             int row = dropButton.Coordinate.X;
             int col = dropButton.Coordinate.Y;
-            ShipOrientation placementDirection = shiftKey_Down(e.KeyState) ? ShipOrientation.Horizontal : ShipOrientation.Vertical;
-                gridButton_DragLeave(sender, e);
-            if (placementDirection == ShipOrientation.Horizontal)
+
+            ShipOrientation orientation = shiftKey_Down(e.KeyState) ? ShipOrientation.Horizontal : ShipOrientation.Vertical;
+
+            if (orientation == ShipOrientation.Horizontal)
             {
                 if (col + shipSize <= GAMESIZE)
                 {
@@ -232,7 +233,7 @@ namespace MBC.App.FormBattleship
                 else
                     e.Effect = DragDropEffects.None;
                 if (e.Effect == DragDropEffects.Copy)
-                    buttonHighlight(row, col, placementDirection, shipSize, Color.DarkSlateGray, "", true);
+                    buttonHighlight(row, col, orientation, shipSize, Color.DarkSlateGray, "", true);
             }
             else
             {
@@ -249,7 +250,7 @@ namespace MBC.App.FormBattleship
                 else
                     e.Effect = DragDropEffects.None;
                 if (e.Effect == DragDropEffects.Copy)
-                    buttonHighlight(row, col, placementDirection, shipSize, Color.DarkSlateGray, "", true);
+                    buttonHighlight(row, col, orientation, shipSize, Color.DarkSlateGray, "", true);
             }
             if (e.Effect == DragDropEffects.Copy)
             {
@@ -257,7 +258,7 @@ namespace MBC.App.FormBattleship
                 currentShipLength = shipSize;
                 currentRow = row;
                 currentCol = col;
-                currentDirection = placementDirection;
+                currentDirection = orientation;
             }
             else
             {
@@ -327,9 +328,10 @@ namespace MBC.App.FormBattleship
             gridUser.Enabled = true;
         }
 
-        private void button5Ship_Click(object sender, EventArgs e)
+        private void buttonNShip_Click(object sender, EventArgs e)
         {
-
+            //((ShipButton)sender).toggleOrientation();
         }
+
     }
 }

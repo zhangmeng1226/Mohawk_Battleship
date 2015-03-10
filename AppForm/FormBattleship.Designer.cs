@@ -35,11 +35,11 @@
             this.label2 = new System.Windows.Forms.Label();
             this.labelFire = new System.Windows.Forms.Label();
             this.timerAI = new System.Windows.Forms.Timer(this.components);
-            this.button5Ship = new System.Windows.Forms.Button();
-            this.button4Ship = new System.Windows.Forms.Button();
-            this.button3Ship1 = new System.Windows.Forms.Button();
-            this.button3Ship2 = new System.Windows.Forms.Button();
-            this.button2Ship = new System.Windows.Forms.Button();
+            this.button5Ship = new MBC.App.FormBattleship.Controls.ShipButton();
+            this.button4Ship = new MBC.App.FormBattleship.Controls.ShipButton();
+            this.button3Ship1 = new MBC.App.FormBattleship.Controls.ShipButton();
+            this.button3Ship2 = new MBC.App.FormBattleship.Controls.ShipButton();
+            this.button2Ship = new MBC.App.FormBattleship.Controls.ShipButton();
             this.buttonReset = new System.Windows.Forms.Button();
             this.buttonExit = new System.Windows.Forms.Button();
             this.SuspendLayout();
@@ -145,51 +145,65 @@
             // 
             this.button5Ship.Location = new System.Drawing.Point(54, 702);
             this.button5Ship.Name = "button5Ship";
+            this.button5Ship.ShipOrientation = MBC.Shared.ShipOrientation.Horizontal;
+            this.button5Ship.ShipSize = 5;
             this.button5Ship.Size = new System.Drawing.Size(75, 23);
             this.button5Ship.TabIndex = 2;
             this.button5Ship.Text = "5";
             this.button5Ship.UseVisualStyleBackColor = true;
-            this.button5Ship.Click += new System.EventHandler(this.button5Ship_Click);
+            this.button5Ship.Click += new System.EventHandler(this.buttonNShip_Click);
             this.button5Ship.MouseDown += new System.Windows.Forms.MouseEventHandler(this.buttonNShip_MouseDown);
             // 
             // button4Ship
             // 
             this.button4Ship.Location = new System.Drawing.Point(145, 702);
             this.button4Ship.Name = "button4Ship";
+            this.button4Ship.ShipOrientation = MBC.Shared.ShipOrientation.Horizontal;
+            this.button4Ship.ShipSize = 4;
             this.button4Ship.Size = new System.Drawing.Size(75, 23);
             this.button4Ship.TabIndex = 2;
             this.button4Ship.Text = "4";
             this.button4Ship.UseVisualStyleBackColor = true;
+            this.button4Ship.Click += new System.EventHandler(this.buttonNShip_Click);
             this.button4Ship.MouseDown += new System.Windows.Forms.MouseEventHandler(this.buttonNShip_MouseDown);
             // 
             // button3Ship1
             // 
             this.button3Ship1.Location = new System.Drawing.Point(236, 702);
             this.button3Ship1.Name = "button3Ship1";
+            this.button3Ship1.ShipOrientation = MBC.Shared.ShipOrientation.Horizontal;
+            this.button3Ship1.ShipSize = 3;
             this.button3Ship1.Size = new System.Drawing.Size(75, 23);
             this.button3Ship1.TabIndex = 2;
             this.button3Ship1.Text = "3";
             this.button3Ship1.UseVisualStyleBackColor = true;
+            this.button3Ship1.Click += new System.EventHandler(this.buttonNShip_Click);
             this.button3Ship1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.buttonNShip_MouseDown);
             // 
             // button3Ship2
             // 
             this.button3Ship2.Location = new System.Drawing.Point(327, 702);
             this.button3Ship2.Name = "button3Ship2";
+            this.button3Ship2.ShipOrientation = MBC.Shared.ShipOrientation.Horizontal;
+            this.button3Ship2.ShipSize = 3;
             this.button3Ship2.Size = new System.Drawing.Size(75, 23);
             this.button3Ship2.TabIndex = 2;
             this.button3Ship2.Text = "3";
             this.button3Ship2.UseVisualStyleBackColor = true;
+            this.button3Ship2.Click += new System.EventHandler(this.buttonNShip_Click);
             this.button3Ship2.MouseDown += new System.Windows.Forms.MouseEventHandler(this.buttonNShip_MouseDown);
             // 
             // button2Ship
             // 
             this.button2Ship.Location = new System.Drawing.Point(419, 702);
             this.button2Ship.Name = "button2Ship";
+            this.button2Ship.ShipOrientation = MBC.Shared.ShipOrientation.Horizontal;
+            this.button2Ship.ShipSize = 2;
             this.button2Ship.Size = new System.Drawing.Size(75, 23);
             this.button2Ship.TabIndex = 2;
             this.button2Ship.Text = "2";
             this.button2Ship.UseVisualStyleBackColor = true;
+            this.button2Ship.Click += new System.EventHandler(this.buttonNShip_Click);
             this.button2Ship.MouseDown += new System.Windows.Forms.MouseEventHandler(this.buttonNShip_MouseDown);
             // 
             // buttonReset
@@ -246,13 +260,13 @@
     private System.Windows.Forms.Label label2;
     private System.Windows.Forms.Label labelFire;
     private System.Windows.Forms.Timer timerAI;
-    private System.Windows.Forms.Button button5Ship;
-    private System.Windows.Forms.Button button4Ship;
-    private System.Windows.Forms.Button button3Ship1;
-    private System.Windows.Forms.Button button3Ship2;
-    private System.Windows.Forms.Button button2Ship;
     private System.Windows.Forms.Button buttonReset;
     private System.Windows.Forms.Button buttonExit;
+    private Controls.ShipButton button5Ship;
+    private Controls.ShipButton button4Ship;
+    private Controls.ShipButton button3Ship1;
+    private Controls.ShipButton button3Ship2;
+    private Controls.ShipButton button2Ship;
   }
 }
 

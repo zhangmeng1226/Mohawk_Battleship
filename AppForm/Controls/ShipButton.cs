@@ -7,12 +7,16 @@ using System.Windows.Forms;
 using MBC.Shared;
 namespace MBC.App.FormBattleship.Controls
 {
-    class ShipButton : Button
+    public class ShipButton : Button
     {
 
-        public ShipButton(int size)
+        public ShipButton() 
         {
             ShipOrientation = ShipOrientation.Horizontal;
+        }
+        public ShipButton(int size) : 
+            this() 
+        {
             ShipSize = size;
         }
 

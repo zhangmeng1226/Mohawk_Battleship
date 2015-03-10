@@ -9,31 +9,35 @@ using MBC.Shared;
 
 namespace MBC.App.FormBattleship.Controls
 {
-    enum State { Open, Miss, Hit}
+    public enum State { Open, Miss, Hit}
 
-    class CellButton : Button
+    public class CellButton : Button
     {
 
-        private State state;
+        private State shipState;
 
-        public CellButton(Coordinates coord)
+        public CellButton()
         {
-            Coordinate = coord;
-            State = State.Open;
+            ShipState = State.Open;
             Width = 60;
             Height = 60;
             Padding = new Padding(0);
             Margin = new Padding(0);
             ForeColor = System.Drawing.Color.White;
         }
+        public CellButton(Coordinates coord) : 
+            this()
+        {
+            Coordinate = coord;
+        }
 
         public Coordinates Coordinate { get; set; }
 
-        public State State 
+        public State ShipState 
         {
             get
             {
-                return state;
+                return shipState;
             }
             set 
             {
@@ -52,7 +56,7 @@ namespace MBC.App.FormBattleship.Controls
                         BackColor = System.Drawing.Color.Tomato;
                         break;
                 }
-                state = value;
+                shipState = value;
             } 
         }
 
