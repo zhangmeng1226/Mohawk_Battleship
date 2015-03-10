@@ -18,5 +18,18 @@ namespace MBC.App.FormBattleship.Controls
 
         public ShipOrientation ShipOrientation { get; set; }
         public int ShipSize { get; set; }
+
+        /// <summary>
+        /// Toggles the ships orientation.
+        /// </summary>
+        /// <returns>Its new current Orientation</returns>
+        public ShipOrientation toggleOrientation()
+        {
+            if (ShipOrientation == ShipOrientation.Horizontal)
+                ShipOrientation = ShipOrientation.Vertical;
+            else
+                ShipOrientation = ShipOrientation.Horizontal;
+            return ShipOrientation;
+        }
     }
 }
