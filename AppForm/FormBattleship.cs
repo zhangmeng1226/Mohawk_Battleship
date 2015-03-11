@@ -25,9 +25,11 @@ namespace MBC.App.FormBattleship
     [Configuration("bot", "RandomBot")]
     public partial class FormBattleShip : Form
     {
-        const int GAMESIZE = 10;
-        const int NROWS = GAMESIZE;
-        const int NCOLUMNS = GAMESIZE;
+        private int ROW_SIZE = 10;
+        private int COL_SIZE = 10;
+
+        const string NAME = "User";
+        const string BOTNAME = "RandomBot C#";
 
         Color SHIPCOLOR = Color.LightGray;
         Color DRAGCOLOR = Color.DarkSlateGray;
@@ -47,10 +49,22 @@ namespace MBC.App.FormBattleship
         private ShipOrientation currentDirection;
 
         private Configuration configuration;
-        private ControllerSkeleton ComputerPlayer;
+        private UserClassicMatch match;
+        private UserController user;
 
         public FormBattleShip()
         {
+            Configuration.Initialize(Environment.CurrentDirectory + "\\..");
+            
+            match = new UserClassicMatch();
+
+            configuration = Configuration.Global;
+            configuration.SetValue("mbc_match_rounds", "1");
+            configuration.SetValue("mbc_player_timeout", int.MaxValue.ToString());
+            
+            ROW_SIZE = configuration.GetValue<int>("mbc_field_height");
+            COL_SIZE = configuration.GetValue<int>("mbc_field_width");
+
             InitializeComponent();
 
             shipButtons[0] = button5Ship;
@@ -59,27 +73,79 @@ namespace MBC.App.FormBattleship
             shipButtons[3] = button3Ship2;
             shipButtons[4] = button2Ship;
 
-            Configuration.Initialize(Environment.CurrentDirectory + "\\..");
-            configuration = Configuration.Global;
-             
+            user = new UserController(match, NAME);
+
             foreach (ControllerSkeleton bot in ControllerSkeleton.LoadControllerFolder(Environment.CurrentDirectory + "\\..\\bots"))
-                if(bot.Controller.Name == configuration.GetValue("bot")) {
-                    ComputerPlayer = bot; break;
+                if (bot.Controller.Name == BOTNAME)  
+                {
+                    match.PlayerCreate(bot);
+                    break;
                 }
 
+            match.OnEvent += RoundBegin;
+            match.OnEvent += UpdateShip;
+            match.OnEvent += UpdateShot;
+            match.OnEvent += UpdateShotHit;
+            match.OnEvent += UpdateWinner;
+            match.OnEvent += RoundEnd;
         }
 
         #region MBC
-        public void MatchRun(MatchCore comp)
+        [EventFilter(typeof(RoundBeginEvent))]
+        public void RoundBegin(Event ev)
         {
+            var roundBegin = (RoundBeginEvent)ev;
+            //roundBegin.Match.CurrentPlayer; 
+        }
 
+        [EventFilter(typeof(ShipEvent))]
+        public void UpdateShip(Event ev)
+        {
+            var shipMoved = (ShipEvent)ev;
+            //I'm guessing this is giving me a ship that bot needs to place. 
+        }
+
+        [EventFilter(typeof(PlayerShotEvent))]
+        public void UpdateShot(Event ev)
+        {
+            var playerShot = (PlayerShotEvent)ev;
+
+            if (playerShot.Player == user) { }
+               //TODO Wait for player to shoot
+            else
+                userCells[playerShot.Shot.Coordinates].ShipState = State.Miss;
+        }
+
+        [EventFilter(typeof(ShipHitEvent))]
+        public void UpdateShotHit(Event ev)
+        {
+            var shipHit = (ShipHitEvent)ev;
+
+            if (shipHit.Ship.Owner == user)
+                computerCells[shipHit.HitCoords].ShipState = State.Hit;
+            else
+                userCells[shipHit.HitCoords].ShipState = State.Hit;
+        }
+
+        [EventFilter(typeof(PlayerWonEvent))]
+        public void UpdateWinner(Event ev)
+        {
+            var playerWon = (PlayerWonEvent)ev;
+            MessageBox.Show("The winner is " + playerWon.Player.Name + " in " + playerWon.Player.ShotsMade);
+        }
+
+        [EventFilter(typeof(RoundEndEvent))]
+        public void RoundEnd(Event ev)
+        {
+            //TODO Match end
+            reset_Board();
         }
         #endregion
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            for (int row = 0; row < NROWS; row++)
-                for (int col = 0; col < NROWS; col++)
+            for (int row = 0; row < ROW_SIZE; row++)
+                for (int col = 0; col < COL_SIZE; col++)
                 {
                     var coord = new Coordinates(row, col);
                     var cell = new CellButton(coord);
@@ -89,8 +155,8 @@ namespace MBC.App.FormBattleship
                     gridUser.Controls.Add(cell);
                 }
 
-            for (int row = 0; row < NROWS; row++)
-                for (int col = 0; col < NROWS; col++)
+            for (int row = 0; row < ROW_SIZE; row++)
+                for (int col = 0; col < COL_SIZE; col++)
                 {
                     var coord = new Coordinates(row, col);
                     var cell = new CellButton(coord);
@@ -143,10 +209,13 @@ namespace MBC.App.FormBattleship
         private void gridButtonUser_Click(object sender, EventArgs e)
         {
             CellButton b = (CellButton)sender;
-            b.BackColor = Color.SkyBlue;
-            b.ShipState = State.Miss; 
-            timerAI.Enabled = true;
-            gridUser.Enabled = false;
+
+            if (b.ShipState == State.Open)
+            {
+                //b.ShipState = shoot(b.Coordinate);
+                timerAI.Enabled = true;
+                gridUser.Enabled = false;
+            }
         }
 
         private void gridButton_DragOver(object sender, DragEventArgs e)
@@ -164,8 +233,8 @@ namespace MBC.App.FormBattleship
         void gridButton_DragDrop(object sender, DragEventArgs e)
         {
             e.Effect = DragDropEffects.Copy;
-            Button shipButton = (Button)e.Data.GetData(DataFormats.Serializable);
-            int shipSize = int.Parse(shipButton.Text);
+            ShipButton shipButton = (ShipButton)e.Data.GetData(DataFormats.Serializable);
+            int shipSize = shipButton.ShipSize;
 
             CellButton dropButton = (CellButton)sender;
             int row = dropButton.Coordinate.X;
@@ -173,7 +242,7 @@ namespace MBC.App.FormBattleship
             var placementDirection = shiftKey_Down(e.KeyState) ? ShipOrientation.Horizontal : ShipOrientation.Vertical;
             if (placementDirection == ShipOrientation.Horizontal)
             {
-                if (col + shipSize <= GAMESIZE)
+                if (col + shipSize <= COL_SIZE)
                 {
                     buttonHighlight(row, col, ShipOrientation.Horizontal, shipSize, SHIPCOLOR, shipSize.ToString(), false);
                     shipButton.Visible = false;
@@ -181,7 +250,7 @@ namespace MBC.App.FormBattleship
             }
             else
             {
-                if (row + shipSize <= GAMESIZE)
+                if (row + shipSize <= ROW_SIZE)
                 {
                     buttonHighlight(row, col, ShipOrientation.Vertical, shipSize, SHIPCOLOR, shipSize.ToString(), false);
                     shipButton.Visible = false;
@@ -220,7 +289,7 @@ namespace MBC.App.FormBattleship
 
             if (orientation == ShipOrientation.Horizontal)
             {
-                if (col + shipSize <= GAMESIZE)
+                if (col + shipSize <= COL_SIZE)
                 {
                     e.Effect = DragDropEffects.Copy;
                     for (int i = col; i < col + shipSize; i++)
@@ -237,7 +306,7 @@ namespace MBC.App.FormBattleship
             }
             else
             {
-                if (row + shipSize <= GAMESIZE)
+                if (row + shipSize <= ROW_SIZE)
                 {
                     e.Effect = DragDropEffects.Copy;
                     for (int i = row; i < row + shipSize; i++)
@@ -317,8 +386,8 @@ namespace MBC.App.FormBattleship
         private void timerAI_Tick(object sender, EventArgs e)
         {
             // Fires Randomly
-            int x = (int)(rand.NextDouble() * GAMESIZE);
-            int y = (int)(rand.NextDouble() * GAMESIZE);
+            int x = (int)(rand.NextDouble() * ROW_SIZE);
+            int y = (int)(rand.NextDouble() * COL_SIZE);
             
             //Simulate a Click
             gridButton_Click(computerCells[new Coordinates(x,y)], null);
