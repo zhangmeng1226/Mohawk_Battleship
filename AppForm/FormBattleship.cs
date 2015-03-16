@@ -18,6 +18,8 @@ using MBC.Shared.Entities;
 using MBC.Shared.Events;
 
 using MBC.App.FormBattleship.Controls;
+using System.Threading;
+using System.Diagnostics;
 
 namespace MBC.App.FormBattleship
 {
@@ -29,7 +31,7 @@ namespace MBC.App.FormBattleship
         private int COL_SIZE = 10;
 
         const string NAME = "User";
-        const string BOTNAME = "RandomBot C#";
+        const string BOTNAME = "RandomBot";
 
         Color SHIPCOLOR = Color.LightGray;
         Color DRAGCOLOR = Color.DarkSlateGray;
@@ -49,18 +51,15 @@ namespace MBC.App.FormBattleship
         private ShipOrientation currentDirection;
 
         private Configuration configuration;
-        private UserClassicMatch match;
-        private UserController user;
+        private UserMatch match;
+        private Player user;
 
         public FormBattleShip()
         {
             Configuration.Initialize(Environment.CurrentDirectory + "\\..");
-            
-            match = new UserClassicMatch();
-
+           
             configuration = Configuration.Global;
             configuration.SetValue("mbc_match_rounds", "1");
-            configuration.SetValue("mbc_player_timeout", int.MaxValue.ToString());
             
             ROW_SIZE = configuration.GetValue<int>("mbc_field_height");
             COL_SIZE = configuration.GetValue<int>("mbc_field_width");
@@ -73,10 +72,18 @@ namespace MBC.App.FormBattleship
             shipButtons[3] = button3Ship2;
             shipButtons[4] = button2Ship;
 
-            user = new UserController(match, NAME);
+            NewMatch();
+        }
+
+        #region MBC
+        public void NewMatch()
+        {
+            match = new UserMatch(configuration);
+            user = new Player(match, NAME);
+            match.AddUser(user);
 
             foreach (ControllerSkeleton bot in ControllerSkeleton.LoadControllerFolder(Environment.CurrentDirectory + "\\..\\bots"))
-                if (bot.Controller.Name == BOTNAME)  
+                if (bot.Controller.Name == BOTNAME)
                 {
                     match.PlayerCreate(bot);
                     break;
@@ -88,9 +95,10 @@ namespace MBC.App.FormBattleship
             match.OnEvent += UpdateShotHit;
             match.OnEvent += UpdateWinner;
             match.OnEvent += RoundEnd;
+
+            match.Play();
         }
 
-        #region MBC
         [EventFilter(typeof(RoundBeginEvent))]
         public void RoundBegin(Event ev)
         {
@@ -108,17 +116,24 @@ namespace MBC.App.FormBattleship
         [EventFilter(typeof(PlayerShotEvent))]
         public void UpdateShot(Event ev)
         {
+            
             var playerShot = (PlayerShotEvent)ev;
-
-            if (playerShot.Player == user) { }
-               //TODO Wait for player to shoot
-            else
+            Debug.WriteLine("updateShot" + playerShot.Player.Name + playerShot.Shot.Coordinates.ToString());
+            if (playerShot.Player == user) {
                 userCells[playerShot.Shot.Coordinates].ShipState = State.Miss;
+            }
+            else
+            {
+                computerCells[playerShot.Shot.Coordinates].ShipState = State.Miss;
+                gridButton_Click(computerCells[playerShot.Shot.Coordinates], null);
+                gridUser.Enabled = true;
+            }
         }
 
         [EventFilter(typeof(ShipHitEvent))]
         public void UpdateShotHit(Event ev)
         {
+            Debug.WriteLine("updateShotHit");
             var shipHit = (ShipHitEvent)ev;
 
             if (shipHit.Ship.Owner == user)
@@ -191,19 +206,16 @@ namespace MBC.App.FormBattleship
             
             for (int ship = 0; ship < shipButtons.Length; ship++)
                 shipButtons[ship].Visible = true;
+
+            NewMatch();
         }
 
         private void gridButton_Click(object sender, EventArgs e)
         {
             CellButton b = (CellButton)sender;
-            if (b.BackColor == SHIPCOLOR)
-            {
-                b.ShipState = State.Hit;
-            }
-            else
-            {
-                b.ShipState = State.Miss;
-            }
+           
+            // Re-enable ability for User to select a square
+            gridUser.Enabled = true;
         }
 
         private void gridButtonUser_Click(object sender, EventArgs e)
@@ -212,9 +224,14 @@ namespace MBC.App.FormBattleship
 
             if (b.ShipState == State.Open)
             {
-                //b.ShipState = shoot(b.Coordinate);
-                timerAI.Enabled = true;
-                gridUser.Enabled = false;
+                foreach (Player opponent in user.Match.Players)
+                {
+                    if (opponent == user) continue;
+                    user.Shoot(new Shot(opponent, b.Coordinate));
+
+                    timerAI.Enabled = true;
+                    gridUser.Enabled = false;
+                }
             }
         }
 
@@ -245,6 +262,16 @@ namespace MBC.App.FormBattleship
                 if (col + shipSize <= COL_SIZE)
                 {
                     buttonHighlight(row, col, ShipOrientation.Horizontal, shipSize, SHIPCOLOR, shipSize.ToString(), false);
+                    // Gets the ship from user's ship list and then places it.
+                    foreach (Ship ship in match.User.Ships)
+                    {
+                        if (!ship.IsPlaced && ship.Length == shipSize)
+                        {
+                            // Places the ships!
+                            ship.Place(new Coordinates(row, col), ShipOrientation.Horizontal);
+                            break;
+                        }
+                    }
                     shipButton.Visible = false;
                 }
             }
@@ -253,6 +280,17 @@ namespace MBC.App.FormBattleship
                 if (row + shipSize <= ROW_SIZE)
                 {
                     buttonHighlight(row, col, ShipOrientation.Vertical, shipSize, SHIPCOLOR, shipSize.ToString(), false);
+                    // Gets the ship from user's ship list and then places it.
+
+                    foreach (Ship ship in match.User.Ships)
+                    {
+                        if (!ship.IsPlaced && ship.Length == shipSize)
+                        {
+                            // Places the ships!
+                            //ship.Place(new Coordinates(row, col), ShipOrientation.Vertical);
+                            break;
+                        }
+                    }
                     shipButton.Visible = false;
                 }
             }
@@ -385,16 +423,10 @@ namespace MBC.App.FormBattleship
         // Use as part of a simulation delay
         private void timerAI_Tick(object sender, EventArgs e)
         {
-            // Fires Randomly
-            int x = (int)(rand.NextDouble() * ROW_SIZE);
-            int y = (int)(rand.NextDouble() * COL_SIZE);
-            
-            //Simulate a Click
-            gridButton_Click(computerCells[new Coordinates(x,y)], null);
+            // Computer will take a turn, it gets called when timerAI.enabled = true
+            match.ComputerTurn();
+
             timerAI.Enabled = false;
-            
-            // Re-enable ability for User to select a square
-            gridUser.Enabled = true;
         }
 
         private void buttonNShip_Click(object sender, EventArgs e)

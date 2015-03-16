@@ -62,8 +62,6 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UserClassicMatch.cs" />
-    <Compile Include="UserController.cs" />
     <EmbeddedResource Include="FormBattleShip.resx">
       <DependentUpon>FormBattleShip.cs</DependentUpon>
     </EmbeddedResource>
