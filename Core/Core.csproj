@@ -49,6 +49,7 @@
     <Compile Include="Controllers\NetController.cs" />
     <Compile Include="Game\ClassicMatch.cs" />
     <Compile Include="Game\MatchCore.cs" />
+    <Compile Include="Game\UserMatch.cs" />
     <Compile Include="Threading\ThreadTimeoutAborter.cs" />
     <Compile Include="Controllers\ControllerSkeleton.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
