@@ -17,6 +17,7 @@ namespace MBC.Core.Game
     /// </summary>
     public class UserMatch : MatchCore
     {
+        private Player computer;
         private List<Player> waitList = new List<Player>();
         /// <summary>
         /// Constructs a match with a specific configuration.
@@ -28,6 +29,7 @@ namespace MBC.Core.Game
             OnEvent += HandleAddPlayer;
             OnEvent += HandleWinner;
             OnEvent += HandleRoundBegin;
+            OnEvent += HandleEndTurn;
         }
 
         /// <summary>
@@ -123,6 +125,23 @@ namespace MBC.Core.Game
             return true;
         }
 
+        /// <summary>
+        /// Starts the Users turn, shots and ends the turn.
+        /// </summary>
+        /// <param name="shot"></param>
+        public void UserShoot(Shot shot)
+        {
+            if (CurrentPhase == Phase.PlayerTurn)
+            {
+                User.BeginTurn();
+                User.Shoot(shot);
+                User.EndTurn();
+            }
+        }
+
+        /// <summary>
+        /// Computer begins their turn.
+        /// </summary>
         public void ComputerTurn()
         {
             if (CurrentPhase == Phase.ComputerTurn)
@@ -144,9 +163,8 @@ namespace MBC.Core.Game
         [EventFilter(typeof(PlayerShotEvent))]
         private void HandleShot(Event ev)
         {
-            Debug.WriteLine("PlayerShot");
             var playerShot = (PlayerShotEvent)ev;
-            if (playerShot.Player == User)
+            if (playerShot.Player == User) 
                 CurrentPhase = Phase.ComputerTurn;
             else
                 CurrentPhase = Phase.PlayerTurn;
@@ -172,9 +190,11 @@ namespace MBC.Core.Game
         [EventFilter(typeof(MatchAddPlayerEvent))]
         private void HandleAddPlayer(Event ev)
         {
-            Debug.WriteLine("AddPlayer");
             MatchAddPlayerEvent evCasted = (MatchAddPlayerEvent)ev;
             Player plr = evCasted.Player;
+
+            if (plr != User)
+                computer = plr;
 
             plr.OnEvent += HandleShot;
             foreach (Ship ship in plr.Ships)
@@ -191,7 +211,6 @@ namespace MBC.Core.Game
         [EventFilter(typeof(ShipMovedEvent))]
         private void HandleShipMove(Event ev)
         {
-            Debug.WriteLine("ShipMove");
             ShipMovedEvent evCasted = (ShipMovedEvent)ev;
             Ship ship = evCasted.Ship;
             Player player = ship.Owner;
@@ -234,10 +253,20 @@ namespace MBC.Core.Game
         [EventFilter(typeof(RoundBeginEvent))]
         private void HandleRoundBegin(Event ev)
         {
-            Debug.WriteLine("RoundBegin");
             CurrentPhase = Phase.Placement;
             waitList.Clear();
             waitList.AddRange(Players);
+        }
+
+        [EventFilter(typeof(PlayerTurnEndEvent))]
+        private void HandleEndTurn(Event ev)
+        {
+            var endTurn = (PlayerTurnEndEvent)ev;
+
+            if (endTurn.Player == User)
+                CurrentPlayer = computer;
+            else
+                CurrentPlayer = User;
         }
     }
 }

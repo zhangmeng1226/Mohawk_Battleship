@@ -84,7 +84,8 @@ namespace MBC.App.FormBattleship
             user = new Player(match, NAME);
             match.AddUser(user);
 
-            foreach (ControllerSkeleton bot in ControllerSkeleton.LoadControllerFolder(Environment.CurrentDirectory + "\\..\\bots"))
+            var bots = ControllerSkeleton.LoadControllerFolder(Environment.CurrentDirectory + "\\..\\bots");
+            foreach (ControllerSkeleton bot in bots)
                 if (bot.Controller.Name == BOTNAME)
                 {
                     match.PlayerCreate(bot);
@@ -219,7 +220,7 @@ namespace MBC.App.FormBattleship
                 foreach (Player opponent in user.Match.Players)
                 {
                     if (opponent == user) continue;
-                    user.Shoot(new Shot(opponent, b.Coordinate));
+                    match.UserShoot(new Shot(opponent, b.Coordinate));
                     b.Enabled = false;
 
                     timerAI.Enabled = true;
@@ -260,8 +261,8 @@ namespace MBC.App.FormBattleship
                     {
                         if (!ship.IsPlaced && ship.Length == shipSize)
                         {
-                            // Places the ships!
-                            ship.Place(new Coordinates(row, col), ShipOrientation.Horizontal);
+                            // Places the ships! Vertical -> Horizontal in framework....
+                            ship.Place(new Coordinates(row, col), ShipOrientation.Vertical);
                             break;
                         }
                     }
@@ -279,8 +280,8 @@ namespace MBC.App.FormBattleship
                     {
                         if (!ship.IsPlaced && ship.Length == shipSize)
                         {
-                            // Places the ships!
-                            //ship.Place(new Coordinates(row, col), ShipOrientation.Vertical);
+                            // Places the ships! Horizontal -> Vertical in framework...
+                            ship.Place(new Coordinates(row, col), ShipOrientation.Horizontal);
                             break;
                         }
                     }
@@ -419,6 +420,7 @@ namespace MBC.App.FormBattleship
             // Computer will take a turn, it gets called when timerAI.enabled = true
             match.ComputerTurn();
 
+            gridUser.Enabled = true;
             timerAI.Enabled = false;
         }
     }
