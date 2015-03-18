@@ -29,6 +29,9 @@ namespace MBC.App.FormBattleship
         private int ROW_SIZE = 10;
         private int COL_SIZE = 10;
 
+        private int compScore = 0;
+        private int userScore = 0;
+
         const string NAME = "User";
         const string BOTNAME = "RandomBot";
 
@@ -71,6 +74,8 @@ namespace MBC.App.FormBattleship
             shipButtons[3] = button3Ship2;
             shipButtons[4] = button2Ship;
 
+            showStats();
+
             NewMatch();
         }
 
@@ -108,7 +113,6 @@ namespace MBC.App.FormBattleship
         public void UpdateShot(Event ev)
         {
             var playerShot = (PlayerShotEvent)ev;
-            Debug.WriteLine("updateShot" + playerShot.Player.Name + playerShot.Shot.Coordinates.ToString());
             if (playerShot.Player == user) 
                 userCells[playerShot.Shot.Coordinates].ShipState = State.Miss;
             else
@@ -137,7 +141,12 @@ namespace MBC.App.FormBattleship
         public void UpdateWinner(Event ev)
         {
             var playerWon = (PlayerWonEvent)ev;
-            MessageBox.Show("The winner is " + playerWon.Player.Name + " in " + playerWon.Player.ShotsMade);
+            MessageBox.Show("The winner is " + playerWon.Player.Name + " in " + playerWon.Player.ShotsMade.Count + " shots!");
+            if (playerWon.Player == user)
+                userScore++;
+            else
+                compScore++;
+            showStats();
         }
 
         /// <summary>
@@ -235,7 +244,6 @@ namespace MBC.App.FormBattleship
             int row = b.Coordinate.X;
             int col = b.Coordinate.Y;
             gridButton_DragEnter(sender, e);
-            labelFire.Text = "Dragging on # " + row + "," + col + " KeyState = " + e.KeyState;
         }
 
         // Terminate the Drag operation 
@@ -293,6 +301,9 @@ namespace MBC.App.FormBattleship
             for (int i = 0; i < shipButtons.Length; i++)
                 if (shipButtons[i].Visible == true)
                     gridUser.Enabled = false;
+
+            if (gridUser.Enabled)
+                match.Play(); // Sometimes Computer player goes first.
             
             // No ship is now selected 
             currentShipLength = 0;
@@ -422,6 +433,14 @@ namespace MBC.App.FormBattleship
 
             gridUser.Enabled = true;
             timerAI.Enabled = false;
+        }
+
+        /// <summary>
+        /// Show the score between user and computer in labelfire.
+        /// </summary>
+        private void showStats()
+        {
+            labelFire.Text = "User wins: " + userScore + " Computer wins: " + compScore;
         }
     }
 }
