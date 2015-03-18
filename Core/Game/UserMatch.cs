@@ -103,6 +103,8 @@ namespace MBC.Core.Game
                 Begin();
                 RoundBegin();
             }
+            else
+                PlayLogic();
         }
 
         /// <summary>
@@ -118,6 +120,7 @@ namespace MBC.Core.Game
                 case Phase.PlayerTurn:
                     break;
                 case Phase.ComputerTurn:
+                    ComputerTurn();
                     break;
                 case Phase.End:
                     return false;
@@ -168,6 +171,7 @@ namespace MBC.Core.Game
                 CurrentPhase = Phase.ComputerTurn;
             else
                 CurrentPhase = Phase.PlayerTurn;
+           
         }
 
         /// <summary>
@@ -177,9 +181,6 @@ namespace MBC.Core.Game
         [EventFilter(typeof(PlayerWonEvent))]
         private void HandleWinner(Event ev)
         {
-            var winner = (PlayerWonEvent)ev;
-            RoundEnd(1);
-            End();
             CurrentPhase = Phase.End;
         }
 
@@ -192,7 +193,6 @@ namespace MBC.Core.Game
         {
             MatchAddPlayerEvent evCasted = (MatchAddPlayerEvent)ev;
             Player plr = evCasted.Player;
-
             if (plr != User)
                 computer = plr;
 
@@ -220,7 +220,10 @@ namespace MBC.Core.Game
                 waitList.Remove(player);
                 if (waitList.Count == 0)
                 {
-                    CurrentPhase = Phase.PlayerTurn;
+                    if (CurrentPlayer == User)
+                        CurrentPhase = Phase.PlayerTurn;
+                    else
+                        CurrentPhase = Phase.ComputerTurn;
                     waitList.AddRange(Players);
                 }
                     
@@ -244,6 +247,7 @@ namespace MBC.Core.Game
                 }
             }
             evShip.Owner.Lose();
+            CurrentPlayer.Win();
         }
 
         /// <summary>
@@ -261,12 +265,8 @@ namespace MBC.Core.Game
         [EventFilter(typeof(PlayerTurnEndEvent))]
         private void HandleEndTurn(Event ev)
         {
-            var endTurn = (PlayerTurnEndEvent)ev;
+            var endTurn = (PlayerTurnEndEvent)ev;   
 
-            if (endTurn.Player == User)
-                CurrentPlayer = computer;
-            else
-                CurrentPlayer = User;
         }
     }
 }
