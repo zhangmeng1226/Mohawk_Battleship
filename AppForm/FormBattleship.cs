@@ -180,7 +180,6 @@ namespace MBC.App.FormBattleship
                     var cell = new CellButton(coord);
                     cell.Name = "UI_" + row.ToString() + "_" + col.ToString();
 
-                    //cell.Click += new System.EventHandler(this.gridButton_Click);
                     cell.DragOver += new DragEventHandler(this.gridButton_DragOver);
                     cell.DragEnter += new DragEventHandler(this.gridButton_DragEnter);
                     cell.DragDrop += new DragEventHandler(this.gridButton_DragDrop);
@@ -214,10 +213,6 @@ namespace MBC.App.FormBattleship
                 shipButtons[ship].Visible = true;
 
             NewMatch();
-        }
-
-        private void gridButton_Click(object sender, EventArgs e)
-        {
         }
 
         private void gridButtonUser_Click(object sender, EventArgs e)
