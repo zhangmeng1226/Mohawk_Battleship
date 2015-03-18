@@ -89,8 +89,6 @@ namespace MBC.App.FormBattleship
                     break;
                 }
 
-            match.OnEvent += RoundBegin;
-            match.OnEvent += UpdateShip;
             match.OnEvent += UpdateShot;
             match.OnEvent += UpdateShotHit;
             match.OnEvent += UpdateWinner;
@@ -99,49 +97,42 @@ namespace MBC.App.FormBattleship
             match.Play();
         }
 
-        [EventFilter(typeof(RoundBeginEvent))]
-        public void RoundBegin(Event ev)
-        {
-            var roundBegin = (RoundBeginEvent)ev;
-            //roundBegin.Match.CurrentPlayer; 
-        }
-
-        [EventFilter(typeof(ShipEvent))]
-        public void UpdateShip(Event ev)
-        {
-            var shipMoved = (ShipEvent)ev;
-            //I'm guessing this is giving me a ship that bot needs to place. 
-        }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="ev"></param>
         [EventFilter(typeof(PlayerShotEvent))]
         public void UpdateShot(Event ev)
         {
-            
             var playerShot = (PlayerShotEvent)ev;
             Debug.WriteLine("updateShot" + playerShot.Player.Name + playerShot.Shot.Coordinates.ToString());
-            if (playerShot.Player == user) {
+            if (playerShot.Player == user) 
                 userCells[playerShot.Shot.Coordinates].ShipState = State.Miss;
-            }
             else
             {
                 computerCells[playerShot.Shot.Coordinates].ShipState = State.Miss;
                 gridButton_Click(computerCells[playerShot.Shot.Coordinates], null);
-                gridUser.Enabled = true;
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="ev"></param>
         [EventFilter(typeof(ShipHitEvent))]
         public void UpdateShotHit(Event ev)
         {
-            Debug.WriteLine("updateShotHit");
             var shipHit = (ShipHitEvent)ev;
-
             if (shipHit.Ship.Owner == user)
                 computerCells[shipHit.HitCoords].ShipState = State.Hit;
             else
                 userCells[shipHit.HitCoords].ShipState = State.Hit;
         }
 
+        /// <summary>
+        /// Message box will appear with who won the game.
+        /// </summary>
+        /// <param name="ev"></param>
         [EventFilter(typeof(PlayerWonEvent))]
         public void UpdateWinner(Event ev)
         {
@@ -149,10 +140,13 @@ namespace MBC.App.FormBattleship
             MessageBox.Show("The winner is " + playerWon.Player.Name + " in " + playerWon.Player.ShotsMade);
         }
 
+        /// <summary>
+        /// When the round ends it will restart the board.
+        /// </summary>
+        /// <param name="ev"></param>
         [EventFilter(typeof(RoundEndEvent))]
         public void RoundEnd(Event ev)
         {
-            //TODO Match end
             reset_Board();
         }
         #endregion
@@ -196,13 +190,13 @@ namespace MBC.App.FormBattleship
         // Reset the Board to the Starting State
         private void reset_Board()
         {
-            foreach (var cell in computerCells)
+            foreach (var compCell in computerCells)
             {
-                cell.Value.AllowDrop = true;
-                cell.Value.ShipState = State.Open;
+                compCell.Value.AllowDrop = true;
+                compCell.Value.ShipState = State.Open;
             }
-            foreach (var cell in userCells)
-                cell.Value.ShipState = State.Open;
+            foreach (var userCell in userCells)
+                userCell.Value.ShipState = State.Open;
             
             for (int ship = 0; ship < shipButtons.Length; ship++)
                 shipButtons[ship].Visible = true;
@@ -213,8 +207,6 @@ namespace MBC.App.FormBattleship
         private void gridButton_Click(object sender, EventArgs e)
         {
             CellButton b = (CellButton)sender;
-           
-            // Re-enable ability for User to select a square
             gridUser.Enabled = true;
         }
 

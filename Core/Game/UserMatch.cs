@@ -27,6 +27,7 @@ namespace MBC.Core.Game
         {
             OnEvent += HandleAddPlayer;
             OnEvent += HandleWinner;
+            OnEvent += HandleRoundBegin;
         }
 
         /// <summary>
@@ -76,15 +77,6 @@ namespace MBC.Core.Game
         }
 
         /// <summary>
-        /// To find out what player is the winner.
-        /// </summary>
-        public Player Winner
-        {
-            get;
-            protected set;
-        }
-
-        /// <summary>
         /// To restart the match.
         /// </summary>
         public void Restart()
@@ -113,19 +105,16 @@ namespace MBC.Core.Game
         /// </summary>
         public override void Play()
         {
-            if (!IsRunning)
+            if (!IsStarted)
             {
                 IsStarted = true;
                 Begin();
                 RoundBegin();
             }
-            else
-                PlayLogic();
-
         }
 
         /// <summary>
-        /// Determines what the next action is based on what phase the match is in.
+        /// 
         /// </summary>
         /// <returns>Whether the game is still running.</returns>
         protected override bool PlayLogic()
@@ -165,13 +154,12 @@ namespace MBC.Core.Game
         [EventFilter(typeof(PlayerShotEvent))]
         private void HandleShot(Event ev)
         {
+            Debug.WriteLine("PlayerShot");
             var playerShot = (PlayerShotEvent)ev;
             if (playerShot.Player == User)
                 CurrentPhase = Phase.ComputerTurn;
             else
                 CurrentPhase = Phase.PlayerTurn;
-
-            Debug.WriteLine("HandleShot" + playerShot.Player.Name);
         }
 
         /// <summary>
@@ -182,7 +170,6 @@ namespace MBC.Core.Game
         private void HandleWinner(Event ev)
         {
             var winner = (PlayerWonEvent)ev;
-            Winner = winner.Player;
             RoundEnd(1);
             End();
             CurrentPhase = Phase.End;
@@ -196,6 +183,7 @@ namespace MBC.Core.Game
         [EventFilter(typeof(MatchAddPlayerEvent))]
         private void HandleAddPlayer(Event ev)
         {
+            Debug.WriteLine("AddPlayer");
             MatchAddPlayerEvent evCasted = (MatchAddPlayerEvent)ev;
             Player plr = evCasted.Player;
 
@@ -214,6 +202,7 @@ namespace MBC.Core.Game
         [EventFilter(typeof(ShipMovedEvent))]
         private void HandleShipMove(Event ev)
         {
+            Debug.WriteLine("ShipMove");
             ShipMovedEvent evCasted = (ShipMovedEvent)ev;
             Ship ship = evCasted.Ship;
             Player player = ship.Owner;
@@ -223,7 +212,6 @@ namespace MBC.Core.Game
                 waitList.Remove(player);
                 if (waitList.Count == 0)
                 {
-                    Debug.WriteLine("yes");
                     CurrentPhase = Phase.PlayerTurn;
                     waitList.AddRange(Players);
                 }
@@ -257,6 +245,7 @@ namespace MBC.Core.Game
         [EventFilter(typeof(RoundBeginEvent))]
         private void HandleRoundBegin(Event ev)
         {
+            Debug.WriteLine("RoundBegin");
             CurrentPhase = Phase.Placement;
             waitList.Clear();
             waitList.AddRange(Players);
