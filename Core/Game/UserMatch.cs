@@ -247,7 +247,7 @@ namespace MBC.Core.Game
                 }
             }
             evShip.Owner.Lose();
-            CurrentPlayer.Win();
+            CurrentPhase = Phase.End;
         }
 
         /// <summary>
@@ -266,7 +266,8 @@ namespace MBC.Core.Game
         private void HandleEndTurn(Event ev)
         {
             var endTurn = (PlayerTurnEndEvent)ev;   
-
+            if (CurrentPhase == Phase.End)
+                CurrentPlayer.Win();
         }
     }
 }
