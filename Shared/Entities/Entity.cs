@@ -167,7 +167,7 @@ namespace MBC.Shared.Entities
                     EventFilterAttribute attribute = (EventFilterAttribute)o;
                     if (attribute.Event == typeof(MatchAddPlayerEvent))
                     {
-                        Console.WriteLine("Hello");
+                        //Console.WriteLine("Hello");
                     }
                     if (!filters.ContainsKey(attribute.Event))
                     {
