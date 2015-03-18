@@ -23,8 +23,7 @@ using System.Diagnostics;
 
 namespace MBC.App.FormBattleship
 {
-
-    [Configuration("bot", "RandomBot")]
+    
     public partial class FormBattleShip : Form
     {
         private int ROW_SIZE = 10;
@@ -76,6 +75,9 @@ namespace MBC.App.FormBattleship
         }
 
         #region MBC
+        /// <summary>
+        /// This creates a new match.
+        /// </summary>
         public void NewMatch()
         {
             match = new UserMatch(configuration);
@@ -98,7 +100,7 @@ namespace MBC.App.FormBattleship
         }
 
         /// <summary>
-        /// 
+        /// Player has taken a shot, update on board.
         /// </summary>
         /// <param name="ev"></param>
         [EventFilter(typeof(PlayerShotEvent))]
@@ -109,14 +111,11 @@ namespace MBC.App.FormBattleship
             if (playerShot.Player == user) 
                 userCells[playerShot.Shot.Coordinates].ShipState = State.Miss;
             else
-            {
                 computerCells[playerShot.Shot.Coordinates].ShipState = State.Miss;
-                gridButton_Click(computerCells[playerShot.Shot.Coordinates], null);
-            }
         }
 
         /// <summary>
-        /// 
+        /// When a ship is hit, update board to State.hit for the coordinate.
         /// </summary>
         /// <param name="ev"></param>
         [EventFilter(typeof(ShipHitEvent))]
@@ -192,11 +191,14 @@ namespace MBC.App.FormBattleship
         {
             foreach (var compCell in computerCells)
             {
-                compCell.Value.AllowDrop = true;
                 compCell.Value.ShipState = State.Open;
+                compCell.Value.AllowDrop = true;
             }
             foreach (var userCell in userCells)
+            {
                 userCell.Value.ShipState = State.Open;
+                userCell.Value.Enabled = true;
+            }
             
             for (int ship = 0; ship < shipButtons.Length; ship++)
                 shipButtons[ship].Visible = true;
@@ -206,8 +208,6 @@ namespace MBC.App.FormBattleship
 
         private void gridButton_Click(object sender, EventArgs e)
         {
-            CellButton b = (CellButton)sender;
-            gridUser.Enabled = true;
         }
 
         private void gridButtonUser_Click(object sender, EventArgs e)
@@ -220,6 +220,7 @@ namespace MBC.App.FormBattleship
                 {
                     if (opponent == user) continue;
                     user.Shoot(new Shot(opponent, b.Coordinate));
+                    b.Enabled = false;
 
                     timerAI.Enabled = true;
                     gridUser.Enabled = false;
@@ -420,11 +421,5 @@ namespace MBC.App.FormBattleship
 
             timerAI.Enabled = false;
         }
-
-        private void buttonNShip_Click(object sender, EventArgs e)
-        {
-            //((ShipButton)sender).toggleOrientation();
-        }
-
     }
 }

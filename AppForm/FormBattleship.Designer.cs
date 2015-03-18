@@ -151,7 +151,6 @@
             this.button5Ship.TabIndex = 2;
             this.button5Ship.Text = "5";
             this.button5Ship.UseVisualStyleBackColor = true;
-            this.button5Ship.Click += new System.EventHandler(this.buttonNShip_Click);
             this.button5Ship.MouseDown += new System.Windows.Forms.MouseEventHandler(this.buttonNShip_MouseDown);
             // 
             // button4Ship
@@ -164,7 +163,6 @@
             this.button4Ship.TabIndex = 2;
             this.button4Ship.Text = "4";
             this.button4Ship.UseVisualStyleBackColor = true;
-            this.button4Ship.Click += new System.EventHandler(this.buttonNShip_Click);
             this.button4Ship.MouseDown += new System.Windows.Forms.MouseEventHandler(this.buttonNShip_MouseDown);
             // 
             // button3Ship1
@@ -177,7 +175,6 @@
             this.button3Ship1.TabIndex = 2;
             this.button3Ship1.Text = "3";
             this.button3Ship1.UseVisualStyleBackColor = true;
-            this.button3Ship1.Click += new System.EventHandler(this.buttonNShip_Click);
             this.button3Ship1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.buttonNShip_MouseDown);
             // 
             // button3Ship2
@@ -190,7 +187,6 @@
             this.button3Ship2.TabIndex = 2;
             this.button3Ship2.Text = "3";
             this.button3Ship2.UseVisualStyleBackColor = true;
-            this.button3Ship2.Click += new System.EventHandler(this.buttonNShip_Click);
             this.button3Ship2.MouseDown += new System.Windows.Forms.MouseEventHandler(this.buttonNShip_MouseDown);
             // 
             // button2Ship
@@ -203,7 +199,6 @@
             this.button2Ship.TabIndex = 2;
             this.button2Ship.Text = "2";
             this.button2Ship.UseVisualStyleBackColor = true;
-            this.button2Ship.Click += new System.EventHandler(this.buttonNShip_Click);
             this.button2Ship.MouseDown += new System.Windows.Forms.MouseEventHandler(this.buttonNShip_MouseDown);
             // 
             // buttonReset

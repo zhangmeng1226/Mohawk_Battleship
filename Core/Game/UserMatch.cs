@@ -68,15 +68,6 @@ namespace MBC.Core.Game
         }
 
         /// <summary>
-        /// To know when the match is finished and there is a winner.
-        /// </summary>
-        public bool IsEnd
-        {
-            get;
-            protected set;
-        }
-
-        /// <summary>
         /// To restart the match.
         /// </summary>
         public void Restart()
@@ -87,7 +78,6 @@ namespace MBC.Core.Game
                 End();
             }
             IsStarted = false;
-            IsEnd = false;
         }
 
         /// <summary>
@@ -173,7 +163,6 @@ namespace MBC.Core.Game
             RoundEnd(1);
             End();
             CurrentPhase = Phase.End;
-            IsEnd = true;
         }
 
         /// <summary>
