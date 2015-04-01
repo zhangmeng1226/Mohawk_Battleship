@@ -9,7 +9,7 @@ using MBC.Shared;
 
 namespace MBC.App.FormBattleship.Controls
 {
-    public enum State { Open, Miss, Hit}
+    public enum State { Open, Miss, Hit, Sunk}
 
     public class CellButton : Button
     {
@@ -54,6 +54,10 @@ namespace MBC.App.FormBattleship.Controls
                     case State.Hit:
                         Text = "Hit";
                         BackColor = System.Drawing.Color.Tomato;
+                        break;
+                    case State.Sunk:
+                        Text = "SUNK";
+                        BackColor = System.Drawing.Color.Crimson;
                         break;
                 }
                 shipState = value;

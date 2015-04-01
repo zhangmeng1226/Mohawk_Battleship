@@ -55,6 +55,7 @@ namespace MBC.App.FormBattleship
         private Configuration configuration;
         private UserMatch match;
         private Player user;
+        private Coordinates lastHit;
 
         public FormBattleShip()
         {
@@ -100,6 +101,7 @@ namespace MBC.App.FormBattleship
             match.OnEvent += UpdateShot;
             match.OnEvent += UpdateShotHit;
             match.OnEvent += UpdateWinner;
+            match.OnEvent += UpdateShipDestroyed;
             match.OnEvent += RoundEnd;
 
             match.Play();
@@ -131,6 +133,7 @@ namespace MBC.App.FormBattleship
                 computerCells[shipHit.HitCoords].ShipState = State.Hit;
             else
                 userCells[shipHit.HitCoords].ShipState = State.Hit;
+            lastHit = shipHit.HitCoords;
         }
 
         /// <summary>
@@ -158,6 +161,21 @@ namespace MBC.App.FormBattleship
         {
             reset_Board();
         }
+
+        /// <summary>
+        /// When a ship is destroyed, it will set ship to sunk state.
+        /// </summary>
+        /// <param name="ev"></param>
+        [EventFilter(typeof(ShipDestroyedEvent))]
+        public void UpdateShipDestroyed(Event ev)
+        {
+            var shipDestroyed = (ShipDestroyedEvent)ev;
+            if (shipDestroyed.Ship.Owner == user)
+                computerCells[lastHit].ShipState = State.Sunk;
+            else
+                userCells[lastHit].ShipState = State.Sunk;
+        }
+
         #endregion
 
         private void Form1_Load(object sender, EventArgs e)
