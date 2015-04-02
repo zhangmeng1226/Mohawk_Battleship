@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -20,30 +21,20 @@ using MBC.Shared.Events;
 using MBC.App.FormBattleship.Controls;
 using System.Threading;
 using System.Diagnostics;
+using Ship = MBC.Shared.Entities.Ship;
 
 namespace MBC.App.FormBattleship
 {
-    
+
     public partial class FormBattleShip : Form
     {
-        private int ROW_SIZE = 10;
-        private int COL_SIZE = 10;
-
         private int compScore = 0;
         private int userScore = 0;
 
         const string NAME = "User";
         const string BOTNAME = "RandomBot";
 
-        Color SHIPCOLOR = Color.LightGray;
-        Color DRAGCOLOR = Color.DarkSlateGray;
-        Color DEFAULTCOLOR = Color.Black;
-        Color HITCOLOR = Color.Red;
-        Color MISSCOLOR = Color.SkyBlue;
-
-        private Dictionary<Coordinates, CellButton> userCells = new Dictionary<Coordinates, CellButton>();
-        private Dictionary<Coordinates, CellButton> computerCells = new Dictionary<Coordinates, CellButton>();
-        private Button[] shipButtons = new Button[5];
+        private ShipButton[] shipButtons = new ShipButton[5];
 
         private Random rand = new Random();
 
@@ -55,24 +46,29 @@ namespace MBC.App.FormBattleship
         private Configuration configuration;
         private UserMatch match;
         private Player user;
+        private Player computer;
+
+        private Coordinates lastHit;
 
         public FormBattleShip()
         {
             Configuration.Initialize(Environment.CurrentDirectory + "\\..");
-           
+
             configuration = Configuration.Global;
             configuration.SetValue("mbc_match_rounds", "1");
-            
-            ROW_SIZE = configuration.GetValue<int>("mbc_field_height");
-            COL_SIZE = configuration.GetValue<int>("mbc_field_width");
 
             InitializeComponent();
 
             shipButtons[0] = button5Ship;
+            shipButtons[0].ShipPiece = ShipPiece.Carrier;
             shipButtons[1] = button4Ship;
+            shipButtons[1].ShipPiece = ShipPiece.Battleship;
             shipButtons[2] = button3Ship1;
+            shipButtons[2].ShipPiece = ShipPiece.Cruiser;
             shipButtons[3] = button3Ship2;
+            shipButtons[3].ShipPiece = ShipPiece.Sub;
             shipButtons[4] = button2Ship;
+            shipButtons[4].ShipPiece = ShipPiece.Destroyer;
 
             showStats();
 
@@ -93,7 +89,7 @@ namespace MBC.App.FormBattleship
             foreach (ControllerSkeleton bot in bots)
                 if (bot.Controller.Name == BOTNAME)
                 {
-                    match.PlayerCreate(bot);
+                    computer = match.PlayerCreate(bot);
                     break;
                 }
 
@@ -101,6 +97,7 @@ namespace MBC.App.FormBattleship
             match.OnEvent += UpdateShotHit;
             match.OnEvent += UpdateWinner;
             match.OnEvent += RoundEnd;
+            match.OnEvent += UpdateShipDestroyed;
 
             match.Play();
         }
@@ -113,10 +110,31 @@ namespace MBC.App.FormBattleship
         public void UpdateShot(Event ev)
         {
             var playerShot = (PlayerShotEvent)ev;
-            if (playerShot.Player == user) 
-                userCells[playerShot.Shot.Coordinates].ShipState = State.Miss;
+            if (playerShot.Player == user)
+            {
+                gridUser.SetCellState(playerShot.Shot.Coordinates, CellState.Miss);
+                gridUser.Invalidate();
+            }
             else
-                computerCells[playerShot.Shot.Coordinates].ShipState = State.Miss;
+            {
+                gridAI.SetCellState(playerShot.Shot.Coordinates, CellState.Miss);
+                gridAI.Invalidate();
+            }
+        }
+        
+        [EventFilter(typeof(ShipDestroyedEvent))]
+        public void UpdateShipDestroyed(Event ev)
+        {
+            ShipDestroyedEvent des = (ShipDestroyedEvent) ev;
+
+            if (des.Ship.Owner == user)
+            {
+                gridAI.SetCellState(lastHit, CellState.Sunk);
+            }
+            else
+            {
+                gridUser.SetCellState(lastHit, CellState.Sunk);   
+            }
         }
 
         /// <summary>
@@ -128,9 +146,17 @@ namespace MBC.App.FormBattleship
         {
             var shipHit = (ShipHitEvent)ev;
             if (shipHit.Ship.Owner == user)
-                computerCells[shipHit.HitCoords].ShipState = State.Hit;
+            {
+                gridAI.SetCellState(shipHit.HitCoords, CellState.Hit);
+                gridAI.Invalidate();
+            }
             else
-                userCells[shipHit.HitCoords].ShipState = State.Hit;
+            {
+                gridUser.SetCellState(shipHit.HitCoords, CellState.Hit);
+                gridUser.Invalidate();
+            }
+
+            lastHit = shipHit.HitCoords;
         }
 
         /// <summary>
@@ -143,9 +169,13 @@ namespace MBC.App.FormBattleship
             var playerWon = (PlayerWonEvent)ev;
             MessageBox.Show("The winner is " + playerWon.Player.Name + " in " + playerWon.Player.ShotsMade.Count + " shots!");
             if (playerWon.Player == user)
+            {
                 userScore++;
+            }
             else
+            {
                 compScore++;
+            }
             showStats();
         }
 
@@ -162,244 +192,209 @@ namespace MBC.App.FormBattleship
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            for (int row = 0; row < ROW_SIZE; row++)
-                for (int col = 0; col < COL_SIZE; col++)
-                {
-                    var coord = new Coordinates(row, col);
-                    var cell = new CellButton(coord);
-                    cell.Name = "UI_" + row.ToString() + "_" + col.ToString();
-                    cell.Click += new System.EventHandler(this.gridButtonUser_Click);
-                    userCells.Add(coord,cell);
-                    gridUser.Controls.Add(cell);
-                }
+            //            gridAI.Click += GridAIClick;
+            gridAI.AllowDrop = true;
+            gridAI.DragOver += GridAIDrag;
+            gridAI.DragEnter += GridAIDrag;
+            gridAI.DragDrop += GridAIDragDrop;
+            gridAI.DragLeave += GridAIDragLeave;
 
-            for (int row = 0; row < ROW_SIZE; row++)
-                for (int col = 0; col < COL_SIZE; col++)
-                {
-                    var coord = new Coordinates(row, col);
-                    var cell = new CellButton(coord);
-                    cell.Name = "UI_" + row.ToString() + "_" + col.ToString();
+            gridUser.MouseUp += GridUserClick;
+            gridUser.MouseMove += GridUserMove;
+            gridUser.MouseLeave += GridUserMouseLeave;
 
-                    cell.DragOver += new DragEventHandler(this.gridButton_DragOver);
-                    cell.DragEnter += new DragEventHandler(this.gridButton_DragEnter);
-                    cell.DragDrop += new DragEventHandler(this.gridButton_DragDrop);
-                    cell.DragLeave += new EventHandler(this.gridButton_DragLeave);
-
-                    cell.AllowDrop = true;
-                    cell.Enabled = true;
-
-                    computerCells.Add(coord, cell);
-                    gridAI.Controls.Add(cell);
-                }
             gridUser.Enabled = false;
-
         }
 
         // Reset the Board to the Starting State
         private void reset_Board()
         {
-            foreach (var compCell in computerCells)
-            {
-                compCell.Value.ShipState = State.Open;
-                compCell.Value.AllowDrop = true;
-            }
-            foreach (var userCell in userCells)
-            {
-                userCell.Value.ShipState = State.Open;
-                userCell.Value.Enabled = true;
-            }
-            
+            gridAI.Cells.Clear();
+            gridUser.Cells.Clear();
+            gridAI.Invalidate();
+            gridUser.Invalidate();
+
             for (int ship = 0; ship < shipButtons.Length; ship++)
+            {
                 shipButtons[ship].Visible = true;
+            }
 
             NewMatch();
         }
 
-        private void gridButtonUser_Click(object sender, EventArgs e)
+        private void GridUserClick(object sender, MouseEventArgs e)
         {
-            CellButton b = (CellButton)sender;
-
-            if (b.ShipState == State.Open)
+            if (gridUser.Enabled)
             {
-                foreach (Player opponent in user.Match.Players)
+                Coordinates coordinates = gridUser.GetCoordinatesFromMouse(e.X, e.Y);
+                Cell clickedCell;
+                if (!gridUser.Cells.TryGetValue(coordinates, out clickedCell) || clickedCell.State == CellState.Open)
                 {
-                    if (opponent == user) continue;
-                    match.UserShoot(new Shot(opponent, b.Coordinate));
-                    b.Enabled = false;
-
+                    match.UserShoot(new Shot(computer, coordinates));
                     timerAI.Enabled = true;
                     gridUser.Enabled = false;
                 }
             }
         }
 
-        private void gridButton_DragOver(object sender, DragEventArgs e)
+        private void GridUserMove(object sender, MouseEventArgs e)
         {
-            CellButton b = (CellButton)sender;
-            int row = b.Coordinate.X;
-            int col = b.Coordinate.Y;
-            gridButton_DragEnter(sender, e);
+            if (gridUser.Enabled)
+            {
+                if (gridUser.CurrentHover == null)
+                {
+                    gridUser.CurrentHover = new FieldHover();
+                    gridUser.CurrentHover.HoverSize = 1;
+                    gridUser.CurrentHover.ShipPiece = ShipPiece.None;
+                }
+                gridUser.CurrentHover.Coordinates = gridUser.GetCoordinatesFromMouse(e.X, e.Y);
+                gridUser.Invalidate();
+            }
         }
 
-        // Terminate the Drag operation 
-        // If the Ship can fit in location - Draw it onto the board.
-
-        void gridButton_DragDrop(object sender, DragEventArgs e)
+        private void GridUserMouseLeave(object sender, EventArgs e)
         {
-            e.Effect = DragDropEffects.Copy;
-            ShipButton shipButton = (ShipButton)e.Data.GetData(DataFormats.Serializable);
-            int shipSize = shipButton.ShipSize;
+            gridUser.CurrentHover = null;
+            gridUser.Invalidate();
+        }
 
-            CellButton dropButton = (CellButton)sender;
-            int row = dropButton.Coordinate.X;
-            int col = dropButton.Coordinate.Y;
-            var placementDirection = shiftKey_Down(e.KeyState) ? ShipOrientation.Horizontal : ShipOrientation.Vertical;
-            if (placementDirection == ShipOrientation.Horizontal)
+        private Ship SelectShip(int size)
+        {
+            foreach (Ship ship in user.Ships)
             {
-                if (col + shipSize <= COL_SIZE)
+                if (!ship.IsPlaced && ship.Length == size)
                 {
-                    buttonHighlight(row, col, ShipOrientation.Horizontal, shipSize, SHIPCOLOR, shipSize.ToString(), false);
-                    // Gets the ship from user's ship list and then places it.
-                    foreach (Ship ship in match.User.Ships)
-                    {
-                        if (!ship.IsPlaced && ship.Length == shipSize)
-                        {
-                            // Places the ships! Vertical -> Horizontal in framework....
-                            ship.Place(new Coordinates(row, col), ShipOrientation.Vertical);
-                            break;
-                        }
-                    }
-                    shipButton.Visible = false;
+                    return ship;
                 }
             }
-            else
-            {
-                if (row + shipSize <= ROW_SIZE)
-                {
-                    buttonHighlight(row, col, ShipOrientation.Vertical, shipSize, SHIPCOLOR, shipSize.ToString(), false);
-                    // Gets the ship from user's ship list and then places it.
+            return null;
+        }
 
-                    foreach (Ship ship in match.User.Ships)
-                    {
-                        if (!ship.IsPlaced && ship.Length == shipSize)
-                        {
-                            // Places the ships! Horizontal -> Vertical in framework...
-                            ship.Place(new Coordinates(row, col), ShipOrientation.Horizontal);
-                            break;
-                        }
-                    }
-                    shipButton.Visible = false;
-                }
-            }
-
+        private void AttemptPlayMatch()
+        {
             gridUser.Enabled = true;
             for (int i = 0; i < shipButtons.Length; i++)
+            {
                 if (shipButtons[i].Visible == true)
+                {
                     gridUser.Enabled = false;
+                }
+            }
 
             if (gridUser.Enabled)
-                match.Play(); // Sometimes Computer player goes first.
-            
-            // No ship is now selected 
-            currentShipLength = 0;
-        }
-
-        // If we leave a grid location during drag we must erase the ship
-        void gridButton_DragLeave(object sender, EventArgs e)
-        {
-            if (currentShipLength > 0)
             {
-                buttonHighlight(currentRow, currentCol, currentDirection, currentShipLength, DEFAULTCOLOR, "", true);
+                match.Play(); // Sometimes Computer player goes first.
             }
         }
 
-        // Highlight the Ship possibility if it will fir in this location
-        void gridButton_DragEnter(object sender, DragEventArgs e)
+        private bool ShipCanFit(Coordinates destCoordinates, int size, int modX, int modY)
+        {
+            int maxX = destCoordinates.X + (size * modX);
+            int maxY = destCoordinates.Y + (size * modY);
+            if (maxX <= 10 && maxY <= 10)
+            {
+                for (int x = destCoordinates.X; x <= maxX; x++)
+                {
+                    for (int y = destCoordinates.Y; y <= maxY; y++)
+                    {
+                        Coordinates testCoordinates = new Coordinates(x, y);
+                        Cell fieldCell;
+                        if (gridAI.Cells.TryGetValue(testCoordinates, out fieldCell) && fieldCell.ShipPiece != ShipPiece.None)
+                        {
+                            return false;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                return false;
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// Places the dragged ship onto the grid
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void GridAIDragDrop(object sender, DragEventArgs e)
+        {
+            e.Effect = DragDropEffects.Copy;
+
+            ShipButton shipButton = (ShipButton)e.Data.GetData(DataFormats.Serializable);
+            Ship selectedShip = SelectShip(shipButton.ShipSize);
+            Point relativePoint = gridAI.PointToClient(new Point(e.X, e.Y));
+            int shipSize = selectedShip.Length;
+
+            Coordinates coordinates = gridAI.GetCoordinatesFromMouse(relativePoint.X, relativePoint.Y);
+            ShipOrientation direction = shiftKey_Down(e.KeyState)
+                ? ShipOrientation.Horizontal
+                : ShipOrientation.Vertical;
+            int modX = direction == ShipOrientation.Horizontal ? 1 : 0;
+            int modY = direction == ShipOrientation.Vertical ? 1 : 0;
+
+            int count = 0;
+            for (int x = coordinates.X; x <= coordinates.X + ((shipSize - 1) * modX); x++)
+            {
+                for (int y = coordinates.Y; y <= coordinates.Y + ((shipSize - 1) * modY); y++)
+                {
+                    Coordinates coords = new Coordinates(x, y);
+                    gridAI.SetCellShip(coords, shipButton.ShipPiece, count++, direction);
+                }
+            }
+            selectedShip.Place(coordinates, direction);
+            shipButton.Visible = false;
+            gridAI.CurrentHover = null;
+            gridAI.Invalidate();
+            AttemptPlayMatch();
+        }
+
+        private void GridAIDragLeave(object sender, EventArgs e)
+        {
+            gridAI.CurrentHover = null;
+            gridAI.Invalidate();
+        }
+
+        private void GridAIDrag(object sender, DragEventArgs e)
         {
             ShipButton shipButton = (ShipButton)e.Data.GetData(DataFormats.Serializable);
             int shipSize = shipButton.ShipSize;
 
-            CellButton dropButton = (CellButton)sender;
-            int row = dropButton.Coordinate.X;
-            int col = dropButton.Coordinate.Y;
-
+            Point relativePoint = gridAI.PointToClient(new Point(e.X, e.Y));
+            Coordinates coordinates = gridAI.GetCoordinatesFromMouse(relativePoint.X, relativePoint.Y);
             ShipOrientation orientation = shiftKey_Down(e.KeyState) ? ShipOrientation.Horizontal : ShipOrientation.Vertical;
+            int modX = orientation == ShipOrientation.Horizontal ? 1 : 0;
+            int modY = orientation == ShipOrientation.Vertical ? 1 : 0;
 
-            if (orientation == ShipOrientation.Horizontal)
+            if (gridAI.CurrentHover == null)
             {
-                if (col + shipSize <= COL_SIZE)
-                {
-                    e.Effect = DragDropEffects.Copy;
-                    for (int i = col; i < col + shipSize; i++)
-                        if (userCells[new Coordinates(row,i)].BackColor == SHIPCOLOR)
-                        {
-                            e.Effect = DragDropEffects.None;
-                            break;
-                        }
-                }
-                else
-                    e.Effect = DragDropEffects.None;
-                if (e.Effect == DragDropEffects.Copy)
-                    buttonHighlight(row, col, orientation, shipSize, Color.DarkSlateGray, "", true);
+                gridAI.CurrentHover = new FieldHover();
+                gridAI.CurrentHover.HoverSize = shipSize;
+                gridAI.CurrentHover.ShipPiece = shipButton.ShipPiece;
+            }
+            gridAI.CurrentHover.MouseX = relativePoint.X;
+            gridAI.CurrentHover.MouseY = relativePoint.Y;
+            gridAI.CurrentHover.Orientation = orientation;
+            gridAI.CurrentHover.Coordinates = coordinates;
+
+            if (ShipCanFit(coordinates, shipSize, modX, modY))
+            {
+                e.Effect = DragDropEffects.Copy;
+                gridAI.CurrentHover.HoverSize = shipSize;
             }
             else
             {
-                if (row + shipSize <= ROW_SIZE)
-                {
-                    e.Effect = DragDropEffects.Copy;
-                    for (int i = row; i < row + shipSize; i++)
-                        if (computerCells[new Coordinates(i,col)].BackColor == SHIPCOLOR)
-                        {
-                            e.Effect = DragDropEffects.None;
-                            break;
-                        }
-                }
-                else
-                    e.Effect = DragDropEffects.None;
-                if (e.Effect == DragDropEffects.Copy)
-                    buttonHighlight(row, col, orientation, shipSize, Color.DarkSlateGray, "", true);
+                e.Effect = DragDropEffects.None;
+                gridAI.CurrentHover.HoverSize = 0;
             }
-            if (e.Effect == DragDropEffects.Copy)
-            {
-
-                currentShipLength = shipSize;
-                currentRow = row;
-                currentCol = col;
-                currentDirection = orientation;
-            }
-            else
-            {
-                currentShipLength = 0;
-            }
-
+            gridAI.Invalidate();
         }
-
 
         private void buttonNShip_MouseDown(object sender, MouseEventArgs e)
         {
             DataObject data = new DataObject(DataFormats.Serializable, sender as Button);
             DoDragDrop(data, DragDropEffects.Copy);
-        }
-
-        // Used in Dragging / Dropping Ships onto the Board
-        private void buttonHighlight(int row, int col, ShipOrientation direction, int size, Color color, String text, bool enabled)
-        {
-            if (direction == ShipOrientation.Horizontal)
-                for (int xpos = col; xpos < col + size; xpos++)
-                {
-                    computerCells[new Coordinates(row, xpos)].BackColor = color;
-                    if (text != "")
-                        computerCells[new Coordinates(row, xpos)].Text = text;
-                    computerCells[new Coordinates(row, xpos)].AllowDrop = enabled;
-                }
-            else
-                for (int ypos = row; ypos < row + size; ypos++)
-                {
-                    computerCells[new Coordinates(ypos, col)].BackColor = color;
-                    if (text != "")
-                        computerCells[new Coordinates(ypos,col)].Text = text;
-                    computerCells[new Coordinates(ypos,col)].AllowDrop = enabled;
-                }
         }
 
         // Detremines if Shift Key is down

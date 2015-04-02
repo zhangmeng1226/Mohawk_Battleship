@@ -115,7 +115,7 @@ namespace MBC.Core.Game
         /// </summary>
         /// <param name="controller"></param>
         /// <returns></returns>
-        public void PlayerCreate(ControllerSkeleton skeleton)
+        public Player PlayerCreate(ControllerSkeleton skeleton)
         {
             ControlledPlayer newPlayer = new ControlledPlayer(this, skeleton.GetAttribute<NameAttribute>().Name, skeleton.CreateInstance());
 //            newPlayer.OnEvent += ApplyEvent;
@@ -125,6 +125,7 @@ namespace MBC.Core.Game
 //                ship.OnEvent += ApplyEvent;
 //            }
             newPlayer.Controller.Player = newPlayer;
+            return newPlayer;
         }
 
         /// <summary>

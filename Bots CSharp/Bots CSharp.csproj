@@ -41,6 +41,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DaveBot_1_4_5\Bot.cs" />
+    <Compile Include="DaveBot_1_4_5\CellStateMap.cs" />
+    <Compile Include="DaveBot_1_4_5\DaveBot_1_4_5.cs" />
+    <Compile Include="DaveBot_1_4_5\HistoryMap.cs" />
+    <Compile Include="DaveBot_1_4_5\HuntingMap.cs" />
+    <Compile Include="DaveBot_1_4_5\PlacementMap.cs" />
+    <Compile Include="DaveBot_1_4_5\ProbabilityMap.cs" />
+    <Compile Include="DaveBot_1_4_5\ShotHelper.cs" />
     <Compile Include="RandomBot.cs" />
     <Compile Include="RandomBot_old.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

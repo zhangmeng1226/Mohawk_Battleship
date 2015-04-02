@@ -1,4 +1,6 @@
-﻿namespace MBC.App.FormBattleship
+﻿using MBC.App.FormBattleship.Controls;
+
+namespace MBC.App.FormBattleship
 {
   partial class FormBattleShip
   {
@@ -29,8 +31,8 @@
     private void InitializeComponent()
     {
             this.components = new System.ComponentModel.Container();
-            this.gridUser = new System.Windows.Forms.TableLayoutPanel();
-            this.gridAI = new System.Windows.Forms.TableLayoutPanel();
+            this.gridUser = new MBC.App.FormBattleship.Controls.FieldPanel();
+            this.gridAI = new MBC.App.FormBattleship.Controls.FieldPanel();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.labelFire = new System.Windows.Forms.Label();
@@ -46,61 +48,21 @@
             // 
             // gridUser
             // 
-            this.gridUser.ColumnCount = 10;
-            this.gridUser.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.gridUser.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.gridUser.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.gridUser.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.gridUser.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.gridUser.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.gridUser.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.gridUser.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.gridUser.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.gridUser.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.gridUser.BackgroundImage = global::MBC.App.FormBattleship.Properties.Resources.Water;
+            this.gridUser.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.gridUser.Location = new System.Drawing.Point(679, 68);
             this.gridUser.Margin = new System.Windows.Forms.Padding(0);
             this.gridUser.Name = "gridUser";
-            this.gridUser.RowCount = 10;
-            this.gridUser.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.gridUser.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.gridUser.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.gridUser.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.gridUser.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.gridUser.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.gridUser.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.gridUser.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.gridUser.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.gridUser.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.gridUser.Size = new System.Drawing.Size(600, 600);
             this.gridUser.TabIndex = 0;
             // 
             // gridAI
             // 
-            this.gridAI.ColumnCount = 10;
-            this.gridAI.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.gridAI.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.gridAI.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.gridAI.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.gridAI.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.gridAI.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.gridAI.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.gridAI.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.gridAI.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.gridAI.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.gridAI.BackgroundImage = global::MBC.App.FormBattleship.Properties.Resources.Water;
+            this.gridAI.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.gridAI.Location = new System.Drawing.Point(35, 68);
             this.gridAI.Margin = new System.Windows.Forms.Padding(0);
             this.gridAI.Name = "gridAI";
-            this.gridAI.RowCount = 10;
-            this.gridAI.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.gridAI.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.gridAI.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.gridAI.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.gridAI.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.gridAI.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.gridAI.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.gridAI.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.gridAI.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.gridAI.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.gridAI.Size = new System.Drawing.Size(600, 600);
             this.gridAI.TabIndex = 0;
             // 
@@ -249,8 +211,8 @@
 
     #endregion
 
-    private System.Windows.Forms.TableLayoutPanel gridUser;
-    private System.Windows.Forms.TableLayoutPanel gridAI;
+    private FieldPanel gridUser;
+    private FieldPanel gridAI;
     private System.Windows.Forms.Label label1;
     private System.Windows.Forms.Label label2;
     private System.Windows.Forms.Label labelFire;

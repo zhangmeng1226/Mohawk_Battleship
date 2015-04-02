@@ -21,6 +21,7 @@ namespace MBC.App.FormBattleship.Controls
         }
 
         public ShipOrientation ShipOrientation { get; set; }
+        public ShipPiece ShipPiece { get; set; }
         public int ShipSize { get; set; }
 
         /// <summary>

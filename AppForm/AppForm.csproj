@@ -48,9 +48,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controls\Cell.cs" />
     <Compile Include="Controls\CellButton.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Controls\CellState.cs" />
+    <Compile Include="Controls\FieldHover.cs" />
+    <Compile Include="Controls\FieldPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\FieldResources.cs" />
     <Compile Include="Controls\ShipButton.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -97,6 +104,58 @@
       <Project>{51fd717f-5965-4c31-9bdd-051da693a729}</Project>
       <Name>Shared</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="resources\Battleship.png" />
+    <EmbeddedResource Include="resources\Battleship1.png" />
+    <EmbeddedResource Include="resources\Battleship2.png" />
+    <EmbeddedResource Include="resources\Battleship3.png" />
+    <EmbeddedResource Include="resources\Battleship4.png" />
+    <EmbeddedResource Include="resources\Carrier.png" />
+    <EmbeddedResource Include="resources\Carrier1.png" />
+    <EmbeddedResource Include="resources\Carrier2.png" />
+    <EmbeddedResource Include="resources\Carrier3.png" />
+    <EmbeddedResource Include="resources\Carrier4.png" />
+    <EmbeddedResource Include="resources\Carrier5.png" />
+    <EmbeddedResource Include="resources\Cruiser.png" />
+    <EmbeddedResource Include="resources\Cruiser1.png" />
+    <EmbeddedResource Include="resources\Cruiser2.png" />
+    <EmbeddedResource Include="resources\Cruiser3.png" />
+    <EmbeddedResource Include="resources\Destroyer.png" />
+    <EmbeddedResource Include="resources\Destroyer1.png" />
+    <EmbeddedResource Include="resources\Destroyer2.png" />
+    <EmbeddedResource Include="resources\dmg_Battleship.png" />
+    <EmbeddedResource Include="resources\dmg_Battleship1.png" />
+    <EmbeddedResource Include="resources\dmg_Battleship2.png" />
+    <EmbeddedResource Include="resources\dmg_Battleship3.png" />
+    <EmbeddedResource Include="resources\dmg_Battleship4.png" />
+    <EmbeddedResource Include="resources\dmg_Carrier.png" />
+    <EmbeddedResource Include="resources\dmg_Carrier1.png" />
+    <EmbeddedResource Include="resources\dmg_Carrier2.png" />
+    <EmbeddedResource Include="resources\dmg_Carrier3.png" />
+    <EmbeddedResource Include="resources\dmg_Carrier4.png" />
+    <EmbeddedResource Include="resources\dmg_Carrier5.png" />
+    <EmbeddedResource Include="resources\dmg_Cruiser.png" />
+    <EmbeddedResource Include="resources\dmg_Cruiser1.png" />
+    <EmbeddedResource Include="resources\dmg_Cruiser2.png" />
+    <EmbeddedResource Include="resources\dmg_Cruiser3.png" />
+    <EmbeddedResource Include="resources\dmg_Destroyer.png" />
+    <EmbeddedResource Include="resources\dmg_Destroyer1.png" />
+    <EmbeddedResource Include="resources\dmg_Destroyer2.png" />
+    <EmbeddedResource Include="resources\dmg_Sub.png" />
+    <EmbeddedResource Include="resources\dmg_Sub1.png" />
+    <EmbeddedResource Include="resources\dmg_Sub2.png" />
+    <EmbeddedResource Include="resources\dmg_Sub3.png" />
+    <EmbeddedResource Include="resources\Missile_Hit.png" />
+    <EmbeddedResource Include="resources\Missile_Miss.png" />
+    <EmbeddedResource Include="resources\Sub.png" />
+    <EmbeddedResource Include="resources\Sub1.png" />
+    <EmbeddedResource Include="resources\Sub2.png" />
+    <EmbeddedResource Include="resources\Sub3.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="resources\Missile_Sunk.png" />
+    <EmbeddedResource Include="resources\Water.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

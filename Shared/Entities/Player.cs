@@ -197,15 +197,23 @@ namespace MBC.Shared.Entities
         public virtual Shot Shoot(int x, int y)
         {
             Shot result = null;
-            foreach (Team t in Match.Teams)
+//            foreach (Team t in Match.Teams)
+//            {
+//                if (!t.MembersPlr.Contains(this) && t.MembersPlr.Count > 0)
+//                {
+//                    result = new Shot(t.MembersPlr.First(), new Coordinates(x, y));
+//                    Shoot(result);
+//                    break;
+//                }
+//            }
+            Player opponent = null;
+            foreach (Player op in Match.Players)
             {
-                if (!t.MembersPlr.Contains(this) && t.MembersPlr.Count > 0)
-                {
-                    result = new Shot(t.MembersPlr.First(), new Coordinates(x, y));
-                    Shoot(result);
-                    break;
-                }
+                if (op == this) continue;
+                opponent = op;
             }
+            result = new Shot(opponent, new Coordinates(x, y));
+            Shoot(result);
             return result;
         }
 
